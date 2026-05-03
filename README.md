@@ -1,35 +1,41 @@
 # URAI Content
 
-This repository defines the content systems, publishing pipelines, and narrative strategy for the URAI ecosystem.
+Canonical content engine and asset/story library for the URAI ecosystem.
 
-URAI content is treated as **infrastructure**, not ad-hoc marketing.
+## Repo type
+This repository is a **content package/library** (not a deployed Next.js app). It provides typed content registries, schemas, loaders, validators, and seed/demo story assets for other URAI apps.
 
-## Scope
+## Structure
+- `content/` canonical source of truth for brand, pages, demo, legal, sprites, and SEO JSON
+- `src/lib/content/` schema, loaders, registry, and validators
+- `src/backend/` domain service and repository contracts
+- `src/index.ts` stable package exports
+- `scripts/contentIndex.ts` deterministic generated index
+- `tests/` smoke and unit tests
 
-This repository manages:
-- Multi-channel content publishing
-- Automated distribution workflows
-- Campaign orchestration
-- Localization and translation
-- Narrative and brand consistency
-- Performance tracking and iteration
+## Commands
+- `npm run validate:content`
+- `npm run validate:sprites`
+- `npm run content:index`
+- `npm run content:check`
+- `npm run lint`
+- `npm run typecheck`
+- `npm test`
+- `npm run build`
+- `npm run check`
 
-## Design Principles
+## Env
+- `NEXT_PUBLIC_GITHUB_ISSUES_URL`
+- `NEXT_PUBLIC_CI_RUN_URL`
+- Firebase/Stripe variables in `.env.example` for consuming runtime backends.
 
-- Systematic, not reactive
-- Narrative-first
-- Automation over manual posting
-- Measurable impact
-- Long-term brand coherence
+## Consumption
+```ts
+import { registry, validateContent } from 'urai-content';
+validateContent();
+console.log(registry.home.title);
+```
 
-## Relationship to Other Repos
-
-- `asset-factory`: produces media assets
-- `urai-analytics`: measures performance
-- `urai-admin`: oversight and moderation
-- `urai-content`: **distribution and growth**
-
-## Status
-
-This repository evolves continuously.
-All campaigns and content flows are versioned.
+## Known limitations
+- No UI routes in this repo by design.
+- Firebase adapter implementation lives in consuming backend repos.
