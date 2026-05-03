@@ -3,12 +3,27 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
   "scripts": {
+    "dev": "tsx src/index.ts",
     "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "test": "vitest run",
-    "seed:check": "tsx src/seed/checkSeed.ts"
+    "validate:content": "tsx src/lib/content/validate.ts",
+    "validate:sprites": "tsx src/lib/content/validate.ts",
+    "content:index": "tsx scripts/contentIndex.ts",
+    "content:check": "npm run validate:content && npm run validate:sprites && npm run content:index && git diff --exit-code",
+    "seed:check": "tsx src/seed/checkSeed.ts",
+    "check": "npm run lint && npm run typecheck && npm run validate:content && npm run validate:sprites && npm run content:index && git diff --exit-code && npm test && npm run build && npm run seed:check"
   },
   "dependencies": {
     "zod": "^3.24.1"

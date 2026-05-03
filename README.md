@@ -1,45 +1,99 @@
 # URAI Content
 
-`urai-content` is URAI's **content domain engine**: a typed contract, validation system, and backend service layer for narrator prompts, ritual/story templates, marketplace assets, publishing workflow, and export copy.
+Canonical content engine and asset/story library for the URAI ecosystem.
+
+`urai-content` is URAI's **content domain engine**: a typed contract, validation system, and backend service layer for narrator prompts, ritual/story templates, marketplace assets, publishing workflow, export copy, and canonical app content.
+
+## Repo type
+
+This repository is a **content package/library** — not a deployed Next.js app. It provides typed content registries, schemas, loaders, validators, backend service contracts, and seed/demo story assets for other URAI apps.
 
 ## Repository role in URAI
+
 This repo is the content backbone used by app/admin repos. It centralizes:
+
 - content schemas
+- canonical brand, page, demo, legal, sprite, and SEO content
+- typed content registries and loaders
 - publishing workflow rules
-- moderation + release logging contracts
+- moderation and release logging contracts
 - entitlement-aware content access checks
-- telemetry event contract
+- telemetry event contracts
 - demo seed packs for local/staging
 
-## Install and validate
-```bash
-npm ci
-npm run typecheck
-npm run lint
-npm test
-npm run build
-npm run seed:check
-```
+## Structure
 
-## Core modules
-- `src/schemas/content.ts` — centralized Zod schemas and TS types
+- `content/` — canonical source of truth for brand, pages, demo, legal, sprites, and SEO JSON
+- `src/lib/content/` — schema, loaders, registry, and validators
+- `src/schemas/content.ts` — centralized Zod schemas and TypeScript types
 - `src/backend/contentService.ts` — workflow, versioning, search, entitlements, moderation/release/telemetry hooks
 - `src/backend/types.ts` — repository interface for Firebase adapter implementation
 - `src/backend/inMemoryRepository.ts` — local/testing repository implementation
-- `src/seed/` — demo seed content + schema validation script
+- `src/index.ts` — stable package exports
+- `src/seed/` — demo seed content and schema validation script
+- `scripts/contentIndex.ts` — deterministic generated content index
+- `tests/` — smoke and unit tests
 
-## Firebase wiring
-Implement `ContentRepository` with Firebase Admin SDK in the deployment repo or shared backend package and bind `ContentService` to API handlers.
+## Install and validate
 
-## Environment
-Copy `.env.example` and set values in secrets manager; never commit credentials.
+```bash
+npm ci
+npm run lint
+npm run typecheck
+npm run validate:content
+npm run validate:sprites
+npm run content:index
+npm run content:check
+npm test
+npm run build
+npm run seed:check
+npm run check# URAI Content
 
-## Documentation
-- `docs/COMPLETION_AUDIT.md`
-- `docs/CONTENT_SYSTEM.md`
-- `docs/FIREBASE_SETUP.md`
-- `docs/FIREBASE_RULES_PATCH.md`
-- `docs/TESTING.md`
-- `docs/DEPLOYMENT.md`
-- `docs/ROADMAP_WIRING.md`
-- `docs/DONE_DONE_CHECKLIST.md`
+Canonical content engine and asset/story library for the URAI ecosystem.
+
+`urai-content` is URAI's **content domain engine**: a typed contract, validation system, and backend service layer for narrator prompts, ritual/story templates, marketplace assets, publishing workflow, export copy, and canonical app content.
+
+## Repo type
+
+This repository is a **content package/library** — not a deployed Next.js app. It provides typed content registries, schemas, loaders, validators, backend service contracts, and seed/demo story assets for other URAI apps.
+
+## Repository role in URAI
+
+This repo is the content backbone used by app/admin repos. It centralizes:
+
+- content schemas
+- canonical brand, page, demo, legal, sprite, and SEO content
+- typed content registries and loaders
+- publishing workflow rules
+- moderation and release logging contracts
+- entitlement-aware content access checks
+- telemetry event contracts
+- demo seed packs for local/staging
+
+## Structure
+
+- `content/` — canonical source of truth for brand, pages, demo, legal, sprites, and SEO JSON
+- `src/lib/content/` — schema, loaders, registry, and validators
+- `src/schemas/content.ts` — centralized Zod schemas and TypeScript types
+- `src/backend/contentService.ts` — workflow, versioning, search, entitlements, moderation/release/telemetry hooks
+- `src/backend/types.ts` — repository interface for Firebase adapter implementation
+- `src/backend/inMemoryRepository.ts` — local/testing repository implementation
+- `src/index.ts` — stable package exports
+- `src/seed/` — demo seed content and schema validation script
+- `scripts/contentIndex.ts` — deterministic generated content index
+- `tests/` — smoke and unit tests
+
+## Install and validate
+
+```bash
+npm ci
+npm run lint
+npm run typecheck
+npm run validate:content
+npm run validate:sprites
+npm run content:index
+npm run content:check
+npm test
+npm run build
+npm run seed:check
+npm run check
