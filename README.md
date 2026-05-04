@@ -34,18 +34,35 @@ This repo is the content backbone used by app/admin repos. It centralizes:
 - `scripts/contentIndex.ts` — deterministic generated content index
 - `tests/` — smoke and unit tests
 
-## Install and validate
+## Canonical command order
 
-```bash
-npm ci
-npm run lint
-npm run typecheck
-npm run validate:content
-npm run validate:sprites
-npm run content:index
-git diff --exit-code
-npm run content:check
-npm test
-npm run build
-npm run seed:check
-npm run check
+1. `npm ci`
+2. `npm run lint`
+3. `npm run typecheck`
+4. `npm run validate:content`
+5. `npm run validate:sprites`
+6. `npm run content:index`
+7. `git diff --exit-code`
+8. `npm run content:check`
+9. `npm test`
+10. `npm run build`
+11. `npm run seed:check`
+12. `npm run check`
+
+## Firebase adapter status
+
+`urai-content` does not initialize Firebase Admin and does not ship a live Firestore adapter. Consuming backend repos must implement `ContentRepository` using injected Firestore/Admin SDK and wire it into `ContentService`.
+
+## Env
+
+- `NEXT_PUBLIC_GITHUB_ISSUES_URL`
+- `NEXT_PUBLIC_CI_RUN_URL`
+- Firebase/Stripe variables in `.env.example` for consuming runtime backends.
+
+## Consumption
+
+```ts
+import { registry, validateContent } from 'urai-content';
+
+validateContent();
+console.log(registry.home.title);

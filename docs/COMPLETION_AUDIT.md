@@ -2,7 +2,7 @@
 
 ## What exists
 
-- TypeScript content package with strict scripts for build, typecheck, lint, validation, tests, build, seed checks, and final package checks.
+- TypeScript content package with strict scripts for lint, typecheck, validation, tests, build, seed checks, and final package checks.
 - Canonical `content/` JSON source tree.
 - Centralized Zod schema contracts for URAI content and telemetry.
 - Typed content registries, loaders, validators, and deterministic content index generation.

@@ -1,13 +1,14 @@
 {
   "generatedAt": "2026-05-03T00:00:00.000Z",
-  "count": 7,
+  "count": 8,
   "routes": [
     "/",
     "/privacy",
+    "celestial-ui-pack",
     "council-reflection-1",
     "memory-bloom-first-light",
     "morning-walk-restart",
-    "week-18-returning-signal",
-    "celestial-ui-pack"
+    "narrator-reflection-1",
+    "week-18-returning-signal"
   ]
 }
