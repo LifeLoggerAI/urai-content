@@ -7,11 +7,13 @@ export default [
     files: ['**/*.ts'],
     languageOptions: {
       parser,
-      parserOptions: {}
+      parserOptions: {
+        project: './tsconfig.json'
+      }
     },
     plugins: { '@typescript-eslint': tseslint },
     rules: {
-      '@typescript-eslint/no-unused-vars': ['error', { 'argsIgnorePattern': '^_' }]
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }]
     }
   }
 ];

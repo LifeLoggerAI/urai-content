@@ -21,9 +21,9 @@
     "validate:content": "tsx src/lib/content/validate.ts",
     "validate:sprites": "tsx src/lib/content/validate.ts",
     "content:index": "tsx scripts/contentIndex.ts",
-    "content:check": "npm run validate:content && npm run content:index",
+    "content:check": "npm run validate:content && npm run validate:sprites && npm run content:index && git diff --exit-code",
     "seed:check": "tsx src/seed/checkSeed.ts",
-    "check": "npm run lint && npm run typecheck && npm run validate:content && npm run validate:sprites && npm run content:index && git diff --exit-code && npm test && npm run build"
+    "check": "npm run lint && npm run typecheck && npm run validate:content && npm run validate:sprites && npm run content:index && git diff --exit-code && npm test && npm run build && npm run seed:check"
   },
   "dependencies": {
     "zod": "^3.24.1"

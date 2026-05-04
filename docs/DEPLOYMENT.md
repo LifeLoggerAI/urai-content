@@ -1,6 +1,7 @@
 # Deployment
 
-## Canonical command order (verbatim)
+## Canonical command order
+
 1. `npm ci`
 2. `npm run lint`
 3. `npm run typecheck`
@@ -10,6 +11,9 @@
 7. `git diff --exit-code`
 8. `npm test`
 9. `npm run build`
-10. `npm run check`
+10. `npm run seed:check`
+11. `npm run check`
 
-Deploy compiled output (`dist`) alongside Firebase/API host integration.
+## Deploy
+
+Deploy compiled output `dist` alongside the Firebase/API host integration.
