@@ -1,6 +1,6 @@
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { registry } from '../src/lib/content/registry.js';
+import { contentRoot, registry } from '../src/lib/content/registry.js';
 
 const items = [
   registry.home,
@@ -8,6 +8,8 @@ const items = [
   ...registry.weeklyScrolls,
   ...registry.lifeMapEvents,
   ...registry.councilReflections,
+  ...registry.memoryBlooms,
+  ...registry.narratorScripts,
   ...registry.sprites
 ].sort((a, b) => a.slug.localeCompare(b.slug));
 
@@ -17,5 +19,5 @@ const output = {
   count: items.length,
   routes: items.map((item) => item.slug)
 };
-writeFileSync(join(process.cwd(), 'content', 'generated-index.json'), `${JSON.stringify(output, null, 2)}\n`);
+writeFileSync(join(contentRoot, 'generated-index.json'), `${JSON.stringify(output, null, 2)}\n`);
 console.log('Generated content index.');
