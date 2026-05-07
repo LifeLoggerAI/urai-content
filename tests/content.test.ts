@@ -14,23 +14,35 @@ describe('content service', () => {
       sourceLabel: 'weekly-digest', whyShownCopy: 'Because you opted in.', safetyNotes: ['non-clinical'], contentType: 'narrator'
     });
 
-    const updated = await service.update('ci-1', { status: 'review' });
-    expect(updated.status).toBe('review');
+    const updated = await service.update('ci-1', { body: 'Updated body' });
+    expect(updated.body).toBe('Updated body');
 
-    const published = await service.transitionWorkflow('ci-1', 'approved', 'admin');
-    expect(published.status).toBe('approved');
+    await expect(service.update('ci-1', { status: 'review' })).rejects.toThrow(/transitionWorkflow/);
+
+    const inReview = await service.transitionWorkflow('ci-1', 'review', 'admin');
+    expect(inReview.status).toBe('review');
+
+    const approved = await service.transitionWorkflow('ci-1', 'approved', 'admin');
+    expect(approved.status).toBe('approved');
 
     const results = await service.searchContent('insight');
     expect(results.length).toBe(1);
   });
 
-  it('enforces entitlement tiers', async () => {
+  it('enforces entitlement tiers, entitlement keys, and expiration', async () => {
     const repo = new InMemoryContentRepository();
     const service = new ContentService(repo);
-    const now = new Date().toISOString();
-    repo.seedEntitlement({ userId: 'u1', entitlementKey: 'pro', grantedBy: 'subscription', grantedAt: now, expiresAt: null });
+    const now = new Date('2026-05-03T00:00:00.000Z');
+    repo.seedEntitlement({ userId: 'u1', entitlementKey: 'pro', grantedBy: 'subscription', grantedAt: now.toISOString(), expiresAt: null });
+    repo.seedEntitlement({ userId: 'u1', entitlementKey: 'mkt-ritual-pack-01', grantedBy: 'purchase', grantedAt: now.toISOString(), expiresAt: null });
+    repo.seedEntitlement({ userId: 'u1', entitlementKey: 'expired-pack', grantedBy: 'purchase', grantedAt: now.toISOString(), expiresAt: '2026-05-02T00:00:00.000Z' });
+
     expect(await service.canAccess('u1', 'free')).toBe(true);
     expect(await service.canAccess('u1', 'pro')).toBe(true);
-    expect(await service.canAccess('u1', 'paid')).toBe(false);
+    expect(await service.canAccess('u1', 'paid')).toBe(true);
+    expect(await service.canAccess('u1', { tier: 'paid', entitlementKey: 'mkt-ritual-pack-01', now })).toBe(true);
+    expect(await service.canAccess('u1', { tier: 'paid', entitlementKey: 'other-pack', now })).toBe(false);
+    expect(await service.canAccess('u1', { tier: 'paid', entitlementKey: 'expired-pack', now })).toBe(false);
+    expect(await service.canAccess('u2', 'pro')).toBe(false);
   });
 });
