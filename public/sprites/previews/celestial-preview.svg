@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" role="img" aria-labelledby="title desc">
+  <title id="title">Celestial UI preview</title>
+  <desc id="desc">Preview card showing the celestial sprite pack in a compact UI layout.</desc>
+  <rect width="320" height="180" rx="28" fill="#0F172A"/>
+  <rect x="24" y="28" width="272" height="124" rx="20" fill="#1F2937"/>
+  <circle cx="92" cy="90" r="34" fill="#F8FAFC"/>
+  <circle cx="106" cy="80" r="34" fill="#1F2937"/>
+  <path d="M188 54l6 13 14 2-10 10 2 14-12-7-13 7 3-14-11-10 15-2 6-13z" fill="#FBBF24"/>
+  <path d="M224 104l4 9 10 1-7 7 1 10-8-5-9 5 2-10-8-7 10-1 5-9z" fill="#93C5FD"/>
+  <path d="M52 128c58 24 151 24 216 0" fill="none" stroke="#A7F3D0" stroke-width="4" stroke-linecap="round" opacity="0.7"/>
+</svg>
