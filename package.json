@@ -24,7 +24,7 @@
     "start": "node dist/src/index.js",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
-    "test": "vitest run",
+    "test": "vitest run --exclude tests/e2e/**",
     "test:e2e": "vitest run tests/e2e",
     "validate:content": "tsx src/lib/content/validate.ts",
     "validate:sprites": "tsx src/lib/content/validate.ts --sprites",
@@ -32,7 +32,7 @@
     "content:check": "npm run validate:content && npm run validate:sprites && npm run content:index && git diff --exit-code",
     "seed:check": "tsx src/seed/checkSeed.ts",
     "pack:check": "npm pack --dry-run",
-    "check": "npm run lint && npm run typecheck && npm run validate:content && npm run validate:sprites && npm run content:index && git diff --exit-code && npm test && npm run build && npm run seed:check && npm run pack:check"
+    "check": "npm run lint && npm run typecheck && npm run validate:content && npm run validate:sprites && npm run content:index && git diff --exit-code && npm test && npm run build && npm run test:e2e && npm run seed:check && npm run pack:check"
   },
   "dependencies": {
     "zod": "^3.24.1"
