@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">URAI Content</title>
+  <desc id="desc">Open graph image for the URAI canonical content and asset layer.</desc>
+  <rect width="1200" height="630" fill="#0F172A"/>
+  <circle cx="940" cy="120" r="210" fill="#1E293B"/>
+  <circle cx="954" cy="104" r="132" fill="#F8FAFC"/>
+  <circle cx="1012" cy="74" r="132" fill="#1E293B"/>
+  <path d="M150 130h520v56H150z" fill="#E5E7EB"/>
+  <path d="M150 230h710v30H150zM150 284h620v30H150zM150 338h480v30H150z" fill="#93C5FD" opacity="0.82"/>
+  <path d="M150 470c170 52 420 52 640 0" fill="none" stroke="#A7F3D0" stroke-width="14" stroke-linecap="round" opacity="0.72"/>
+  <text x="150" y="180" font-family="Arial, sans-serif" font-size="64" font-weight="700" fill="#F8FAFC">URAI Content</text>
+  <text x="150" y="430" font-family="Arial, sans-serif" font-size="34" fill="#CBD5E1">Canonical story, copy, and asset system</text>
+</svg>
