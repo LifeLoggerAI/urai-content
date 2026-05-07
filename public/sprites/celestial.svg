@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">Celestial UI Pack</title>
+  <desc id="desc">Layered moon, star, and orbit symbols for the URAI celestial demo sprite pack.</desc>
+  <rect width="256" height="256" rx="48" fill="#111827"/>
+  <circle cx="128" cy="128" r="72" fill="none" stroke="#E5E7EB" stroke-width="6" opacity="0.32"/>
+  <circle cx="128" cy="128" r="42" fill="#F8FAFC"/>
+  <circle cx="146" cy="112" r="42" fill="#111827"/>
+  <path d="M66 80l7 15 16 2-12 11 3 16-14-8-14 8 3-16-12-11 16-2 7-15z" fill="#FBBF24"/>
+  <path d="M184 158l5 11 12 2-9 8 2 12-10-6-11 6 2-12-9-8 12-2 6-11z" fill="#93C5FD"/>
+  <path d="M54 170c42 28 104 31 148 0" fill="none" stroke="#A7F3D0" stroke-width="5" stroke-linecap="round" opacity="0.72"/>
+</svg>
