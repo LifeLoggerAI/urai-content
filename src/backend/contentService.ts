@@ -15,6 +15,12 @@ import {
 } from '../schemas/content.js';
 import type { ContentRepository } from './types.js';
 
+export type EntitlementAccessRequest = {
+  tier: 'free' | 'pro' | 'paid';
+  entitlementKey?: string;
+  now?: Date;
+};
+
 export class ContentService {
   constructor(private readonly repo: ContentRepository) {}
 
@@ -26,9 +32,30 @@ export class ContentService {
   }
 
   async update(itemId: string, patch: Partial<ContentItem>): Promise<ContentItem> {
+    if ('status' in patch) {
+      throw new Error('Use transitionWorkflow() to change content status');
+    }
+
     const existing = await this.repo.getContent(itemId);
     if (!existing) throw new Error('Content item not found');
     const parsed = contentItemSchema.parse({ ...existing, ...patch, id: itemId });
+    await this.repo.upsertContent(parsed);
+    const version = await this.repo.addVersion(itemId, parsed);
+    contentVersionSchema.parse({
+      id: `${itemId}-v${version}`,
+      contentItemId: itemId,
+      version,
+      snapshot: parsed,
+      createdAt: parsed.updatedAt,
+      createdBy: parsed.createdBy
+    });
+    return parsed;
+  }
+
+  private async saveWorkflowStatus(itemId: string, status: ContentItem['status']): Promise<ContentItem> {
+    const existing = await this.repo.getContent(itemId);
+    if (!existing) throw new Error('Content item not found');
+    const parsed = contentItemSchema.parse({ ...existing, status, id: itemId, updatedAt: new Date().toISOString() });
     await this.repo.upsertContent(parsed);
     const version = await this.repo.addVersion(itemId, parsed);
     contentVersionSchema.parse({
@@ -46,10 +73,14 @@ export class ContentService {
     const item = await this.repo.getContent(itemId);
     if (!item) throw new Error('Content item not found');
     const allowed: Record<ContentItem['status'], ContentItem['status'][]> = {
-      draft: ['review'], review: ['approved', 'draft'], approved: ['published', 'review'], published: ['archived'], archived: []
+      draft: ['review'],
+      review: ['approved', 'draft'],
+      approved: ['published', 'review'],
+      published: ['archived'],
+      archived: []
     };
     if (!allowed[item.status].includes(next)) throw new Error(`Invalid workflow transition ${item.status} -> ${next}`);
-    const updated = await this.update(itemId, { status: next, updatedAt: new Date().toISOString() });
+    const updated = await this.saveWorkflowStatus(itemId, next);
     if (next === 'published') {
       await this.repo.logRelease(publishingReleaseSchema.parse({
         id: `release-${Date.now()}`,
@@ -62,10 +93,21 @@ export class ContentService {
     return updated;
   }
 
-  async canAccess(userId: string, requiredTier: 'free' | 'pro' | 'paid'): Promise<boolean> {
-    if (requiredTier === 'free') return true;
+  async canAccess(userId: string, request: 'free' | 'pro' | 'paid' | EntitlementAccessRequest): Promise<boolean> {
+    const accessRequest = typeof request === 'string' ? { tier: request } : request;
+    const { tier, entitlementKey, now = new Date() } = accessRequest;
+
+    if (tier === 'free') return true;
+
     const entitlements = (await this.repo.listEntitlements(userId)).map((entry) => userContentEntitlementSchema.parse(entry));
-    return entitlements.some((e) => requiredTier === 'pro' ? ['subscription', 'admin'].includes(e.grantedBy) : ['purchase', 'admin'].includes(e.grantedBy));
+
+    return entitlements.some((entitlement) => {
+      if (entitlement.expiresAt && new Date(entitlement.expiresAt).getTime() <= now.getTime()) return false;
+      if (entitlementKey && entitlement.entitlementKey !== entitlementKey) return false;
+      if (entitlement.grantedBy === 'admin') return true;
+      if (tier === 'pro') return entitlement.grantedBy === 'subscription' && entitlement.entitlementKey === 'pro';
+      return entitlement.grantedBy === 'purchase';
+    });
   }
 
   async searchContent(query: string, visibility: ContentItem['visibility'] = 'public'): Promise<ContentItem[]> {
