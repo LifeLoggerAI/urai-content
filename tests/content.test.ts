@@ -1,6 +1,16 @@
 import { describe, expect, it } from 'vitest';
 import { ContentService } from '../src/backend/contentService.js';
 import { InMemoryContentRepository } from '../src/backend/inMemoryRepository.js';
+import type { PublishingRelease } from '../src/schemas/content.js';
+
+class ReleaseCapturingRepository extends InMemoryContentRepository {
+  readonly capturedReleases: PublishingRelease[] = [];
+
+  override async logRelease(release: PublishingRelease): Promise<void> {
+    this.capturedReleases.push(release);
+    await super.logRelease(release);
+  }
+}
 
 function makeContentItem(overrides: Record<string, unknown> = {}) {
   const now = new Date().toISOString();
@@ -61,15 +71,16 @@ describe('content service', () => {
   });
 
   it('logs a publishing release when content is published', async () => {
-    const repo = new InMemoryContentRepository();
+    const repo = new ReleaseCapturingRepository();
     const service = new ContentService(repo);
 
     await service.create(makeContentItem({ status: 'approved' }));
     const published = await service.transitionWorkflow('ci-1', 'published', 'admin');
-    const releases = (repo as unknown as { releases?: unknown[] }).releases;
 
     expect(published.status).toBe('published');
-    expect(releases).toBeUndefined();
+    expect(repo.capturedReleases).toHaveLength(1);
+    expect(repo.capturedReleases[0]?.contentItemIds).toEqual(['ci-1']);
+    expect(repo.capturedReleases[0]?.releasedBy).toBe('admin');
     expect(await repo.listVersions('ci-1')).toHaveLength(2);
   });
 
