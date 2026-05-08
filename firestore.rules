@@ -1,0 +1,102 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return signedIn() && request.auth.token.role in ['admin', 'internalAdmin'];
+    }
+
+    function isCreator() {
+      return signedIn() && request.auth.token.role in ['creator', 'studio', 'admin', 'internalAdmin'];
+    }
+
+    function isPublishedPublic() {
+      return resource.data.status == 'published' &&
+        (resource.data.visibility == 'public' || resource.data.publicVisibility == 'public');
+    }
+
+    match /contentItems/{id} {
+      allow read: if isPublishedPublic() || isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /contentPacks/{id} {
+      allow read: if isPublishedPublic() || isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /marketplaceItems/{id} {
+      allow read: if isPublishedPublic() || isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /creatorSubmissions/{id} {
+      allow read: if isAdmin() || (signedIn() && resource.data.creatorId == request.auth.uid);
+      allow create: if isCreator() && request.resource.data.creatorId == request.auth.uid;
+      allow update, delete: if isAdmin();
+    }
+
+    match /exportJobs/{id} {
+      allow read: if isAdmin() || (signedIn() && resource.data.userId == request.auth.uid);
+      allow create: if signedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isAdmin();
+    }
+
+    match /userEntitlements/{id} {
+      allow read: if isAdmin() || (signedIn() && resource.data.userId == request.auth.uid);
+      allow write: if isAdmin();
+    }
+
+    match /contentLicenses/{id} {
+      allow read: if isAdmin() || (signedIn() && resource.data.licenseeId == request.auth.uid);
+      allow write: if isAdmin();
+    }
+
+    match /consentRecords/{id} {
+      allow read: if isAdmin() || (signedIn() && resource.data.userId == request.auth.uid);
+      allow create: if signedIn() && request.resource.data.userId == request.auth.uid;
+      allow update: if isAdmin() || (signedIn() && resource.data.userId == request.auth.uid);
+      allow delete: if isAdmin();
+    }
+
+    match /provenanceRecords/{id} {
+      allow read, write: if isAdmin();
+    }
+
+    match /analyticsEvents/{id} {
+      allow create: if signedIn();
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /tierConfigs/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /roadmapPhases/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /expansionModules/{id} {
+      allow read: if resource.data.publicVisibility == 'public' || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    match /systemIntegrations/{id} {
+      allow read, write: if isAdmin();
+    }
+
+    match /seoPages/{id} {
+      allow read: if resource.data.status == 'published' && resource.data.noIndex == false || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
