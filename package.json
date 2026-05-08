@@ -23,7 +23,12 @@
     "content:index": "tsx scripts/contentIndex.ts",
     "content:check": "npm run validate:content && npm run validate:sprites && npm run content:index && git diff --exit-code",
     "seed:check": "tsx src/seed/checkSeed.ts",
-    "check": "npm run lint && npm run typecheck && npm run validate:content && npm run validate:sprites && npm run content:index && git diff --exit-code && npm test && npm run build && npm run seed:check"
+    "smoke": "npm run validate:content && npm run seed:check",
+    "audit": "node -e \"console.log('Audit artifacts: AUDIT_REPORT.md, docs/COMPLETION_AUDIT.md, docs/COMPLETION_REPORT.md, DEPLOYMENT_BLOCKERS.md, docs/STANDALONE_SYSTEM_PLAN.md')\"",
+    "check": "npm run lint && npm run typecheck && npm run validate:content && npm run validate:sprites && npm run content:index && git diff --exit-code && npm test && npm run build && npm run seed:check",
+    "verify": "npm run check",
+    "done": "npm run audit && npm run smoke && npm run check",
+    "deploy": "node -e \"console.error('Deployment is intentionally blocked in urai-content: this repository is a content package/library. Use a consuming Firebase/Next deployment repo and follow DEPLOYMENT_BLOCKERS.md and docs/STANDALONE_SYSTEM_PLAN.md.'); process.exit(1)\""
   },
   "dependencies": {
     "zod": "^3.24.1"
