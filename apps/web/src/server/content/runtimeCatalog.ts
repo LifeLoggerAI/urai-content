@@ -2,7 +2,7 @@ import 'server-only';
 import type { ContentItem } from '../../../../../src/schemas/content';
 import { listCatalogItems, getCatalogItemBySlug, normalizeSlug, summarizeCatalogItem, type CatalogItem } from '@/lib/catalog';
 import { getCatalogSourceDescription, getCatalogSourceMode } from './catalogSource';
-import { createRuntimeContentService, getRuntimeContentMode } from './service';
+import { createRuntimeContentRepository, getRuntimeContentMode } from './service';
 
 export type RuntimeCatalogSummary = ReturnType<typeof summarizeCatalogItem>;
 
@@ -32,11 +32,10 @@ function isPublicRuntimeContent(item: ContentItem): boolean {
 }
 
 async function listFirestoreCatalogItems(): Promise<CatalogItem[]> {
-  const service = createRuntimeContentService();
-  const items = await service.searchContent('', 'public');
-  const unlistedItems = await service.searchContent('', 'unlisted');
+  const repository = createRuntimeContentRepository();
+  const items = await repository.listContent();
 
-  return [...items, ...unlistedItems]
+  return items
     .filter(isPublicRuntimeContent)
     .map(contentItemToCatalogItem)
     .sort((a, b) => a.slug.localeCompare(b.slug));
