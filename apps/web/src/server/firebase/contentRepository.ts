@@ -26,9 +26,9 @@ type QuerySnapshotLike = {
 };
 
 type DocumentReferenceLike = {
-  set(data: FirestoreData, options?: { merge?: boolean }): Promise<void>;
+  set(data: FirestoreData, options?: { merge?: boolean }): Promise<unknown>;
   get(): Promise<DocumentSnapshotLike>;
-  delete(): Promise<void>;
+  delete(): Promise<unknown>;
 };
 
 type QueryLike = {
@@ -40,7 +40,7 @@ type QueryLike = {
 
 type CollectionReferenceLike = QueryLike & {
   doc(id?: string): DocumentReferenceLike;
-  add(data: FirestoreData): Promise<DocumentReferenceLike>;
+  add(data: FirestoreData): Promise<unknown>;
 };
 
 export type FirestoreLike = {
