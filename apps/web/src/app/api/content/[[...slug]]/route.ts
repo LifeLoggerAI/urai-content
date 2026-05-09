@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getCatalogItemBySlug } from '@/lib/catalog';
+import { getCatalogSourceDescription, getCatalogSourceMode } from '@/server/content/catalogSource';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,6 +16,8 @@ export async function GET(_request: Request, context: RouteContext) {
   if (!item) {
     return NextResponse.json(
       {
+        source: getCatalogSourceMode(),
+        sourceDescription: getCatalogSourceDescription(),
         error: 'not_found',
         message: 'Content item not found or not public.'
       },
@@ -22,5 +25,9 @@ export async function GET(_request: Request, context: RouteContext) {
     );
   }
 
-  return NextResponse.json({ item });
+  return NextResponse.json({
+    source: getCatalogSourceMode(),
+    sourceDescription: getCatalogSourceDescription(),
+    item
+  });
 }
