@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getCatalogItemBySlug } from '@/lib/catalog';
-import { getCatalogSourceDescription, getCatalogSourceMode } from '@/server/content/catalogSource';
+import { getRuntimeCatalogItemBySlug } from '@/server/content/runtimeCatalog';
 
 export const dynamic = 'force-dynamic';
 
@@ -11,13 +10,13 @@ type RouteContext = {
 export async function GET(_request: Request, context: RouteContext) {
   const params = await context.params;
   const slug = params.slug?.join('/') ?? '/';
-  const item = getCatalogItemBySlug(slug);
+  const catalog = await getRuntimeCatalogItemBySlug(slug);
 
-  if (!item) {
+  if (!catalog.item) {
     return NextResponse.json(
       {
-        source: getCatalogSourceMode(),
-        sourceDescription: getCatalogSourceDescription(),
+        source: catalog.source,
+        sourceDescription: catalog.sourceDescription,
         error: 'not_found',
         message: 'Content item not found or not public.'
       },
@@ -26,8 +25,8 @@ export async function GET(_request: Request, context: RouteContext) {
   }
 
   return NextResponse.json({
-    source: getCatalogSourceMode(),
-    sourceDescription: getCatalogSourceDescription(),
-    item
+    source: catalog.source,
+    sourceDescription: catalog.sourceDescription,
+    item: catalog.item
   });
 }
