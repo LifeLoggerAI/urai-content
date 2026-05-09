@@ -2,27 +2,29 @@ import { describe, expect, it } from 'vitest';
 import { createFirestoreContentRepository, type FirestoreLike } from '../src/server/firebase/contentRepository';
 import type { ContentItem, TelemetryEvent, UserContentEntitlement } from '../../../src/schemas/content';
 
-class FakeDocumentSnapshot<T> {
-  constructor(private readonly value: T | undefined) {}
+type FirestoreData = Record<string, unknown>;
+
+class FakeDocumentSnapshot {
+  constructor(private readonly value: FirestoreData | undefined) {}
 
   get exists() {
     return this.value !== undefined;
   }
 
-  data(): T | undefined {
+  data(): FirestoreData | undefined {
     return this.value;
   }
 }
 
-class FakeQuerySnapshot<T> {
-  constructor(readonly docs: Array<{ data(): T }>) {}
+class FakeQuerySnapshot {
+  constructor(readonly docs: Array<{ data(): FirestoreData }>) {}
 }
 
 type Filter = { field: string; value: unknown };
 type Order = { field: string; direction: 'asc' | 'desc' };
 
-class FakeCollection<T extends Record<string, unknown>> {
-  private readonly rows = new Map<string, T>();
+class FakeCollection {
+  private readonly rows = new Map<string, FirestoreData>();
 
   constructor(
     private readonly filters: Filter[] = [],
@@ -32,17 +34,17 @@ class FakeCollection<T extends Record<string, unknown>> {
 
   doc(id = `doc-${this.rowsRef.size + 1}`) {
     return {
-      set: async (data: T | Record<string, unknown>) => {
-        this.rowsRef.set(id, data as T);
+      set: async (data: FirestoreData) => {
+        this.rowsRef.set(id, data);
       },
-      get: async () => new FakeDocumentSnapshot<T>(this.rowsRef.get(id)),
+      get: async () => new FakeDocumentSnapshot(this.rowsRef.get(id)),
       delete: async () => {
         this.rowsRef.delete(id);
       }
     };
   }
 
-  async add(data: T) {
+  async add(data: FirestoreData) {
     const ref = this.doc(`auto-${this.rowsRef.size + 1}`);
     await ref.set(data);
     return ref;
@@ -50,19 +52,19 @@ class FakeCollection<T extends Record<string, unknown>> {
 
   where(field: string, operator: '==', value: unknown) {
     if (operator !== '==') throw new Error(`Unsupported fake operator ${operator}`);
-    const next = new FakeCollection<T>([...this.filters, { field, value }], this.order, this.resultLimit);
+    const next = new FakeCollection([...this.filters, { field, value }], this.order, this.resultLimit);
     next.rowsRef = this.rowsRef;
     return next;
   }
 
   orderBy(field: string, direction: 'asc' | 'desc' = 'asc') {
-    const next = new FakeCollection<T>(this.filters, { field, direction }, this.resultLimit);
+    const next = new FakeCollection(this.filters, { field, direction }, this.resultLimit);
     next.rowsRef = this.rowsRef;
     return next;
   }
 
   limit(limit: number) {
-    const next = new FakeCollection<T>(this.filters, this.order, limit);
+    const next = new FakeCollection(this.filters, this.order, limit);
     next.rowsRef = this.rowsRef;
     return next;
   }
@@ -94,14 +96,14 @@ class FakeCollection<T extends Record<string, unknown>> {
 }
 
 class FakeFirestore implements FirestoreLike {
-  private readonly collections = new Map<string, FakeCollection<Record<string, unknown>>>();
+  private readonly collections = new Map<string, FakeCollection>();
 
-  collection<T = Record<string, unknown>>(path: string): ReturnType<FirestoreLike['collection']> {
+  collection(path: string) {
     if (!this.collections.has(path)) {
-      this.collections.set(path, new FakeCollection<Record<string, unknown>>());
+      this.collections.set(path, new FakeCollection());
     }
 
-    return this.collections.get(path)! as unknown as ReturnType<FirestoreLike['collection']>;
+    return this.collections.get(path)!;
   }
 }
 
@@ -159,8 +161,8 @@ describe('createFirestoreContentRepository', () => {
 
     const firestore = new FakeFirestore();
     const repo = createFirestoreContentRepository(firestore);
-    await firestore.collection<UserContentEntitlement>('userContentEntitlements').doc('ent-1').set(entitlement);
-    await firestore.collection<UserContentEntitlement>('userContentEntitlements').doc('ent-2').set({ ...entitlement, userId: 'user-2' });
+    await firestore.collection('userContentEntitlements').doc('ent-1').set(entitlement as FirestoreData);
+    await firestore.collection('userContentEntitlements').doc('ent-2').set({ ...entitlement, userId: 'user-2' } as FirestoreData);
 
     expect(await repo.listEntitlements('user-1')).toEqual([entitlement]);
     expect(await repo.listEntitlements('missing-user')).toEqual([]);
