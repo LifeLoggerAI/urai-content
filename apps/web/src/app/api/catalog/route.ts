@@ -1,16 +1,15 @@
 import { NextResponse } from 'next/server';
-import { listCatalogItems, summarizeCatalogItem } from '@/lib/catalog';
-import { getCatalogSourceDescription, getCatalogSourceMode } from '@/server/content/catalogSource';
+import { listRuntimeCatalogSummaries } from '@/server/content/runtimeCatalog';
 
 export const dynamic = 'force-dynamic';
 
-export function GET() {
-  const items = listCatalogItems().map(summarizeCatalogItem);
+export async function GET() {
+  const catalog = await listRuntimeCatalogSummaries();
 
   return NextResponse.json({
-    source: getCatalogSourceMode(),
-    sourceDescription: getCatalogSourceDescription(),
-    count: items.length,
-    items
+    source: catalog.source,
+    sourceDescription: catalog.sourceDescription,
+    count: catalog.items.length,
+    items: catalog.items
   });
 }
