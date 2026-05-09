@@ -11,9 +11,11 @@ const firebaseAdminEnvSchema = z.object({
   URAI_CONTENT_SEED_TOKEN: z.string().min(16).optional()
 });
 
+type EnvInput = Record<string, string | undefined>;
+
 export type FirebaseAdminEnv = z.infer<typeof firebaseAdminEnvSchema>;
 
-export function getFirebaseAdminEnv(input: NodeJS.ProcessEnv = process.env): FirebaseAdminEnv {
+export function getFirebaseAdminEnv(input: EnvInput = process.env): FirebaseAdminEnv {
   return firebaseAdminEnvSchema.parse(input);
 }
 
@@ -21,11 +23,11 @@ export function hasFirebaseAdminCredentials(env: FirebaseAdminEnv = getFirebaseA
   return Boolean(env.FIREBASE_PROJECT_ID && env.FIREBASE_CLIENT_EMAIL && env.FIREBASE_PRIVATE_KEY);
 }
 
-export function getRequiredFirebaseAdminEnv(input: NodeJS.ProcessEnv = process.env): Required<Pick<FirebaseAdminEnv, 'FIREBASE_PROJECT_ID' | 'FIREBASE_CLIENT_EMAIL' | 'FIREBASE_PRIVATE_KEY'>> & FirebaseAdminEnv {
+export function getRequiredFirebaseAdminEnv(input: EnvInput = process.env): Required<Pick<FirebaseAdminEnv, 'FIREBASE_PROJECT_ID' | 'FIREBASE_CLIENT_EMAIL' | 'FIREBASE_PRIVATE_KEY'>> & FirebaseAdminEnv {
   const env = getFirebaseAdminEnv(input);
 
   if (!hasFirebaseAdminCredentials(env)) {
-    throw new Error('Firebase Admin credentials are not configured. Set FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, and FIREBASE_PRIVATE_KEY in the server environment.');
+    throw new Error('Firebase Admin credentials are not configured.');
   }
 
   return env as Required<Pick<FirebaseAdminEnv, 'FIREBASE_PROJECT_ID' | 'FIREBASE_CLIENT_EMAIL' | 'FIREBASE_PRIVATE_KEY'>> & FirebaseAdminEnv;
