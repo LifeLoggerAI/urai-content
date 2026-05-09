@@ -30,20 +30,20 @@ class FakeCollection<T extends Record<string, unknown>> {
     private readonly resultLimit: number | null = null
   ) {}
 
-  doc(id = `doc-${this.rows.size + 1}`) {
+  doc(id = `doc-${this.rowsRef.size + 1}`) {
     return {
       set: async (data: T | Record<string, unknown>) => {
-        this.rows.set(id, data as T);
+        this.rowsRef.set(id, data as T);
       },
-      get: async () => new FakeDocumentSnapshot<T>(this.rows.get(id)),
+      get: async () => new FakeDocumentSnapshot<T>(this.rowsRef.get(id)),
       delete: async () => {
-        this.rows.delete(id);
+        this.rowsRef.delete(id);
       }
     };
   }
 
   async add(data: T) {
-    const ref = this.doc(`auto-${this.rows.size + 1}`);
+    const ref = this.doc(`auto-${this.rowsRef.size + 1}`);
     await ref.set(data);
     return ref;
   }
@@ -51,19 +51,19 @@ class FakeCollection<T extends Record<string, unknown>> {
   where(field: string, operator: '==', value: unknown) {
     if (operator !== '==') throw new Error(`Unsupported fake operator ${operator}`);
     const next = new FakeCollection<T>([...this.filters, { field, value }], this.order, this.resultLimit);
-    next.rowsRef = this.rows;
+    next.rowsRef = this.rowsRef;
     return next;
   }
 
   orderBy(field: string, direction: 'asc' | 'desc' = 'asc') {
     const next = new FakeCollection<T>(this.filters, { field, direction }, this.resultLimit);
-    next.rowsRef = this.rows;
+    next.rowsRef = this.rowsRef;
     return next;
   }
 
   limit(limit: number) {
     const next = new FakeCollection<T>(this.filters, this.order, limit);
-    next.rowsRef = this.rows;
+    next.rowsRef = this.rowsRef;
     return next;
   }
 
@@ -96,12 +96,12 @@ class FakeCollection<T extends Record<string, unknown>> {
 class FakeFirestore implements FirestoreLike {
   private readonly collections = new Map<string, FakeCollection<Record<string, unknown>>>();
 
-  collection<T = Record<string, unknown>>(path: string) {
+  collection<T = Record<string, unknown>>(path: string): ReturnType<FirestoreLike['collection']> {
     if (!this.collections.has(path)) {
       this.collections.set(path, new FakeCollection<Record<string, unknown>>());
     }
 
-    return this.collections.get(path)! as unknown as ReturnType<FirestoreLike['collection<T>']>;
+    return this.collections.get(path)! as unknown as ReturnType<FirestoreLike['collection']>;
   }
 }
 
@@ -148,7 +148,6 @@ describe('createFirestoreContentRepository', () => {
   });
 
   it('filters entitlements by user', async () => {
-    const repo = createFirestoreContentRepository(new FakeFirestore());
     const now = new Date().toISOString();
     const entitlement: UserContentEntitlement = {
       userId: 'user-1',
@@ -158,21 +157,13 @@ describe('createFirestoreContentRepository', () => {
       expiresAt: null
     };
 
-    await repo.listEntitlements('missing-user');
-    await repo.addTelemetry({
-      event: 'content_viewed',
-      userId: 'user-1',
-      entityId: 'content-1',
-      timestamp: now,
-      metadata: {}
-    });
-
     const firestore = new FakeFirestore();
-    const repoWithEntitlements = createFirestoreContentRepository(firestore);
+    const repo = createFirestoreContentRepository(firestore);
     await firestore.collection<UserContentEntitlement>('userContentEntitlements').doc('ent-1').set(entitlement);
     await firestore.collection<UserContentEntitlement>('userContentEntitlements').doc('ent-2').set({ ...entitlement, userId: 'user-2' });
 
-    expect(await repoWithEntitlements.listEntitlements('user-1')).toEqual([entitlement]);
+    expect(await repo.listEntitlements('user-1')).toEqual([entitlement]);
+    expect(await repo.listEntitlements('missing-user')).toEqual([]);
   });
 
   it('returns telemetry in newest-first order with limit applied', async () => {
