@@ -4,7 +4,8 @@ import {
   getRequiredFirebaseAdminEnv,
   hasFirebaseAdminCredentials,
   normalizePrivateKey,
-  parseAdminUids
+  parseAdminUids,
+  verifySeedToken
 } from '../src/server/firebase/adminEnv';
 
 describe('Firebase Admin environment helpers', () => {
@@ -37,5 +38,16 @@ describe('Firebase Admin environment helpers', () => {
 
   it('normalizes escaped private key newlines', () => {
     expect(normalizePrivateKey('line-1\\nline-2')).toBe('line-1\nline-2');
+  });
+
+  it('verifies seed tokens only when the configured token matches', () => {
+    const env = getFirebaseAdminEnv({
+      URAI_CONTENT_SEED_TOKEN: 'seed-token-at-least-16-chars'
+    });
+
+    expect(verifySeedToken('seed-token-at-least-16-chars', env)).toBe(true);
+    expect(verifySeedToken('wrong-token', env)).toBe(false);
+    expect(verifySeedToken(null, env)).toBe(false);
+    expect(verifySeedToken('seed-token-at-least-16-chars', getFirebaseAdminEnv({}))).toBe(false);
   });
 });
