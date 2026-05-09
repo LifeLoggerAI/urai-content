@@ -7,7 +7,8 @@ const firebaseAdminEnvSchema = z.object({
   FIREBASE_PRIVATE_KEY: z.string().min(1).optional(),
   FIREBASE_STORAGE_BUCKET: z.string().min(1).optional(),
   FIREBASE_HOSTING_SITE: z.string().min(1).optional(),
-  URAI_CONTENT_ADMIN_UIDS: z.string().optional()
+  URAI_CONTENT_ADMIN_UIDS: z.string().optional(),
+  URAI_CONTENT_SEED_TOKEN: z.string().min(16).optional()
 });
 
 export type FirebaseAdminEnv = z.infer<typeof firebaseAdminEnvSchema>;
@@ -39,4 +40,8 @@ export function parseAdminUids(env: FirebaseAdminEnv = getFirebaseAdminEnv()): s
 
 export function normalizePrivateKey(key: string): string {
   return key.replace(/\\n/g, '\n');
+}
+
+export function verifySeedToken(providedToken: string | null, env: FirebaseAdminEnv = getFirebaseAdminEnv()): boolean {
+  return Boolean(env.URAI_CONTENT_SEED_TOKEN && providedToken && providedToken === env.URAI_CONTENT_SEED_TOKEN);
 }
