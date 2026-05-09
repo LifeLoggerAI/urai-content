@@ -1,31 +1,32 @@
+import { listCatalogItems, summarizeCatalogItem } from '@/lib/catalog';
+
 export const metadata = {
   title: 'Content',
   description: 'Canonical URAI Content registry and package status.'
 };
 
-const statusItems = [
-  'Canonical content package exists and remains the source of truth.',
-  'Public catalog API and Firestore-backed browsing are planned for the runtime foundation phase.',
-  'Draft, private, and tier-gated content must stay hidden until auth and repository rules are implemented.'
-];
-
 export default function ContentPage() {
+  const items = listCatalogItems().map(summarizeCatalogItem);
+
   return (
     <main>
       <div className="page-shell">
         <section className="hero" aria-labelledby="content-title">
           <p className="eyebrow">Content Registry</p>
-          <h1 id="content-title">Canonical content, not fake runtime claims.</h1>
+          <h1 id="content-title">Canonical URAI content registry.</h1>
           <p className="lede">
-            This route is the first public shell for the URAI Content registry. The live catalog will
-            be wired to the package validators, content service, and Firestore repository adapter in
-            the next implementation phase.
+            This route now reads public and demo records from the canonical repository content tree.
+            Firestore-backed browsing, auth-aware gates, and admin publishing controls remain tracked
+            as follow-up runtime work.
           </p>
-          <div className="grid" aria-label="Content route status">
-            {statusItems.map((item) => (
-              <article className="card" key={item}>
-                <h2>Status</h2>
-                <p>{item}</p>
+          <div className="grid" aria-label="Catalog items">
+            {items.map((item) => (
+              <article className="card" key={item.id}>
+                <h2>{item.title}</h2>
+                <p>{item.summary}</p>
+                <p style={{ marginTop: 12 }}>
+                  <a href={`/api/content${item.slug === '/' ? '' : item.slug}`}>View API record</a>
+                </p>
               </article>
             ))}
           </div>
