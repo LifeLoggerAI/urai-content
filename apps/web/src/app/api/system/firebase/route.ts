@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { getRuntimeContentMode } from '@/server/content/service';
 import { getFirebaseAdminEnv, hasFirebaseAdminCredentials, parseAdminUids } from '@/server/firebase/adminEnv';
 
 export const dynamic = 'force-dynamic';
@@ -8,6 +9,7 @@ export function GET() {
 
   return NextResponse.json({
     firebaseAdminConfigured: hasFirebaseAdminCredentials(env),
+    runtimeContentMode: getRuntimeContentMode(),
     projectConfigured: Boolean(env.FIREBASE_PROJECT_ID),
     storageBucketConfigured: Boolean(env.FIREBASE_STORAGE_BUCKET),
     hostingSiteConfigured: Boolean(env.FIREBASE_HOSTING_SITE),
