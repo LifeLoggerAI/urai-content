@@ -1,0 +1,79 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return signedIn() && request.auth.token.uraiContentAdmin == true;
+    }
+
+    function owns(userId) {
+      return signedIn() && request.auth.uid == userId;
+    }
+
+    match /contentItems/{contentId} {
+      allow read: if resource.data.status == 'published' && resource.data.visibility == 'public';
+      allow write: if isAdmin();
+    }
+
+    match /contentVersions/{versionId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /moderationQueue/{moderationId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /publishingReleases/{releaseId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /telemetryEvents/{eventId} {
+      allow create: if signedIn();
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /userContentEntitlements/{entitlementId} {
+      allow read: if isAdmin() || owns(resource.data.userId);
+      allow write: if isAdmin();
+    }
+
+    match /creatorSubmissions/{submissionId} {
+      allow create: if owns(request.resource.data.creatorId);
+      allow read: if isAdmin() || owns(resource.data.creatorId);
+      allow update, delete: if isAdmin();
+    }
+
+    match /narratorPrompts/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /storyTemplates/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /ritualTemplates/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /marketplaceItems/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /exportTemplates/{id} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
