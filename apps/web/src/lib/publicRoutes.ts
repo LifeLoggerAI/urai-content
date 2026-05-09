@@ -2,9 +2,20 @@ export const implementedPublicRoutes = [
   '/',
   '/about',
   '/content',
-  '/roadmap',
-  '/privacy',
+  '/stories',
+  '/rituals',
+  '/narrator',
+  '/voice-packs',
+  '/marketplace',
+  '/creator',
   '/pricing',
+  '/licensing',
+  '/exports',
+  '/demo',
+  '/roadmap',
+  '/versions',
+  '/privacy',
+  '/terms',
   '/contact'
 ] as const;
 
