@@ -7,6 +7,7 @@ export default [
       'dist/**',
       'node_modules/**',
       'vitest.config.ts',
+      '**/vitest.config.ts',
       'apps/**/.next/**',
       'apps/web/**',
       'apps/content-web/**'
