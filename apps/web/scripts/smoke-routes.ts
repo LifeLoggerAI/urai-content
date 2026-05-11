@@ -1,6 +1,17 @@
 import { implementedPublicRoutes } from '../src/lib/publicRoutes';
 
-const baseUrl = process.env.WEB_SMOKE_BASE_URL ?? 'http://localhost:3000';
+function getBaseUrl(): string {
+  const argPrefix = '--base-url=';
+  const cliValue = process.argv.find((arg) => arg.startsWith(argPrefix));
+
+  if (cliValue) {
+    return cliValue.slice(argPrefix.length);
+  }
+
+  return process.env.WEB_SMOKE_BASE_URL ?? 'http://localhost:3000';
+}
+
+const baseUrl = getBaseUrl();
 const apiRoutes = ['/api/health', '/api/version', '/api/catalog', '/api/content', '/api/system/firebase'];
 const metadataRoutes = ['/robots.txt', '/sitemap.xml'];
 const routes = [...implementedPublicRoutes, ...metadataRoutes, ...apiRoutes];

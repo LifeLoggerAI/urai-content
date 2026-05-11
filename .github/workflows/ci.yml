@@ -43,3 +43,25 @@ jobs:
       - run: npm ci
       - run: npm run web:install
       - run: npm run web:check
+      - name: Start web server
+        run: |
+          npm run start --prefix apps/web -- --hostname 127.0.0.1 --port 3000 > /tmp/urai-content-web.log 2>&1 &
+          echo $! > /tmp/urai-content-web.pid
+      - name: Wait for web server
+        run: |
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:3000/api/health > /dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat /tmp/urai-content-web.log
+          exit 1
+      - name: Smoke test web routes
+        run: WEB_SMOKE_BASE_URL=http://127.0.0.1:3000 npm run web:smoke:routes
+      - name: Stop web server
+        if: always()
+        run: |
+          if [ -f /tmp/urai-content-web.pid ]; then
+            kill "$(cat /tmp/urai-content-web.pid)" || true
+          fi
