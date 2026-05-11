@@ -29,6 +29,14 @@
     "check": "npm run lint && npm run typecheck && npm run validate:content && npm run validate:sprites && npm run content:index && git diff --exit-code && npm test && npm run build && npm run seed:check && npm run seed:system:check",
     "verify": "npm run check",
     "done": "npm run audit && npm run smoke && npm run check",
+    "web:install": "npm install --prefix apps/web",
+    "web:dev": "npm run dev --prefix apps/web",
+    "web:typecheck": "npm run typecheck --prefix apps/web",
+    "web:test": "npm test --prefix apps/web",
+    "web:build": "npm run build --prefix apps/web",
+    "web:check": "npm run check --prefix apps/web",
+    "web:smoke:routes": "npm run smoke:routes --prefix apps/web",
+    "check:all": "npm run check && npm run web:check",
     "deploy": "node -e \"console.error('Deployment is intentionally blocked in urai-content: this repository is a content package/library. Use a consuming Firebase/Next deployment repo and follow DEPLOYMENT_BLOCKERS.md and docs/STANDALONE_SYSTEM_PLAN.md.'); process.exit(1)\""
   },
   "dependencies": {

@@ -2,7 +2,15 @@ import tseslint from '@typescript-eslint/eslint-plugin';
 import parser from '@typescript-eslint/parser';
 
 export default [
-  { ignores: ['dist/**', 'node_modules/**'] },
+  {
+    ignores: [
+      'dist/**',
+      'node_modules/**',
+      'apps/**/.next/**',
+      'apps/web/**',
+      'apps/content-web/**'
+    ]
+  },
   {
     files: ['**/*.ts'],
     languageOptions: {
