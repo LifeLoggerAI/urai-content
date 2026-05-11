@@ -65,7 +65,7 @@ export const publicSeoMetadata: Record<ImplementedPublicRoute, PublicSeoMetadata
   '/narrator': {
     route: '/narrator',
     title: 'Narrator',
-    description: 'Narrator prompt systems for URAI Content.',
+    description: 'Narrator prompt systems and reflection scaffolds for URAI Content.',
     canonical: '/narrator',
     openGraph: {
       title: 'Narrator',
@@ -75,11 +75,11 @@ export const publicSeoMetadata: Record<ImplementedPublicRoute, PublicSeoMetadata
   '/voice-packs': {
     route: '/voice-packs',
     title: 'Voice Packs',
-    description: 'Voice pack surfaces for URAI Content.',
+    description: 'Voice pack surfaces and scripted media bundles for URAI Content.',
     canonical: '/voice-packs',
     openGraph: {
       title: 'Voice Packs',
-      description: 'Voice pack surfaces for URAI Content.'
+      description: 'Voice pack surfaces and media bundles for URAI Content.'
     }
   },
   '/marketplace': {
@@ -95,11 +95,11 @@ export const publicSeoMetadata: Record<ImplementedPublicRoute, PublicSeoMetadata
   '/creator': {
     route: '/creator',
     title: 'Creator',
-    description: 'Creator program surface for URAI Content.',
+    description: 'Creator program surface and submission pathway for URAI Content.',
     canonical: '/creator',
     openGraph: {
       title: 'Creator',
-      description: 'Creator program surface for URAI Content.'
+      description: 'Creator program surface and submission pathway for URAI Content.'
     }
   },
   '/pricing': {
@@ -115,31 +115,31 @@ export const publicSeoMetadata: Record<ImplementedPublicRoute, PublicSeoMetadata
   '/licensing': {
     route: '/licensing',
     title: 'Licensing',
-    description: 'Licensing surface for URAI Content.',
+    description: 'Licensing surfaces and usage-right pathways for URAI Content.',
     canonical: '/licensing',
     openGraph: {
       title: 'Licensing',
-      description: 'Licensing surface for URAI Content.'
+      description: 'Licensing surfaces and usage-right pathways for URAI Content.'
     }
   },
   '/exports': {
     route: '/exports',
     title: 'Exports',
-    description: 'Export pipeline surface for URAI Content.',
+    description: 'Export pipeline surface and artifact workflow for URAI Content.',
     canonical: '/exports',
     openGraph: {
       title: 'Exports',
-      description: 'Export pipeline surface for URAI Content.'
+      description: 'Export pipeline surface and artifact workflow for URAI Content.'
     }
   },
   '/demo': {
     route: '/demo',
     title: 'Demo',
-    description: 'Public demo route for URAI Content.',
+    description: 'Public demo route and safe preview surface for URAI Content.',
     canonical: '/demo',
     openGraph: {
       title: 'Demo',
-      description: 'Public demo route for URAI Content.'
+      description: 'Public demo route and safe preview surface for URAI Content.'
     }
   },
   '/roadmap': {
@@ -155,11 +155,11 @@ export const publicSeoMetadata: Record<ImplementedPublicRoute, PublicSeoMetadata
   '/versions': {
     route: '/versions',
     title: 'Versions',
-    description: 'Version and phase status for URAI Content.',
+    description: 'Version history and phase status evidence for URAI Content.',
     canonical: '/versions',
     openGraph: {
       title: 'Versions',
-      description: 'Version and phase status for URAI Content.'
+      description: 'Version history and phase status evidence for URAI Content.'
     }
   },
   '/privacy': {
@@ -175,11 +175,11 @@ export const publicSeoMetadata: Record<ImplementedPublicRoute, PublicSeoMetadata
   '/terms': {
     route: '/terms',
     title: 'Terms',
-    description: 'Terms surface for URAI Content.',
+    description: 'Terms surface and legal-readiness boundary for URAI Content.',
     canonical: '/terms',
     openGraph: {
       title: 'Terms',
-      description: 'Terms surface for URAI Content.'
+      description: 'Terms surface and legal-readiness boundary for URAI Content.'
     }
   },
   '/contact': {
