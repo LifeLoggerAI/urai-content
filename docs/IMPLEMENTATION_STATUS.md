@@ -4,65 +4,86 @@ This file is the source-of-truth status snapshot for `urai-content`.
 
 ## Current verified repository role
 
-`urai-content` is currently a TypeScript content package/library. It is not currently a deployed standalone website and it is not currently the live runtime for `www.uraicontent.com`.
+`urai-content` is now a TypeScript content-domain package with a standalone Next.js web runtime scaffold under `apps/web`.
 
-The package owns schemas, canonical content, validators, seed data, content service contracts, export helpers, telemetry contracts, integration contracts, and package-level tests.
+The root package owns schemas, canonical content, validators, seed data, content service contracts, export helpers, telemetry contracts, integration contracts, and package-level tests.
+
+The `apps/web` runtime owns the public website shell, route/API scaffolds, web runtime tests, and build path for the future `www.uraicontent.com` deployment. It is buildable and testable in this repository, but it is not yet verified as a live production deployment.
 
 ## Status key
 
-- **Done**: Implemented in this repository and verifiable with package checks.
-- **Partial**: Some package code, schemas, docs, or tests exist, but runtime wiring or production behavior is incomplete.
+- **Done**: Implemented in this repository and verifiable with committed files plus package or web checks.
+- **Partial**: Some package code, runtime scaffolding, schemas, docs, or tests exist, but production behavior is incomplete.
 - **Not Started**: Required by docs/roadmap/product claims but no implementation exists in this repository.
-- **Blocked**: Cannot be completed until an external architecture, credential, DNS, runtime, or deployment decision is made.
-- **Unknown**: Not verified from repository evidence; requires local command output or external system access.
+- **Blocked**: Cannot be completed until an external credential, DNS, provider, live deployment, or product decision is made.
+- **Unknown**: Not verified from repository evidence; requires command output or external system access.
 
 ## Major system status
 
 | Area | Current status | Evidence | Required next step |
 | --- | --- | --- | --- |
-| Package/library role | Done | README describes the repository as a content package/library, not a deployed app. | Preserve this boundary or explicitly migrate to a monorepo. |
-| Package validation scripts | Done, needs command proof | `package.json` defines lint, typecheck, content validation, tests, build, smoke, verify, and done scripts. | Run `npm run done` locally and in CI, then record output. |
-| CI | Done for package scope | `.github/workflows/ci.yml` runs the package validation suite. | Add web/runtime CI after a web app exists. |
-| Static content validation | Done for package scope | `src/lib/content/validate.ts` validates IDs, slugs, sitemap coverage, SEO metadata, unsafe claims, and asset paths. | Extend validation to runtime route coverage after web implementation. |
+| Package/library role | Done | Root `package.json`, `src/index.ts`, schemas, seed checks, and package tests remain intact. | Preserve package API while adding runtime features. |
+| Package validation scripts | Done | `package.json` defines lint, typecheck, content validation, tests, build, smoke, verify, and done scripts. | Keep `npm run done` green in CI. |
+| Web runtime scaffold | Done | `apps/web` exists and `npm run web:check` passed locally during the audit pass. | Keep web CI green and add deployment config. |
+| CI | Done for package scope; web CI added in follow-up branch | `.github/workflows/ci.yml` runs the package suite; follow-up work adds a web job. | Confirm web job success on GitHub Actions after merge. |
+| Static content validation | Done for package scope | `src/lib/content/validate.ts` validates IDs, slugs, sitemap coverage, SEO metadata, unsafe claims, and asset paths. | Continue extending validation as runtime content expands. |
+| Public website route shells | Partial | PR #28 merged public App Router shells; Next build generated 23/23 pages locally. | Finalize copy, CTAs, metadata, mobile smoke, and browser E2E. |
+| Runtime API route surface | Partial | Next build compiles health, version, catalog, content detail, Firebase status, and seed APIs. | Harden endpoint contracts, statuses, auth, persistence, and live smoke tests. |
 | Content service | Partial | `ContentService` provides create, update, workflow transition, search, entitlement, moderation, telemetry, and upsert helpers. | Add production authorization, typed errors, pagination, full tier support, and runtime persistence. |
 | In-memory repository | Done for local/test scope | `InMemoryContentRepository` implements the repository contract in memory. | Keep test-only; do not use as production persistence. |
-| Firebase repository | Not Started | `firebaseRepository.contract.ts` is a contract-only export. | Implement Firestore adapter in consuming runtime app or monorepo web app. |
-| Firebase rules/indexes | Blocked | Runtime Firebase project and app do not exist here. | Add Firestore/Storage rules and emulator tests in runtime app. |
-| Auth | Not Started | Firebase Auth env placeholders exist, but no runtime app/session code exists here. | Implement Firebase Auth/session/role guards in runtime app. |
-| Stripe | Not Started | Stripe env placeholders exist, but no checkout or webhook code exists here. | Implement checkout/webhook and entitlement writes in runtime app. |
-| Public website | Not Started | `docs/STANDALONE_SYSTEM_PLAN.md` lists required routes; this repo has no App Router app. | Create `urai-content-web` or convert to monorepo. |
-| Dashboard/creator/admin UI | Not Started | Required routes are documented, but no UI app exists. | Implement guarded runtime routes. |
-| API routes | Not Started | Required APIs are documented, but no runtime app exists. | Implement API routes/functions in web/runtime app. |
-| Marketplace | Partial | Schemas and tier config exist; no checkout/UI/runtime exists. | Implement catalog, gates, checkout, entitlements, and moderation. |
-| Export system | Partial | SRT and export job lifecycle utilities exist. | Implement export API, queue/worker, Storage writes, and UI. |
-| Roadmap phases | Partial | Seed data models V1-V5 and marks V5 blocked. | Tie roadmap status to implementation evidence and issues. |
-| Expansion modules | Partial | Seed data models expansion modules. | Add real content, UI exposure, admin controls, and tests. |
-| Ecosystem integrations | Planned | Seed data models URAI system integrations as planned. | Implement adapters and contract tests per consuming system. |
-| Observability | Not Started | Optional `SENTRY_DSN` exists in env example. | Add Sentry/logging/alerting in runtime app. |
-| Browser E2E | Not Started | Website does not exist here. | Add Playwright/Cypress after runtime app scaffold. |
-| Deployment to www.uraicontent.com | Blocked | `deploy` script intentionally exits with failure and blocker docs require DNS/hosting/runtime. | Configure app hosting, secrets, DNS, smoke tests, and release evidence. |
+| Firebase repository | Partial | Runtime Firestore adapter scaffolding/tests exist, but production project/rules/indexes are not verified. | Implement and test emulator-backed and production-safe persistence. |
+| Firebase rules/indexes | Blocked | Requires final Firebase project, security model, and emulator/prod config. | Add Firestore/Storage rules, indexes, and emulator tests. |
+| Auth | Not Started / scaffold-level only | Public/creator/admin route shells exist, but no verified Firebase Auth session/RBAC flow is complete. | Implement Firebase Auth/session/role guards. |
+| Stripe | Not Started | Stripe checkout/webhook behavior is not implemented or verified. | Implement checkout/webhook and entitlement writes. |
+| Dashboard/creator/admin UI | Partial | Public route shells exist for creator/admin-adjacent surfaces, but protected workflows are not complete. | Implement guarded dashboard, creator submission, and admin moderation flows. |
+| Marketplace | Partial | Schemas, tier config, and public marketplace shell exist; no live checkout/gating. | Implement catalog, gates, checkout, entitlements, and moderation. |
+| Export system | Partial | SRT and export job lifecycle utilities exist; export shell exists. | Implement export API, queue/worker, Storage writes, downloads, and UI. |
+| Roadmap phases | Partial | Seed data models V1-V5 and system seed checks validate roadmap data. | Tie roadmap state to implementation evidence and issues. |
+| Expansion modules | Partial | System seed checks validate expansion module seed records. | Add real content, UI exposure, admin controls, and tests. |
+| Ecosystem integrations | Planned / contract-level | System seed checks validate integration records. | Implement adapters and contract tests per consuming system. |
+| Observability | Not Started | Optional `SENTRY_DSN` exists in env example; no live monitoring verified. | Add Sentry/logging/uptime/alerts in runtime app. |
+| Browser E2E | Partial | Route smoke script exists; full browser E2E suite is not verified. | Add Playwright/Cypress for public, auth, marketplace, exports, mobile, and SEO. |
+| Deployment to www.uraicontent.com | Blocked | Buildable runtime exists, but live deploy/DNS/SSL evidence does not. | Configure hosting, secrets, DNS, smoke tests, and release evidence. |
+
+## Verified local command evidence
+
+The audit pass produced local evidence for both root and web gates:
+
+```bash
+npm run web:check
+npm run done
+```
+
+Observed:
+
+- web typecheck, lint, tests, and build passed
+- web tests: 8 files / 24 assertions passed
+- Next static generation: 23/23 pages
+- root lint, typecheck, validation, tests, build, seed checks, and system seed checks passed
+- root tests: 7 files / 31 assertions passed
 
 ## Anti-fake completion rule
 
-Do not mark any runtime, website, auth, Stripe, Firebase, DNS, deployment, or E2E item complete unless there is a real file change, CI run, command output, deployed URL, or smoke-test artifact proving it.
+Do not mark deployment, DNS, SSL, Firebase production, Stripe, live monitoring, browser E2E, or post-deploy smoke complete unless there is real command output, commit SHA, deployed URL, provider evidence, and blocker status recorded.
 
 ## Required local verification commands
 
-Run these before claiming package readiness:
+Run these before claiming repo-side readiness:
 
 ```bash
 npm ci
-npm run lint
-npm run typecheck
-npm run validate:content
-npm run validate:sprites
-npm run content:index
-git diff --exit-code
-npm run smoke
-npm test
-npm run build
-npm run seed:check
-npm run seed:system:check
-npm run verify
 npm run done
+npm run web:install
+npm run web:check
+git status --short
+```
+
+Run these before claiming launch readiness after hosting is configured:
+
+```bash
+curl -I https://www.uraicontent.com
+curl -I https://uraicontent.com
+curl https://www.uraicontent.com/api/health
+curl https://www.uraicontent.com/api/version
+npm run web:smoke:routes -- --base-url=https://www.uraicontent.com
 ```
