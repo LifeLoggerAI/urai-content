@@ -17,7 +17,7 @@
     "start": "node dist/index.js",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
-    "test": "vitest run tests",
+    "test": "vitest run --dir tests",
     "validate:content": "tsx src/lib/content/validate.ts",
     "validate:sprites": "tsx src/lib/content/validate.ts",
     "content:index": "tsx scripts/contentIndex.ts",
