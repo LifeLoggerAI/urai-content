@@ -4,32 +4,51 @@ This file prevents false completion claims for `urai-content`.
 
 ## Current truth
 
-`urai-content` is currently a TypeScript content package/library. It is not yet a standalone deployed web application. The package can be consumed by URAI app/admin/backend deployments, but it does not itself initialize Firebase Admin, run Firebase Hosting, or provide a Next.js public website.
+`urai-content` is now a package-plus-runtime repository:
+
+- the root TypeScript package remains the canonical content/domain package for the URAI ecosystem
+- `apps/web` is a standalone Next.js runtime scaffold for the public URAI Content site
+- root package checks are covered by `npm run done`
+- web runtime checks are covered by `npm run web:check`
+- local route smoke is covered by `npm run web:smoke:routes`
+- GitHub Actions now runs package validation, web validation, and local web route smoke coverage
+
+This is not the same as a live production launch. `www.uraicontent.com` is not considered deployed until live hosting, DNS, SSL, secrets, and post-deploy smoke evidence are recorded.
 
 ## Blockers to live deployment at www.uraicontent.com
 
-### 1. Standalone web surface missing
+### 1. Hosting target and environment required
 
-A deployable web surface must exist before `www.uraicontent.com` can go live.
+A deployable web surface exists in `apps/web`, but the production hosting target still must be selected/configured.
 
 Acceptable options:
 
-- Create a separate consuming app such as `urai-content-web`.
-- Or convert this repo to a workspace with:
-  - `packages/content` for the current package
-  - `apps/web` for the standalone Next/Firebase site
+- Firebase Hosting with a Next-compatible runtime layer where needed
+- Cloud Run behind Firebase Hosting rewrites
+- Vercel or another Next-compatible host
+
+Required evidence before closing this blocker:
+
+- staging deployment URL
+- production deployment URL
+- release commit SHA
+- rollback commit SHA or rollback procedure
+- CI run URL
+- smoke-test output
 
 ### 2. Firebase project configuration required
 
 The deployment owner must provide or confirm:
 
 - Firebase project ID
-- Firebase Hosting site ID
+- Firebase Hosting site ID, if Firebase is selected
 - Firestore database target
 - Storage bucket
 - Auth providers
 - service account or CI deployment token
 - production/staging environment separation
+- Firestore rules and indexes
+- Storage rules
 
 ### 3. DNS access required
 
@@ -42,10 +61,11 @@ Required behavior:
 
 - `uraicontent.com` redirects to `www.uraicontent.com`
 - canonical site URL is `https://www.uraicontent.com`
+- SSL is valid for apex and www
 
-### 4. Runtime Firebase adapter required
+### 4. Runtime Firebase adapter and rules required
 
-The consuming runtime must implement the `ContentRepository` contract using Firebase Admin SDK or equivalent server-side infrastructure.
+The web runtime has repository/API scaffolding, but production persistence and security rules still need final verification.
 
 Required behaviors:
 
@@ -55,6 +75,7 @@ Required behaviors:
 - admin/moderator writes for approval workflows
 - entitlement checks server-side
 - audit/provenance records server-side
+- emulator or staging tests for rules and repository behavior
 
 ### 5. Stripe configuration required for paid tiers
 
@@ -70,16 +91,30 @@ Until configured, marketplace checkout must remain in safe mock/dev mode.
 
 ### 6. E2E browser environment required
 
-This package can run package-level tests, but true website E2E requires a deployed or locally served web app.
+CI now performs local route smoke coverage against a started Next server. Full browser E2E is still required for production launch.
 
 Required:
 
-- Playwright or Cypress setup in the consuming web app
-- smoke tests for public pages
+- Playwright or Cypress setup
+- public route tests
+- mobile viewport tests
 - auth/dev mock flow
 - admin/creator route tests
 - export job tests
 - marketplace gating tests
+- deployed URL smoke tests after staging/prod launch
+
+### 7. Monitoring and alerting required
+
+Production cannot be called hardened until monitoring exists.
+
+Required:
+
+- uptime monitoring for staging and production
+- Sentry or equivalent for frontend/server errors
+- alert routing for 5xx spikes, auth/admin anomalies, Stripe webhook failures, and export job failures
+- rollback drill evidence
+- operational runbook
 
 ## What can be completed inside this repo
 
@@ -91,32 +126,61 @@ Required:
 - content-service workflow rules
 - repository contracts
 - integration contracts
+- public web route shells
+- route/API smoke scripts
 - deployment docs
 - roadmap docs
 - package tests
 - package build
-- package CI
+- web runtime tests/build
+- package and web CI
 
 ## What cannot be honestly claimed from this repo alone
 
 Do not claim:
 
 - `www.uraicontent.com` is live
-- Firebase Hosting is deployed
+- DNS is configured
+- SSL is valid
+- Firebase Hosting/Cloud Run/Vercel production is deployed
 - Stripe is wired
-- production Firestore rules are deployed
-- browser E2E tests pass against the standalone website
-- admin/creator UI exists
+- production Firestore/Storage rules are deployed
+- browser E2E tests pass against the live standalone website
+- admin/creator/payment/export flows are production-complete
 
-unless those systems have actually been implemented and verified in a runtime app/deployment.
+unless those systems have actually been implemented and verified with command output, provider evidence, and URLs.
 
 ## Required owner actions
 
-1. Decide whether `urai-content` remains a package with a separate `urai-content-web` app, or becomes a monorepo.
-2. Provide Firebase project and hosting details.
+1. Choose the production host for `apps/web`.
+2. Provide Firebase project and hosting details if Firebase is selected.
 3. Provide DNS access for `uraicontent.com` and `www.uraicontent.com`.
 4. Provide Stripe test/live keys when monetization should be activated.
-5. Run deployment from an environment with npm registry access, GitHub write access, Firebase CLI access, and DNS permissions.
+5. Configure staging/prod environment variables and secrets.
+6. Run deployment from an environment with npm registry access, GitHub write access, hosting provider access, and DNS permissions.
+7. Attach smoke-test output and rollback evidence to issue #14.
+
+## Required pre-launch commands
+
+Repo/local gates:
+
+```bash
+npm ci
+npm run done
+npm run web:install
+npm run web:check
+npm run web:smoke:routes -- --base-url=http://127.0.0.1:3000
+```
+
+Live gates after deployment:
+
+```bash
+curl -I https://www.uraicontent.com
+curl -I https://uraicontent.com
+curl https://www.uraicontent.com/api/health
+curl https://www.uraicontent.com/api/version
+npm run web:smoke:routes -- --base-url=https://www.uraicontent.com
+```
 
 ## Final rule
 

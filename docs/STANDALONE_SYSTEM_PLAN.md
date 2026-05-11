@@ -7,53 +7,37 @@ This plan defines how `urai-content` becomes both:
 1. the canonical content package for the URAI ecosystem, and
 2. the standalone public product at `https://www.uraicontent.com`.
 
-The current repository is a content package/library. The standalone website should consume it rather than replacing it.
+The repository now follows the package-plus-runtime monorepo path: the root package remains the canonical content/domain layer, and `apps/web` is the standalone Next.js runtime scaffold.
 
-## Recommended architecture
-
-### Option A — Separate deployment app, recommended
-
-- Keep this repo as `urai-content` package.
-- Create a new deployment app: `urai-content-web`.
-- Install/import this package into the web app.
-- Deploy the web app to Firebase Hosting or Vercel.
-
-Benefits:
-
-- preserves clean package boundaries
-- avoids breaking existing URAI consumers
-- keeps web build/test/deploy concerns separate from content contracts
-- allows faster standalone deployment
-
-### Option B — Monorepo conversion
-
-Convert this repo into:
+## Current architecture
 
 ```txt
 apps/
-  web/
-packages/
-  content/
+  web/                 # standalone Next.js runtime scaffold for www.uraicontent.com
+content/               # canonical JSON content tree
+src/                   # root content/domain package
+scripts/               # root package scripts
 ```
 
-Move existing package code into `packages/content` and add a Next.js app under `apps/web`.
+## Current verified repo-side state
 
-Benefits:
+The following gates have been verified locally during the audit pass and are now represented in CI:
 
-- one repo for package and site
-- easier local linking
+- root package validation through `npm run done`
+- web runtime validation through `npm run web:check`
+- local route smoke through `npm run web:smoke:routes`
+- public route shell build with Next static generation
+- health/version/catalog/content/Firebase-status API route surface compilation
 
-Risks:
-
-- bigger migration
-- more chance of breaking current package scripts
-- requires workspace tooling and CI changes
+This plan still does not claim a live production deployment.
 
 ## Standalone web app requirements
 
 The standalone site must include:
 
 ### Public routes
+
+Implemented as route shells in `apps/web`:
 
 - `/`
 - `/about`
@@ -74,7 +58,18 @@ The standalone site must include:
 - `/terms`
 - `/contact`
 
+Remaining public-route work:
+
+- final copy review
+- final CTA review
+- full SEO metadata review
+- mobile viewport smoke
+- browser E2E
+- deployed URL smoke evidence
+
 ### Protected user routes
+
+Not production-complete:
 
 - `/dashboard`
 - `/dashboard/content`
@@ -87,6 +82,8 @@ The standalone site must include:
 
 ### Creator routes
 
+Not production-complete:
+
 - `/creator/dashboard`
 - `/creator/submit`
 - `/creator/submissions`
@@ -95,6 +92,8 @@ The standalone site must include:
 - `/creator/profile`
 
 ### Admin routes
+
+Not production-complete:
 
 - `/admin`
 - `/admin/content`
@@ -117,20 +116,22 @@ Homepage copy should position the product as:
 
 ## Required product modules
 
-- Content registry browser
-- Story template gallery
-- Ritual template gallery
-- Narrator script preview
-- Voice script pack preview
-- Marketplace catalog
-- Creator submission flow
-- Admin moderation queue
-- Export hub
-- Pricing and tier gates
-- Licensing center
-- Roadmap/version viewer
-- Demo mode
-- SEO/legal pages
+Repo status:
+
+- Content registry browser: partial
+- Story template gallery: public shell / partial
+- Ritual template gallery: public shell / partial
+- Narrator script preview: public shell / partial
+- Voice script pack preview: public shell / partial
+- Marketplace catalog: public shell / partial
+- Creator submission flow: not production-complete
+- Admin moderation queue: not production-complete
+- Export hub: public shell / partial
+- Pricing and tier gates: public shell / entitlement logic partial
+- Licensing center: public shell / partial
+- Roadmap/version viewer: public shell / seed-backed partial
+- Demo mode: public shell / partial
+- SEO/legal pages: public shell / partial
 
 ## Required tiers
 
@@ -158,6 +159,8 @@ Each tier must define:
 - Stripe price key placeholders
 - entitlement rules
 
+Tier seed records exist and are covered by `npm run seed:system:check`; live enforcement still requires auth, role claims, Stripe, and server-side entitlement checks.
+
 ## Required expansion modules
 
 The standalone app should expose or administratively track:
@@ -182,9 +185,11 @@ The standalone app should expose or administratively track:
 - Foundation/Public-Good Content
 - Enterprise Content Packs
 
+Expansion module seed records exist and are covered by `npm run seed:system:check`; live UI/admin workflows are not complete.
+
 ## Firebase runtime requirements
 
-The web/runtime app must include:
+The web/runtime app must include or verify:
 
 - Firebase Auth
 - Firestore
@@ -199,12 +204,21 @@ The web/runtime app must include:
 - creator role claims
 - entitlement claims or server-side entitlement lookup
 
+Current status: scaffold/contract-level only. Production Firebase configuration and rules are not verified.
+
 ## API/function requirements
+
+Current compiled/scaffolded route surface:
 
 - `/api/health`
 - `/api/version`
 - `/api/catalog`
-- `/api/content/[slug]`
+- `/api/content/[[...slug]]`
+- `/api/admin/seed/canonical-content`
+- `/api/system/firebase`
+
+Required future APIs:
+
 - `/api/creator/submit`
 - `/api/admin/approve`
 - `/api/admin/reject`
@@ -233,6 +247,8 @@ Support job records for:
 - license evidence pack
 - social share preview
 
+Current status: package utilities/contracts exist; production export API, queue/worker, Storage writes, artifact downloads, and retries are not complete.
+
 ## UI/UX quality bar
 
 - dark-first cinematic interface
@@ -246,14 +262,25 @@ Support job records for:
 - empty/loading/error/success states
 - no ugly default UI
 
+Current public shell status is buildable, not final AAA polish.
+
 ## Testing requirements
 
-The deployment app must include:
+Current repo-backed testing:
 
-- unit tests for schemas, tier gates, exports, SRT, entitlements, provenance
-- integration tests for catalog, dashboard, creator submission, admin approval, export creation, API health/version
-- Playwright E2E for homepage, catalog, pricing, creator, demo, dashboard, admin review, export status, and mobile viewport
-- smoke tests for deployed URL
+- root package lint/typecheck/validation/tests/build/seed checks
+- web typecheck/lint/tests/build
+- local web route smoke in CI against a started Next server
+
+Still required:
+
+- Playwright/Cypress browser tests
+- mobile viewport tests
+- auth/dev mock flow tests
+- admin/creator route tests
+- export job tests
+- marketplace gating tests
+- deployed URL smoke tests
 
 ## Domain setup
 
@@ -272,19 +299,24 @@ Required redirects:
 
 ## Done-done deployment checklist
 
-- [ ] Package `npm run done` passes.
-- [ ] Web app lint passes.
-- [ ] Web app typecheck passes.
-- [ ] Web app unit tests pass.
-- [ ] Web app integration tests pass.
-- [ ] Web app E2E tests pass.
-- [ ] Web app builds.
+Repo-side:
+
+- [x] Package `npm run done` passes locally.
+- [x] Web app lint passes locally.
+- [x] Web app typecheck passes locally.
+- [x] Web app unit/runtime tests pass locally.
+- [x] Web app builds locally.
+- [x] Web route smoke runs in CI against local Next server.
+
+Still required:
+
+- [ ] Web app browser E2E tests pass.
 - [ ] Firebase/hosting deployment succeeds.
 - [ ] `https://www.uraicontent.com` loads.
 - [ ] `https://uraicontent.com` redirects correctly.
-- [ ] Public catalog loads.
-- [ ] Pricing loads.
-- [ ] Demo loads.
+- [ ] Public catalog loads on deployed URL.
+- [ ] Pricing loads on deployed URL.
+- [ ] Demo loads on deployed URL.
 - [ ] Auth guard works.
 - [ ] Creator guard works.
 - [ ] Admin guard works.
@@ -293,8 +325,9 @@ Required redirects:
 - [ ] Stripe mock/dev checkout works.
 - [ ] Firestore rules deployed.
 - [ ] Storage rules deployed.
-- [ ] Launch checklist completed.
+- [ ] Monitoring and alerts configured.
+- [ ] Launch checklist completed with SHA, URLs, smoke output, and rollback evidence.
 
 ## Anti-fake completion rule
 
-Do not claim that the standalone system is live unless there is a real deployment URL and real command output proving build/test/deploy success.
+Do not claim that the standalone system is live unless there is a real deployment URL and real command output proving build/test/deploy/smoke success.
