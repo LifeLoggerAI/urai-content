@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { type FormEvent, useState } from 'react';
 
 type FormStatus = 'idle' | 'loading' | 'success' | 'error';
 
@@ -15,11 +15,13 @@ export function LeadForm({ kind, title, description, defaultLeadType = 'user' }:
   const [status, setStatus] = useState<FormStatus>('idle');
   const [message, setMessage] = useState<string>('');
 
-  async function submit(formData: FormData) {
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
     setStatus('loading');
     setMessage('');
 
-    const payload = Object.fromEntries(formData.entries());
+    const form = event.currentTarget;
+    const payload = Object.fromEntries(new FormData(form).entries());
 
     try {
       const response = await fetch('/api/leads', {
@@ -33,6 +35,7 @@ export function LeadForm({ kind, title, description, defaultLeadType = 'user' }:
         throw new Error(data.message ?? 'Unable to submit right now.');
       }
 
+      form.reset();
       setStatus('success');
       setMessage(data.message ?? 'Received.');
     } catch (error) {
@@ -48,7 +51,7 @@ export function LeadForm({ kind, title, description, defaultLeadType = 'user' }:
         <h2 id={`${kind}-form-title`}>{title}</h2>
         <p>{description}</p>
       </div>
-      <form action={submit} className="lead-form">
+      <form onSubmit={submit} className="lead-form">
         <label>
           Name
           <input name="name" autoComplete="name" placeholder="Your name" />
@@ -82,7 +85,7 @@ export function LeadForm({ kind, title, description, defaultLeadType = 'user' }:
           <span>I agree to receive URAI updates and understand I can opt out later.</span>
         </label>
         <button className="button" type="submit" disabled={status === 'loading'}>
-          {status === 'loading' ? 'Submitting…' : kind === 'waitlist' ? 'Join the Waitlist' : 'Send Inquiry'}
+          {status === 'loading' ? 'Submitting...' : kind === 'waitlist' ? 'Join the Waitlist' : 'Send Inquiry'}
         </button>
         {message ? <p className={`form-message ${status}`} role="status">{message}</p> : null}
       </form>
