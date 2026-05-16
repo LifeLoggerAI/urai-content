@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { AnalyticsTracker } from '@/components/AnalyticsTracker';
 import { SiteFooter, SiteHeader } from '@/components/PublicPage';
 import { webEnv } from '@/lib/env';
 import { defaultSeo } from '@/lib/publicSiteContent';
@@ -27,6 +28,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body>
+        <AnalyticsTracker />
         <SiteHeader />
         {children}
         <SiteFooter />
