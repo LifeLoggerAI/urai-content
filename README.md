@@ -44,10 +44,14 @@ This repo is the content backbone used by app/admin/runtime repos. It centralize
 - `src/seed/` — demo seed content and schema validation script
 - `scripts/contentIndex.ts` — deterministic generated content index
 - `scripts/checkGovernanceDocs.ts` — governance/docs integrity check used by `npm run check:governance`
+- `scripts/checkNoSecrets.ts` — repository secret leakage scan used by `npm run check:secrets`
+- `scripts/checkObservabilityEnv.ts` — production observability environment verifier used by `npm run check:observability`
+- `scripts/productionSmoke.ts` — deployed runtime smoke verifier used by `npm run smoke:production`
+- `scripts/rollbackSmoke.ts` — rollback runtime verifier used by `npm run smoke:rollback`
 - `tests/` — smoke and unit tests
-- `apps/web/` — standalone Next.js runtime scaffold, public route/API surface, and web checks
-- `.github/` — issue templates, PR template, CODEOWNERS, and workflow governance
-- `docs/` — implementation status, route coverage, launch runbook, issue control, evidence, branch, maintainer, and readiness docs
+- `apps/web/` — standalone Next.js runtime scaffold, public route/API surface, route smoke checks, and Playwright E2E
+- `.github/` — issue templates, PR template, CODEOWNERS, governance workflow, and web E2E workflow
+- `docs/` — implementation status, route coverage, launch runbook, E2E runbook, issue control, evidence, branch, maintainer, and readiness docs
 
 ## Canonical package command order
 
@@ -63,10 +67,11 @@ This repo is the content backbone used by app/admin/runtime repos. It centralize
 10. `npm run build`
 11. `npm run seed:check`
 12. `npm run check:governance`
-13. `npm run check`
-14. `npm run done`
+13. `npm run check:secrets`
+14. `npm run check`
+15. `npm run done`
 
-`npm run check` includes `npm run check:governance`, so required launch-control docs, README references, PR/issue templates, CODEOWNERS, and critical evidence-gate language are verified automatically.
+`npm run check` includes governance and secret scanning, so required launch-control docs, README references, PR/issue templates, CODEOWNERS, critical evidence-gate language, and likely secret leaks are verified automatically.
 
 ## Canonical web-runtime command order
 
@@ -75,8 +80,31 @@ Run these when changing `apps/web` or making route/runtime claims:
 1. `npm run web:install`
 2. `npm run web:check`
 3. `npm run web:smoke:routes -- --base-url=http://127.0.0.1:3000`
+4. `cd apps/web && npm run e2e`
 
-For launch claims, run route smoke against the deployed staging or production URL and attach output in an evidence log.
+For deployed launch claims, run route smoke, production smoke, observability checks, and browser E2E against the deployed staging or production URL and attach output in an evidence log:
+
+```bash
+npm run check:observability
+npm run web:smoke:routes -- --base-url=<staging-or-production-url>
+npm run smoke:production -- --base-url=<staging-or-production-url>
+cd apps/web && PLAYWRIGHT_SKIP_WEB_SERVER=1 URAI_CONTENT_BASE_URL=<staging-or-production-url> npm run e2e
+```
+
+Rollback claims require:
+
+```bash
+npm run smoke:rollback -- --base-url=<staging-or-production-url> --expected-sha=<rollback-sha>
+```
+
+## GitHub Actions orchestration
+
+The repo has two core workflows:
+
+- `.github/workflows/governance.yml` — governance and secret leakage validation
+- `.github/workflows/web-e2e.yml` — web typecheck/lint/unit/build and Playwright browser E2E with report artifacts
+
+Use `web-e2e.yml` with `workflow_dispatch.base_url` to run browser E2E against staging or production after deployment.
 
 ## Firebase adapter status
 
@@ -88,6 +116,11 @@ Firebase, Firestore, Storage, Auth, rules, indexes, and hosting are not producti
 
 - `NEXT_PUBLIC_GITHUB_ISSUES_URL`
 - `NEXT_PUBLIC_CI_RUN_URL`
+- `URAI_CONTENT_BASE_URL`
+- `URAI_ALERT_OWNER`
+- `URAI_UPTIME_MONITOR_URL`
+- `URAI_ERROR_MONITORING_URL`
+- `URAI_EXPECTED_RELEASE_SHA`
 - Firebase/Stripe variables in `.env.example` and `apps/web/.env.example` for consuming runtime/deployment environments.
 
 Never commit secret values. Provider/CI secret names may be documented; values must stay in the provider secret manager.
@@ -101,6 +134,7 @@ Start here before claiming readiness:
 - `docs/IMPLEMENTATION_STATUS.md` — current implementation evidence
 - `DEPLOYMENT_BLOCKERS.md` — live deployment blockers
 - `docs/ROUTE_COVERAGE.md` — public/protected/API route status
+- `docs/E2E_VERIFICATION_RUNBOOK.md` — browser/runtime E2E matrix and evidence rules
 - `docs/PRODUCTION_LAUNCH_RUNBOOK.md` — launch lanes and stop rules
 - `docs/ISSUE_LAUNCH_CONTROL.md` — issue-to-launch control matrix
 - `docs/EVIDENCE_LOG_TEMPLATE.md` — required evidence capture format
