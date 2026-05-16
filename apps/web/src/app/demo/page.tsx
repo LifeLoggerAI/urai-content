@@ -1,8 +1,8 @@
-import { PublicRouteShell } from '@/components/PublicRouteShell';
-import { routeShellContent } from '@/lib/publicPageContent';
+import { PublicPage } from '@/components/PublicPage';
+import { getPageMetadata, publicPages } from '@/lib/publicSiteContent';
 
-export const metadata = routeShellContent.demo.metadata;
+export const metadata = getPageMetadata(publicPages.demo);
 
 export default function DemoPage() {
-  return <PublicRouteShell content={routeShellContent.demo} />;
+  return <PublicPage page={publicPages.demo} />;
 }
