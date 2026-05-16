@@ -1,6 +1,5 @@
 import 'server-only';
-import type { ContentItem } from '../../../../../src/schemas/content';
-import type { ContentRepository } from '../../../../../src/backend/types';
+import type { ContentItem, ContentRepository } from './types';
 import { listCatalogItems, normalizeSlug, type CatalogItem } from '@/lib/catalog';
 
 function canonicalStatusToWorkflowStatus(status: CatalogItem['status']): ContentItem['status'] {
