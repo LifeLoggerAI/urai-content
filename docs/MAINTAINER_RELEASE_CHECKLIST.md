@@ -10,6 +10,7 @@ This checklist exists to prevent bypassing the launch gates defined in:
 - `docs/ISSUE_LAUNCH_CONTROL.md`
 - `docs/PRODUCTION_LAUNCH_RUNBOOK.md`
 - `docs/EVIDENCE_LOG_TEMPLATE.md`
+- `docs/PRODUCTION_READINESS_DASHBOARD.md`
 
 ## 1. Branch hygiene
 
@@ -36,6 +37,7 @@ For package or shared repo changes:
 
 ```bash
 npm ci
+npm run check:governance
 npm run done
 ```
 
@@ -50,10 +52,20 @@ npm run web:smoke:routes -- --base-url=http://127.0.0.1:3000
 For launch/deployment claims:
 
 ```bash
+npm run check:governance
 npm run done
 npm run web:check
 npm run web:smoke:routes -- --base-url=<staging-or-production-url>
 ```
+
+`npm run check:governance` validates:
+
+- required launch-control docs exist
+- README references remain intact
+- PR/issue templates exist
+- CODEOWNERS exists
+- required stop-rule/evidence language still exists
+- governance docs have not silently drifted
 
 ## 4. Evidence requirements
 
@@ -121,6 +133,7 @@ Before merge or close:
 - [ ] Related issue status is RED/YELLOW/GREEN with evidence.
 - [ ] `docs/ISSUE_LAUNCH_CONTROL.md` remains accurate.
 - [ ] `URAI_FINAL_COMPLETION_AUDIT.md` remains accurate.
+- [ ] `docs/PRODUCTION_READINESS_DASHBOARD.md` remains accurate.
 - [ ] No issue is closed while required evidence is missing.
 
 ## 9. Stop rules
@@ -138,6 +151,7 @@ Stop merge/release if any are true:
 - Public APIs expose draft/private content.
 - Production smoke fails.
 - Rollback path is missing.
+- Governance verification fails.
 
 ## 10. Final maintainer sign-off
 
