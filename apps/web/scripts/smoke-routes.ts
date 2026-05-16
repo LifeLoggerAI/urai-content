@@ -1,4 +1,4 @@
-import { spawn, type ChildProcessWithoutNullStreams } from 'node:child_process';
+import { spawn, type ChildProcess } from 'node:child_process';
 import { implementedPublicRoutes } from '../src/lib/publicRoutes';
 
 const port = Number(process.env.WEB_SMOKE_PORT ?? 3000);
@@ -26,15 +26,15 @@ async function probeServer(): Promise<boolean> {
   }
 }
 
-function startServer(): ChildProcessWithoutNullStreams {
+function startServer(): ChildProcess {
   const child = spawn('npm', ['run', 'start', '--', '--hostname', '127.0.0.1', '--port', String(port)], {
     cwd: process.cwd(),
     env: process.env,
     stdio: ['ignore', 'pipe', 'pipe']
   });
 
-  child.stdout.on('data', (chunk) => process.stdout.write(`[next] ${chunk}`));
-  child.stderr.on('data', (chunk) => process.stderr.write(`[next] ${chunk}`));
+  child.stdout?.on('data', (chunk) => process.stdout.write(`[next] ${chunk}`));
+  child.stderr?.on('data', (chunk) => process.stderr.write(`[next] ${chunk}`));
 
   return child;
 }
@@ -63,7 +63,7 @@ async function checkRoute(route: string): Promise<void> {
 async function main() {
   console.log(`Smoke testing ${routes.length} routes against ${baseUrl}`);
 
-  let server: ChildProcessWithoutNullStreams | null = null;
+  let server: ChildProcess | null = null;
 
   if (!(await probeServer())) {
     if (!shouldManageServer) {
