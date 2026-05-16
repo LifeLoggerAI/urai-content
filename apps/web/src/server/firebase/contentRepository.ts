@@ -1,5 +1,6 @@
 import type {
   ContentItem,
+  ContentRepository,
   CreatorSubmission,
   ExportTemplate,
   MarketplaceItem,
@@ -10,9 +11,8 @@ import type {
   StoryTemplate,
   TelemetryEvent,
   UserContentEntitlement
-} from '../../../../../src/schemas/content';
-import type { ContentRepository } from '../../../../../src/backend/types';
-import { FIRESTORE_COLLECTIONS } from '../../../../../src/backend/firebaseRepository.contract';
+} from '../content/types';
+import { FIRESTORE_COLLECTIONS } from '../content/types';
 
 type FirestoreData = Record<string, unknown>;
 
