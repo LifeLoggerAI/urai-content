@@ -13,11 +13,14 @@ export type PublicSeoMetadata = {
 
 function titleizeRoute(route: ImplementedPublicRoute): string {
   if (route === '/') return 'URAI';
-  return route
+
+  const title = route
     .slice(1)
     .split('-')
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(' ');
+
+  return title.trim().length >= 4 ? title : `URAI ${title}`;
 }
 
 function makeSeo(route: ImplementedPublicRoute, title = titleizeRoute(route), description?: string): PublicSeoMetadata {
