@@ -26,9 +26,14 @@ Record every command exactly as run.
 | --- | --- | --- | --- | --- |
 | `npm ci` | local/CI | RED/YELLOW/GREEN | | |
 | `npm run done` | local/CI | RED/YELLOW/GREEN | | |
+| `npm run check:governance` | local/CI | RED/YELLOW/GREEN | | |
+| `npm run check:secrets` | local/CI | RED/YELLOW/GREEN | | |
+| `npm run check:observability` | staging/prod | RED/YELLOW/GREEN | | |
 | `npm run web:install` | local/CI | RED/YELLOW/GREEN | | |
 | `npm run web:check` | local/CI | RED/YELLOW/GREEN | | |
 | `npm run web:smoke:routes` | local/CI/staging/prod | RED/YELLOW/GREEN | | |
+| `npm run smoke:production` | staging/prod | RED/YELLOW/GREEN | | |
+| `npm run smoke:rollback` | staging/prod | RED/YELLOW/GREEN | | |
 
 ## CI evidence
 
@@ -56,6 +61,33 @@ Failure output:
 Final route smoke status: RED / YELLOW / GREEN
 ```
 
+## Production smoke evidence
+
+```text
+Base URL:
+Command: npm run smoke:production -- --base-url=<url>
+Required paths checked:
+HTTPS result:
+Health endpoint result:
+Version endpoint result:
+Robots result:
+Sitemap result:
+Failure output:
+Final production smoke status: RED / YELLOW / GREEN
+```
+
+## Rollback smoke evidence
+
+```text
+Base URL:
+Expected rollback SHA:
+Command: npm run smoke:rollback -- --base-url=<url> --expected-sha=<sha>
+Health endpoint result:
+Version/SHA result:
+Failure output:
+Final rollback smoke status: RED / YELLOW / GREEN
+```
+
 ## Deployment evidence
 
 ```text
@@ -68,7 +100,8 @@ DNS status:
 SSL status:
 Release SHA:
 Rollback SHA or rollback procedure:
-Smoke output location:
+Production smoke output location:
+Rollback smoke output location:
 Final deployment status: RED / YELLOW / GREEN
 ```
 
@@ -130,6 +163,11 @@ Final export status: RED / YELLOW / GREEN
 ## Observability evidence
 
 ```text
+Command: npm run check:observability
+URAI_CONTENT_BASE_URL present: yes / no
+URAI_ALERT_OWNER present: yes / no
+URAI_UPTIME_MONITOR_URL present: yes / no
+URAI_ERROR_MONITORING_URL present: yes / no
 Uptime monitor URL:
 Error monitor project:
 Alert recipients:
