@@ -36,6 +36,7 @@ Provider evidence, if applicable:
 ### Package/shared changes
 
 - [ ] npm ci
+- [ ] npm run check:governance
 - [ ] npm run done
 
 ### Web/runtime changes
@@ -46,6 +47,7 @@ Provider evidence, if applicable:
 
 ### Deployment claims
 
+- [ ] npm run check:governance
 - [ ] npm run done
 - [ ] npm run web:check
 - [ ] npm run web:smoke:routes -- --base-url=<staging-or-production-url>
@@ -61,6 +63,16 @@ Provider evidence, if applicable:
 - [ ] Docs updated when needed
 - [ ] Broken/orphaned references checked
 - [ ] Duplicate content/systems checked
+
+## Governance impact
+
+- [ ] docs/PRODUCTION_READINESS_DASHBOARD.md remains accurate
+- [ ] URAI_FINAL_COMPLETION_AUDIT.md remains accurate
+- [ ] docs/ISSUE_LAUNCH_CONTROL.md remains accurate
+- [ ] docs/ROUTE_COVERAGE.md remains accurate if route/runtime status changed
+- [ ] docs/EVIDENCE_LOG_TEMPLATE.md used for RED/YELLOW/GREEN claims
+- [ ] npm run check:governance passes
+- [ ] N/A, this PR has no governance/status impact
 
 ## Security impact
 
@@ -98,6 +110,7 @@ Provider evidence, if applicable:
 - [ ] Related issue has launch-control update
 - [ ] docs/ISSUE_LAUNCH_CONTROL.md remains accurate
 - [ ] URAI_FINAL_COMPLETION_AUDIT.md remains accurate
+- [ ] docs/PRODUCTION_READINESS_DASHBOARD.md remains accurate
 - [ ] Remaining RED/YELLOW items have owner and next action
 - [ ] PR does not claim unverified production readiness
 
@@ -118,6 +131,7 @@ Do not merge if any are true:
 - Hosting target is uncertain for deployment changes
 - Secrets are missing or unverified
 - CI fails without explicit owner-approved override
+- Governance verification fails
 - Security rules are missing or untested where applicable
 - Auth/admin routes fail open
 - Stripe checkout is reachable without verified config
