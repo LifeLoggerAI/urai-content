@@ -18,7 +18,11 @@ const requiredFiles = [
   '.github/pull_request_template.md',
   '.github/ISSUE_TEMPLATE/launch_task.md',
   '.github/ISSUE_TEMPLATE/runtime_bug.md',
-  '.github/CODEOWNERS'
+  '.github/CODEOWNERS',
+  'scripts/productionSmoke.ts',
+  'scripts/rollbackSmoke.ts',
+  'scripts/checkNoSecrets.ts',
+  'scripts/checkObservabilityEnv.ts'
 ];
 
 const requiredReadmeLinks = [
@@ -42,6 +46,9 @@ const requiredPhrases: Array<[string, string]> = [
   ['docs/PRODUCTION_LAUNCH_RUNBOOK.md', 'No production launch claim is valid without attached evidence'],
   ['docs/ISSUE_LAUNCH_CONTROL.md', 'The issue tracker is not a wish list'],
   ['docs/EVIDENCE_LOG_TEMPLATE.md', 'no evidence means no GREEN'],
+  ['docs/EVIDENCE_LOG_TEMPLATE.md', 'npm run smoke:production'],
+  ['docs/EVIDENCE_LOG_TEMPLATE.md', 'npm run smoke:rollback'],
+  ['docs/EVIDENCE_LOG_TEMPLATE.md', 'npm run check:observability'],
   ['docs/MAINTAINER_RELEASE_CHECKLIST.md', 'npm run check:governance'],
   ['docs/MAINTAINER_RELEASE_CHECKLIST.md', 'Governance verification fails'],
   ['docs/MAINTAINER_RELEASE_CHECKLIST.md', 'Mark GREEN only because the evidence proves it'],
@@ -49,8 +56,15 @@ const requiredPhrases: Array<[string, string]> = [
   ['docs/ROUTE_COVERAGE.md', 'Do not mark a route **Done** unless'],
   ['.github/pull_request_template.md', 'No evidence means no GREEN'],
   ['.github/pull_request_template.md', 'npm run check:governance'],
+  ['.github/pull_request_template.md', 'npm run check:secrets'],
+  ['.github/pull_request_template.md', 'npm run check:observability'],
+  ['.github/pull_request_template.md', 'npm run smoke:production'],
+  ['.github/pull_request_template.md', 'npm run smoke:rollback'],
   ['.github/pull_request_template.md', 'docs/PRODUCTION_READINESS_DASHBOARD.md remains accurate'],
   ['.github/pull_request_template.md', 'Governance verification fails'],
+  ['.github/pull_request_template.md', 'Secret scan fails'],
+  ['.github/pull_request_template.md', 'Observability verification fails'],
+  ['.github/pull_request_template.md', 'Rollback smoke fails'],
   ['.github/ISSUE_TEMPLATE/launch_task.md', 'Evidence required before GREEN'],
   ['.github/ISSUE_TEMPLATE/runtime_bug.md', 'Do not close this issue without reproducible evidence'],
   ['.github/CODEOWNERS', 'URAI Content code ownership']
