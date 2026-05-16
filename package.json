@@ -26,6 +26,7 @@
     "seed:system:check": "tsx src/seed/checkSystemSeed.ts",
     "smoke": "npm run validate:content && npm run seed:check && npm run seed:system:check",
     "audit": "node -e \"console.log('Audit artifacts: AUDIT_REPORT.md, docs/COMPLETION_AUDIT.md, docs/COMPLETION_REPORT.md, DEPLOYMENT_BLOCKERS.md, docs/STANDALONE_SYSTEM_PLAN.md')\"",
+    "branch:sync:check": "tsx scripts/checkBranchSync.ts",
     "check": "npm run lint && npm run typecheck && npm run validate:content && npm run validate:sprites && npm run content:index && git diff --exit-code && npm test && npm run build && npm run seed:check && npm run seed:system:check",
     "verify": "npm run check",
     "done": "npm run audit && npm run smoke && npm run check",
