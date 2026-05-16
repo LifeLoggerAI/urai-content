@@ -27,6 +27,9 @@ Evidence log location:
 Commands run:
 Test output:
 Smoke output:
+Production smoke output:
+Rollback smoke output:
+Observability check output:
 Deployed URL, if applicable:
 Provider evidence, if applicable:
 ```
@@ -37,6 +40,7 @@ Provider evidence, if applicable:
 
 - [ ] npm ci
 - [ ] npm run check:governance
+- [ ] npm run check:secrets
 - [ ] npm run done
 
 ### Web/runtime changes
@@ -48,10 +52,16 @@ Provider evidence, if applicable:
 ### Deployment claims
 
 - [ ] npm run check:governance
+- [ ] npm run check:secrets
+- [ ] npm run check:observability
 - [ ] npm run done
 - [ ] npm run web:check
 - [ ] npm run web:smoke:routes -- --base-url=<staging-or-production-url>
+- [ ] npm run smoke:production -- --base-url=<staging-or-production-url>
+- [ ] npm run smoke:rollback -- --base-url=<staging-or-production-url> --expected-sha=<rollback-sha>
 - [ ] deployed smoke output attached
+- [ ] production smoke output attached
+- [ ] rollback smoke output attached
 - [ ] rollback SHA/procedure attached
 
 ## Package/content coverage
@@ -77,6 +87,7 @@ Provider evidence, if applicable:
 ## Security impact
 
 - [ ] No secrets committed
+- [ ] npm run check:secrets passes
 - [ ] No Firebase Admin SDK bundled into browser code
 - [ ] Protected routes fail closed
 - [ ] Admin APIs require server-side authorization
@@ -103,6 +114,9 @@ Provider evidence, if applicable:
 - [ ] DNS/SSL impact handled
 - [ ] Env/secrets verified in provider or CI secret manager
 - [ ] Monitoring/alert owner confirmed
+- [ ] npm run check:observability passes for deployment claims
+- [ ] npm run smoke:production passes for deployment claims
+- [ ] npm run smoke:rollback passes for rollback claims
 - [ ] N/A, this PR has no deployment impact
 
 ## Issue tracker and governance
@@ -132,10 +146,13 @@ Do not merge if any are true:
 - Secrets are missing or unverified
 - CI fails without explicit owner-approved override
 - Governance verification fails
+- Secret scan fails
+- Observability verification fails for deployment claims
 - Security rules are missing or untested where applicable
 - Auth/admin routes fail open
 - Stripe checkout is reachable without verified config
 - Exports can leak across users
 - Public APIs expose draft/private content
 - Production smoke fails
+- Rollback smoke fails for rollback claims
 - Rollback path is missing for deployment claims
