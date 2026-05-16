@@ -1,17 +1,21 @@
+'use client';
+
 import type { SitePage, SiteSection } from '@/lib/publicSiteContent';
+import { trackPublicEvent } from './AnalyticsTracker';
+import { TrackedLink } from './TrackedLink';
 
 export function SiteHeader() {
   return (
     <header className="site-header">
-      <a className="brand" href="/" aria-label="URAI home">URAI</a>
+      <TrackedLink className="brand" href="/" aria-label="URAI home" eventLabel="brand_home">URAI</TrackedLink>
       <nav className="nav" aria-label="Primary navigation">
-        <a href="/product">Product</a>
-        <a href="/how-it-works">How It Works</a>
-        <a href="/privacy">Privacy</a>
-        <a href="/data-ownership">Data Ownership</a>
-        <a href="/demo">Demo</a>
+        <TrackedLink href="/product" eventLabel="nav_product">Product</TrackedLink>
+        <TrackedLink href="/how-it-works" eventLabel="nav_how_it_works">How It Works</TrackedLink>
+        <TrackedLink href="/privacy" eventLabel="nav_privacy">Privacy</TrackedLink>
+        <TrackedLink href="/data-ownership" eventLabel="nav_data_ownership">Data Ownership</TrackedLink>
+        <TrackedLink href="/demo" eventLabel="nav_demo">Demo</TrackedLink>
       </nav>
-      <a className="button compact" href="/waitlist">Join Waitlist</a>
+      <TrackedLink className="button compact" href="/waitlist" eventLabel="header_waitlist">Join Waitlist</TrackedLink>
     </header>
   );
 }
@@ -24,14 +28,14 @@ export function SiteFooter() {
         <p>Passive, privacy-first personal intelligence for the life data you already create.</p>
       </div>
       <nav aria-label="Footer navigation">
-        <a href="/about">About</a>
-        <a href="/users">Users</a>
-        <a href="/researchers">Researchers</a>
-        <a href="/partners">Partners</a>
-        <a href="/investors">Investors</a>
-        <a href="/faq">FAQ</a>
-        <a href="/terms">Terms</a>
-        <a href="/contact">Contact</a>
+        <TrackedLink href="/about" eventLabel="footer_about">About</TrackedLink>
+        <TrackedLink href="/users" eventLabel="footer_users">Users</TrackedLink>
+        <TrackedLink href="/researchers" eventLabel="footer_researchers">Researchers</TrackedLink>
+        <TrackedLink href="/partners" eventLabel="footer_partners">Partners</TrackedLink>
+        <TrackedLink href="/investors" eventLabel="footer_investors">Investors</TrackedLink>
+        <TrackedLink href="/faq" eventLabel="footer_faq">FAQ</TrackedLink>
+        <TrackedLink href="/terms" eventLabel="footer_terms">Terms</TrackedLink>
+        <TrackedLink href="/contact" eventLabel="footer_contact">Contact</TrackedLink>
       </nav>
     </footer>
   );
@@ -59,8 +63,8 @@ export function Actions({ page }: { page: SitePage }) {
   if (!page.primaryCta && !page.secondaryCta) return null;
   return (
     <div className="actions" aria-label="Primary actions">
-      {page.primaryCta ? <a className="button" href={page.primaryCta.href}>{page.primaryCta.label}</a> : null}
-      {page.secondaryCta ? <a className="button secondary" href={page.secondaryCta.href}>{page.secondaryCta.label}</a> : null}
+      {page.primaryCta ? <TrackedLink className="button" href={page.primaryCta.href} eventLabel={`${page.route}:primary`}>{page.primaryCta.label}</TrackedLink> : null}
+      {page.secondaryCta ? <TrackedLink className="button secondary" href={page.secondaryCta.href} eventLabel={`${page.route}:secondary`}>{page.secondaryCta.label}</TrackedLink> : null}
     </div>
   );
 }
@@ -87,7 +91,14 @@ export function FaqList({ faqs }: { faqs: NonNullable<SitePage['faqs']> }) {
   return (
     <section className="faq-list" aria-label="Frequently asked questions">
       {faqs.map((faq) => (
-        <details key={faq.question}>
+        <details
+          key={faq.question}
+          onToggle={(event) => {
+            if (event.currentTarget.open) {
+              trackPublicEvent('faq_opened', { question: faq.question });
+            }
+          }}
+        >
           <summary>{faq.question}</summary>
           <p>{faq.answer}</p>
         </details>
@@ -101,7 +112,7 @@ export function PublicCard({ title, body, href, linkLabel }: { title: string; bo
     <article className="card">
       <h2>{title}</h2>
       <p>{body}</p>
-      {href ? <p className="card-link"><a href={href}>{linkLabel ?? 'Learn more'}</a></p> : null}
+      {href ? <p className="card-link"><TrackedLink href={href} eventLabel={`card:${title}`}>{linkLabel ?? 'Learn more'}</TrackedLink></p> : null}
     </article>
   );
 }
