@@ -36,15 +36,21 @@ const requiredReadmeLinks = [
 
 const requiredPhrases: Array<[string, string]> = [
   ['README.md', 'no evidence means no GREEN'],
+  ['README.md', 'npm run check:governance'],
   ['URAI_FINAL_COMPLETION_AUDIT.md', 'No evidence means no GREEN'],
   ['docs/PRODUCTION_READINESS_DASHBOARD.md', 'no evidence means no GREEN'],
   ['docs/PRODUCTION_LAUNCH_RUNBOOK.md', 'No production launch claim is valid without attached evidence'],
   ['docs/ISSUE_LAUNCH_CONTROL.md', 'The issue tracker is not a wish list'],
   ['docs/EVIDENCE_LOG_TEMPLATE.md', 'no evidence means no GREEN'],
+  ['docs/MAINTAINER_RELEASE_CHECKLIST.md', 'npm run check:governance'],
+  ['docs/MAINTAINER_RELEASE_CHECKLIST.md', 'Governance verification fails'],
   ['docs/MAINTAINER_RELEASE_CHECKLIST.md', 'Mark GREEN only because the evidence proves it'],
   ['docs/BRANCH_AND_GOVERNANCE_STATUS.md', 'audit/final-completion-2026-05-16'],
   ['docs/ROUTE_COVERAGE.md', 'Do not mark a route **Done** unless'],
   ['.github/pull_request_template.md', 'No evidence means no GREEN'],
+  ['.github/pull_request_template.md', 'npm run check:governance'],
+  ['.github/pull_request_template.md', 'docs/PRODUCTION_READINESS_DASHBOARD.md remains accurate'],
+  ['.github/pull_request_template.md', 'Governance verification fails'],
   ['.github/ISSUE_TEMPLATE/launch_task.md', 'Evidence required before GREEN'],
   ['.github/ISSUE_TEMPLATE/runtime_bug.md', 'Do not close this issue without reproducible evidence'],
   ['.github/CODEOWNERS', 'URAI Content code ownership']
