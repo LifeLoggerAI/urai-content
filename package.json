@@ -27,6 +27,7 @@
     "smoke": "npm run validate:content && npm run seed:check && npm run seed:system:check",
     "smoke:production": "tsx scripts/productionSmoke.ts",
     "smoke:rollback": "tsx scripts/rollbackSmoke.ts",
+    "check:observability": "tsx scripts/checkObservabilityEnv.ts",
     "audit": "node -e \"console.log('Audit artifacts: AUDIT_REPORT.md, docs/COMPLETION_AUDIT.md, docs/COMPLETION_REPORT.md, DEPLOYMENT_BLOCKERS.md, docs/STANDALONE_SYSTEM_PLAN.md')\"",
     "check:governance": "tsx scripts/checkGovernanceDocs.ts",
     "check:secrets": "tsx scripts/checkNoSecrets.ts",
