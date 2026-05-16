@@ -43,6 +43,7 @@ This repo is the content backbone used by app/admin/runtime repos. It centralize
 - `src/index.ts` — stable package exports
 - `src/seed/` — demo seed content and schema validation script
 - `scripts/contentIndex.ts` — deterministic generated content index
+- `scripts/checkGovernanceDocs.ts` — governance/docs integrity check used by `npm run check:governance`
 - `tests/` — smoke and unit tests
 - `apps/web/` — standalone Next.js runtime scaffold, public route/API surface, and web checks
 - `.github/` — issue templates, PR template, CODEOWNERS, and workflow governance
@@ -61,8 +62,11 @@ This repo is the content backbone used by app/admin/runtime repos. It centralize
 9. `npm test`
 10. `npm run build`
 11. `npm run seed:check`
-12. `npm run check`
-13. `npm run done`
+12. `npm run check:governance`
+13. `npm run check`
+14. `npm run done`
+
+`npm run check` includes `npm run check:governance`, so required launch-control docs, README references, PR/issue templates, CODEOWNERS, and critical evidence-gate language are verified automatically.
 
 ## Canonical web-runtime command order
 
