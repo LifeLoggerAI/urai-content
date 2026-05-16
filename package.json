@@ -35,8 +35,8 @@
     "web:test": "npm test --prefix apps/web",
     "web:build": "npm run build --prefix apps/web",
     "web:check": "npm run check --prefix apps/web",
-    "web:smoke:routes": "npm run smoke:routes --prefix apps/web",
-    "check:all": "npm run check && npm run web:check",
+    "web:smoke:routes": "npm run web:build && npm run smoke:routes --prefix apps/web",
+    "check:all": "npm run check && npm run web:check && npm run web:smoke:routes",
     "deploy": "node -e \"console.error('Deployment is intentionally blocked in urai-content: this repository is a content package/library. Use a consuming Firebase/Next deployment repo and follow DEPLOYMENT_BLOCKERS.md and docs/STANDALONE_SYSTEM_PLAN.md.'); process.exit(1)\""
   },
   "dependencies": {
