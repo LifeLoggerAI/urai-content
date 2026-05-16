@@ -1,6 +1,6 @@
 import 'server-only';
 
-export type ContentWorkflowStatus = 'draft' | 'review' | 'published' | 'archived';
+export type ContentWorkflowStatus = 'draft' | 'review' | 'approved' | 'published' | 'archived';
 export type ContentVisibility = 'public' | 'unlisted' | 'private';
 export type ContentType = 'story' | 'ritual' | 'narrator' | 'marketplace' | 'export';
 
@@ -33,8 +33,8 @@ export type ExportTemplate = Record<string, unknown> & { id: string };
 
 export type TelemetryEvent = {
   event: string;
-  userId?: string;
-  entityId?: string;
+  userId?: string | null;
+  entityId?: string | null;
   timestamp: string;
   metadata: Record<string, unknown>;
 };
