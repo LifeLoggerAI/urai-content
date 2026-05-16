@@ -4,6 +4,30 @@ import type { SitePage, SiteSection } from '@/lib/publicSiteContent';
 import { trackPublicEvent } from './AnalyticsTracker';
 import { TrackedLink } from './TrackedLink';
 
+type PublicPageProps = {
+  page?: SitePage;
+  eyebrow?: string;
+  title?: string;
+  lede?: string;
+  children?: React.ReactNode;
+};
+
+function resolvePage(props: PublicPageProps): SitePage {
+  if (props.page) return props.page;
+
+  return {
+    route: '',
+    eyebrow: props.eyebrow ?? 'URAI',
+    title: props.title ?? 'URAI',
+    lede: props.lede ?? '',
+    metadata: {
+      title: props.title ?? 'URAI',
+      description: props.lede ?? ''
+    },
+    sections: []
+  };
+}
+
 export function SiteHeader() {
   return (
     <header className="site-header">
@@ -41,7 +65,9 @@ export function SiteFooter() {
   );
 }
 
-export function PublicPage({ page, children }: { page: SitePage; children?: React.ReactNode }) {
+export function PublicPage(props: PublicPageProps) {
+  const page = resolvePage(props);
+
   return (
     <main>
       <div className="page-shell">
@@ -53,7 +79,7 @@ export function PublicPage({ page, children }: { page: SitePage; children?: Reac
         </section>
         {page.sections.length ? <SectionGrid sections={page.sections} /> : null}
         {page.faqs?.length ? <FaqList faqs={page.faqs} /> : null}
-        {children}
+        {props.children}
       </div>
     </main>
   );
