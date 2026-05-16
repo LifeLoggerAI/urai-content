@@ -12,6 +12,14 @@ const leadSchema = z.object({
   consentToUpdates: z.union([z.literal('true'), z.literal(true)]).optional()
 });
 
+function collectionForLeadType(leadType: z.infer<typeof leadSchema>['leadType']): string | null {
+  if (leadType === 'investor') return 'investor_inquiries';
+  if (leadType === 'partner') return 'partner_inquiries';
+  if (leadType === 'research') return 'research_inquiries';
+  if (leadType === 'demo') return 'demo_requests';
+  return null;
+}
+
 export async function POST(request: Request) {
   const parsed = leadSchema.safeParse(await request.json().catch(() => ({})));
 
@@ -52,12 +60,19 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true, stored: true, message: 'You are on the URAI waitlist. We will send updates as early access opens.' });
   }
 
-  await db.collection('leads').add({
+  const leadRecord = {
     ...baseRecord,
     leadType: input.leadType,
     sourceCTA: 'lead_form',
     consentToUpdates: Boolean(input.consentToUpdates)
-  });
+  };
+
+  await db.collection('leads').add(leadRecord);
+
+  const specializedCollection = collectionForLeadType(input.leadType);
+  if (specializedCollection) {
+    await db.collection(specializedCollection).add(leadRecord);
+  }
 
   return NextResponse.json({ ok: true, stored: true, message: 'Inquiry received. URAI Labs will review it.' });
 }
