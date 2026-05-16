@@ -1,6 +1,7 @@
 'use client';
 
 import { type FormEvent, useState } from 'react';
+import { trackPublicEvent } from './AnalyticsTracker';
 
 type FormStatus = 'idle' | 'loading' | 'success' | 'error';
 
@@ -10,6 +11,19 @@ type LeadFormProps = {
   description: string;
   defaultLeadType?: string;
 };
+
+function eventForLeadType(leadType: string, success: boolean): string {
+  if (!success) return kindFailureEvent(leadType);
+  if (leadType === 'demo') return 'demo_requested';
+  if (leadType === 'investor') return 'investor_inquiry_submitted';
+  if (leadType === 'partner') return 'partner_inquiry_submitted';
+  if (leadType === 'research') return 'research_inquiry_submitted';
+  return 'waitlist_submitted';
+}
+
+function kindFailureEvent(_leadType: string): string {
+  return 'waitlist_failed';
+}
 
 export function LeadForm({ kind, title, description, defaultLeadType = 'user' }: LeadFormProps) {
   const [status, setStatus] = useState<FormStatus>('idle');
@@ -22,6 +36,11 @@ export function LeadForm({ kind, title, description, defaultLeadType = 'user' }:
 
     const form = event.currentTarget;
     const payload = Object.fromEntries(new FormData(form).entries());
+    const leadType = String(payload.leadType ?? defaultLeadType);
+
+    if (kind === 'waitlist') {
+      trackPublicEvent('waitlist_started', { leadType });
+    }
 
     try {
       const response = await fetch('/api/leads', {
@@ -29,16 +48,22 @@ export function LeadForm({ kind, title, description, defaultLeadType = 'user' }:
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ kind, ...payload })
       });
-      const data = (await response.json()) as { ok?: boolean; message?: string };
+      const data = (await response.json()) as { ok?: boolean; message?: string; stored?: boolean };
 
       if (!response.ok || !data.ok) {
         throw new Error(data.message ?? 'Unable to submit right now.');
       }
 
+      trackPublicEvent(eventForLeadType(leadType, true), {
+        leadType,
+        kind,
+        stored: Boolean(data.stored)
+      });
       form.reset();
       setStatus('success');
       setMessage(data.message ?? 'Received.');
     } catch (error) {
+      trackPublicEvent(eventForLeadType(leadType, false), { leadType, kind });
       setStatus('error');
       setMessage(error instanceof Error ? error.message : 'Unable to submit right now.');
     }
