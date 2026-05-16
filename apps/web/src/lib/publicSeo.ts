@@ -11,188 +11,89 @@ export type PublicSeoMetadata = {
   };
 };
 
-export const publicSeoMetadata: Record<ImplementedPublicRoute, PublicSeoMetadata> = {
-  '/': {
-    route: '/',
-    title: 'URAI Content',
-    description: 'The publishing and media engine for the URAI Emotional OS.',
-    canonical: '/',
+function titleizeRoute(route: ImplementedPublicRoute): string {
+  if (route === '/') return 'URAI';
+  return route
+    .slice(1)
+    .split('-')
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+}
+
+function makeSeo(route: ImplementedPublicRoute, title = titleizeRoute(route), description?: string): PublicSeoMetadata {
+  const finalDescription =
+    description ??
+    `Explore ${title} on the URAI public site, a privacy-first personal intelligence platform for passive life data, emotional timelines, cognitive mirrors, and user-controlled data.`;
+
+  return {
+    route,
+    title,
+    description: finalDescription,
+    canonical: route,
     openGraph: {
-      title: 'URAI Content',
-      description: 'The publishing and media engine for the URAI Emotional OS.'
+      title,
+      description: finalDescription
     }
-  },
-  '/about': {
-    route: '/about',
-    title: 'About URAI Content',
-    description: 'Learn how URAI Content packages stories, rituals, narrator scripts, exports, and licensing for the URAI ecosystem.',
-    canonical: '/about',
-    openGraph: {
-      title: 'About URAI Content',
-      description: 'Learn how URAI Content supports the URAI ecosystem.'
-    }
-  },
-  '/content': {
-    route: '/content',
-    title: 'Content Catalog',
-    description: 'Explore public-safe URAI Content catalog records and canonical content surfaces.',
-    canonical: '/content',
-    openGraph: {
-      title: 'Content Catalog',
-      description: 'Explore public-safe URAI Content catalog records.'
-    }
-  },
-  '/stories': {
-    route: '/stories',
-    title: 'Stories',
-    description: 'Story templates and narrative systems for URAI Content.',
-    canonical: '/stories',
-    openGraph: {
-      title: 'Stories',
-      description: 'Story templates and narrative systems for URAI Content.'
-    }
-  },
-  '/rituals': {
-    route: '/rituals',
-    title: 'Rituals',
-    description: 'Ritual templates and emotional practice content for URAI Content.',
-    canonical: '/rituals',
-    openGraph: {
-      title: 'Rituals',
-      description: 'Ritual templates and emotional practice content for URAI Content.'
-    }
-  },
-  '/narrator': {
-    route: '/narrator',
-    title: 'Narrator',
-    description: 'Narrator prompt systems and reflection scaffolds for URAI Content.',
-    canonical: '/narrator',
-    openGraph: {
-      title: 'Narrator',
-      description: 'Narrator prompt systems for URAI Content.'
-    }
-  },
-  '/voice-packs': {
-    route: '/voice-packs',
-    title: 'Voice Packs',
-    description: 'Voice pack surfaces and scripted media bundles for URAI Content.',
-    canonical: '/voice-packs',
-    openGraph: {
-      title: 'Voice Packs',
-      description: 'Voice pack surfaces and media bundles for URAI Content.'
-    }
-  },
-  '/marketplace': {
-    route: '/marketplace',
-    title: 'Marketplace',
-    description: 'Marketplace readiness surface for URAI Content.',
-    canonical: '/marketplace',
-    openGraph: {
-      title: 'Marketplace',
-      description: 'Marketplace readiness surface for URAI Content.'
-    }
-  },
-  '/creator': {
-    route: '/creator',
-    title: 'Creator',
-    description: 'Creator program surface and submission pathway for URAI Content.',
-    canonical: '/creator',
-    openGraph: {
-      title: 'Creator',
-      description: 'Creator program surface and submission pathway for URAI Content.'
-    }
-  },
-  '/pricing': {
-    route: '/pricing',
-    title: 'Pricing',
-    description: 'Review planned URAI Content tiers, access levels, and production launch boundaries.',
-    canonical: '/pricing',
-    openGraph: {
-      title: 'Pricing',
-      description: 'Review planned URAI Content tiers and access levels.'
-    }
-  },
-  '/licensing': {
-    route: '/licensing',
-    title: 'Licensing',
-    description: 'Licensing surfaces and usage-right pathways for URAI Content.',
-    canonical: '/licensing',
-    openGraph: {
-      title: 'Licensing',
-      description: 'Licensing surfaces and usage-right pathways for URAI Content.'
-    }
-  },
-  '/exports': {
-    route: '/exports',
-    title: 'Exports',
-    description: 'Export pipeline surface and artifact workflow for URAI Content.',
-    canonical: '/exports',
-    openGraph: {
-      title: 'Exports',
-      description: 'Export pipeline surface and artifact workflow for URAI Content.'
-    }
-  },
-  '/demo': {
-    route: '/demo',
-    title: 'Demo',
-    description: 'Public demo route and safe preview surface for URAI Content.',
-    canonical: '/demo',
-    openGraph: {
-      title: 'Demo',
-      description: 'Public demo route and safe preview surface for URAI Content.'
-    }
-  },
-  '/roadmap': {
-    route: '/roadmap',
-    title: 'Roadmap',
-    description: 'Track URAI Content phases, blockers, and production-readiness evidence.',
-    canonical: '/roadmap',
-    openGraph: {
-      title: 'Roadmap',
-      description: 'Track URAI Content phases and production-readiness evidence.'
-    }
-  },
-  '/versions': {
-    route: '/versions',
-    title: 'Versions',
-    description: 'Version history and phase status evidence for URAI Content.',
-    canonical: '/versions',
-    openGraph: {
-      title: 'Versions',
-      description: 'Version history and phase status evidence for URAI Content.'
-    }
-  },
-  '/privacy': {
-    route: '/privacy',
-    title: 'Privacy',
-    description: 'Review URAI Content privacy, data-rights, and production launch boundaries.',
-    canonical: '/privacy',
-    openGraph: {
-      title: 'Privacy',
-      description: 'Review URAI Content privacy and data-rights boundaries.'
-    }
-  },
-  '/terms': {
-    route: '/terms',
-    title: 'Terms',
-    description: 'Terms surface and legal-readiness boundary for URAI Content.',
-    canonical: '/terms',
-    openGraph: {
-      title: 'Terms',
-      description: 'Terms surface and legal-readiness boundary for URAI Content.'
-    }
-  },
-  '/contact': {
-    route: '/contact',
-    title: 'Contact',
-    description: 'Contact URAI Content about partnerships, licensing, creator workflows, and launch readiness.',
-    canonical: '/contact',
-    openGraph: {
-      title: 'Contact',
-      description: 'Contact URAI Content about partnerships and launch readiness.'
-    }
-  }
+  };
+}
+
+const overrides: Partial<Record<ImplementedPublicRoute, PublicSeoMetadata>> = {
+  '/': makeSeo(
+    '/',
+    'URAI — A Privacy-First Life Operating System',
+    'URAI helps you understand your life through passive, privacy-first personal intelligence, emotional timelines, cognitive mirrors, and user-controlled data ownership.'
+  ),
+  '/about': makeSeo(
+    '/about',
+    'About URAI Labs',
+    'Learn why URAI Labs is building a passive, privacy-first life operating system for personal intelligence and user-owned data.'
+  ),
+  '/product': makeSeo(
+    '/product',
+    'Product',
+    'Explore URAI features including passive capture, Cognitive Mirror, Emotional Timeline, Memory Map, Council Companion, and data ownership.'
+  ),
+  '/how-it-works': makeSeo(
+    '/how-it-works',
+    'How URAI Works',
+    'See how URAI turns permission-based life signals into private reflections, emotional timelines, and user-controlled insights.'
+  ),
+  '/privacy': makeSeo(
+    '/privacy',
+    'Privacy',
+    'URAI privacy principles: consent-first access, user control, transparency, export/delete controls, and non-medical reflection.'
+  ),
+  '/data-ownership': makeSeo(
+    '/data-ownership',
+    'Data Ownership',
+    'Learn how URAI approaches user-controlled data, optional data participation, transparency, and consent.'
+  ),
+  '/demo': makeSeo(
+    '/demo',
+    'Demo',
+    'Preview URAI with public-safe sample data across Cognitive Mirror, Emotional Timeline, Memory Map, and Council reflections.'
+  ),
+  '/waitlist': makeSeo(
+    '/waitlist',
+    'Waitlist',
+    'Join the URAI waitlist for early access to passive personal intelligence, Cognitive Mirror, Emotional Timeline, and data ownership tools.'
+  ),
+  '/terms': makeSeo(
+    '/terms',
+    'Terms and Disclaimer',
+    'URAI legal and safety disclaimer covering non-medical insights, crisis support boundaries, and optional data participation.'
+  ),
+  '/contact': makeSeo(
+    '/contact',
+    'Contact',
+    'Contact URAI Labs for demo access, investor interest, partnerships, research collaboration, press, or general questions.'
+  )
 };
+
+export const publicSeoMetadata: Record<ImplementedPublicRoute, PublicSeoMetadata> =
+  Object.fromEntries(
+    implementedPublicRoutes.map((route) => [route, overrides[route] ?? makeSeo(route)])
+  ) as Record<ImplementedPublicRoute, PublicSeoMetadata>;
 
 export function getPublicSeoMetadata(route: ImplementedPublicRoute): PublicSeoMetadata {
   return publicSeoMetadata[route];
