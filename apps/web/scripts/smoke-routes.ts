@@ -1,9 +1,26 @@
 import { spawn, type ChildProcess } from 'node:child_process';
 import { implementedPublicRoutes } from '../src/lib/publicRoutes';
 
-const port = Number(process.env.WEB_SMOKE_PORT ?? 3000);
-const baseUrl = process.env.WEB_SMOKE_BASE_URL ?? `http://127.0.0.1:${port}`;
-const shouldManageServer = !process.env.WEB_SMOKE_BASE_URL && process.env.WEB_SMOKE_MANAGE_SERVER !== 'false';
+function getCliValue(name: string): string | undefined {
+  const argPrefix = `--${name}=`;
+  const inlineValue = process.argv.find((arg) => arg.startsWith(argPrefix));
+
+  if (inlineValue) {
+    return inlineValue.slice(argPrefix.length);
+  }
+
+  const valueIndex = process.argv.indexOf(`--${name}`);
+  if (valueIndex >= 0) {
+    return process.argv[valueIndex + 1];
+  }
+
+  return undefined;
+}
+
+const cliBaseUrl = getCliValue('base-url') ?? process.env.npm_config_base_url;
+const port = Number(getCliValue('port') ?? process.env.npm_config_port ?? process.env.WEB_SMOKE_PORT ?? 3000);
+const baseUrl = cliBaseUrl ?? process.env.WEB_SMOKE_BASE_URL ?? `http://127.0.0.1:${port}`;
+const shouldManageServer = !cliBaseUrl && !process.env.WEB_SMOKE_BASE_URL && process.env.WEB_SMOKE_MANAGE_SERVER !== 'false';
 const apiRoutes = ['/api/health', '/api/version', '/api/catalog', '/api/content', '/api/system/firebase'];
 const metadataRoutes = ['/robots.txt', '/sitemap.xml'];
 const routes = [...implementedPublicRoutes, ...metadataRoutes, ...apiRoutes];
@@ -67,7 +84,7 @@ async function main() {
 
   if (!(await probeServer())) {
     if (!shouldManageServer) {
-      throw new Error(`No server is listening at ${baseUrl}. Start the web app or unset WEB_SMOKE_BASE_URL so this script can manage Next locally.`);
+      throw new Error(`No server is listening at ${baseUrl}. Start the web app or omit --base-url / WEB_SMOKE_BASE_URL so this script can manage Next locally.`);
     }
 
     console.log(`No server detected at ${baseUrl}; starting Next locally for smoke test.`);
