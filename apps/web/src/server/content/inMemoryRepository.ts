@@ -25,6 +25,8 @@ export class InMemoryContentRepository implements ContentRepository {
   private readonly marketplaceItems = new Map<string, MarketplaceItem>();
   private readonly creatorSubmissions = new Map<string, CreatorSubmission>();
   private readonly exportTemplates = new Map<string, ExportTemplate>();
+  private readonly moderationQueue: ModerationQueueItem[] = [];
+  private readonly releases: PublishingRelease[] = [];
 
   async upsertContent(item: ContentItem): Promise<void> {
     this.content.set(item.id, item);
@@ -54,8 +56,13 @@ export class InMemoryContentRepository implements ContentRepository {
     return [...(this.versions.get(contentId) ?? [])];
   }
 
-  async logModeration(_item: ModerationQueueItem): Promise<void> {}
-  async logRelease(_release: PublishingRelease): Promise<void> {}
+  async logModeration(item: ModerationQueueItem): Promise<void> {
+    this.moderationQueue.push(item);
+  }
+
+  async logRelease(release: PublishingRelease): Promise<void> {
+    this.releases.push(release);
+  }
 
   async addTelemetry(event: TelemetryEvent): Promise<void> {
     this.telemetry.push(event);
