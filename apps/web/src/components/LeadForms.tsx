@@ -13,7 +13,7 @@ type LeadFormProps = {
 };
 
 function eventForLeadType(leadType: string, success: boolean): string {
-  if (!success) return kindFailureEvent(leadType);
+  if (!success) return kindFailureEvent();
   if (leadType === 'demo') return 'demo_requested';
   if (leadType === 'investor') return 'investor_inquiry_submitted';
   if (leadType === 'partner') return 'partner_inquiry_submitted';
@@ -21,7 +21,7 @@ function eventForLeadType(leadType: string, success: boolean): string {
   return 'waitlist_submitted';
 }
 
-function kindFailureEvent(_leadType: string): string {
+function kindFailureEvent(): string {
   return 'waitlist_failed';
 }
 
