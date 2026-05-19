@@ -1,0 +1,65 @@
+# URAI Content code ownership
+#
+# This file routes sensitive launch surfaces to explicit review ownership.
+# Replace @LifeLoggerAI with narrower teams/users when GitHub teams are available.
+
+# Default repository ownership
+* @LifeLoggerAI
+
+# GitHub governance, CI, PR/issue templates, and release controls
+.github/ @LifeLoggerAI
+.github/workflows/ @LifeLoggerAI
+.github/ISSUE_TEMPLATE/ @LifeLoggerAI
+.github/pull_request_template.md @LifeLoggerAI
+.github/CODEOWNERS @LifeLoggerAI
+
+# Operational truth, launch docs, blockers, route coverage, and release evidence
+docs/ @LifeLoggerAI
+URAI_FINAL_COMPLETION_AUDIT.md @LifeLoggerAI
+DEPLOYMENT_BLOCKERS.md @LifeLoggerAI
+README.md @LifeLoggerAI
+
+# Package source, schemas, contracts, validators, and exports
+src/ @LifeLoggerAI
+src/schemas/ @LifeLoggerAI
+src/backend/ @LifeLoggerAI
+src/lib/ @LifeLoggerAI
+src/index.ts @LifeLoggerAI
+scripts/ @LifeLoggerAI
+content/ @LifeLoggerAI
+
+# Tests and smoke coverage
+tests/ @LifeLoggerAI
+apps/web/tests/ @LifeLoggerAI
+apps/web/scripts/ @LifeLoggerAI
+
+# Web runtime, public routes, API routes, auth, admin, creator, marketplace, exports
+apps/web/ @LifeLoggerAI
+apps/web/app/ @LifeLoggerAI
+apps/web/app/api/ @LifeLoggerAI
+apps/web/app/admin/ @LifeLoggerAI
+apps/web/app/creator/ @LifeLoggerAI
+apps/web/app/dashboard/ @LifeLoggerAI
+apps/web/app/marketplace/ @LifeLoggerAI
+apps/web/app/exports/ @LifeLoggerAI
+apps/web/lib/ @LifeLoggerAI
+
+# Firebase, deployment, environment, and security-sensitive config
+firebase.json @LifeLoggerAI
+.firebaserc @LifeLoggerAI
+firestore.rules @LifeLoggerAI
+storage.rules @LifeLoggerAI
+firestore.indexes.json @LifeLoggerAI
+.env.example @LifeLoggerAI
+apps/web/.env.example @LifeLoggerAI
+next.config.* @LifeLoggerAI
+apps/web/next.config.* @LifeLoggerAI
+
+# Package manager and build surfaces
+package.json @LifeLoggerAI
+package-lock.json @LifeLoggerAI
+pnpm-lock.yaml @LifeLoggerAI
+tsconfig*.json @LifeLoggerAI
+apps/web/package.json @LifeLoggerAI
+apps/web/package-lock.json @LifeLoggerAI
+apps/web/tsconfig*.json @LifeLoggerAI

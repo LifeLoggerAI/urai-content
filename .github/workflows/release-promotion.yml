@@ -1,0 +1,112 @@
+name: Release promotion verification
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Target environment to verify.
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
+      base_url:
+        description: Deployed base URL to verify.
+        required: true
+        type: string
+      rollback_sha:
+        description: Expected rollback SHA for rollback smoke verification.
+        required: true
+        type: string
+      send_alert:
+        description: Send live deployment alert webhook instead of dry run.
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  release-promotion:
+    name: Verify release promotion gate
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install package dependencies
+        run: npm ci
+
+      - name: Run package verification
+        run: npm run done
+
+      - name: Verify provider evidence and observability
+        env:
+          URAI_CONTENT_BASE_URL: ${{ inputs.base_url }}
+          URAI_EXPECTED_RELEASE_SHA: ${{ inputs.rollback_sha }}
+          URAI_FIREBASE_PROJECT_ID: ${{ secrets.URAI_FIREBASE_PROJECT_ID }}
+          URAI_FIREBASE_HOSTING_TARGET: ${{ secrets.URAI_FIREBASE_HOSTING_TARGET }}
+          URAI_DNS_HOSTNAME: ${{ secrets.URAI_DNS_HOSTNAME }}
+          URAI_SSL_EVIDENCE_URL: ${{ secrets.URAI_SSL_EVIDENCE_URL }}
+          URAI_UPTIME_MONITOR_URL: ${{ secrets.URAI_UPTIME_MONITOR_URL }}
+          URAI_ERROR_MONITORING_URL: ${{ secrets.URAI_ERROR_MONITORING_URL }}
+          URAI_ALERT_OWNER: ${{ secrets.URAI_ALERT_OWNER }}
+          URAI_ROLLBACK_RUNBOOK_URL: ${{ secrets.URAI_ROLLBACK_RUNBOOK_URL }}
+          URAI_DEPLOYMENT_ALERT_URL: ${{ secrets.URAI_DEPLOYMENT_ALERT_URL }}
+        run: npm run check:release-env
+
+      - name: Run production smoke
+        env:
+          URAI_CONTENT_BASE_URL: ${{ inputs.base_url }}
+        run: npm run smoke:production
+
+      - name: Run rollback smoke
+        env:
+          URAI_CONTENT_BASE_URL: ${{ inputs.base_url }}
+          URAI_EXPECTED_RELEASE_SHA: ${{ inputs.rollback_sha }}
+        run: npm run smoke:rollback
+
+      - name: Install web dependencies
+        run: npm run web:install
+
+      - name: Run web check
+        run: npm run web:check
+
+      - name: Run deployed route smoke
+        run: npm run web:smoke:routes -- --base-url=${{ inputs.base_url }}
+
+      - name: Install Playwright browser
+        working-directory: apps/web
+        run: npm run e2e:install
+
+      - name: Run deployed browser E2E
+        working-directory: apps/web
+        env:
+          URAI_CONTENT_BASE_URL: ${{ inputs.base_url }}
+          PLAYWRIGHT_SKIP_WEB_SERVER: '1'
+        run: npm run e2e
+
+      - name: Send deployment alert
+        if: ${{ inputs.send_alert }}
+        env:
+          URAI_CONTENT_BASE_URL: ${{ inputs.base_url }}
+          URAI_EXPECTED_RELEASE_SHA: ${{ github.sha }}
+          URAI_DEPLOYMENT_ALERT_URL: ${{ secrets.URAI_DEPLOYMENT_ALERT_URL }}
+          URAI_ALERT_DRY_RUN: '0'
+        run: npm run check:alerts -- --send
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-promotion-playwright-report
+          path: apps/web/playwright-report
+          if-no-files-found: ignore
