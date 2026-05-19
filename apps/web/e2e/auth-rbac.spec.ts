@@ -23,4 +23,4 @@ for (const route of protectedRoutes) {
 
     expect(failClosed || status === 401 || status === 403).toBeTruthy();
   });
-});
+}
