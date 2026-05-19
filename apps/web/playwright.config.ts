@@ -38,7 +38,12 @@ export default defineConfig({
     {
       name: 'chromium-tablet',
       use: {
-        ...devices['iPad Pro 11']
+        browserName: 'chromium',
+        viewport: { width: 834, height: 1194 },
+        isMobile: true,
+        hasTouch: true,
+        userAgent:
+          'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36'
       }
     }
   ],

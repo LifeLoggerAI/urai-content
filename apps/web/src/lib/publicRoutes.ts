@@ -1,6 +1,20 @@
 export const implementedPublicRoutes = [
   '/',
   '/about',
+  '/product',
+  '/how-it-works',
+  '/privacy',
+  '/data-ownership',
+  '/users',
+  '/researchers',
+  '/partners',
+  '/investors',
+  '/demo',
+  '/waitlist',
+  '/faq',
+  '/terms',
+  '/updates',
+  '/contact',
   '/content',
   '/stories',
   '/rituals',
@@ -11,12 +25,8 @@ export const implementedPublicRoutes = [
   '/pricing',
   '/licensing',
   '/exports',
-  '/demo',
   '/roadmap',
-  '/versions',
-  '/privacy',
-  '/terms',
-  '/contact'
+  '/versions'
 ] as const;
 
 export type ImplementedPublicRoute = (typeof implementedPublicRoutes)[number];

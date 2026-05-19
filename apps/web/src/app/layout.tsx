@@ -1,22 +1,25 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { AnalyticsTracker } from '@/components/AnalyticsTracker';
+import { SiteFooter, SiteHeader } from '@/components/PublicPage';
 import { webEnv } from '@/lib/env';
+import { defaultSeo } from '@/lib/publicSiteContent';
 
 export const metadata: Metadata = {
   metadataBase: new URL(webEnv.NEXT_PUBLIC_SITE_URL),
   title: {
-    default: 'URAI Content',
-    template: '%s | URAI Content'
+    default: defaultSeo.title,
+    template: '%s | URAI'
   },
-  description: 'The publishing and media engine for the URAI Emotional OS.',
+  description: defaultSeo.description,
   alternates: {
     canonical: '/'
   },
   openGraph: {
-    title: 'URAI Content',
-    description: 'The publishing and media engine for the URAI Emotional OS.',
+    title: defaultSeo.title,
+    description: defaultSeo.description,
     url: webEnv.NEXT_PUBLIC_SITE_URL,
-    siteName: 'URAI Content',
+    siteName: 'URAI',
     type: 'website'
   }
 };
@@ -24,7 +27,12 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <AnalyticsTracker />
+        <SiteHeader />
+        {children}
+        <SiteFooter />
+      </body>
     </html>
   );
 }

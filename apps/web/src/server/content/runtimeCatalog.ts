@@ -1,5 +1,5 @@
 import 'server-only';
-import type { ContentItem } from '../../../../../src/schemas/content';
+import type { ContentItem } from './types';
 import { listCatalogItems, getCatalogItemBySlug, normalizeSlug, summarizeCatalogItem, type CatalogItem } from '@/lib/catalog';
 import { getCatalogSourceDescription, getCatalogSourceMode } from './catalogSource';
 import { createRuntimeContentRepository, getRuntimeContentMode } from './service';

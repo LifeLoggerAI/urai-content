@@ -1,7 +1,6 @@
 import 'server-only';
-import { ContentService } from '../../../../../src/backend/contentService';
-import type { ContentRepository } from '../../../../../src/backend/types';
-import { InMemoryContentRepository } from '../../../../../src/backend/inMemoryRepository';
+import type { ContentRepository } from './types';
+import { InMemoryContentRepository } from './inMemoryRepository';
 import { createFirestoreContentRepository } from '../firebase/contentRepository';
 import { getFirebaseAdminDb, isFirebaseAdminConfigured } from '../firebase/admin';
 
@@ -17,8 +16,4 @@ export function createRuntimeContentRepository(): ContentRepository {
   }
 
   return new InMemoryContentRepository();
-}
-
-export function createRuntimeContentService(): ContentService {
-  return new ContentService(createRuntimeContentRepository());
 }

@@ -27,9 +27,6 @@ jobs:
   web-e2e:
     name: Playwright browser E2E
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: apps/web
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -39,27 +36,32 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: apps/web/package-lock.json
+          cache-dependency-path: |
+            package-lock.json
+            apps/web/package-lock.json
 
-      - name: Install dependencies
+      - name: Install root dependencies
         run: npm ci
 
+      - name: Install web dependencies
+        run: npm run web:install
+
       - name: Install Playwright browser
-        run: npm run e2e:install
+        run: npm run e2e:install --prefix apps/web
 
       - name: Typecheck, lint, unit, build
-        run: npm run check
+        run: npm run web:check
 
       - name: Run browser E2E locally
         if: ${{ github.event.inputs.base_url == '' || github.event.inputs.base_url == null }}
-        run: npm run e2e
+        run: npm run web:e2e
 
       - name: Run browser E2E against deployed URL
         if: ${{ github.event.inputs.base_url != '' && github.event.inputs.base_url != null }}
         env:
           URAI_CONTENT_BASE_URL: ${{ github.event.inputs.base_url }}
           PLAYWRIGHT_SKIP_WEB_SERVER: '1'
-        run: npm run e2e
+        run: npm run web:e2e
 
       - name: Upload Playwright report
         if: always()

@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run",
+    "test": "vitest run tests",
     "smoke:routes": "tsx scripts/smoke-routes.ts",
     "e2e": "playwright test",
     "e2e:install": "playwright install --with-deps chromium",

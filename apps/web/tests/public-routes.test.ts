@@ -4,6 +4,20 @@ import { implementedPublicRoutes } from '../src/lib/publicRoutes';
 const plannedPublicRoutes = [
   '/',
   '/about',
+  '/product',
+  '/how-it-works',
+  '/privacy',
+  '/data-ownership',
+  '/users',
+  '/researchers',
+  '/partners',
+  '/investors',
+  '/demo',
+  '/waitlist',
+  '/faq',
+  '/terms',
+  '/updates',
+  '/contact',
   '/content',
   '/stories',
   '/rituals',
@@ -14,12 +28,8 @@ const plannedPublicRoutes = [
   '/pricing',
   '/licensing',
   '/exports',
-  '/demo',
   '/roadmap',
-  '/versions',
-  '/privacy',
-  '/terms',
-  '/contact'
+  '/versions'
 ] as const;
 
 describe('implemented public routes', () => {
