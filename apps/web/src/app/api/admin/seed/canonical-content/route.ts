@@ -27,18 +27,18 @@ async function parseBody(request: Request): Promise<SeedRequestBody> {
   return (await request.json()) as SeedRequestBody;
 }
 
-function authorizeSeedRequest(request: Request, providedToken: string | null) {
+async function authorizeSeedRequest(request: Request, providedToken: string | null) {
   if (verifySeedToken(providedToken)) {
     return { ok: true } as const;
   }
 
-  return requireAdmin(getRequestSession(request));
+  return requireAdmin(await getRequestSession(request));
 }
 
 export async function POST(request: Request) {
   const body = await parseBody(request);
   const providedToken = body.token ?? getBearerToken(request);
-  const authorization = authorizeSeedRequest(request, providedToken);
+  const authorization = await authorizeSeedRequest(request, providedToken);
 
   if (!authorization.ok) {
     return NextResponse.json(getAuthFailureBody(authorization.reason), { status: getAuthFailureStatus(authorization.reason) });
