@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { GET as getAdminCreatorSubmission } from '../src/app/api/admin/creator-submissions/[id]/route';
 import { POST as postCreatorSubmission } from '../src/app/api/creator/submissions/route';
 import { resetRuntimeMemoryRepositoryForTests } from '../src/server/content/service';
+import { setNodeEnvForTests } from './testEnv';
 
 type DetailRouteContext = Parameters<typeof getAdminCreatorSubmission>[1];
 
@@ -23,7 +24,7 @@ function adminHeaders() {
 }
 
 afterEach(() => {
-  process.env.NODE_ENV = originalNodeEnv;
+  setNodeEnvForTests(originalNodeEnv);
   resetRuntimeMemoryRepositoryForTests();
 });
 
@@ -37,7 +38,7 @@ describe('admin creator submission detail route', () => {
   });
 
   it('returns 403 for non-admin users', async () => {
-    process.env.NODE_ENV = 'test';
+    setNodeEnvForTests('test');
 
     const response = await getAdminCreatorSubmission(new Request('http://localhost/api/admin/creator-submissions/detail-submission-1', {
       headers: {
@@ -52,7 +53,7 @@ describe('admin creator submission detail route', () => {
   });
 
   it('returns 404 when the submission does not exist', async () => {
-    process.env.NODE_ENV = 'test';
+    setNodeEnvForTests('test');
 
     const response = await getAdminCreatorSubmission(new Request('http://localhost/api/admin/creator-submissions/detail-submission-1', {
       headers: adminHeaders()
@@ -64,7 +65,7 @@ describe('admin creator submission detail route', () => {
   });
 
   it('returns a submission for admin users', async () => {
-    process.env.NODE_ENV = 'test';
+    setNodeEnvForTests('test');
 
     await postCreatorSubmission(new Request('http://localhost/api/creator/submissions', {
       method: 'POST',
