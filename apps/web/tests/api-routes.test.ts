@@ -7,6 +7,7 @@ import { POST as postModerateCreatorSubmission } from '../src/app/api/admin/crea
 import { POST as postSeedCanonicalContent } from '../src/app/api/admin/seed/canonical-content/route';
 import { GET as getCreatorSubmissions, POST as postCreatorSubmission } from '../src/app/api/creator/submissions/route';
 import { GET as getVersion } from '../src/app/api/version/route';
+import { setNodeEnvForTests } from './testEnv';
 
 type ContentRouteContext = Parameters<typeof getContent>[1];
 type ModerationRouteContext = Parameters<typeof postModerateCreatorSubmission>[1];
@@ -23,7 +24,7 @@ async function readJson(response: Response): Promise<unknown> {
 }
 
 function restoreEnv() {
-  process.env.NODE_ENV = originalNodeEnv;
+  setNodeEnvForTests(originalNodeEnv);
 
   if (originalHeaderAuth === undefined) delete process.env.URAI_ENABLE_HEADER_AUTH;
   else process.env.URAI_ENABLE_HEADER_AUTH = originalHeaderAuth;
@@ -103,7 +104,7 @@ describe('admin canonical seed API route authorization', () => {
   });
 
   it('returns 403 for a non-admin session', async () => {
-    process.env.NODE_ENV = 'test';
+    setNodeEnvForTests('test');
 
     const response = await postSeedCanonicalContent(new Request('http://localhost/api/admin/seed/canonical-content', {
       method: 'POST', headers: { 'x-urai-user-id': 'user-1', 'x-urai-role': 'user' }
@@ -115,7 +116,7 @@ describe('admin canonical seed API route authorization', () => {
   });
 
   it('allows admin authorization before failing on missing Firebase configuration', async () => {
-    process.env.NODE_ENV = 'test';
+    setNodeEnvForTests('test');
     delete process.env.FIREBASE_PROJECT_ID;
     delete process.env.FIREBASE_CLIENT_EMAIL;
     delete process.env.FIREBASE_PRIVATE_KEY;
@@ -178,7 +179,7 @@ describe('creator submissions API route authorization', () => {
   });
 
   it('returns 403 for non-creator users', async () => {
-    process.env.NODE_ENV = 'test';
+    setNodeEnvForTests('test');
     const response = await postCreatorSubmission(makeCreatorPostRequest(validSubmissionBody, { 'x-urai-user-id': 'creator-1', 'x-urai-role': 'user' }));
     const body = await readJson(response);
 
@@ -187,7 +188,7 @@ describe('creator submissions API route authorization', () => {
   });
 
   it('returns 403 when a creator submits for another creator', async () => {
-    process.env.NODE_ENV = 'test';
+    setNodeEnvForTests('test');
     const response = await postCreatorSubmission(makeCreatorPostRequest(validSubmissionBody, { 'x-urai-user-id': 'different-creator', 'x-urai-role': 'creator' }));
     const body = await readJson(response);
 
@@ -196,7 +197,7 @@ describe('creator submissions API route authorization', () => {
   });
 
   it('creates a submission for a creator submitting for themselves', async () => {
-    process.env.NODE_ENV = 'test';
+    setNodeEnvForTests('test');
     const response = await postCreatorSubmission(makeCreatorPostRequest(validSubmissionBody, { 'x-urai-user-id': 'creator-1', 'x-urai-role': 'creator' }));
     const body = await readJson(response) as { ok?: boolean; submission?: { id?: string; creatorId?: string; status?: string } };
 
@@ -214,7 +215,7 @@ describe('creator submissions API route authorization', () => {
   });
 
   it('returns 403 when listing submissions as a non-creator user', async () => {
-    process.env.NODE_ENV = 'test';
+    setNodeEnvForTests('test');
     const response = await getCreatorSubmissions(makeCreatorGetRequest({ 'x-urai-user-id': 'user-1', 'x-urai-role': 'user' }));
     const body = await readJson(response);
 
@@ -223,7 +224,7 @@ describe('creator submissions API route authorization', () => {
   });
 
   it('lists only the current creator submissions', async () => {
-    process.env.NODE_ENV = 'test';
+    setNodeEnvForTests('test');
 
     await postCreatorSubmission(makeCreatorPostRequest(validSubmissionBody, { 'x-urai-user-id': 'creator-1', 'x-urai-role': 'creator' }));
     await postCreatorSubmission(makeCreatorPostRequest({ ...validSubmissionBody, id: 'submission-2', creatorId: 'creator-2' }, { 'x-urai-user-id': 'creator-2', 'x-urai-role': 'creator' }));
@@ -249,7 +250,7 @@ describe('admin creator submission moderation API route authorization', () => {
   }
 
   async function createModerationFixture() {
-    process.env.NODE_ENV = 'test';
+    setNodeEnvForTests('test');
     await postCreatorSubmission(new Request('http://localhost/api/creator/submissions', {
       method: 'POST',
       headers: { 'content-type': 'application/json', 'x-urai-user-id': 'creator-1', 'x-urai-role': 'creator' },
@@ -269,7 +270,7 @@ describe('admin creator submission moderation API route authorization', () => {
   });
 
   it('returns 403 when moderation is attempted by a non-admin', async () => {
-    process.env.NODE_ENV = 'test';
+    setNodeEnvForTests('test');
     const response = await postModerateCreatorSubmission(makeModerationRequest({ decision: 'approved' }, { 'x-urai-user-id': 'creator-1', 'x-urai-role': 'creator' }), context);
     const body = await readJson(response);
 
@@ -278,7 +279,7 @@ describe('admin creator submission moderation API route authorization', () => {
   });
 
   it('returns 400 for invalid moderation decisions', async () => {
-    process.env.NODE_ENV = 'test';
+    setNodeEnvForTests('test');
     const response = await postModerateCreatorSubmission(makeModerationRequest({ decision: 'publish' }, { 'x-urai-user-id': 'admin-1', 'x-urai-role': 'admin' }), context);
     const body = await readJson(response);
 
@@ -287,7 +288,7 @@ describe('admin creator submission moderation API route authorization', () => {
   });
 
   it('returns 404 when the target submission does not exist', async () => {
-    process.env.NODE_ENV = 'test';
+    setNodeEnvForTests('test');
     const response = await postModerateCreatorSubmission(makeModerationRequest({ decision: 'approved' }, { 'x-urai-user-id': 'admin-1', 'x-urai-role': 'admin' }), context);
     const body = await readJson(response);
 
