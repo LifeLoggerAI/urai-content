@@ -96,6 +96,24 @@ describe('content service', () => {
     expect(await service.searchContent('missing', 'public')).toHaveLength(0);
   });
 
+  it('returns only published items from the published content search', async () => {
+    const repo = new InMemoryContentRepository();
+    const service = new ContentService(repo);
+
+    await service.create(makeContentItem({ id: 'draft-1', slug: 'draft-insight', status: 'draft', visibility: 'public' }));
+    await service.create(makeContentItem({ id: 'review-1', slug: 'review-insight', status: 'review', visibility: 'public' }));
+    await service.create(makeContentItem({ id: 'approved-1', slug: 'approved-insight', status: 'approved', visibility: 'public' }));
+    await service.create(makeContentItem({ id: 'published-1', slug: 'published-insight', status: 'published', visibility: 'public' }));
+    await service.create(makeContentItem({ id: 'archived-1', slug: 'archived-insight', status: 'archived', visibility: 'public' }));
+    await service.create(makeContentItem({ id: 'private-published-1', slug: 'private-published-insight', status: 'published', visibility: 'private' }));
+
+    const publicResults = await service.searchPublishedContent('insight', 'public');
+    const privateResults = await service.searchPublishedContent('insight', 'private');
+
+    expect(publicResults.map((item) => item.id)).toEqual(['published-1']);
+    expect(privateResults.map((item) => item.id)).toEqual(['private-published-1']);
+  });
+
   it('enforces entitlement tiers', async () => {
     const repo = new InMemoryContentRepository();
     const service = new ContentService(repo);
