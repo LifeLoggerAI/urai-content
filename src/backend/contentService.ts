@@ -71,7 +71,15 @@ export class ContentService {
   async searchContent(query: string, visibility: ContentItem['visibility'] = 'public'): Promise<ContentItem[]> {
     const list = await this.repo.listContent();
     const q = query.toLowerCase().trim();
-    return list.filter((item) => item.visibility === visibility && [item.title, item.body, item.slug, ...item.tags].join(' ').toLowerCase().includes(q));
+    return list.filter((item) => this.matchesContentQuery(item, q) && item.visibility === visibility);
+  }
+
+  async searchPublishedContent(query: string, visibility: ContentItem['visibility'] = 'public'): Promise<ContentItem[]> {
+    const list = await this.repo.listContent();
+    const q = query.toLowerCase().trim();
+    return list.filter((item) =>
+      this.matchesContentQuery(item, q) && item.visibility === visibility && item.status === 'published'
+    );
   }
 
   async logModeration(input: unknown): Promise<void> { await this.repo.logModeration(moderationQueueSchema.parse(input)); }
@@ -82,4 +90,8 @@ export class ContentService {
   async upsertMarketplaceItem(input: unknown): Promise<void> { await this.repo.upsertMarketplaceItem(marketplaceItemSchema.parse(input)); }
   async upsertCreatorSubmission(input: unknown): Promise<void> { await this.repo.upsertCreatorSubmission(creatorSubmissionSchema.parse(input)); }
   async upsertExportTemplate(input: unknown): Promise<void> { await this.repo.upsertExportTemplate(exportTemplateSchema.parse(input)); }
+
+  private matchesContentQuery(item: ContentItem, normalizedQuery: string): boolean {
+    return [item.title, item.body, item.slug, ...item.tags].join(' ').toLowerCase().includes(normalizedQuery);
+  }
 }
