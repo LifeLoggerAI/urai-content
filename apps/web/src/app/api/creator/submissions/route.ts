@@ -19,12 +19,7 @@ const creatorSubmissionRequestSchema = z.object({
 type CreatorSubmissionRequest = z.infer<typeof creatorSubmissionRequestSchema>;
 
 function slugify(value: string): string {
-  return value
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .slice(0, 96) || 'submission';
+  return value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 96) || 'submission';
 }
 
 function createSubmissionId(input: CreatorSubmissionRequest): string {
@@ -32,16 +27,13 @@ function createSubmissionId(input: CreatorSubmissionRequest): string {
 }
 
 async function parseBody(request: Request): Promise<CreatorSubmissionRequest | null> {
-  if (!request.headers.get('content-type')?.includes('application/json')) {
-    return null;
-  }
-
+  if (!request.headers.get('content-type')?.includes('application/json')) return null;
   const parsed = creatorSubmissionRequestSchema.safeParse(await request.json());
   return parsed.success ? parsed.data : null;
 }
 
 export async function GET(request: Request) {
-  const session = getRequestSession(request);
+  const session = await getRequestSession(request);
 
   if (!session) {
     return NextResponse.json(getAuthFailureBody('unauthenticated'), { status: getAuthFailureStatus('unauthenticated') });
@@ -53,28 +45,17 @@ export async function GET(request: Request) {
 
   const submissions = await createRuntimeContentRepository().listCreatorSubmissions(session.uid);
 
-  return NextResponse.json({
-    ok: true,
-    creatorId: session.uid,
-    count: submissions.length,
-    submissions
-  });
+  return NextResponse.json({ ok: true, creatorId: session.uid, count: submissions.length, submissions });
 }
 
 export async function POST(request: Request) {
   const body = await parseBody(request);
 
   if (!body) {
-    return NextResponse.json(
-      {
-        error: 'invalid_request',
-        message: 'Creator submissions require a valid JSON body.'
-      },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: 'invalid_request', message: 'Creator submissions require a valid JSON body.' }, { status: 400 });
   }
 
-  const authorization = canCreateCreatorSubmission(getRequestSession(request), body.creatorId);
+  const authorization = canCreateCreatorSubmission(await getRequestSession(request), body.creatorId);
 
   if (!authorization.ok) {
     return NextResponse.json(getAuthFailureBody(authorization.reason), { status: getAuthFailureStatus(authorization.reason) });
@@ -96,8 +77,5 @@ export async function POST(request: Request) {
 
   await createRuntimeContentRepository().upsertCreatorSubmission(submission);
 
-  return NextResponse.json({
-    ok: true,
-    submission
-  }, { status: 201 });
+  return NextResponse.json({ ok: true, submission }, { status: 201 });
 }
