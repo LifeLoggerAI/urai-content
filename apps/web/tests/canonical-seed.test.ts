@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { InMemoryContentRepository } from '../../../src/backend/inMemoryRepository';
+import { InMemoryContentRepository } from '../src/server/content/inMemoryRepository';
 import {
   catalogItemToContentItem,
   listCanonicalSeedContentItems,
