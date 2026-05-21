@@ -4,7 +4,6 @@ import { getFirebaseAdminAuth, isFirebaseAdminConfigured } from '../firebase/adm
 
 const USER_ID_HEADER = 'x-urai-user-id';
 const ROLE_HEADER = 'x-urai-role';
-const HEADER_AUTH_ENABLED_ENV = 'URAI_ENABLE_HEADER_AUTH';
 
 type DecodedIdTokenLike = {
   uid: string;
@@ -13,7 +12,7 @@ type DecodedIdTokenLike = {
 };
 
 function isHeaderAuthEnabled(): boolean {
-  return process.env.NODE_ENV !== 'production' || process.env[HEADER_AUTH_ENABLED_ENV] === '1';
+  return process.env.NODE_ENV !== 'production';
 }
 
 function getBearerToken(request: Request): string | null {
