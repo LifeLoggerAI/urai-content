@@ -80,6 +80,10 @@ export function createFirestoreContentRepository(db: FirestoreLike): ContentRepo
     async upsertRitualTemplate(template: RitualTemplate): Promise<void> { await collection(db, FIRESTORE_COLLECTIONS.ritualTemplates).doc(template.id).set(asRecord(template), { merge: true }); },
     async upsertMarketplaceItem(item: MarketplaceItem): Promise<void> { await collection(db, FIRESTORE_COLLECTIONS.marketplaceItems).doc(item.id).set(asRecord(item), { merge: true }); },
     async upsertCreatorSubmission(item: CreatorSubmission): Promise<void> { await collection(db, FIRESTORE_COLLECTIONS.creatorSubmissions).doc(item.id).set(asRecord(item), { merge: true }); },
+    async getCreatorSubmission(id: string): Promise<CreatorSubmission | null> {
+      const snap = await collection(db, FIRESTORE_COLLECTIONS.creatorSubmissions).doc(id).get();
+      return snap.exists && snap.data() ? asType<CreatorSubmission>(snap.data()!) : null;
+    },
     async listCreatorSubmissions(creatorId: string): Promise<CreatorSubmission[]> {
       const snap = await collection(db, FIRESTORE_COLLECTIONS.creatorSubmissions).where('creatorId', '==', creatorId).get();
       return sortSubmissions(snap.docs.map((doc) => asType<CreatorSubmission>(doc.data())));
