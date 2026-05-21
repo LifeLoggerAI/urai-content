@@ -4,6 +4,7 @@ import { GET as getCatalog } from '../src/app/api/catalog/route';
 import { GET as getContent } from '../src/app/api/content/[[...slug]]/route';
 import { GET as getHealth } from '../src/app/api/health/route';
 import { POST as postSeedCanonicalContent } from '../src/app/api/admin/seed/canonical-content/route';
+import { POST as postCreatorSubmission } from '../src/app/api/creator/submissions/route';
 import { GET as getVersion } from '../src/app/api/version/route';
 
 type ContentRouteContext = Parameters<typeof getContent>[1];
@@ -179,6 +180,89 @@ describe('admin canonical seed API route authorization', () => {
     expect(body).toEqual({
       error: 'firebase_not_configured',
       message: 'Firebase Admin must be configured before canonical content can be seeded.'
+    });
+  });
+});
+
+describe('creator submissions API route authorization', () => {
+  const validSubmissionBody = {
+    id: 'submission-1',
+    creatorId: 'creator-1',
+    title: 'Moonlit Ritual Draft',
+    body: 'A creator-owned content submission.',
+    contentType: 'story',
+    tags: ['moonlit'],
+    locale: 'en-US'
+  };
+
+  function makeCreatorRequest(body: unknown, headers: Record<string, string> = {}) {
+    return new Request('http://localhost/api/creator/submissions', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        ...headers
+      },
+      body: JSON.stringify(body)
+    });
+  }
+
+  it('returns 400 for invalid submission bodies before auth work', async () => {
+    const response = await postCreatorSubmission(makeCreatorRequest({ creatorId: 'creator-1' }));
+    const body = await readJson(response);
+
+    expect(response.status).toBe(400);
+    expect(body).toEqual({ error: 'invalid_request', message: 'Creator submissions require a valid JSON body.' });
+  });
+
+  it('returns 401 for anonymous creator submissions', async () => {
+    const response = await postCreatorSubmission(makeCreatorRequest(validSubmissionBody));
+    const body = await readJson(response);
+
+    expect(response.status).toBe(401);
+    expect(body).toEqual({ error: 'unauthenticated', message: 'Authentication is required.' });
+  });
+
+  it('returns 403 for non-creator users', async () => {
+    process.env.NODE_ENV = 'test';
+
+    const response = await postCreatorSubmission(makeCreatorRequest(validSubmissionBody, {
+      'x-urai-user-id': 'creator-1',
+      'x-urai-role': 'user'
+    }));
+    const body = await readJson(response);
+
+    expect(response.status).toBe(403);
+    expect(body).toEqual({ error: 'forbidden', message: 'You do not have permission to perform this action.' });
+  });
+
+  it('returns 403 when a creator submits for another creator', async () => {
+    process.env.NODE_ENV = 'test';
+
+    const response = await postCreatorSubmission(makeCreatorRequest(validSubmissionBody, {
+      'x-urai-user-id': 'different-creator',
+      'x-urai-role': 'creator'
+    }));
+    const body = await readJson(response);
+
+    expect(response.status).toBe(403);
+    expect(body).toEqual({ error: 'forbidden', message: 'You do not have permission to perform this action.' });
+  });
+
+  it('creates a submission for a creator submitting for themselves', async () => {
+    process.env.NODE_ENV = 'test';
+
+    const response = await postCreatorSubmission(makeCreatorRequest(validSubmissionBody, {
+      'x-urai-user-id': 'creator-1',
+      'x-urai-role': 'creator'
+    }));
+    const body = await readJson(response) as { ok?: boolean; submission?: { id?: string; creatorId?: string; status?: string } };
+
+    expect(response.status).toBe(201);
+    expect(body.ok).toBe(true);
+    expect(body.submission).toMatchObject({
+      id: 'submission-1',
+      creatorId: 'creator-1',
+      status: 'submitted'
     });
   });
 });
