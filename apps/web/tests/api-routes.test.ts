@@ -4,7 +4,7 @@ import { GET as getCatalog } from '../src/app/api/catalog/route';
 import { GET as getContent } from '../src/app/api/content/[[...slug]]/route';
 import { GET as getHealth } from '../src/app/api/health/route';
 import { POST as postSeedCanonicalContent } from '../src/app/api/admin/seed/canonical-content/route';
-import { POST as postCreatorSubmission } from '../src/app/api/creator/submissions/route';
+import { GET as getCreatorSubmissions, POST as postCreatorSubmission } from '../src/app/api/creator/submissions/route';
 import { GET as getVersion } from '../src/app/api/version/route';
 
 type ContentRouteContext = Parameters<typeof getContent>[1];
@@ -49,11 +49,7 @@ describe('runtime API route handlers', () => {
     const body = await readJson(response);
 
     expect(response.status).toBe(200);
-    expect(body).toMatchObject({
-      ok: true,
-      service: 'urai-content-web',
-      status: 'healthy'
-    });
+    expect(body).toMatchObject({ ok: true, service: 'urai-content-web', status: 'healthy' });
     expect(typeof (body as { timestamp?: unknown }).timestamp).toBe('string');
   });
 
@@ -62,21 +58,13 @@ describe('runtime API route handlers', () => {
     const body = await readJson(response);
 
     expect(response.status).toBe(200);
-    expect(body).toMatchObject({
-      service: 'urai-content-web',
-      appVersion: '0.1.0',
-      packageName: 'urai-content'
-    });
+    expect(body).toMatchObject({ service: 'urai-content-web', appVersion: '0.1.0', packageName: 'urai-content' });
     expect(typeof (body as { environment?: unknown }).environment).toBe('string');
   });
 
   it('returns catalog summaries and count', async () => {
     const response = await getCatalog();
-    const body = await readJson(response) as {
-      source?: string;
-      count?: number;
-      items?: Array<{ id: string }>;
-    };
+    const body = await readJson(response) as { source?: string; count?: number; items?: Array<{ id: string }> };
 
     expect(response.status).toBe(200);
     expect(body.source).toBe('canonical-json');
@@ -85,10 +73,7 @@ describe('runtime API route handlers', () => {
   });
 
   it('returns public content detail by slug', async () => {
-    const context = {
-      params: Promise.resolve({ slug: ['privacy'] })
-    } satisfies ContentRouteContext;
-
+    const context = { params: Promise.resolve({ slug: ['privacy'] }) } satisfies ContentRouteContext;
     const response = await getContent(new Request('http://localhost/api/content/privacy'), context);
     const body = await readJson(response) as { item?: { id?: string } };
 
@@ -97,27 +82,18 @@ describe('runtime API route handlers', () => {
   });
 
   it('returns 404 for missing or non-public content detail', async () => {
-    const context = {
-      params: Promise.resolve({ slug: ['does-not-exist'] })
-    } satisfies ContentRouteContext;
-
+    const context = { params: Promise.resolve({ slug: ['does-not-exist'] }) } satisfies ContentRouteContext;
     const response = await getContent(new Request('http://localhost/api/content/does-not-exist'), context);
     const body = await readJson(response);
 
     expect(response.status).toBe(404);
-    expect(body).toMatchObject({
-      source: 'canonical-json',
-      error: 'not_found',
-      message: 'Content item not found or not public.'
-    });
+    expect(body).toMatchObject({ source: 'canonical-json', error: 'not_found', message: 'Content item not found or not public.' });
   });
 });
 
 describe('admin canonical seed API route authorization', () => {
   it('returns 401 when no seed token or session is provided', async () => {
-    const response = await postSeedCanonicalContent(new Request('http://localhost/api/admin/seed/canonical-content', {
-      method: 'POST'
-    }));
+    const response = await postSeedCanonicalContent(new Request('http://localhost/api/admin/seed/canonical-content', { method: 'POST' }));
     const body = await readJson(response);
 
     expect(response.status).toBe(401);
@@ -128,11 +104,7 @@ describe('admin canonical seed API route authorization', () => {
     process.env.NODE_ENV = 'test';
 
     const response = await postSeedCanonicalContent(new Request('http://localhost/api/admin/seed/canonical-content', {
-      method: 'POST',
-      headers: {
-        'x-urai-user-id': 'user-1',
-        'x-urai-role': 'user'
-      }
+      method: 'POST', headers: { 'x-urai-user-id': 'user-1', 'x-urai-role': 'user' }
     }));
     const body = await readJson(response);
 
@@ -147,19 +119,12 @@ describe('admin canonical seed API route authorization', () => {
     delete process.env.FIREBASE_PRIVATE_KEY;
 
     const response = await postSeedCanonicalContent(new Request('http://localhost/api/admin/seed/canonical-content', {
-      method: 'POST',
-      headers: {
-        'x-urai-user-id': 'admin-1',
-        'x-urai-role': 'admin'
-      }
+      method: 'POST', headers: { 'x-urai-user-id': 'admin-1', 'x-urai-role': 'admin' }
     }));
     const body = await readJson(response);
 
     expect(response.status).toBe(409);
-    expect(body).toEqual({
-      error: 'firebase_not_configured',
-      message: 'Firebase Admin must be configured before canonical content can be seeded.'
-    });
+    expect(body).toEqual({ error: 'firebase_not_configured', message: 'Firebase Admin must be configured before canonical content can be seeded.' });
   });
 
   it('preserves seed-token authorization for automation clients', async () => {
@@ -169,45 +134,33 @@ describe('admin canonical seed API route authorization', () => {
     delete process.env.FIREBASE_PRIVATE_KEY;
 
     const response = await postSeedCanonicalContent(new Request('http://localhost/api/admin/seed/canonical-content', {
-      method: 'POST',
-      headers: {
-        authorization: 'Bearer 0123456789abcdef'
-      }
+      method: 'POST', headers: { authorization: 'Bearer 0123456789abcdef' }
     }));
     const body = await readJson(response);
 
     expect(response.status).toBe(409);
-    expect(body).toEqual({
-      error: 'firebase_not_configured',
-      message: 'Firebase Admin must be configured before canonical content can be seeded.'
-    });
+    expect(body).toEqual({ error: 'firebase_not_configured', message: 'Firebase Admin must be configured before canonical content can be seeded.' });
   });
 });
 
 describe('creator submissions API route authorization', () => {
   const validSubmissionBody = {
-    id: 'submission-1',
-    creatorId: 'creator-1',
-    title: 'Moonlit Ritual Draft',
-    body: 'A creator-owned content submission.',
-    contentType: 'story',
-    tags: ['moonlit'],
-    locale: 'en-US'
+    id: 'submission-1', creatorId: 'creator-1', title: 'Moonlit Ritual Draft', body: 'A creator-owned content submission.',
+    contentType: 'story', tags: ['moonlit'], locale: 'en-US'
   };
 
-  function makeCreatorRequest(body: unknown, headers: Record<string, string> = {}) {
+  function makeCreatorPostRequest(body: unknown, headers: Record<string, string> = {}) {
     return new Request('http://localhost/api/creator/submissions', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        ...headers
-      },
-      body: JSON.stringify(body)
+      method: 'POST', headers: { 'content-type': 'application/json', ...headers }, body: JSON.stringify(body)
     });
   }
 
+  function makeCreatorGetRequest(headers: Record<string, string> = {}) {
+    return new Request('http://localhost/api/creator/submissions', { method: 'GET', headers });
+  }
+
   it('returns 400 for invalid submission bodies before auth work', async () => {
-    const response = await postCreatorSubmission(makeCreatorRequest({ creatorId: 'creator-1' }));
+    const response = await postCreatorSubmission(makeCreatorPostRequest({ creatorId: 'creator-1' }));
     const body = await readJson(response);
 
     expect(response.status).toBe(400);
@@ -215,7 +168,7 @@ describe('creator submissions API route authorization', () => {
   });
 
   it('returns 401 for anonymous creator submissions', async () => {
-    const response = await postCreatorSubmission(makeCreatorRequest(validSubmissionBody));
+    const response = await postCreatorSubmission(makeCreatorPostRequest(validSubmissionBody));
     const body = await readJson(response);
 
     expect(response.status).toBe(401);
@@ -224,11 +177,7 @@ describe('creator submissions API route authorization', () => {
 
   it('returns 403 for non-creator users', async () => {
     process.env.NODE_ENV = 'test';
-
-    const response = await postCreatorSubmission(makeCreatorRequest(validSubmissionBody, {
-      'x-urai-user-id': 'creator-1',
-      'x-urai-role': 'user'
-    }));
+    const response = await postCreatorSubmission(makeCreatorPostRequest(validSubmissionBody, { 'x-urai-user-id': 'creator-1', 'x-urai-role': 'user' }));
     const body = await readJson(response);
 
     expect(response.status).toBe(403);
@@ -237,11 +186,7 @@ describe('creator submissions API route authorization', () => {
 
   it('returns 403 when a creator submits for another creator', async () => {
     process.env.NODE_ENV = 'test';
-
-    const response = await postCreatorSubmission(makeCreatorRequest(validSubmissionBody, {
-      'x-urai-user-id': 'different-creator',
-      'x-urai-role': 'creator'
-    }));
+    const response = await postCreatorSubmission(makeCreatorPostRequest(validSubmissionBody, { 'x-urai-user-id': 'different-creator', 'x-urai-role': 'creator' }));
     const body = await readJson(response);
 
     expect(response.status).toBe(403);
@@ -250,19 +195,44 @@ describe('creator submissions API route authorization', () => {
 
   it('creates a submission for a creator submitting for themselves', async () => {
     process.env.NODE_ENV = 'test';
-
-    const response = await postCreatorSubmission(makeCreatorRequest(validSubmissionBody, {
-      'x-urai-user-id': 'creator-1',
-      'x-urai-role': 'creator'
-    }));
+    const response = await postCreatorSubmission(makeCreatorPostRequest(validSubmissionBody, { 'x-urai-user-id': 'creator-1', 'x-urai-role': 'creator' }));
     const body = await readJson(response) as { ok?: boolean; submission?: { id?: string; creatorId?: string; status?: string } };
 
     expect(response.status).toBe(201);
     expect(body.ok).toBe(true);
-    expect(body.submission).toMatchObject({
-      id: 'submission-1',
-      creatorId: 'creator-1',
-      status: 'submitted'
-    });
+    expect(body.submission).toMatchObject({ id: 'submission-1', creatorId: 'creator-1', status: 'submitted' });
+  });
+
+  it('returns 401 when listing submissions anonymously', async () => {
+    const response = await getCreatorSubmissions(makeCreatorGetRequest());
+    const body = await readJson(response);
+
+    expect(response.status).toBe(401);
+    expect(body).toEqual({ error: 'unauthenticated', message: 'Authentication is required.' });
+  });
+
+  it('returns 403 when listing submissions as a non-creator user', async () => {
+    process.env.NODE_ENV = 'test';
+    const response = await getCreatorSubmissions(makeCreatorGetRequest({ 'x-urai-user-id': 'user-1', 'x-urai-role': 'user' }));
+    const body = await readJson(response);
+
+    expect(response.status).toBe(403);
+    expect(body).toEqual({ error: 'forbidden', message: 'You do not have permission to perform this action.' });
+  });
+
+  it('lists only the current creator submissions', async () => {
+    process.env.NODE_ENV = 'test';
+
+    await postCreatorSubmission(makeCreatorPostRequest(validSubmissionBody, { 'x-urai-user-id': 'creator-1', 'x-urai-role': 'creator' }));
+    await postCreatorSubmission(makeCreatorPostRequest({ ...validSubmissionBody, id: 'submission-2', creatorId: 'creator-2' }, { 'x-urai-user-id': 'creator-2', 'x-urai-role': 'creator' }));
+
+    const response = await getCreatorSubmissions(makeCreatorGetRequest({ 'x-urai-user-id': 'creator-1', 'x-urai-role': 'creator' }));
+    const body = await readJson(response) as { ok?: boolean; creatorId?: string; count?: number; submissions?: Array<{ id?: string; creatorId?: string }> };
+
+    expect(response.status).toBe(200);
+    expect(body.ok).toBe(true);
+    expect(body.creatorId).toBe('creator-1');
+    expect(body.count).toBe(body.submissions?.length);
+    expect(body.submissions?.every((item) => item.creatorId === 'creator-1')).toBe(true);
   });
 });
