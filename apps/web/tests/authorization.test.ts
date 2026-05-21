@@ -19,6 +19,9 @@ const internalAdmin: AuthSession = { uid: 'internal-1', role: 'internalAdmin' };
 
 const originalNodeEnv = process.env.NODE_ENV;
 const originalHeaderAuth = process.env.URAI_ENABLE_HEADER_AUTH;
+const originalProjectId = process.env.FIREBASE_PROJECT_ID;
+const originalClientEmail = process.env.FIREBASE_CLIENT_EMAIL;
+const originalPrivateKey = process.env.FIREBASE_PRIVATE_KEY;
 
 function makeAuthRequest(): Request {
   return new Request('http://localhost/api/admin/content', {
@@ -31,11 +34,17 @@ function makeAuthRequest(): Request {
 
 afterEach(() => {
   process.env.NODE_ENV = originalNodeEnv;
-  if (originalHeaderAuth === undefined) {
-    delete process.env.URAI_ENABLE_HEADER_AUTH;
-  } else {
-    process.env.URAI_ENABLE_HEADER_AUTH = originalHeaderAuth;
-  }
+  if (originalHeaderAuth === undefined) delete process.env.URAI_ENABLE_HEADER_AUTH;
+  else process.env.URAI_ENABLE_HEADER_AUTH = originalHeaderAuth;
+
+  if (originalProjectId === undefined) delete process.env.FIREBASE_PROJECT_ID;
+  else process.env.FIREBASE_PROJECT_ID = originalProjectId;
+
+  if (originalClientEmail === undefined) delete process.env.FIREBASE_CLIENT_EMAIL;
+  else process.env.FIREBASE_CLIENT_EMAIL = originalClientEmail;
+
+  if (originalPrivateKey === undefined) delete process.env.FIREBASE_PRIVATE_KEY;
+  else process.env.FIREBASE_PRIVATE_KEY = originalPrivateKey;
 });
 
 describe('server authorization helpers', () => {
@@ -92,25 +101,25 @@ describe('server authorization helpers', () => {
     expect(canCreateCreatorSubmission(admin, 'admin-1')).toEqual({ ok: true });
   });
 
-  it('parses request sessions from explicit URAI auth headers outside production', () => {
+  it('parses request sessions from explicit URAI auth headers outside production', async () => {
     process.env.NODE_ENV = 'test';
 
-    expect(getRequestSession(makeAuthRequest())).toEqual({ uid: 'admin-1', role: 'admin' });
+    await expect(getRequestSession(makeAuthRequest())).resolves.toEqual({ uid: 'admin-1', role: 'admin' });
   });
 
-  it('fails closed for header auth in production unless explicitly enabled', () => {
+  it('fails closed for header auth in production unless explicitly enabled', async () => {
     process.env.NODE_ENV = 'production';
     delete process.env.URAI_ENABLE_HEADER_AUTH;
 
-    expect(getRequestSession(makeAuthRequest())).toBeNull();
+    await expect(getRequestSession(makeAuthRequest())).resolves.toBeNull();
 
     process.env.URAI_ENABLE_HEADER_AUTH = '1';
 
-    expect(getRequestSession(makeAuthRequest())).toEqual({ uid: 'admin-1', role: 'admin' });
+    await expect(getRequestSession(makeAuthRequest())).resolves.toEqual({ uid: 'admin-1', role: 'admin' });
   });
 
-  it('fails closed for missing user id and unsupported roles', () => {
-    expect(getRequestSession(new Request('http://localhost/api/admin/content'))).toBeNull();
+  it('fails closed for missing user id and unsupported roles', async () => {
+    await expect(getRequestSession(new Request('http://localhost/api/admin/content'))).resolves.toBeNull();
 
     const request = new Request('http://localhost/api/admin/content', {
       headers: {
@@ -119,7 +128,22 @@ describe('server authorization helpers', () => {
       }
     });
 
-    expect(getRequestSession(request)).toEqual({ uid: 'user-1', role: null });
+    await expect(getRequestSession(request)).resolves.toEqual({ uid: 'user-1', role: null });
+  });
+
+  it('fails closed for bearer tokens when Firebase Admin credentials are not configured', async () => {
+    process.env.NODE_ENV = 'production';
+    delete process.env.FIREBASE_PROJECT_ID;
+    delete process.env.FIREBASE_CLIENT_EMAIL;
+    delete process.env.FIREBASE_PRIVATE_KEY;
+
+    const request = new Request('http://localhost/api/admin/content', {
+      headers: {
+        authorization: 'Bearer fake-token'
+      }
+    });
+
+    await expect(getRequestSession(request)).resolves.toBeNull();
   });
 
   it('maps auth failures to stable response status and body shapes', () => {
