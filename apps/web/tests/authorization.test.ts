@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it } from 'vitest';
 import {
   canCreateCreatorSubmission,
   canCreateOwnedResource,
@@ -16,6 +16,27 @@ const creator: AuthSession = { uid: 'creator-1', role: 'creator' };
 const studio: AuthSession = { uid: 'studio-1', role: 'studio' };
 const admin: AuthSession = { uid: 'admin-1', role: 'admin' };
 const internalAdmin: AuthSession = { uid: 'internal-1', role: 'internalAdmin' };
+
+const originalNodeEnv = process.env.NODE_ENV;
+const originalHeaderAuth = process.env.URAI_ENABLE_HEADER_AUTH;
+
+function makeAuthRequest(): Request {
+  return new Request('http://localhost/api/admin/content', {
+    headers: {
+      'x-urai-user-id': ' admin-1 ',
+      'x-urai-role': 'admin'
+    }
+  });
+}
+
+afterEach(() => {
+  process.env.NODE_ENV = originalNodeEnv;
+  if (originalHeaderAuth === undefined) {
+    delete process.env.URAI_ENABLE_HEADER_AUTH;
+  } else {
+    process.env.URAI_ENABLE_HEADER_AUTH = originalHeaderAuth;
+  }
+});
 
 describe('server authorization helpers', () => {
   it('recognizes only supported auth roles', () => {
@@ -71,15 +92,21 @@ describe('server authorization helpers', () => {
     expect(canCreateCreatorSubmission(admin, 'admin-1')).toEqual({ ok: true });
   });
 
-  it('parses request sessions from explicit URAI auth headers', () => {
-    const request = new Request('http://localhost/api/admin/content', {
-      headers: {
-        'x-urai-user-id': ' admin-1 ',
-        'x-urai-role': 'admin'
-      }
-    });
+  it('parses request sessions from explicit URAI auth headers outside production', () => {
+    process.env.NODE_ENV = 'test';
 
-    expect(getRequestSession(request)).toEqual({ uid: 'admin-1', role: 'admin' });
+    expect(getRequestSession(makeAuthRequest())).toEqual({ uid: 'admin-1', role: 'admin' });
+  });
+
+  it('fails closed for header auth in production unless explicitly enabled', () => {
+    process.env.NODE_ENV = 'production';
+    delete process.env.URAI_ENABLE_HEADER_AUTH;
+
+    expect(getRequestSession(makeAuthRequest())).toBeNull();
+
+    process.env.URAI_ENABLE_HEADER_AUTH = '1';
+
+    expect(getRequestSession(makeAuthRequest())).toEqual({ uid: 'admin-1', role: 'admin' });
   });
 
   it('fails closed for missing user id and unsupported roles', () => {
