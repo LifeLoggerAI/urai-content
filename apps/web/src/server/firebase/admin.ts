@@ -1,5 +1,6 @@
 import 'server-only';
 import { cert, getApps, initializeApp, type App } from 'firebase-admin/app';
+import { getAuth, type Auth } from 'firebase-admin/auth';
 import { getFirestore, type Firestore } from 'firebase-admin/firestore';
 import { getRequiredFirebaseAdminEnv, hasFirebaseAdminCredentials, normalizePrivateKey } from './adminEnv';
 
@@ -21,6 +22,10 @@ export function getFirebaseAdminApp(): App {
     }),
     storageBucket: env.FIREBASE_STORAGE_BUCKET
   });
+}
+
+export function getFirebaseAdminAuth(): Auth {
+  return getAuth(getFirebaseAdminApp());
 }
 
 export function getFirebaseAdminDb(): Firestore {
