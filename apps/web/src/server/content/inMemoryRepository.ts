@@ -81,5 +81,10 @@ export class InMemoryContentRepository implements ContentRepository {
   async upsertRitualTemplate(template: RitualTemplate): Promise<void> { this.ritualTemplates.set(template.id, template); }
   async upsertMarketplaceItem(item: MarketplaceItem): Promise<void> { this.marketplaceItems.set(item.id, item); }
   async upsertCreatorSubmission(item: CreatorSubmission): Promise<void> { this.creatorSubmissions.set(item.id, item); }
+  async listCreatorSubmissions(creatorId: string): Promise<CreatorSubmission[]> {
+    return [...this.creatorSubmissions.values()]
+      .filter((item) => item.creatorId === creatorId)
+      .sort((a, b) => String(b.submittedAt ?? b.updatedAt ?? '').localeCompare(String(a.submittedAt ?? a.updatedAt ?? '')));
+  }
   async upsertExportTemplate(item: ExportTemplate): Promise<void> { this.exportTemplates.set(item.id, item); }
 }
