@@ -4,6 +4,12 @@ import type { ContentItem, TelemetryEvent, UserContentEntitlement } from '../../
 
 type FirestoreData = Record<string, unknown>;
 
+type SetCall = {
+  id: string;
+  data: FirestoreData;
+  options?: { merge?: boolean };
+};
+
 class FakeDocumentSnapshot {
   constructor(private readonly value: FirestoreData | undefined) {}
 
@@ -24,6 +30,7 @@ type Filter = { field: string; value: unknown };
 type Order = { field: string; direction: 'asc' | 'desc' };
 
 class FakeCollection {
+  readonly setCalls: SetCall[] = [];
   private readonly rows = new Map<string, FirestoreData>();
 
   constructor(
@@ -34,8 +41,10 @@ class FakeCollection {
 
   doc(id = `doc-${this.rowsRef.size + 1}`) {
     return {
-      set: async (data: FirestoreData) => {
-        this.rowsRef.set(id, data);
+      set: async (data: FirestoreData, options?: { merge?: boolean }) => {
+        this.setCallsRef.push({ id, data, options });
+        const existing = this.rowsRef.get(id) ?? {};
+        this.rowsRef.set(id, options?.merge ? { ...existing, ...data } : data);
       },
       get: async () => new FakeDocumentSnapshot(this.rowsRef.get(id)),
       delete: async () => {
@@ -54,18 +63,21 @@ class FakeCollection {
     if (operator !== '==') throw new Error(`Unsupported fake operator ${operator}`);
     const next = new FakeCollection([...this.filters, { field, value }], this.order, this.resultLimit);
     next.rowsRef = this.rowsRef;
+    next.setCallsRef = this.setCallsRef;
     return next;
   }
 
   orderBy(field: string, direction: 'asc' | 'desc' = 'asc') {
     const next = new FakeCollection(this.filters, { field, direction }, this.resultLimit);
     next.rowsRef = this.rowsRef;
+    next.setCallsRef = this.setCallsRef;
     return next;
   }
 
   limit(limit: number) {
     const next = new FakeCollection(this.filters, this.order, limit);
     next.rowsRef = this.rowsRef;
+    next.setCallsRef = this.setCallsRef;
     return next;
   }
 
@@ -93,6 +105,7 @@ class FakeCollection {
   }
 
   private rowsRef = this.rows;
+  private setCallsRef = this.setCalls;
 }
 
 class FakeFirestore implements FirestoreLike {
@@ -147,6 +160,18 @@ describe('createFirestoreContentRepository', () => {
 
     await repo.deleteContent(item.id);
     expect(await repo.getContent(item.id)).toBeNull();
+  });
+
+  it('uses merge writes for upserted records that may be edited incrementally', async () => {
+    const firestore = new FakeFirestore();
+    const repo = createFirestoreContentRepository(firestore);
+    const item = makeContentItem();
+
+    await repo.upsertContent(item);
+
+    expect(firestore.collection('contentItems').setCalls).toEqual([
+      { id: item.id, data: item as unknown as FirestoreData, options: { merge: true } }
+    ]);
   });
 
   it('filters entitlements by user', async () => {
