@@ -3,11 +3,13 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { GET as getCatalog } from '../src/app/api/catalog/route';
 import { GET as getContent } from '../src/app/api/content/[[...slug]]/route';
 import { GET as getHealth } from '../src/app/api/health/route';
+import { POST as postModerateCreatorSubmission } from '../src/app/api/admin/creator-submissions/[id]/moderate/route';
 import { POST as postSeedCanonicalContent } from '../src/app/api/admin/seed/canonical-content/route';
 import { GET as getCreatorSubmissions, POST as postCreatorSubmission } from '../src/app/api/creator/submissions/route';
 import { GET as getVersion } from '../src/app/api/version/route';
 
 type ContentRouteContext = Parameters<typeof getContent>[1];
+type ModerationRouteContext = Parameters<typeof postModerateCreatorSubmission>[1];
 
 const originalNodeEnv = process.env.NODE_ENV;
 const originalHeaderAuth = process.env.URAI_ENABLE_HEADER_AUTH;
@@ -234,5 +236,75 @@ describe('creator submissions API route authorization', () => {
     expect(body.creatorId).toBe('creator-1');
     expect(body.count).toBe(body.submissions?.length);
     expect(body.submissions?.every((item) => item.creatorId === 'creator-1')).toBe(true);
+  });
+});
+
+describe('admin creator submission moderation API route authorization', () => {
+  const context = { params: Promise.resolve({ id: 'moderation-submission-1' }) } satisfies ModerationRouteContext;
+
+  function makeModerationRequest(body: unknown, headers: Record<string, string> = {}) {
+    return new Request('http://localhost/api/admin/creator-submissions/moderation-submission-1/moderate', {
+      method: 'POST', headers: { 'content-type': 'application/json', ...headers }, body: JSON.stringify(body)
+    });
+  }
+
+  async function createModerationFixture() {
+    process.env.NODE_ENV = 'test';
+    await postCreatorSubmission(new Request('http://localhost/api/creator/submissions', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-urai-user-id': 'creator-1', 'x-urai-role': 'creator' },
+      body: JSON.stringify({
+        id: 'moderation-submission-1', creatorId: 'creator-1', title: 'Moderation Draft', body: 'Ready for moderation.',
+        contentType: 'story', tags: ['review'], locale: 'en-US'
+      })
+    }));
+  }
+
+  it('returns 401 when moderation is anonymous', async () => {
+    const response = await postModerateCreatorSubmission(makeModerationRequest({ decision: 'approved' }), context);
+    const body = await readJson(response);
+
+    expect(response.status).toBe(401);
+    expect(body).toEqual({ error: 'unauthenticated', message: 'Authentication is required.' });
+  });
+
+  it('returns 403 when moderation is attempted by a non-admin', async () => {
+    process.env.NODE_ENV = 'test';
+    const response = await postModerateCreatorSubmission(makeModerationRequest({ decision: 'approved' }, { 'x-urai-user-id': 'creator-1', 'x-urai-role': 'creator' }), context);
+    const body = await readJson(response);
+
+    expect(response.status).toBe(403);
+    expect(body).toEqual({ error: 'forbidden', message: 'You do not have permission to perform this action.' });
+  });
+
+  it('returns 400 for invalid moderation decisions', async () => {
+    process.env.NODE_ENV = 'test';
+    const response = await postModerateCreatorSubmission(makeModerationRequest({ decision: 'publish' }, { 'x-urai-user-id': 'admin-1', 'x-urai-role': 'admin' }), context);
+    const body = await readJson(response);
+
+    expect(response.status).toBe(400);
+    expect(body).toEqual({ error: 'invalid_request', message: 'Moderation requires a valid JSON body with a supported decision.' });
+  });
+
+  it('returns 404 when the target submission does not exist', async () => {
+    process.env.NODE_ENV = 'test';
+    const response = await postModerateCreatorSubmission(makeModerationRequest({ decision: 'approved' }, { 'x-urai-user-id': 'admin-1', 'x-urai-role': 'admin' }), context);
+    const body = await readJson(response);
+
+    expect(response.status).toBe(404);
+    expect(body).toEqual({ error: 'not_found', message: 'Creator submission not found.' });
+  });
+
+  it('moderates an existing creator submission as an admin', async () => {
+    await createModerationFixture();
+
+    const response = await postModerateCreatorSubmission(makeModerationRequest({ decision: 'approved', notes: 'Looks good.' }, { 'x-urai-user-id': 'admin-1', 'x-urai-role': 'admin' }), context);
+    const body = await readJson(response) as { ok?: boolean; submission?: { id?: string; status?: string; moderatedBy?: string; moderationNotes?: string } };
+
+    expect(response.status).toBe(200);
+    expect(body.ok).toBe(true);
+    expect(body.submission).toMatchObject({
+      id: 'moderation-submission-1', status: 'approved', moderatedBy: 'admin-1', moderationNotes: 'Looks good.'
+    });
   });
 });
