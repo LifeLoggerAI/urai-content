@@ -2,6 +2,7 @@ import type {
   ContentItem,
   ContentRepository,
   CreatorSubmission,
+  CreatorSubmissionQueueOptions,
   ExportTemplate,
   MarketplaceItem,
   ModerationQueueItem,
@@ -39,6 +40,9 @@ function asType<T>(value: FirestoreData): T { return value as T; }
 function sortByVersion<T extends { version: number }>(items: T[]): T[] { return [...items].sort((a, b) => a.version - b.version); }
 function sortSubmissions(items: CreatorSubmission[]): CreatorSubmission[] {
   return [...items].sort((a, b) => String(b.submittedAt ?? b.updatedAt ?? '').localeCompare(String(a.submittedAt ?? a.updatedAt ?? '')));
+}
+function queueLimit(limit?: number): number {
+  return Math.min(Math.max(limit ?? 50, 1), 100);
 }
 
 export function createFirestoreContentRepository(db: FirestoreLike): ContentRepository {
@@ -87,6 +91,14 @@ export function createFirestoreContentRepository(db: FirestoreLike): ContentRepo
     async listCreatorSubmissions(creatorId: string): Promise<CreatorSubmission[]> {
       const snap = await collection(db, FIRESTORE_COLLECTIONS.creatorSubmissions).where('creatorId', '==', creatorId).get();
       return sortSubmissions(snap.docs.map((doc) => asType<CreatorSubmission>(doc.data())));
+    },
+    async listCreatorSubmissionQueue(options: CreatorSubmissionQueueOptions = {}): Promise<CreatorSubmission[]> {
+      const limit = queueLimit(options.limit);
+      const query = options.status
+        ? collection(db, FIRESTORE_COLLECTIONS.creatorSubmissions).where('status', '==', options.status).limit(limit)
+        : collection(db, FIRESTORE_COLLECTIONS.creatorSubmissions).limit(limit);
+      const snap = await query.get();
+      return sortSubmissions(snap.docs.map((doc) => asType<CreatorSubmission>(doc.data()))).slice(0, limit);
     },
     async upsertExportTemplate(item: ExportTemplate): Promise<void> { await collection(db, FIRESTORE_COLLECTIONS.exportTemplates).doc(item.id).set(asRecord(item), { merge: true }); }
   };
