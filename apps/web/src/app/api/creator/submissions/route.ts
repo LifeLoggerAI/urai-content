@@ -1,0 +1,82 @@
+import { NextResponse } from 'next/server';
+import { z } from 'zod';
+import { canCreateCreatorSubmission } from '@/server/auth/authorization';
+import { getAuthFailureBody, getAuthFailureStatus, getRequestSession } from '@/server/auth/requestSession';
+import { createRuntimeContentRepository } from '@/server/content/service';
+
+export const dynamic = 'force-dynamic';
+
+const creatorSubmissionRequestSchema = z.object({
+  id: z.string().min(1).max(128).optional(),
+  creatorId: z.string().min(1).max(128),
+  title: z.string().min(1).max(160),
+  body: z.string().min(1).max(20000),
+  contentType: z.enum(['story', 'ritual', 'narrator', 'marketplace', 'export']).default('story'),
+  tags: z.array(z.string().min(1).max(64)).max(24).default([]),
+  locale: z.string().min(2).max(32).default('en-US')
+});
+
+type CreatorSubmissionRequest = z.infer<typeof creatorSubmissionRequestSchema>;
+
+function slugify(value: string): string {
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 96) || 'submission';
+}
+
+function createSubmissionId(input: CreatorSubmissionRequest): string {
+  return input.id ?? `${input.creatorId}-${slugify(input.title)}-${Date.now()}`;
+}
+
+async function parseBody(request: Request): Promise<CreatorSubmissionRequest | null> {
+  if (!request.headers.get('content-type')?.includes('application/json')) {
+    return null;
+  }
+
+  const parsed = creatorSubmissionRequestSchema.safeParse(await request.json());
+  return parsed.success ? parsed.data : null;
+}
+
+export async function POST(request: Request) {
+  const body = await parseBody(request);
+
+  if (!body) {
+    return NextResponse.json(
+      {
+        error: 'invalid_request',
+        message: 'Creator submissions require a valid JSON body.'
+      },
+      { status: 400 }
+    );
+  }
+
+  const authorization = canCreateCreatorSubmission(getRequestSession(request), body.creatorId);
+
+  if (!authorization.ok) {
+    return NextResponse.json(getAuthFailureBody(authorization.reason), { status: getAuthFailureStatus(authorization.reason) });
+  }
+
+  const now = new Date().toISOString();
+  const submission = {
+    id: createSubmissionId(body),
+    creatorId: body.creatorId,
+    title: body.title,
+    body: body.body,
+    contentType: body.contentType,
+    tags: body.tags,
+    locale: body.locale,
+    status: 'submitted',
+    submittedAt: now,
+    updatedAt: now
+  };
+
+  await createRuntimeContentRepository().upsertCreatorSubmission(submission);
+
+  return NextResponse.json({
+    ok: true,
+    submission
+  }, { status: 201 });
+}
