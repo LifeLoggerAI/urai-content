@@ -10,6 +10,7 @@ import {
   type AuthSession
 } from '../src/server/auth/authorization';
 import { getAuthFailureBody, getAuthFailureStatus, getRequestSession } from '../src/server/auth/requestSession';
+import { setNodeEnvForTests } from './testEnv';
 
 const user: AuthSession = { uid: 'user-1', role: 'user' };
 const creator: AuthSession = { uid: 'creator-1', role: 'creator' };
@@ -32,7 +33,7 @@ function makeAuthRequest(): Request {
 }
 
 afterEach(() => {
-  process.env.NODE_ENV = originalNodeEnv;
+  setNodeEnvForTests(originalNodeEnv);
 
   if (originalProjectId === undefined) delete process.env.FIREBASE_PROJECT_ID;
   else process.env.FIREBASE_PROJECT_ID = originalProjectId;
@@ -99,13 +100,13 @@ describe('server authorization helpers', () => {
   });
 
   it('parses request sessions from explicit URAI auth headers outside production', async () => {
-    process.env.NODE_ENV = 'test';
+    setNodeEnvForTests('test');
 
     await expect(getRequestSession(makeAuthRequest())).resolves.toEqual({ uid: 'admin-1', role: 'admin' });
   });
 
   it('always ignores header auth in production', async () => {
-    process.env.NODE_ENV = 'production';
+    setNodeEnvForTests('production');
 
     await expect(getRequestSession(makeAuthRequest())).resolves.toBeNull();
   });
@@ -124,7 +125,7 @@ describe('server authorization helpers', () => {
   });
 
   it('fails closed for bearer tokens when Firebase Admin credentials are not configured', async () => {
-    process.env.NODE_ENV = 'production';
+    setNodeEnvForTests('production');
     delete process.env.FIREBASE_PROJECT_ID;
     delete process.env.FIREBASE_CLIENT_EMAIL;
     delete process.env.FIREBASE_PRIVATE_KEY;
