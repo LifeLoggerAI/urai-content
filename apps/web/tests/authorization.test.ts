@@ -18,7 +18,6 @@ const admin: AuthSession = { uid: 'admin-1', role: 'admin' };
 const internalAdmin: AuthSession = { uid: 'internal-1', role: 'internalAdmin' };
 
 const originalNodeEnv = process.env.NODE_ENV;
-const originalHeaderAuth = process.env.URAI_ENABLE_HEADER_AUTH;
 const originalProjectId = process.env.FIREBASE_PROJECT_ID;
 const originalClientEmail = process.env.FIREBASE_CLIENT_EMAIL;
 const originalPrivateKey = process.env.FIREBASE_PRIVATE_KEY;
@@ -34,8 +33,6 @@ function makeAuthRequest(): Request {
 
 afterEach(() => {
   process.env.NODE_ENV = originalNodeEnv;
-  if (originalHeaderAuth === undefined) delete process.env.URAI_ENABLE_HEADER_AUTH;
-  else process.env.URAI_ENABLE_HEADER_AUTH = originalHeaderAuth;
 
   if (originalProjectId === undefined) delete process.env.FIREBASE_PROJECT_ID;
   else process.env.FIREBASE_PROJECT_ID = originalProjectId;
@@ -107,15 +104,10 @@ describe('server authorization helpers', () => {
     await expect(getRequestSession(makeAuthRequest())).resolves.toEqual({ uid: 'admin-1', role: 'admin' });
   });
 
-  it('fails closed for header auth in production unless explicitly enabled', async () => {
+  it('always ignores header auth in production', async () => {
     process.env.NODE_ENV = 'production';
-    delete process.env.URAI_ENABLE_HEADER_AUTH;
 
     await expect(getRequestSession(makeAuthRequest())).resolves.toBeNull();
-
-    process.env.URAI_ENABLE_HEADER_AUTH = '1';
-
-    await expect(getRequestSession(makeAuthRequest())).resolves.toEqual({ uid: 'admin-1', role: 'admin' });
   });
 
   it('fails closed for missing user id and unsupported roles', async () => {
