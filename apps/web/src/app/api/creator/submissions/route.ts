@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { canCreateCreatorSubmission } from '@/server/auth/authorization';
+import { canCreateCreatorSubmission, isCreatorSession } from '@/server/auth/authorization';
 import { getAuthFailureBody, getAuthFailureStatus, getRequestSession } from '@/server/auth/requestSession';
 import { createRuntimeContentRepository } from '@/server/content/service';
 
@@ -38,6 +38,27 @@ async function parseBody(request: Request): Promise<CreatorSubmissionRequest | n
 
   const parsed = creatorSubmissionRequestSchema.safeParse(await request.json());
   return parsed.success ? parsed.data : null;
+}
+
+export async function GET(request: Request) {
+  const session = getRequestSession(request);
+
+  if (!session) {
+    return NextResponse.json(getAuthFailureBody('unauthenticated'), { status: getAuthFailureStatus('unauthenticated') });
+  }
+
+  if (!isCreatorSession(session)) {
+    return NextResponse.json(getAuthFailureBody('forbidden'), { status: getAuthFailureStatus('forbidden') });
+  }
+
+  const submissions = await createRuntimeContentRepository().listCreatorSubmissions(session.uid);
+
+  return NextResponse.json({
+    ok: true,
+    creatorId: session.uid,
+    count: submissions.length,
+    submissions
+  });
 }
 
 export async function POST(request: Request) {
