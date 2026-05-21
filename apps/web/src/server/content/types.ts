@@ -64,6 +64,7 @@ export type ContentRepository = {
   upsertRitualTemplate(template: RitualTemplate): Promise<void>;
   upsertMarketplaceItem(item: MarketplaceItem): Promise<void>;
   upsertCreatorSubmission(item: CreatorSubmission): Promise<void>;
+  getCreatorSubmission(id: string): Promise<CreatorSubmission | null>;
   listCreatorSubmissions(creatorId: string): Promise<CreatorSubmission[]>;
   upsertExportTemplate(item: ExportTemplate): Promise<void>;
 };
