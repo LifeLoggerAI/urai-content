@@ -3,8 +3,15 @@ import { isKnownAuthRole } from './authorization';
 
 const USER_ID_HEADER = 'x-urai-user-id';
 const ROLE_HEADER = 'x-urai-role';
+const HEADER_AUTH_ENABLED_ENV = 'URAI_ENABLE_HEADER_AUTH';
+
+function isHeaderAuthEnabled(): boolean {
+  return process.env.NODE_ENV !== 'production' || process.env[HEADER_AUTH_ENABLED_ENV] === '1';
+}
 
 export function getRequestSession(request: Request): AuthSession | null {
+  if (!isHeaderAuthEnabled()) return null;
+
   const uid = request.headers.get(USER_ID_HEADER)?.trim();
   if (!uid) return null;
 
