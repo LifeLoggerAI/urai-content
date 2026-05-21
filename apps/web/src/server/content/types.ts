@@ -47,6 +47,11 @@ export type UserContentEntitlement = {
   expiresAt: string | null;
 };
 
+export type CreatorSubmissionQueueOptions = {
+  status?: string;
+  limit?: number;
+};
+
 export type ContentRepository = {
   upsertContent(item: ContentItem): Promise<void>;
   getContent(id: string): Promise<ContentItem | null>;
@@ -66,6 +71,7 @@ export type ContentRepository = {
   upsertCreatorSubmission(item: CreatorSubmission): Promise<void>;
   getCreatorSubmission(id: string): Promise<CreatorSubmission | null>;
   listCreatorSubmissions(creatorId: string): Promise<CreatorSubmission[]>;
+  listCreatorSubmissionQueue(options?: CreatorSubmissionQueueOptions): Promise<CreatorSubmission[]>;
   upsertExportTemplate(item: ExportTemplate): Promise<void>;
 };
 
