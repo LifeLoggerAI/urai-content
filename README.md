@@ -1,14 +1,21 @@
 # URAI Content
 
-Canonical content engine and asset/story library for the URAI ecosystem.
+Canonical content engine, asset/story library, and launch-governed web-runtime scaffold for the URAI ecosystem.
 
 `urai-content` is URAI's **content domain engine**: a typed contract, validation system, and backend service layer for narrator prompts, ritual/story templates, marketplace assets, publishing workflow, export copy, and canonical app content.
 
+The repo also contains a standalone Next.js runtime scaffold under `apps/web` for the future URAI Content public site and runtime route/API surface. The runtime scaffold is repo-side work; production deployment remains blocked until Firebase/hosting/DNS/secrets/Stripe/observability/rollback evidence is complete.
+
 ## Repo type
 
-This repository is a **content package/library** with a launch-governed web runtime scaffold under `apps/web`. It provides typed content registries, schemas, loaders, validators, backend service contracts, route/API scaffolding, and seed/demo story assets for other URAI apps.
+This repository is both:
 
-Do not call this repo production-launched until deployment, DNS, SSL, monitoring, rollback, and post-deploy smoke evidence are attached.
+1. a root TypeScript content package/library, and
+2. a launch-governed standalone web runtime scaffold under `apps/web`.
+
+The package provides typed content registries, schemas, loaders, validators, backend service contracts, and seed/demo story assets for other URAI apps.
+
+The web runtime provides route/API scaffolding and local verification for the public URAI Content site. It must not be called production-launched until deployed URL, smoke, monitoring, secrets, and rollback evidence exist.
 
 ## Repository role in URAI
 
@@ -22,6 +29,7 @@ This repo is the content backbone used by app/admin/runtime repos. It centralize
 - entitlement-aware content access checks
 - telemetry event contracts
 - demo seed packs for local/staging
+- runtime route/API scaffolding under `apps/web`
 - launch governance, evidence, and blocker tracking
 
 ## Structure
@@ -35,11 +43,17 @@ This repo is the content backbone used by app/admin/runtime repos. It centralize
 - `src/index.ts` — stable package exports
 - `src/seed/` — demo seed content and schema validation script
 - `scripts/contentIndex.ts` — deterministic generated content index
+- `scripts/checkGovernanceDocs.ts` — governance/docs integrity check used by `npm run check:governance`
+- `scripts/checkNoSecrets.ts` — repository secret leakage scan used by `npm run check:secrets`
+- `scripts/checkObservabilityEnv.ts` — production observability environment verifier used by `npm run check:observability`
+- `scripts/productionSmoke.ts` — deployed runtime smoke verifier used by `npm run smoke:production`
+- `scripts/rollbackSmoke.ts` — rollback runtime verifier used by `npm run smoke:rollback`
 - `tests/` — smoke and unit tests
-- `apps/web/` — standalone Next.js runtime scaffold where present
-- `docs/` — launch runbooks, evidence templates, readiness docs, and completion governance
+- `apps/web/` — standalone Next.js runtime scaffold, public route/API surface, route smoke checks, and Playwright E2E
+- `.github/` — issue templates, PR template, CODEOWNERS, governance workflow, and web E2E workflow
+- `docs/` — implementation status, route coverage, launch runbook, E2E runbook, issue control, evidence, branch, maintainer, and readiness docs
 
-## Canonical command order
+## Canonical package command order
 
 1. `npm ci`
 2. `npm run lint`
@@ -52,61 +66,26 @@ This repo is the content backbone used by app/admin/runtime repos. It centralize
 9. `npm test`
 10. `npm run build`
 11. `npm run seed:check`
-12. `npm run check`
-13. `npm run done`
+12. `npm run check:governance`
+13. `npm run check:secrets`
+14. `npm run check`
+15. `npm run done`
 
-## Web-runtime command order
+`npm run check` includes governance and secret scanning, so required launch-control docs, README references, PR/issue templates, CODEOWNERS, critical evidence-gate language, and likely secret leaks are verified automatically.
+
+## Canonical web-runtime command order
 
 Run these when changing `apps/web` or making route/runtime claims:
 
 1. `npm run web:install`
 2. `npm run web:check`
 3. `npm run web:smoke:routes -- --base-url=http://127.0.0.1:3000`
+4. `cd apps/web && npm run e2e`
 
-## Firebase adapter status
+For deployed launch claims, run route smoke, production smoke, observability checks, and browser E2E against the deployed staging or production URL and attach output in an evidence log:
 
-`urai-content` does not initialize Firebase Admin in browser code. Any live Firestore adapter must be server-only and must implement `ContentRepository` using injected Firestore/Admin SDK.
-
-Firebase, Firestore, Storage, Auth, rules, indexes, and hosting are not production-GREEN until project IDs, rules, indexes, tests, provider evidence, deployed smoke, and rollback proof are attached.
-
-## Governance and launch docs
-
-Start here before claiming readiness:
-
-- `docs/PRODUCTION_COMPLETION_PLAN.md` — executable standalone and system-of-systems completion plan
-- `DEPLOYMENT_BLOCKERS.md` — live deployment blockers and owner actions
-- `docs/PRODUCTION_READINESS_DASHBOARD.md` — RED/YELLOW/GREEN production status, if present
-- `AUDIT_REPORT.md` — audit findings and local verification evidence, if present
-- `docs/TESTING.md` — package quality gate
-- `docs/DEPLOYMENT.md` — deployment command order and integration notes
-
-Repo rule: **no evidence means no GREEN**.
-
-## Env
-
-See `.env.example` and `apps/web/.env.example` where present. Do not commit private values.
-
-## Consumption
-
-```ts
-import { registry, validateContent } from 'urai-content';
-
-validateContent();
-console.log(registry.home.title);
-```
-
-## Production readiness
-
-`urai-content` is not production-launched until all P0 production blockers are GREEN with evidence:
-
-- hosting architecture selected and verified
-- Firebase project/hosting/Firestore/Storage/Auth verified where applicable
-- env configured in the deployment provider
-- Firestore/Storage rules and indexes tested where applicable
-- auth/admin/creator flows fail closed
-- payment and entitlement flows verified where applicable
-- export artifacts are ownership-protected
-- browser E2E and route smoke pass
-- DNS/SSL verified
-- monitoring/alerts configured
-- rollback path rehearsed or documented with evidence
+```bash
+npm run check:observability
+npm run web:smoke:routes -- --base-url=<staging-or-production-url>
+npm run smoke:production -- --base-url=<staging-or-production-url>
+cd apps/web && PLAYWRIGHT_SKIP_WEB_SERVER=1 URAI_CONTENT_BASE_URL=<staging-or-production-url> npm run e2e

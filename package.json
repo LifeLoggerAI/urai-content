@@ -25,8 +25,17 @@
     "seed:check": "tsx src/seed/checkSeed.ts",
     "seed:system:check": "tsx src/seed/checkSystemSeed.ts",
     "smoke": "npm run validate:content && npm run seed:check && npm run seed:system:check",
+    "smoke:production": "tsx scripts/productionSmoke.ts",
+    "smoke:rollback": "tsx scripts/rollbackSmoke.ts",
+    "check:observability": "tsx scripts/checkObservabilityEnv.ts",
+    "check:provider-evidence": "tsx scripts/checkProviderEvidence.ts",
+    "check:alerts": "tsx scripts/checkAlertWebhook.ts",
     "audit": "node -e \"console.log('Audit artifacts: AUDIT_REPORT.md, docs/COMPLETION_AUDIT.md, docs/COMPLETION_REPORT.md, DEPLOYMENT_BLOCKERS.md, docs/STANDALONE_SYSTEM_PLAN.md')\"",
-    "check": "npm run lint && npm run typecheck && npm run validate:content && npm run validate:sprites && npm run content:index && git diff --exit-code && npm test && npm run build && npm run seed:check && npm run seed:system:check",
+    "branch:sync:check": "tsx scripts/checkBranchSync.ts",
+    "check:governance": "tsx scripts/checkGovernanceDocs.ts",
+    "check:secrets": "tsx scripts/checkNoSecrets.ts",
+    "check": "npm run lint && npm run typecheck && npm run validate:content && npm run validate:sprites && npm run content:index && git diff --exit-code && npm test && npm run build && npm run seed:check && npm run seed:system:check && npm run check:governance && npm run check:secrets",
+    "check:release-env": "npm run check:provider-evidence && npm run check:observability && npm run check:alerts",
     "verify": "npm run check",
     "done": "npm run audit && npm run smoke && npm run check",
     "web:install": "npm install --prefix apps/web",
@@ -35,9 +44,10 @@
     "web:test": "npm test --prefix apps/web",
     "web:build": "npm run build --prefix apps/web",
     "web:check": "npm run check --prefix apps/web",
-    "web:smoke:routes": "npm run smoke:routes --prefix apps/web",
-    "check:all": "npm run check && npm run web:check",
-    "deploy": "node -e \"console.error('Deployment is intentionally blocked in urai-content: this repository is a content package/library. Use a consuming Firebase/Next deployment repo and follow DEPLOYMENT_BLOCKERS.md and docs/STANDALONE_SYSTEM_PLAN.md.'); process.exit(1)\""
+    "web:e2e": "npm run e2e --prefix apps/web",
+    "web:smoke:routes": "npm run web:build && npm run smoke:routes --prefix apps/web",
+    "check:all": "npm run check && npm run web:check && npm run web:smoke:routes",
+    "deploy": "node -e \"console.error('Deployment is intentionally blocked in urai-content until provider evidence, deployed smoke, E2E, observability, and rollback evidence are GREEN.'); process.exit(1)\""
   },
   "dependencies": {
     "zod": "^3.24.1"

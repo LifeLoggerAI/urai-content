@@ -28,18 +28,103 @@ const contentFiles = [
   'sprites/sprite-packs.json'
 ] as const;
 
-function findContentRoot(): string {
+const embeddedCatalogItems: CatalogItem[] = [
+  {
+    id: 'page-home',
+    title: 'URAI Content Home',
+    slug: '/',
+    summary: 'URAI public content hub for launch-safe product, privacy, demo, and data ownership surfaces.',
+    status: 'live',
+    visibility: 'public',
+    updatedAt: '2026-05-16T00:00:00.000Z',
+    tags: ['public', 'home', 'urai'],
+    relatedSystem: 'urai-content',
+    sections: [
+      {
+        heading: 'Public launch surface',
+        body: 'This embedded fallback keeps the deployed web app available when the canonical content directory is not bundled by the deployment provider.'
+      }
+    ],
+    cta: { label: 'Join the Waitlist', href: '/waitlist' }
+  },
+  {
+    id: 'page-privacy',
+    title: 'URAI Privacy',
+    slug: '/privacy',
+    summary: 'URAI privacy principles for consent-first passive personal intelligence and user-controlled data.',
+    status: 'live',
+    visibility: 'public',
+    updatedAt: '2026-05-16T00:00:00.000Z',
+    tags: ['privacy', 'consent', 'public'],
+    relatedSystem: 'urai-privacy',
+    sections: [
+      {
+        heading: 'Consent-first design',
+        body: 'URAI public content describes privacy, user control, and non-diagnostic reflection without exposing private internal content.'
+      }
+    ]
+  },
+  {
+    id: 'demo-weekly-scrolls',
+    title: 'Weekly Scroll Demo',
+    slug: '/demo/weekly-scrolls',
+    summary: 'Public-safe sample of weekly memory and reflection content for the URAI demo catalog.',
+    status: 'demo',
+    visibility: 'demo',
+    updatedAt: '2026-05-16T00:00:00.000Z',
+    tags: ['demo', 'weekly-scroll'],
+    relatedSystem: 'urai-demo',
+    sections: [
+      {
+        heading: 'Demo content',
+        body: 'Sample demo entry for testing catalog APIs without requiring file-system content during hosted builds.'
+      }
+    ],
+    cta: { label: 'Request Demo', href: '/demo' }
+  },
+  {
+    id: 'demo-life-map-events',
+    title: 'Life Map Events Demo',
+    slug: '/demo/life-map-events',
+    summary: 'Public-safe sample of symbolic life map events for the URAI demo catalog.',
+    status: 'demo',
+    visibility: 'demo',
+    updatedAt: '2026-05-16T00:00:00.000Z',
+    tags: ['demo', 'life-map'],
+    relatedSystem: 'urai-demo',
+    sections: [
+      {
+        heading: 'Life map sample',
+        body: 'Demo-only life map catalog content for hosted route and API verification.'
+      }
+    ]
+  },
+  {
+    id: 'demo-council-reflections',
+    title: 'Council Reflections Demo',
+    slug: '/demo/council-reflections',
+    summary: 'Public-safe sample of Council reflection content for the URAI demo catalog.',
+    status: 'demo',
+    visibility: 'demo',
+    updatedAt: '2026-05-16T00:00:00.000Z',
+    tags: ['demo', 'council'],
+    relatedSystem: 'urai-demo',
+    sections: [
+      {
+        heading: 'Council sample',
+        body: 'Demo-only Council reflection content for hosted route and API verification.'
+      }
+    ]
+  }
+];
+
+function findContentRoot(): string | null {
   const candidates = [
     resolve(process.cwd(), 'content'),
     resolve(process.cwd(), '..', '..', 'content')
   ];
 
-  const found = candidates.find((candidate) => existsSync(candidate));
-  if (!found) {
-    throw new Error('Unable to locate canonical content directory. Run the web app from the repo root or apps/web.');
-  }
-
-  return found;
+  return candidates.find((candidate) => existsSync(candidate)) ?? null;
 }
 
 function readJsonFile(path: string): unknown {
@@ -50,11 +135,17 @@ function toArray(value: unknown): unknown[] {
   return Array.isArray(value) ? value : [value];
 }
 
-export function listCatalogItems(): CatalogItem[] {
-  const contentRoot = findContentRoot();
+function loadFileBackedCatalogItems(contentRoot: string): CatalogItem[] {
   return contentFiles
     .flatMap((file) => toArray(readJsonFile(join(contentRoot, file))))
-    .map((item) => canonicalContentItemSchema.parse(item))
+    .map((item) => canonicalContentItemSchema.parse(item));
+}
+
+export function listCatalogItems(): CatalogItem[] {
+  const contentRoot = findContentRoot();
+  const items = contentRoot ? loadFileBackedCatalogItems(contentRoot) : embeddedCatalogItems;
+
+  return items
     .filter((item) => item.visibility === 'public' || item.visibility === 'demo')
     .sort((a, b) => a.slug.localeCompare(b.slug));
 }
