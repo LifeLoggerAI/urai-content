@@ -6,6 +6,8 @@ import { getFirebaseAdminDb, isFirebaseAdminConfigured } from '../firebase/admin
 
 export type RuntimeContentMode = 'firestore' | 'memory';
 
+let memoryRepository: InMemoryContentRepository | null = null;
+
 export class RuntimeContentService {
   constructor(private readonly repo: ContentRepository) {}
 
@@ -30,9 +32,14 @@ export function createRuntimeContentRepository(): ContentRepository {
     return createFirestoreContentRepository(getFirebaseAdminDb());
   }
 
-  return new InMemoryContentRepository();
+  memoryRepository ??= new InMemoryContentRepository();
+  return memoryRepository;
 }
 
 export function createRuntimeContentService(): RuntimeContentService {
   return new RuntimeContentService(createRuntimeContentRepository());
+}
+
+export function resetRuntimeMemoryRepositoryForTests(): void {
+  memoryRepository = null;
 }
