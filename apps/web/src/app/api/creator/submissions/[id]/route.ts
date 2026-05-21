@@ -5,33 +5,21 @@ import { createRuntimeContentRepository } from '@/server/content/service';
 
 export const dynamic = 'force-dynamic';
 
-type RouteContext = {
-  params: Promise<{ id: string }>;
-};
+type RouteContext = { params: Promise<{ id: string }> };
 
 export async function GET(request: Request, context: RouteContext) {
   const { id } = await context.params;
-  const repository = createRuntimeContentRepository();
-  const submission = await repository.getCreatorSubmission(id);
+  const submission = await createRuntimeContentRepository().getCreatorSubmission(id);
 
   if (!submission) {
-    return NextResponse.json(
-      {
-        error: 'not_found',
-        message: 'Creator submission not found.'
-      },
-      { status: 404 }
-    );
+    return NextResponse.json({ error: 'not_found', message: 'Creator submission not found.' }, { status: 404 });
   }
 
-  const authorization = canReadOwnedResource(getRequestSession(request), String(submission.creatorId ?? ''));
+  const authorization = canReadOwnedResource(await getRequestSession(request), String(submission.creatorId ?? ''));
 
   if (!authorization.ok) {
     return NextResponse.json(getAuthFailureBody(authorization.reason), { status: getAuthFailureStatus(authorization.reason) });
   }
 
-  return NextResponse.json({
-    ok: true,
-    submission
-  });
+  return NextResponse.json({ ok: true, submission });
 }
