@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server';
+import { getAuthFailureBody, getAuthFailureStatus, getRequestSession } from '@/server/auth/requestSession';
+import { requireAdmin } from '@/server/auth/authorization';
 import { seedCanonicalContent } from '@/server/content/canonicalSeed';
 import { createFirestoreContentRepository } from '@/server/firebase/contentRepository';
 import { getFirebaseAdminDb, isFirebaseAdminConfigured } from '@/server/firebase/admin';
@@ -25,18 +27,21 @@ async function parseBody(request: Request): Promise<SeedRequestBody> {
   return (await request.json()) as SeedRequestBody;
 }
 
+function authorizeSeedRequest(request: Request, providedToken: string | null) {
+  if (verifySeedToken(providedToken)) {
+    return { ok: true } as const;
+  }
+
+  return requireAdmin(getRequestSession(request));
+}
+
 export async function POST(request: Request) {
   const body = await parseBody(request);
   const providedToken = body.token ?? getBearerToken(request);
+  const authorization = authorizeSeedRequest(request, providedToken);
 
-  if (!verifySeedToken(providedToken)) {
-    return NextResponse.json(
-      {
-        error: 'unauthorized',
-        message: 'Canonical content seeding requires a valid server seed token.'
-      },
-      { status: 401 }
-    );
+  if (!authorization.ok) {
+    return NextResponse.json(getAuthFailureBody(authorization.reason), { status: getAuthFailureStatus(authorization.reason) });
   }
 
   if (!isFirebaseAdminConfigured()) {
@@ -52,7 +57,7 @@ export async function POST(request: Request) {
   if (body.dryRun) {
     return NextResponse.json({
       dryRun: true,
-      message: 'Seed token and Firebase configuration checks passed. No writes were performed.'
+      message: 'Seed token/admin authorization and Firebase configuration checks passed. No writes were performed.'
     });
   }
 
