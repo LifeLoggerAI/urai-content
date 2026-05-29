@@ -1,4 +1,4 @@
-import { spawn, type ChildProcess } from 'node:child_process';
+import { spawn, spawnSync, type ChildProcess } from 'node:child_process';
 import { implementedPublicRoutes } from '../src/lib/publicRoutes';
 
 function getCliValue(name: string): string | undefined {
@@ -44,14 +44,19 @@ async function probeServer(): Promise<boolean> {
 }
 
 function startServer(): ChildProcess {
-  const child = spawn('npm', ['run', 'start', '--', '--hostname', '127.0.0.1', '--port', String(port)], {
+  const npmBin = process.platform === 'win32' ? 'npm.cmd' : 'npm';
+  const child = spawn(npmBin, ['run', 'start', '--', '--hostname', '127.0.0.1', '--port', String(port)], {
     cwd: process.cwd(),
     env: process.env,
-    stdio: ['ignore', 'pipe', 'pipe']
+    stdio: ['ignore', 'pipe', 'pipe'],
+    shell: process.platform === 'win32'
   });
 
   child.stdout?.on('data', (chunk) => process.stdout.write(`[next] ${chunk}`));
   child.stderr?.on('data', (chunk) => process.stderr.write(`[next] ${chunk}`));
+  child.on('error', (error) => {
+    console.error(`Unable to start Next smoke server with ${npmBin}: ${error.message}`);
+  });
 
   return child;
 }
@@ -98,12 +103,21 @@ async function main() {
     }
   } finally {
     if (server) {
-      server.kill('SIGTERM');
+      if (process.platform === 'win32' && server.pid) {
+        spawnSync('taskkill', ['/pid', String(server.pid), '/T', '/F'], { stdio: 'ignore' });
+      } else {
+        server.kill('SIGTERM');
+      }
+      server.stdout?.destroy();
+      server.stderr?.destroy();
+      server.unref();
     }
   }
 }
 
-main().catch((error) => {
+main().then(() => {
+  process.exit(0);
+}).catch((error) => {
   console.error(error);
-  process.exitCode = 1;
+  process.exit(1);
 });
