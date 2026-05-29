@@ -1,120 +1,67 @@
 import 'server-only';
+import type { AuthPermission, AuthRole, AuthSession, AuthorizationResult } from './roles';
+import { isKnownAuthRole } from './roles';
 
-export const uraiContentRoles = [
-  'anonymous',
-  'member',
-  'creator',
-  'moderator',
-  'admin',
-  'internal-admin'
-] as const;
-
-export type UraiContentRole = (typeof uraiContentRoles)[number];
-
-export const uraiContentPermissions = [
-  'public:read',
-  'dashboard:read',
-  'content:purchase',
-  'creator:read',
-  'creator:submit',
-  'creator:manage-own',
-  'moderation:read',
-  'moderation:review',
-  'admin:read',
-  'admin:write',
-  'system:seed',
-  'system:manage'
-] as const;
-
-export type UraiContentPermission = (typeof uraiContentPermissions)[number];
-
-export type UraiContentPrincipal = {
-  uid: string | null;
-  roles: UraiContentRole[];
+const ROLE_PERMISSIONS: Record<AuthRole, ReadonlySet<AuthPermission>> = {
+  anonymous: new Set(['public:read', 'content:read:public', 'marketplace:read', 'system:health']),
+  user: new Set(['public:read', 'content:read:public', 'marketplace:read', 'marketplace:purchase', 'entitlements:readOwn', 'exports:create', 'exports:readOwn', 'exports:downloadOwn', 'telemetry:create', 'system:health']),
+  creator: new Set(['public:read', 'content:read:public', 'marketplace:read', 'marketplace:purchase', 'entitlements:readOwn', 'exports:create', 'exports:readOwn', 'exports:downloadOwn', 'creator:submit', 'creator:readOwn', 'creator:updateOwn', 'telemetry:create', 'system:health']),
+  studio: new Set(['public:read', 'content:read:public', 'marketplace:read', 'marketplace:purchase', 'entitlements:readOwn', 'exports:create', 'exports:readOwn', 'exports:downloadOwn', 'creator:submit', 'creator:readOwn', 'creator:updateOwn', 'content:create', 'content:update', 'telemetry:create', 'system:health']),
+  enterprise: new Set(['public:read', 'content:read:public', 'marketplace:read', 'marketplace:purchase', 'entitlements:readOwn', 'exports:create', 'exports:readOwn', 'exports:downloadOwn', 'telemetry:create', 'system:health']),
+  licensingPartner: new Set(['public:read', 'content:read:public', 'marketplace:read', 'marketplace:purchase', 'entitlements:readOwn', 'exports:create', 'exports:readOwn', 'exports:downloadOwn', 'telemetry:create', 'system:health']),
+  foundation: new Set(['public:read', 'content:read:public', 'marketplace:read', 'marketplace:purchase', 'entitlements:readOwn', 'exports:create', 'exports:readOwn', 'exports:downloadOwn', 'telemetry:create', 'system:health']),
+  admin: new Set(['public:read', 'content:read:public', 'content:read:private', 'content:create', 'content:update', 'content:review', 'content:approve', 'content:publish', 'content:archive', 'creator:submit', 'creator:readOwn', 'creator:updateOwn', 'marketplace:read', 'marketplace:purchase', 'marketplace:manage', 'entitlements:readOwn', 'entitlements:manage', 'exports:create', 'exports:readOwn', 'exports:downloadOwn', 'exports:manage', 'admin:access', 'moderation:manage', 'releases:manage', 'telemetry:create', 'telemetry:read', 'system:health', 'system:seed', 'system:admin']),
+  internalAdmin: new Set(['public:read', 'content:read:public', 'content:read:private', 'content:create', 'content:update', 'content:review', 'content:approve', 'content:publish', 'content:archive', 'creator:submit', 'creator:readOwn', 'creator:updateOwn', 'marketplace:read', 'marketplace:purchase', 'marketplace:manage', 'entitlements:readOwn', 'entitlements:manage', 'exports:create', 'exports:readOwn', 'exports:downloadOwn', 'exports:manage', 'admin:access', 'moderation:manage', 'releases:manage', 'telemetry:create', 'telemetry:read', 'system:health', 'system:seed', 'system:admin'])
 };
 
-const rolePermissions = {
-  anonymous: ['public:read'],
-  member: ['public:read', 'dashboard:read', 'content:purchase'],
-  creator: ['public:read', 'dashboard:read', 'content:purchase', 'creator:read', 'creator:submit', 'creator:manage-own'],
-  moderator: ['public:read', 'dashboard:read', 'moderation:read', 'moderation:review'],
-  admin: [
-    'public:read',
-    'dashboard:read',
-    'content:purchase',
-    'creator:read',
-    'creator:submit',
-    'creator:manage-own',
-    'moderation:read',
-    'moderation:review',
-    'admin:read',
-    'admin:write'
-  ],
-  'internal-admin': [
-    'public:read',
-    'dashboard:read',
-    'content:purchase',
-    'creator:read',
-    'creator:submit',
-    'creator:manage-own',
-    'moderation:read',
-    'moderation:review',
-    'admin:read',
-    'admin:write',
-    'system:seed',
-    'system:manage'
-  ]
-} satisfies Record<UraiContentRole, UraiContentPermission[]>;
+export function isSignedIn(session: AuthSession | null | undefined): session is AuthSession {
+  return Boolean(session?.uid);
+}
 
-export function normalizeRoles(input: readonly string[] | undefined): UraiContentRole[] {
-  const roleSet = new Set<UraiContentRole>();
+export function sessionRole(session: AuthSession | null | undefined): AuthRole {
+  return isSignedIn(session) && isKnownAuthRole(session.role) ? session.role : 'anonymous';
+}
 
-  for (const role of input ?? []) {
-    if (uraiContentRoles.includes(role as UraiContentRole)) {
-      roleSet.add(role as UraiContentRole);
-    }
+export function hasPermission(session: AuthSession | null | undefined, permission: AuthPermission): boolean {
+  return ROLE_PERMISSIONS[sessionRole(session)].has(permission);
+}
+
+export function isAdminSession(session: AuthSession | null | undefined): boolean {
+  const role = sessionRole(session);
+  return role === 'admin' || role === 'internalAdmin';
+}
+
+export function isCreatorSession(session: AuthSession | null | undefined): boolean {
+  return ['creator', 'studio', 'admin', 'internalAdmin'].includes(sessionRole(session));
+}
+
+export function requirePermissionResult(session: AuthSession | null | undefined, permission: AuthPermission): AuthorizationResult {
+  if (!isSignedIn(session) && !['public:read', 'content:read:public', 'marketplace:read', 'system:health'].includes(permission)) {
+    return { ok: false, reason: 'unauthenticated' };
   }
 
-  if (roleSet.size === 0) {
-    roleSet.add('anonymous');
-  }
-
-  return [...roleSet];
+  return hasPermission(session, permission) ? { ok: true } : { ok: false, reason: 'forbidden' };
 }
 
-export function createPrincipal(uid: string | null, roles: readonly string[] | undefined): UraiContentPrincipal {
-  return {
-    uid,
-    roles: normalizeRoles(roles)
-  };
+export function canReadOwnedResource(session: AuthSession | null | undefined, ownerUserId: string | null | undefined): AuthorizationResult {
+  if (!isSignedIn(session)) return { ok: false, reason: 'unauthenticated' };
+  if (isAdminSession(session) || session.uid === ownerUserId) return { ok: true };
+  return { ok: false, reason: 'forbidden' };
 }
 
-export function listPrincipalPermissions(principal: UraiContentPrincipal): UraiContentPermission[] {
-  const permissions = new Set<UraiContentPermission>();
-
-  for (const role of principal.roles) {
-    for (const permission of rolePermissions[role]) {
-      permissions.add(permission);
-    }
-  }
-
-  return [...permissions];
+export function canCreateOwnedResource(session: AuthSession | null | undefined, ownerUserId: string | null | undefined): AuthorizationResult {
+  if (!isSignedIn(session)) return { ok: false, reason: 'unauthenticated' };
+  if (session.uid === ownerUserId) return { ok: true };
+  return { ok: false, reason: 'forbidden' };
 }
 
-export function hasPermission(principal: UraiContentPrincipal, permission: UraiContentPermission): boolean {
-  return listPrincipalPermissions(principal).includes(permission);
+export function canCreateCreatorSubmission(session: AuthSession | null | undefined, creatorId: string | null | undefined): AuthorizationResult {
+  if (!isSignedIn(session)) return { ok: false, reason: 'unauthenticated' };
+  if (isCreatorSession(session) && session.uid === creatorId) return { ok: true };
+  return { ok: false, reason: 'forbidden' };
 }
 
-export function requirePermission(principal: UraiContentPrincipal, permission: UraiContentPermission): void {
-  if (!hasPermission(principal, permission)) {
-    throw new Error(`Missing required URAI Content permission: ${permission}`);
-  }
-}
-
-export function canAccessRoute(principal: UraiContentPrincipal, route: string): boolean {
-  if (route.startsWith('/admin')) return hasPermission(principal, 'admin:read');
-  if (route.startsWith('/creator/dashboard')) return hasPermission(principal, 'creator:read');
-  if (route.startsWith('/creator/submit')) return hasPermission(principal, 'creator:submit');
-  if (route.startsWith('/dashboard')) return hasPermission(principal, 'dashboard:read');
-  return hasPermission(principal, 'public:read');
+export function requireAdmin(session: AuthSession | null | undefined): AuthorizationResult {
+  if (!isSignedIn(session)) return { ok: false, reason: 'unauthenticated' };
+  return isAdminSession(session) ? { ok: true } : { ok: false, reason: 'forbidden' };
 }
