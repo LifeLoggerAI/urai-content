@@ -5,7 +5,7 @@ import {
   loadEcosystemSchema,
   validateContentPackContract,
   validateEcosystemSchema
-} from '../scripts/checkEcosystemContracts';
+} from '../scripts/checkEcosystemContracts.js';
 
 describe('URAI ecosystem integration contract', () => {
   it('keeps the shared schema compatible with all required ecosystem collections', () => {
