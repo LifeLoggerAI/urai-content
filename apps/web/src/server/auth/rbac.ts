@@ -143,12 +143,32 @@ export function requirePermissionResult(session: AuthSession | null | undefined,
 
 export function requirePermission(principal: UraiContentPrincipal, permission: AuthPermission): void {
   if (!hasPermission(principal, permission)) {
-    throw new Error(`Missing permission: ${permission}`);
+    throw new Error(`Missing required URAI Content permission: ${permission}`);
   }
 }
 
-export function canAccessRoute(principal: UraiContentPrincipal, permission: AuthPermission): boolean {
-  return hasPermission(principal, permission);
+export function canAccessRoute(principal: UraiContentPrincipal, routeOrPermission: AuthPermission | string): boolean {
+  if ((AUTH_PERMISSIONS as readonly string[]).includes(routeOrPermission)) {
+    return hasPermission(principal, routeOrPermission as AuthPermission);
+  }
+
+  if (routeOrPermission === '/' || routeOrPermission === '/pricing' || routeOrPermission.startsWith('/content')) {
+    return hasPermission(principal, 'public:read');
+  }
+
+  if (routeOrPermission.startsWith('/dashboard')) {
+    return hasPermission(principal, 'entitlements:readOwn');
+  }
+
+  if (routeOrPermission.startsWith('/creator')) {
+    return hasPermission(principal, 'creator:readOwn') || hasPermission(principal, 'creator:submit');
+  }
+
+  if (routeOrPermission.startsWith('/admin')) {
+    return hasPermission(principal, 'admin:access');
+  }
+
+  return false;
 }
 
 export function canReadOwnedResource(session: AuthSession | null | undefined, ownerUserId: string | null | undefined): AuthorizationResult {
