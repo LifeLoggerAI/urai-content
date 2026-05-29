@@ -25,8 +25,9 @@ const originalClientEmail = process.env.FIREBASE_CLIENT_EMAIL;
 const originalPrivateKey = process.env.FIREBASE_PRIVATE_KEY;
 
 function setNodeEnv(value: string | undefined) {
-  if (value === undefined) delete process.env.NODE_ENV;
-  else process.env.NODE_ENV = value;
+  const mutableEnv = process.env as Record<string, string | undefined>;
+  if (value === undefined) delete mutableEnv.NODE_ENV;
+  else mutableEnv.NODE_ENV = value;
 }
 
 function makeAuthRequest(): Request {
