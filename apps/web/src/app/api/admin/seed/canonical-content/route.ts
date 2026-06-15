@@ -27,8 +27,14 @@ async function parseBody(request: Request): Promise<SeedRequestBody> {
   return (await request.json()) as SeedRequestBody;
 }
 
-async function authorizeSeedRequest(request: Request, providedToken: string | null) {
-  if (verifySeedToken(providedToken)) return { ok: true } as const;
+async function authorizeSeedRequest(
+  request: Request,
+  providedToken: string | null
+) {
+  if (verifySeedToken(providedToken)) {
+    return { ok: true } as const;
+  }
+
   return requireAdmin(await getRequestSession(request));
 }
 
@@ -38,14 +44,18 @@ export async function POST(request: Request) {
   const authorization = await authorizeSeedRequest(request, providedToken);
 
   if (!authorization.ok) {
-    return NextResponse.json(getAuthFailureBody(authorization.reason), { status: getAuthFailureStatus(authorization.reason) });
+    return NextResponse.json(
+      getAuthFailureBody(authorization.reason),
+      { status: getAuthFailureStatus(authorization.reason) }
+    );
   }
 
   if (!isFirebaseAdminConfigured()) {
     return NextResponse.json(
       {
         error: 'firebase_not_configured',
-        message: 'Firebase Admin must be configured before canonical content can be seeded.'
+        message:
+          'Firebase Admin must be configured before canonical content can be seeded.',
       },
       { status: 409 }
     );
@@ -54,15 +64,18 @@ export async function POST(request: Request) {
   if (body.dryRun) {
     return NextResponse.json({
       dryRun: true,
-      message: 'Seed token/admin authorization and Firebase configuration checks passed. No writes were performed.'
+      message:
+        'Seed token/admin authorization and Firebase configuration checks passed. No writes were performed.',
     });
   }
 
-  const repository = createFirestoreContentRepository(getFirebaseAdminDb());
+  const repository = createFirestoreContentRepository(
+    getFirebaseAdminDb()
+  );
   const result = await seedCanonicalContent(repository);
 
   return NextResponse.json({
     ok: true,
-    seeded: result
+    seeded: result,
   });
 }

@@ -72,7 +72,14 @@
     "ecosystemRecord": {
       "type": "object",
       "additionalProperties": true,
-      "required": ["id", "version", "lifecycleStatus", "visibility", "integrationTargets", "provenance"],
+      "required": [
+        "id",
+        "version",
+        "lifecycleStatus",
+        "visibility",
+        "integrationTargets",
+        "provenance"
+      ],
       "properties": {
         "id": { "type": "string", "minLength": 1 },
         "version": { "type": "string", "minLength": 1 },
@@ -99,13 +106,21 @@
           "type": "object",
           "required": ["slug", "assetIds"],
           "properties": {
-            "slug": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+            "slug": {
+              "type": "string",
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
             "assetIds": {
               "type": "array",
-              "items": { "type": "string", "minLength": 1 },
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
               "uniqueItems": true
             },
-            "xrCompatible": { "type": "boolean" }
+            "xrCompatible": {
+              "type": "boolean"
+            }
           }
         }
       ]
@@ -117,10 +132,21 @@
           "type": "object",
           "required": ["sceneId", "spatialLayer"],
           "properties": {
-            "sceneId": { "type": "string", "minLength": 1 },
+            "sceneId": {
+              "type": "string",
+              "minLength": 1
+            },
             "spatialLayer": {
               "type": "string",
-              "enum": ["ground", "sky", "orb", "memory", "overlay", "ambient", "interaction"]
+              "enum": [
+                "ground",
+                "sky",
+                "orb",
+                "memory",
+                "overlay",
+                "ambient",
+                "interaction"
+              ]
             }
           }
         }
