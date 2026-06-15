@@ -3,6 +3,7 @@ import {
   canCreateCreatorSubmission,
   canCreateOwnedResource,
   canReadOwnedResource,
+  hasPermission,
   isAdminSession,
   isCreatorSession,
   isKnownAuthRole,
@@ -10,7 +11,6 @@ import {
   type AuthSession
 } from '../src/server/auth/authorization';
 import { getAuthFailureBody, getAuthFailureStatus, getRequestSession } from '../src/server/auth/requestSession';
-import { setNodeEnvForTests } from './testEnv';
 
 const user: AuthSession = { uid: 'user-1', role: 'user' };
 const creator: AuthSession = { uid: 'creator-1', role: 'creator' };
@@ -19,9 +19,20 @@ const admin: AuthSession = { uid: 'admin-1', role: 'admin' };
 const internalAdmin: AuthSession = { uid: 'internal-1', role: 'internalAdmin' };
 
 const originalNodeEnv = process.env.NODE_ENV;
+const originalHeaderAuth = process.env.URAI_ENABLE_HEADER_AUTH;
 const originalProjectId = process.env.FIREBASE_PROJECT_ID;
 const originalClientEmail = process.env.FIREBASE_CLIENT_EMAIL;
 const originalPrivateKey = process.env.FIREBASE_PRIVATE_KEY;
+
+function setNodeEnv(value: string | undefined) {
+  const mutableEnv = process.env as Record<string, string | undefined>;
+
+  if (value === undefined) {
+    delete mutableEnv.NODE_ENV;
+  } else {
+    mutableEnv.NODE_ENV = value;
+  }
+}
 
 function makeAuthRequest(): Request {
   return new Request('http://localhost/api/admin/content', {
@@ -33,25 +44,43 @@ function makeAuthRequest(): Request {
 }
 
 afterEach(() => {
-  setNodeEnvForTests(originalNodeEnv);
+  setNodeEnv(originalNodeEnv);
 
-  if (originalProjectId === undefined) delete process.env.FIREBASE_PROJECT_ID;
-  else process.env.FIREBASE_PROJECT_ID = originalProjectId;
+  if (originalHeaderAuth === undefined) {
+    delete process.env.URAI_ENABLE_HEADER_AUTH;
+  } else {
+    process.env.URAI_ENABLE_HEADER_AUTH = originalHeaderAuth;
+  }
 
-  if (originalClientEmail === undefined) delete process.env.FIREBASE_CLIENT_EMAIL;
-  else process.env.FIREBASE_CLIENT_EMAIL = originalClientEmail;
+  if (originalProjectId === undefined) {
+    delete process.env.FIREBASE_PROJECT_ID;
+  } else {
+    process.env.FIREBASE_PROJECT_ID = originalProjectId;
+  }
 
-  if (originalPrivateKey === undefined) delete process.env.FIREBASE_PRIVATE_KEY;
-  else process.env.FIREBASE_PRIVATE_KEY = originalPrivateKey;
+  if (originalClientEmail === undefined) {
+    delete process.env.FIREBASE_CLIENT_EMAIL;
+  } else {
+    process.env.FIREBASE_CLIENT_EMAIL = originalClientEmail;
+  }
+
+  if (originalPrivateKey === undefined) {
+    delete process.env.FIREBASE_PRIVATE_KEY;
+  } else {
+    process.env.FIREBASE_PRIVATE_KEY = originalPrivateKey;
+  }
 });
 
 describe('server authorization helpers', () => {
-  it('recognizes only supported auth roles', () => {
+  it('recognizes canonical auth roles and rejects unsupported roles', () => {
     expect(isKnownAuthRole('user')).toBe(true);
     expect(isKnownAuthRole('creator')).toBe(true);
     expect(isKnownAuthRole('studio')).toBe(true);
     expect(isKnownAuthRole('admin')).toBe(true);
     expect(isKnownAuthRole('internalAdmin')).toBe(true);
+    expect(isKnownAuthRole('enterprise')).toBe(true);
+    expect(isKnownAuthRole('licensingPartner')).toBe(true);
+    expect(isKnownAuthRole('foundation')).toBe(true);
     expect(isKnownAuthRole('owner')).toBe(false);
     expect(isKnownAuthRole(null)).toBe(false);
   });
@@ -67,6 +96,14 @@ describe('server authorization helpers', () => {
     expect(isCreatorSession(admin)).toBe(true);
     expect(isCreatorSession(internalAdmin)).toBe(true);
     expect(isCreatorSession(user)).toBe(false);
+  });
+
+  it('maps permissions by role', () => {
+    expect(hasPermission(null, 'content:read:public')).toBe(true);
+    expect(hasPermission(user, 'admin:access')).toBe(false);
+    expect(hasPermission(creator, 'creator:submit')).toBe(true);
+    expect(hasPermission(admin, 'content:publish')).toBe(true);
+    expect(hasPermission(internalAdmin, 'system:seed')).toBe(true);
   });
 
   it('requires admin for admin-only writes', () => {
@@ -100,19 +137,36 @@ describe('server authorization helpers', () => {
   });
 
   it('parses request sessions from explicit URAI auth headers outside production', async () => {
-    setNodeEnvForTests('test');
+    setNodeEnv('test');
+    delete process.env.URAI_ENABLE_HEADER_AUTH;
 
-    await expect(getRequestSession(makeAuthRequest())).resolves.toEqual({ uid: 'admin-1', role: 'admin' });
+    await expect(getRequestSession(makeAuthRequest())).resolves.toEqual({
+      uid: 'admin-1',
+      role: 'admin'
+    });
   });
 
-  it('always ignores header auth in production', async () => {
-    setNodeEnvForTests('production');
+  it('ignores header auth in production by default', async () => {
+    setNodeEnv('production');
+    delete process.env.URAI_ENABLE_HEADER_AUTH;
 
     await expect(getRequestSession(makeAuthRequest())).resolves.toBeNull();
   });
 
+  it('allows production header auth only with explicit opt-in', async () => {
+    setNodeEnv('production');
+    process.env.URAI_ENABLE_HEADER_AUTH = '1';
+
+    await expect(getRequestSession(makeAuthRequest())).resolves.toEqual({
+      uid: 'admin-1',
+      role: 'admin'
+    });
+  });
+
   it('fails closed for missing user id and unsupported roles', async () => {
-    await expect(getRequestSession(new Request('http://localhost/api/admin/content'))).resolves.toBeNull();
+    await expect(
+      getRequestSession(new Request('http://localhost/api/admin/content'))
+    ).resolves.toBeNull();
 
     const request = new Request('http://localhost/api/admin/content', {
       headers: {
@@ -121,11 +175,15 @@ describe('server authorization helpers', () => {
       }
     });
 
-    await expect(getRequestSession(request)).resolves.toEqual({ uid: 'user-1', role: null });
+    await expect(getRequestSession(request)).resolves.toEqual({
+      uid: 'user-1',
+      role: null
+    });
   });
 
   it('fails closed for bearer tokens when Firebase Admin credentials are not configured', async () => {
-    setNodeEnvForTests('production');
+    setNodeEnv('production');
+
     delete process.env.FIREBASE_PROJECT_ID;
     delete process.env.FIREBASE_CLIENT_EMAIL;
     delete process.env.FIREBASE_PRIVATE_KEY;
@@ -142,10 +200,12 @@ describe('server authorization helpers', () => {
   it('maps auth failures to stable response status and body shapes', () => {
     expect(getAuthFailureStatus('unauthenticated')).toBe(401);
     expect(getAuthFailureStatus('forbidden')).toBe(403);
+
     expect(getAuthFailureBody('unauthenticated')).toEqual({
       error: 'unauthenticated',
       message: 'Authentication is required.'
     });
+
     expect(getAuthFailureBody('forbidden')).toEqual({
       error: 'forbidden',
       message: 'You do not have permission to perform this action.'
