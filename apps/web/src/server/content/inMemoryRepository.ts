@@ -3,6 +3,7 @@ import type {
   ContentItem,
   ContentRepository,
   CreatorSubmission,
+  CreatorSubmissionQueueOptions,
   ExportTemplate,
   MarketplaceItem,
   ModerationQueueItem,
@@ -81,5 +82,17 @@ export class InMemoryContentRepository implements ContentRepository {
   async upsertRitualTemplate(template: RitualTemplate): Promise<void> { this.ritualTemplates.set(template.id, template); }
   async upsertMarketplaceItem(item: MarketplaceItem): Promise<void> { this.marketplaceItems.set(item.id, item); }
   async upsertCreatorSubmission(item: CreatorSubmission): Promise<void> { this.creatorSubmissions.set(item.id, item); }
+  async getCreatorSubmission(id: string): Promise<CreatorSubmission | null> { return this.creatorSubmissions.get(id) ?? null; }
+  async listCreatorSubmissions(creatorId: string): Promise<CreatorSubmission[]> {
+    return this.sortCreatorSubmissions([...this.creatorSubmissions.values()].filter((item) => item.creatorId === creatorId));
+  }
+  async listCreatorSubmissionQueue(options: CreatorSubmissionQueueOptions = {}): Promise<CreatorSubmission[]> {
+    const limit = Math.min(Math.max(options.limit ?? 50, 1), 100);
+    return this.sortCreatorSubmissions([...this.creatorSubmissions.values()].filter((item) => !options.status || item.status === options.status)).slice(0, limit);
+  }
   async upsertExportTemplate(item: ExportTemplate): Promise<void> { this.exportTemplates.set(item.id, item); }
+
+  private sortCreatorSubmissions(items: CreatorSubmission[]): CreatorSubmission[] {
+    return items.sort((a, b) => String(b.submittedAt ?? b.updatedAt ?? '').localeCompare(String(a.submittedAt ?? a.updatedAt ?? '')));
+  }
 }
