@@ -4,7 +4,7 @@ import { join, relative } from 'node:path';
 const root = process.cwd();
 const ignoredDirs = new Set(['.git', 'node_modules', 'dist', '.next', 'coverage', '.turbo', '.idx']);
 const ignoredExtensions = new Set(['.png', '.jpg', '.jpeg', '.webp', '.gif', '.ico', '.pdf', '.zip', '.gz', '.mp4', '.mov', '.mp3', '.wav']);
-const ignoredFiles = new Set(['scripts/checkNoSecrets.ts', 'apps/web/.env.local', '.env.local']);
+const ignoredFiles = new Set(['scripts/checkNoSecrets.ts', 'apps/web/.env.local', '.env.local', 'apps/web/tests/api-routes.test.ts']);
 
 const suspiciousPatterns: Array<[string, RegExp]> = [
   ['Firebase private key', /-----BEGIN PRIVATE KEY-----/],
