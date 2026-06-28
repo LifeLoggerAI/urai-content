@@ -36,6 +36,15 @@ describe('production domain seed data', () => {
     expect(packs.some((pack) => pack.tierVisibility.includes('licensingPartner'))).toBe(true);
   });
 
+  it('does not mark unverified demo asset manifests as production-published proof', () => {
+    const manifests = assetManifests.map((manifest) => assetManifestSchema.parse(manifest));
+    const publishedWithUnverifiedAssets = manifests.filter((manifest) =>
+      manifest.status === 'published' && manifest.assets.some((asset) => asset.checksum.startsWith('unverified-') || asset.checksum.startsWith('sha256-demo-'))
+    );
+
+    expect(publishedWithUnverifiedAssets).toEqual([]);
+  });
+
   it('validates licenses and export jobs', () => {
     const licenses = contentLicenses.map((license) => contentLicenseSchema.parse(license));
     const jobs = exportJobs.map((job) => exportJobSchema.parse(job));
@@ -43,6 +52,15 @@ describe('production domain seed data', () => {
     expect(licenses.some((license) => license.scope === 'studioCampaign')).toBe(true);
     expect(jobs.map((job) => job.type)).toContain('srtCaptions');
     expect(jobs.some((job) => job.status === 'failed' && job.errorMessage)).toBe(true);
+  });
+
+  it('does not count fake completed export URLs as production proof', () => {
+    const jobs = exportJobs.map((job) => exportJobSchema.parse(job));
+    const invalidCompletedJobs = jobs.filter((job) =>
+      job.status === 'complete' && (job.outputUrls.length === 0 || !job.checksum || job.checksum.startsWith('sha256-demo-'))
+    );
+
+    expect(invalidCompletedJobs).toEqual([]);
   });
 
   it('validates SEO pages for standalone domain readiness', () => {
