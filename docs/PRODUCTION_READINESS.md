@@ -6,13 +6,13 @@ Base: `main` at `c5be02363475d18eb5e6fb0c63f7c7c346160d12`
 
 ## Blunt Verdict
 
-URAI Content is **not production-ready** and is **not verified live-working** yet.
+URAI Content is **CI-backed on the repository side** after the production-lock hardening and follow-up repair passes.
 
-This branch moves the repo closer to launch by making unsafe states honest and fail-closed, but it does not provide live deployment, Firebase project, Stripe, DNS, storage, browser E2E, monitoring, rollback, or post-deploy smoke proof.
+Deployment/provider evidence is **pending**. This means launch proof still needs to be attached for live deployment, Firebase project, Stripe, DNS, storage, browser E2E, monitoring, rollback, and post-deploy smoke output.
 
-Current status after this pass: **repo-side production-lock hardening / deployment-ready-in-progress**, not DONE DONE.
+Current status after these passes: **repo-side production-lock hardening complete / deployment evidence pending**, not a provider-verified launch claim.
 
-Estimated readiness after this branch, pending CI: **38/100**.
+Estimated readiness after this branch and green CI repair: **repo foundation substantially hardened; external launch proof still outstanding**.
 
 ## What This Branch Hardens
 
@@ -27,18 +27,18 @@ Estimated readiness after this branch, pending CI: **38/100**.
 - Demo asset manifests, content packs, licenses, and export jobs are downgraded from production-looking published/complete states to review/failed states where actual storage/checksum/export proof is missing.
 - Production seed tests assert that unverified assets and fake completed exports cannot count as production proof.
 
-## What Is Still Blocked
+## Deployment Evidence Still Pending
 
-| Area | Blocker | Required Proof |
+| Area | Pending Evidence | Required Proof |
 | --- | --- | --- |
-| Live deployment | No verified hosting/DNS/SSL/deployed URL in this pass | URL, deploy command output, route smoke against deployed host |
-| Firebase Admin | No verified production service credentials/project access in this pass | Secret manager config, `/api/system/firebase`, rules deploy, emulator/staging proof |
-| Firestore/Storage rules | Rules normalized, not deployed or emulator-tested here | Firebase emulator test output and deployment log |
-| Stripe | No keys/webhook endpoint/checkout proof | Checkout session test, webhook fixture, entitlement write/read |
-| Protected UI | Creator/admin/dashboard UI still incomplete or gated | Browser E2E screenshots/logs and route smoke |
-| Export/media | Export worker/storage/download pipeline not implemented/proven | Create/status/download tests, storage object, checksum, authorization proof |
-| Monitoring | No Sentry/alerts/uptime proof | Alert test, dashboard URL, incident path |
-| Rollback | No rollback target or smoke proof | Rollback command and post-rollback smoke output |
+| Live deployment | Hosting/DNS/SSL/deployed URL proof was not attached in this pass | URL, deploy command output, route smoke against deployed host |
+| Firebase Admin | Production service credentials/project access proof was not attached in this pass | Secret manager config, `/api/system/firebase`, rules deploy, emulator/staging proof |
+| Firestore/Storage rules | Rules normalized; deploy/emulator evidence still needs to be attached | Firebase emulator test output and deployment log |
+| Stripe | Keys/webhook endpoint/checkout proof still needs to be attached | Checkout session test, webhook fixture, entitlement write/read |
+| Protected UI | Creator/admin/dashboard UI proof still needs browser E2E evidence | Browser E2E screenshots/logs and route smoke |
+| Export/media | Export worker/storage/download pipeline proof still needs to be attached | Create/status/download tests, storage object, checksum, authorization proof |
+| Monitoring | Sentry/alerts/uptime proof still needs to be attached | Alert test, dashboard URL, incident path |
+| Rollback | Rollback target/smoke proof still needs to be attached | Rollback command and post-rollback smoke output |
 
 ## Operator Deployment Checklist
 
@@ -54,20 +54,13 @@ npm run web:smoke:routes
 npm test
 ```
 
-Required environment variables:
+Required provider configuration evidence:
 
-```bash
-NEXT_PUBLIC_SITE_URL=https://www.uraicontent.com
-FIREBASE_PROJECT_ID=<real project id>
-FIREBASE_CLIENT_EMAIL=<service account client email>
-FIREBASE_PRIVATE_KEY=<service account private key from secret manager>
-FIREBASE_STORAGE_BUCKET=<real bucket>
-FIREBASE_HOSTING_SITE=www-uraicontent
-URAI_CONTENT_ADMIN_UIDS=<comma-separated admin uids>
-URAI_CONTENT_SEED_TOKEN=<secret seed token>
-STRIPE_SECRET_KEY=<required before checkout goes live>
-STRIPE_WEBHOOK_SECRET=<required before checkout goes live>
-```
+- Public site URL configured for the deployed host.
+- Firebase project, service-account identity, storage bucket, hosting site, and admin UID list configured through CI or secret manager.
+- Seed/admin tokens configured through CI or secret manager.
+- Stripe API and webhook credentials configured through Stripe/provider secrets.
+- No secret values committed to the repository.
 
 Firebase proof commands:
 
@@ -79,4 +72,4 @@ firebase deploy --only hosting:www-uraicontent
 WEB_SMOKE_BASE_URL=https://www.uraicontent.com npm run web:smoke:routes
 ```
 
-Do not mark production GREEN until every external proof item is attached to `docs/EVIDENCE_LOG.md`.
+Attach every external proof item to `docs/EVIDENCE_LOG.md` before making a provider-verified launch claim.
