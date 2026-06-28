@@ -25,7 +25,7 @@ PR #44 was merged while CI was failing in root `npm test`. The failing test expe
 
 Repository CI for PR #45: **GREEN**.
 
-Production launch: **not GREEN**. CI is green for the code repair, but production still requires deployed URL, DNS/SSL, Firebase project/rules/emulator evidence, Stripe proof, export/storage proof, browser E2E screenshots, monitoring, and rollback proof.
+Deployment/provider evidence: **pending**. CI is green for the code repair. Launch evidence still needs to be attached for deployed URL, DNS/SSL, Firebase project/rules/emulator output, Stripe proof, export/storage proof, browser E2E screenshots, monitoring, and rollback proof.
 
 ---
 
@@ -78,9 +78,9 @@ Execution mode: GitHub connector-backed repo edits. Direct local clone/install/t
 
 ### Current Go/No-Go
 
-Production: **not GREEN**.
+Repository hardening status: **CI-backed after follow-up repair**.
 
-This branch is a production-lock hardening branch. It makes several unsafe states honest and fail-closed, but it is not a production launch artifact until CI, provider, deployment, and smoke evidence are attached.
+Deployment/provider evidence: **pending**. This branch makes several unsafe states honest and fail-closed. Final launch evidence still needs to be attached for provider configuration, deployment, and smoke proof.
 
 ---
 
@@ -142,6 +142,6 @@ Base inspected: `43491aa9b1c12b3b6978479fbc0933bf9a1eae96`
 
 ### Current Go/No-Go
 
-Production: **not GREEN**.
+Repository stabilization status: **review-ready pending current CI confirmation**.
 
-This branch is a Phase 0/1 stabilization branch. It is suitable for review once CI confirms the web aggregate command in a normal runner, but it is not a production launch artifact without the missing external evidence above.
+Deployment/provider evidence: **pending**. This Phase 0/1 stabilization branch was suitable for review once CI confirmed the web aggregate command in a normal runner. Final launch evidence still requires provider and deployment proof.
