@@ -4,7 +4,8 @@ import { join, relative } from 'node:path';
 const root = process.cwd();
 const ignoredDirs = new Set(['.git', 'node_modules', 'dist', '.next', 'coverage', '.turbo', '.idx']);
 const ignoredExtensions = new Set(['.png', '.jpg', '.jpeg', '.webp', '.gif', '.ico', '.pdf', '.zip', '.gz', '.mp4', '.mov', '.mp3', '.wav']);
-const ignoredFiles = new Set(['scripts/checkNoSecrets.ts', 'apps/web/.env.local', '.env.local', 'apps/web/tests/api-routes.test.ts']);
+const ignoredFiles = new Set(['scripts/checkNoSecrets.ts', 'apps/web/.env.local', '.env.local']);
+const allowedDummySecretValues = new Set(['0123456789abcdef']);
 
 const suspiciousPatterns: Array<[string, RegExp]> = [
   ['Firebase private key', /-----BEGIN PRIVATE KEY-----/],
@@ -23,6 +24,14 @@ function shouldSkip(path: string): boolean {
   if (ignoredFiles.has(path)) return true;
   if (path.endsWith('.env.local')) return true;
   return [...ignoredExtensions].some((ext) => path.endsWith(ext));
+}
+
+function redactAllowedDummyFixtures(content: string): string {
+  let redacted = content;
+  for (const value of allowedDummySecretValues) {
+    redacted = redacted.replaceAll(value, 'known-dummy-fixture');
+  }
+  return redacted;
 }
 
 function walk(dir: string): string[] {
@@ -51,8 +60,9 @@ for (const file of walk(root)) {
   } catch {
     continue;
   }
+  const contentToScan = redactAllowedDummyFixtures(content);
   for (const [name, pattern] of suspiciousPatterns) {
-    if (pattern.test(content)) {
+    if (pattern.test(contentToScan)) {
       failures.push(`${rel}: possible ${name}`);
     }
   }
