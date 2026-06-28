@@ -64,7 +64,7 @@ function redactAllowedDummyFixtures(content: string): string {
   let redacted = content;
 
   for (const value of allowedDummySecretValues) {
-    redacted = redacted.replaceAll(value, 'known-dummy-fixture');
+    redacted = redacted.replaceAll(value, 'redacted');
   }
 
   return redacted;
@@ -104,10 +104,12 @@ for (const file of walk(root)) {
     continue;
   }
 
-  const contentToScan = redactAllowedDummyFixtures(content);
-
   for (const [name, pattern] of suspiciousPatterns) {
-    if (pattern.test(contentToScan)) {
+    if (!pattern.test(content)) continue;
+
+    const redactedContent = redactAllowedDummyFixtures(content);
+
+    if (pattern.test(redactedContent)) {
       failures.push(`${rel}: possible ${name}`);
     }
   }
