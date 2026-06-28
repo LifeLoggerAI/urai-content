@@ -1,10 +1,67 @@
 # URAI Content Evidence Log
 
+## 2026-06-29 Production Lock Pass
+
+Branch: `production-lock/urai-content-done-done`
+Base inspected: `main` at `c5be02363475d18eb5e6fb0c63f7c7c346160d12`
+Execution mode: GitHub connector-backed repo edits. Direct local clone/install/test was blocked because the container could not resolve `github.com`.
+
+### Evidence Collected In This Pass
+
+| Check | Result | Evidence |
+| --- | --- | --- |
+| Secret scanner scope | Hardened | `scripts/checkNoSecrets.ts` no longer excludes the entire API route test file; only the known dummy fixture value is redacted. |
+| Secret scanner review feedback | Addressed | Redaction replacement is short (`redacted`) and only applied after a raw suspicious-pattern hit. |
+| Production memory fallback | Hardened | `apps/web/src/server/content/service.ts` reports runtime persistence status and throws for production writes when Firebase Admin is missing. |
+| Health status | Hardened | `/api/health` now returns degraded / `ok: false` when persistence is not production-safe. |
+| Firebase status | Hardened | `/api/system/firebase` now reports runtime mode, writable status, preview mode, and production-safe state without secrets. |
+| Creator submissions | Hardened | List/create/detail routes return `503 persistence_not_configured` instead of silently using memory in production without Firebase. |
+| Admin moderation | Hardened | Admin queue and moderation write routes return `503 persistence_not_configured` instead of silently using memory in production without Firebase. |
+| Firestore rules | Normalized | `apps/web/firestore.rules` now uses canonical `role` / `roles` custom claims and denies fallback. |
+| Storage rules | Normalized | `apps/web/storage.rules` now uses canonical `role` / `roles` custom claims and denies fallback. |
+| Asset/export truth | Hardened | Unverified seed asset manifests, packs, licenses, and exports were downgraded from production-looking states. |
+| Asset/export tests | Added | `tests/production.test.ts` now rejects published assets with demo/unverified checksums and fake completed export proof. |
+| Production persistence tests | Added | `apps/web/tests/runtime-persistence.test.ts` covers memory preview behavior, production fail-closed behavior, health degradation, Firebase status, and creator-submission 503 behavior. |
+| Route/readiness docs | Added | `docs/PRODUCTION_READINESS.md`, `docs/ROUTE_AUDIT.md`, and `docs/BLOCKERS.md`. |
+
+### Commands Attempted In This Pass
+
+| Command | Result | Notes |
+| --- | --- | --- |
+| `git clone https://github.com/LifeLoggerAI/urai-content.git /mnt/data/urai-content` | Failed | DNS resolution for `github.com` failed in this environment. |
+| `npm ci` | Not run | Blocked by unavailable local clone. Must run in CI/operator environment. |
+| `npm run check` | Not run | Blocked by unavailable local clone. Must run in CI/operator environment. |
+| `npm run done` | Not run | Blocked by unavailable local clone. Must run in CI/operator environment. |
+| `npm run web:install` | Not run | Blocked by unavailable local clone. Must run in CI/operator environment. |
+| `npm run web:check` | Not run | Blocked by unavailable local clone. Must run in CI/operator environment. |
+| `npm run web:smoke:routes` | Not run | Blocked by unavailable local clone. Must run in CI/operator environment. |
+| `npm test` | Not run | Blocked by unavailable local clone. Must run in CI/operator environment. |
+
+### External Evidence Not Available In This Pass
+
+- Deployed URL.
+- DNS/SSL validation.
+- Firebase production project/rules/emulator output.
+- Stripe checkout/webhook/entitlement proof.
+- Browser E2E screenshots.
+- Monitoring/alert evidence.
+- Rollback target and rollback smoke output.
+
+### Current Go/No-Go
+
+Production: **not GREEN**.
+
+This branch is a production-lock hardening branch. It makes several unsafe states honest and fail-closed, but it is not a production launch artifact until CI, provider, deployment, and smoke evidence are attached.
+
+---
+
+## 2026-05-29 Stabilization Pass
+
 Date: 2026-05-29
 Branch: `codex/content-stabilization-phase-0-1`
 Base inspected: `43491aa9b1c12b3b6978479fbc0933bf9a1eae96`
 
-## Evidence Collected In This Pass
+### Evidence Collected In This Pass
 
 | Check | Result | Evidence |
 | --- | --- | --- |
@@ -18,7 +75,7 @@ Base inspected: `43491aa9b1c12b3b6978479fbc0933bf9a1eae96`
 | Ecosystem contract check | Passing | `npm run check:ecosystem` passed. |
 | Route smoke | Passing locally | `npm run smoke:routes` from `apps/web` checked 35 routes and all returned 200. |
 
-## Commands Run
+### Commands Run
 
 | Command | Result | Notes |
 | --- | --- | --- |
@@ -44,7 +101,7 @@ Base inspected: `43491aa9b1c12b3b6978479fbc0933bf9a1eae96`
 | `npm run smoke:routes` from `apps/web` | Failed, then pass | Windows spawn/cleanup issues fixed in smoke script; rerun checked 35 routes successfully. |
 | `npm run web:check` / `npm run check` from `apps/web` | Blocked in this Windows sandbox | The chained npm script can make Vitest/esbuild attempt an access-denied upward path read while loading `vitest.config.ts`; the equivalent individual gates above pass. Needs CI/Linux confirmation. |
 
-## External Evidence Not Available In This Pass
+### External Evidence Not Available In This Pass
 
 - CI run URL.
 - Deployed URL.
@@ -54,7 +111,7 @@ Base inspected: `43491aa9b1c12b3b6978479fbc0933bf9a1eae96`
 - Monitoring/alert evidence.
 - Rollback target and rollback smoke output.
 
-## Current Go/No-Go
+### Current Go/No-Go
 
 Production: **not GREEN**.
 
