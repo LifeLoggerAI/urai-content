@@ -54,10 +54,11 @@ describe('export job lifecycle utilities', () => {
   });
 
   it('prevents invalid completion and retry states', () => {
-    const complete = exportJobs.find((job) => job.id === 'export-demo-ritual-card');
+    const queued = exportJobs.find((job) => job.id === 'export-demo-srt');
+    const complete = completeExportJob(startExportJob(queued!), ['https://www.uraicontent.com/demo/exports/story.srt'], 'sha256-story');
     const failed = exportJobs.find((job) => job.id === 'export-demo-license-evidence');
 
-    expect(() => completeExportJob(complete!, [], 'sha256-empty')).toThrow('from status complete');
+    expect(() => completeExportJob(complete, [], 'sha256-empty')).toThrow('from status complete');
     expect(() => retryExportJob({ ...failed!, retryCount: 3 })).toThrow('Cannot retry export job');
   });
 });
