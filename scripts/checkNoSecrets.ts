@@ -60,9 +60,11 @@ for (const file of walk(root)) {
   } catch {
     continue;
   }
-  const contentToScan = redactAllowedDummyFixtures(content);
+
   for (const [name, pattern] of suspiciousPatterns) {
-    if (pattern.test(contentToScan)) {
+    if (!pattern.test(content)) continue;
+    const redacted = redactAllowedDummyFixtures(content);
+    if (pattern.test(redacted)) {
       failures.push(`${rel}: possible ${name}`);
     }
   }
