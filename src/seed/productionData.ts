@@ -14,7 +14,7 @@ const audit = {
   createdBy: 'system-seed',
   updatedBy: 'system-seed',
   reviewedBy: 'admin-seed',
-  reviewNotes: 'Production-demo seed record for URAI Content OS validation.',
+  reviewNotes: 'Review seed only. This record is not live-provider evidence until storage, checksum, deploy, and CI proof are attached.',
   source: 'seed' as const
 };
 
@@ -23,34 +23,34 @@ export const provenanceRecords: ProvenanceRecord[] = [
     id: 'prov-content-pack-memory-weather',
     entityId: 'pack-memory-weather',
     entityType: 'contentPack',
-    action: 'seeded',
+    action: 'seeded-review-record',
     actorId: 'system-seed',
     sourceSystem: 'urai-content',
     timestamp: now,
     evidence: ['AUDIT_REPORT.md', 'docs/STANDALONE_SYSTEM_PLAN.md'],
-    metadata: { version: 'v1' }
+    metadata: { proofStatus: 'review-only' }
   },
   {
     id: 'prov-license-studio-preview',
     entityId: 'license-studio-preview',
     entityType: 'contentLicense',
-    action: 'seeded',
+    action: 'seeded-review-record',
     actorId: 'system-seed',
     sourceSystem: 'urai-content',
     timestamp: now,
     evidence: ['DEPLOYMENT_BLOCKERS.md'],
-    metadata: { scope: 'studioCampaign' }
+    metadata: { proofStatus: 'review-only' }
   },
   {
     id: 'prov-export-demo-srt',
     entityId: 'export-demo-srt',
     entityType: 'exportJob',
-    action: 'queued',
+    action: 'seeded-review-record',
     actorId: 'demo-user',
     sourceSystem: 'urai-content',
     timestamp: now,
     evidence: ['src/seed/productionData.ts'],
-    metadata: { type: 'srtCaptions' }
+    metadata: { proofStatus: 'blocked-until-worker-storage-proof' }
   }
 ];
 
@@ -63,7 +63,7 @@ export const consentRecords: ConsentRecord[] = [
     grantedAt: now,
     revokedAt: null,
     policyVersion: '2026-05-privacy-v1',
-    notes: 'Demo user consent for export job generation.'
+    notes: 'Seed consent for export validation only.'
   },
   {
     id: 'consent-demo-analytics',
@@ -73,7 +73,7 @@ export const consentRecords: ConsentRecord[] = [
     grantedAt: now,
     revokedAt: null,
     policyVersion: '2026-05-privacy-v1',
-    notes: 'Demo analytics consent for seed workflows.'
+    notes: 'Seed consent for analytics validation only.'
   },
   {
     id: 'consent-creator-submission',
@@ -83,7 +83,7 @@ export const consentRecords: ConsentRecord[] = [
     grantedAt: now,
     revokedAt: null,
     policyVersion: '2026-05-creator-v1',
-    notes: 'Creator accepts submission review and licensing workflow.'
+    notes: 'Seed creator consent for submission workflow validation.'
   }
 ];
 
@@ -92,7 +92,7 @@ export const assetManifests: AssetManifest[] = [
     id: 'assets-memory-weather-preview',
     slug: 'memory-weather-preview-assets',
     title: 'Memory Weather Preview Assets',
-    status: 'published',
+    status: 'review',
     version: '1.0.0',
     assets: [
       {
@@ -100,16 +100,16 @@ export const assetManifests: AssetManifest[] = [
         kind: 'image',
         path: '/assets/og/memory-weather-preview.png',
         mimeType: 'image/png',
-        checksum: 'sha256-demo-og-memory-weather',
-        altText: 'URAI Content memory weather preview card with soft aura gradients.'
+        checksum: 'unverified-memory-weather-og',
+        altText: 'Review-only memory weather preview card reference. Not production asset proof.'
       },
       {
         id: 'asset-srt-memory-weather',
         kind: 'caption',
         path: '/exports/demo/memory-weather.srt',
         mimeType: 'text/plain',
-        checksum: 'sha256-demo-srt-memory-weather',
-        altText: 'Caption file for demo memory weather story export.'
+        checksum: 'unverified-memory-weather-srt',
+        altText: 'Review-only caption asset reference. Not production export proof.'
       }
     ],
     createdAt: now,
@@ -120,7 +120,7 @@ export const assetManifests: AssetManifest[] = [
     id: 'assets-ritual-card-preview',
     slug: 'ritual-card-preview-assets',
     title: 'Ritual Card Preview Assets',
-    status: 'published',
+    status: 'review',
     version: '1.0.0',
     assets: [
       {
@@ -128,8 +128,8 @@ export const assetManifests: AssetManifest[] = [
         kind: 'image',
         path: '/assets/cards/ritual-card-preview.png',
         mimeType: 'image/png',
-        checksum: 'sha256-demo-ritual-png',
-        altText: 'A polished ritual preview card for URAI Content.'
+        checksum: 'unverified-ritual-card-png',
+        altText: 'Review-only ritual preview card reference. Not production asset proof.'
       }
     ],
     createdAt: now,
@@ -143,8 +143,8 @@ export const contentPacks: ContentPack[] = [
     id: 'pack-memory-weather',
     slug: 'memory-weather-pack',
     title: 'Memory Weather Pack',
-    description: 'A demo-ready content pack for Digital Mood Weather, memory reflection, narrator copy, and export previews.',
-    status: 'published',
+    description: 'A review-state content pack for mood, memory, narrator copy, and export previews.',
+    status: 'review',
     version: '1.0.0',
     tierVisibility: ['free', 'plus', 'pro', 'creator', 'studio', 'enterprise', 'internalAdmin'],
     safetyClassification: 'standard',
@@ -153,10 +153,10 @@ export const contentPacks: ContentPack[] = [
     localization: {
       'en-US': {
         title: 'Memory Weather Pack',
-        description: 'A cinematic demo pack for mood, memory, and narrator content.'
+        description: 'A review pack for mood, memory, and narrator content.'
       }
     },
-    tags: ['mood', 'memory', 'narrator', 'demo'],
+    tags: ['mood', 'memory', 'narrator', 'review'],
     createdAt: now,
     updatedAt: now,
     audit
@@ -166,14 +166,14 @@ export const contentPacks: ContentPack[] = [
     slug: 'ritual-library-starter',
     title: 'Ritual Library Starter',
     description: 'Starter rituals, safety copy, share-card text, and export metadata for URAI ritual flows.',
-    status: 'published',
+    status: 'review',
     version: '1.0.0',
     tierVisibility: ['plus', 'pro', 'creator', 'studio', 'enterprise', 'foundation', 'internalAdmin'],
     safetyClassification: 'sensitive',
     itemIds: ['ritual-library', 'foundation-public-good-content'],
     assetManifestId: 'assets-ritual-card-preview',
     localization: {},
-    tags: ['ritual', 'export', 'wellbeing'],
+    tags: ['ritual', 'export', 'wellbeing', 'review'],
     createdAt: now,
     updatedAt: now,
     audit
@@ -182,7 +182,7 @@ export const contentPacks: ContentPack[] = [
     id: 'pack-licensing-evidence',
     slug: 'licensing-evidence-pack',
     title: 'Licensing Evidence Pack',
-    description: 'Partner-facing license evidence, provenance, asset manifest, and distribution-ready copy records.',
+    description: 'Partner-facing license evidence, provenance, asset manifest, and distribution copy records.',
     status: 'review',
     version: '0.9.0',
     tierVisibility: ['enterprise', 'licensingPartner', 'internalAdmin'],
@@ -203,13 +203,13 @@ export const contentLicenses: ContentLicense[] = [
     contentPackId: 'pack-memory-weather',
     licenseeId: 'studio-demo-client',
     scope: 'studioCampaign',
-    status: 'published',
+    status: 'review',
     startsAt: now,
     expiresAt: null,
     territory: ['US'],
     allowedUses: ['private campaign preview', 'internal pitch deck', 'demo export'],
     prohibitedUses: ['clinical claims', 'resale', 'third-party model training'],
-    royaltyNotes: 'Demo record only; production royalty terms must be generated by URAI Licensing.',
+    royaltyNotes: 'Review record only; production royalty terms require licensing workflow proof.',
     provenanceRecordId: 'prov-license-studio-preview',
     audit
   },
@@ -245,23 +245,23 @@ export const exportJobs: ExportJob[] = [
     entitlementKey: 'tier:plus',
     provenanceRecordId: 'prov-export-demo-srt',
     errorMessage: null,
-    metadata: { storyTemplateId: 'memory-weather-story' }
+    metadata: { storyTemplateId: 'memory-weather-story', blocker: 'export-worker-not-configured' }
   },
   {
     id: 'export-demo-ritual-card',
     userId: 'demo-user',
     type: 'pngRitualCard',
-    status: 'complete',
+    status: 'failed',
     retryCount: 0,
     createdAt: now,
     updatedAt: now,
-    completedAt: now,
-    outputUrls: ['https://www.uraicontent.com/demo/exports/ritual-card-preview.png'],
-    checksum: 'sha256-demo-ritual-card-output',
+    completedAt: null,
+    outputUrls: [],
+    checksum: null,
     entitlementKey: 'tier:free',
     provenanceRecordId: 'prov-content-pack-memory-weather',
-    errorMessage: null,
-    metadata: { ritualTemplateId: 'ritual-library-starter' }
+    errorMessage: 'Blocked until production export worker, storage object, download URL, and checksum proof are configured.',
+    metadata: { ritualTemplateId: 'ritual-library-starter', blocker: 'export-storage-unconfigured' }
   },
   {
     id: 'export-demo-license-evidence',

@@ -1,12 +1,17 @@
 import { NextResponse } from 'next/server';
+import { getRuntimePersistenceStatus } from '@/server/content/service';
 
 export const dynamic = 'force-dynamic';
 
 export function GET() {
+  const persistence = getRuntimePersistenceStatus();
+  const status = persistence.productionSafe ? 'healthy' : 'degraded';
+
   return NextResponse.json({
-    ok: true,
+    ok: persistence.productionSafe,
     service: 'urai-content-web',
-    status: 'healthy',
-    timestamp: new Date().toISOString()
+    status,
+    timestamp: new Date().toISOString(),
+    persistence
   });
 }

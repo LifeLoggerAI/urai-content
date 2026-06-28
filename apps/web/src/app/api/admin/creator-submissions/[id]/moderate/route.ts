@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { requireAdmin } from '@/server/auth/authorization';
 import { getAuthFailureBody, getAuthFailureStatus, getRequestSession } from '@/server/auth/requestSession';
-import { createRuntimeContentRepository } from '@/server/content/service';
+import { createRuntimeContentRepository, getRuntimePersistenceStatus } from '@/server/content/service';
 
 export const dynamic = 'force-dynamic';
 
@@ -19,6 +19,18 @@ async function parseBody(request: Request): Promise<z.infer<typeof moderationReq
   return parsed.success ? parsed.data : null;
 }
 
+function persistenceUnavailableResponse() {
+  const persistence = getRuntimePersistenceStatus();
+  if (persistence.writable) return null;
+
+  return NextResponse.json({
+    ok: false,
+    error: 'persistence_not_configured',
+    message: persistence.message,
+    persistence
+  }, { status: 503 });
+}
+
 export async function POST(request: Request, context: RouteContext) {
   const session = await getRequestSession(request);
   const authorization = requireAdmin(session);
@@ -26,6 +38,9 @@ export async function POST(request: Request, context: RouteContext) {
   if (!authorization.ok) {
     return NextResponse.json(getAuthFailureBody(authorization.reason), { status: getAuthFailureStatus(authorization.reason) });
   }
+
+  const unavailable = persistenceUnavailableResponse();
+  if (unavailable) return unavailable;
 
   const body = await parseBody(request);
 
