@@ -21,14 +21,14 @@ Final rule: no evidence means no GREEN.
 | --- | --- | --- |
 | Repo identity | GREEN | `LifeLoggerAI/urai-content` on `main`. |
 | Package architecture | GREEN/YELLOW | Root content package, schemas, contracts, validators, seed systems, tests, and build scripts exist. |
-| Web runtime scaffold | GREEN/YELLOW | `apps/web` runtime scaffold and route/API surfaces exist; deployed-host evidence is still pending. |
+| Web runtime scaffold | GREEN/YELLOW | `apps/web` runtime scaffold and route/API surfaces exist with repo-side route smoke and isolated browser smoke in CI; deployed-host evidence is still pending. |
 | Operational governance | GREEN | Audit, runbooks, issue controls, evidence templates, CODEOWNERS, and follow-up evidence logs exist. |
-| CI live state | GREEN | Recent repair and docs PRs completed with green Governance, URAI Production Verify, and main `ci` workflows. |
+| CI live state | GREEN | Recent repair/docs/CI PRs completed with green Governance, URAI Production Verify, and main `ci` workflows, including isolated `web` and `browser-smoke` jobs. |
 | Firebase production readiness | RED | Provider-backed project, rules, Auth, Storage, and staging/prod proof are still pending. |
-| Auth/RBAC readiness | YELLOW | Repo-side fail-closed foundations exist; browser E2E and provider-backed rules proof are still pending. |
+| Auth/RBAC readiness | YELLOW | Repo-side fail-closed foundations exist; deployed/browser role proof and provider-backed rules proof are still pending. |
 | Payment readiness | RED | Provider-backed payment and entitlement evidence is still pending. |
 | Export pipeline readiness | RED | Worker, storage artifact, ownership, retry, and deployed E2E evidence is still pending. |
-| Browser E2E readiness | RED | Full browser E2E evidence is not attached yet. |
+| Browser E2E readiness | YELLOW/RED | Repo-side public-route browser smoke is green in CI; full deployed browser E2E and visual evidence are not attached yet. |
 | Production deployment | RED | DNS, SSL, production URL, deployed smoke output, monitoring, and rollback evidence are still pending. |
 
 ## Current release blockers
@@ -42,7 +42,7 @@ Final rule: no evidence means no GREEN.
 | P0 | Production deployment evidence pending | Attach deployed smoke and rollback proof | Release SHA, deploy URL, smoke output, rollback path |
 | P1 | Payment system incomplete | Add provider-backed payment and entitlement proof | Provider test evidence and entitlement records |
 | P1 | Export pipeline incomplete | Add export API, worker, artifact, and authorization proof | API tests, worker tests, E2E |
-| P1 | Browser E2E missing | Add launch-flow browser coverage | E2E run logs and artifacts |
+| P1 | Browser flow E2E incomplete | Expand beyond public-route smoke into launch-flow browser coverage | E2E run logs and artifacts |
 | P1 | Observability missing | Add uptime, error monitoring, alerts, and rollback drill | Monitoring and rollback evidence |
 
 ## Launch lanes
@@ -50,7 +50,7 @@ Final rule: no evidence means no GREEN.
 | Lane | Status | Required next action |
 | --- | --- | --- |
 | Repo verification | GREEN | Keep current CI run evidence linked in `docs/EVIDENCE_LOG.md` for every release SHA. |
-| Runtime route QA | YELLOW | Repo-side route smoke is green; attach deployed smoke and browser QA evidence. |
+| Runtime route QA | YELLOW | Repo-side route smoke and browser smoke are green; attach deployed smoke and full browser QA evidence. |
 | Firebase readiness | RED | Attach project, rules, and storage evidence. |
 | Auth and RBAC | YELLOW | Attach browser/provider evidence for anonymous, user, creator, admin, forbidden, and server-side guard cases. |
 | Payments and entitlements | RED | Implement and test provider-backed payment and entitlement flows. |
