@@ -13,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       URAI_CONTENT_BASE_URL: ${{ inputs.base_url }}
+      PLAYWRIGHT_SKIP_WEB_SERVER: '1'
       URAI_FIREBASE_PROJECT_ID: ${{ vars.URAI_FIREBASE_PROJECT_ID }}
       URAI_FIREBASE_HOSTING_TARGET: ${{ vars.URAI_FIREBASE_HOSTING_TARGET }}
       URAI_DNS_HOSTNAME: ${{ vars.URAI_DNS_HOSTNAME }}
@@ -21,7 +22,7 @@ jobs:
       URAI_ERROR_MONITORING_URL: ${{ vars.URAI_ERROR_MONITORING_URL }}
       URAI_ALERT_OWNER: ${{ vars.URAI_ALERT_OWNER }}
       URAI_ROLLBACK_RUNBOOK_URL: ${{ vars.URAI_ROLLBACK_RUNBOOK_URL }}
-      URAI_ALERT_WEBHOOK_URL: ${{ secrets.URAI_ALERT_WEBHOOK_URL }}
+      URAI_DEPLOYMENT_ALERT_URL: ${{ secrets.URAI_DEPLOYMENT_ALERT_URL }}
     steps:
       - uses: actions/checkout@v4
 
