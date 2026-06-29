@@ -43,6 +43,10 @@ jobs:
       - run: npm ci
       - run: npm run web:install
       - run: npm run web:check
+      - name: Install browser smoke runtime
+        run: npm run e2e:install --prefix apps/web
+      - name: Browser smoke test
+        run: npm run web:e2e
       - name: Start web server
         run: |
           npm run start --prefix apps/web -- --hostname 127.0.0.1 --port 3000 > /tmp/urai-content-web.log 2>&1 &
