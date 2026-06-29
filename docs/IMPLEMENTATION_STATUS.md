@@ -11,9 +11,9 @@ This file is the current repository-level implementation snapshot for `urai-cont
 
 The root package owns schemas, canonical content, validators, seed data, content service contracts, export helpers, telemetry contracts, integration contracts, and package-level tests.
 
-The `apps/web` runtime owns the public website shell, route/API scaffolds, runtime content catalog, repository boundary, server auth/RBAC foundation, fail-closed production persistence behavior, and route smoke/build path for the future deployed host.
+The `apps/web` runtime owns the public website shell, route/API scaffolds, runtime content catalog, repository boundary, server auth/RBAC foundation, fail-closed production persistence behavior, route smoke/build path, and repo-side browser smoke gate for the future deployed host.
 
-The repository is **CI-backed on the repo side** after the production-lock hardening, export lifecycle test repair, evidence wording cleanup, and readiness dashboard refresh. Deployment/provider evidence is still pending.
+The repository is **CI-backed on the repo side** after the production-lock hardening, export lifecycle test repair, evidence wording cleanup, readiness dashboard refresh, and isolated browser-smoke CI hardening. Deployment/provider evidence is still pending.
 
 ## Status Key
 
@@ -29,7 +29,7 @@ The repository is **CI-backed on the repo side** after the production-lock harde
 | --- | --- | --- | --- |
 | Package/library role | Done | Root package, schemas, seed checks, package tests, and CI validation remain intact. | Preserve package API while hardening runtime behavior. |
 | Package validation scripts | Done | Lint, typecheck, content validation, tests, build, smoke, verify, done, and ecosystem checks exist. | Keep CI evidence current per release SHA. |
-| Web runtime scaffold | Partial | `apps/web` exists with Next runtime, route/API scaffolds, tests, and green web check/route smoke in CI. | Attach deployed-host smoke and browser E2E evidence. |
+| Web runtime scaffold | Partial | `apps/web` exists with Next runtime, route/API scaffolds, tests, green web check, route smoke, and isolated browser smoke in CI. | Attach deployed-host smoke and full browser E2E evidence. |
 | Runtime content catalog | Done | Runtime content service exports and tests are present. | Continue API route and deployed smoke coverage. |
 | Published-only public catalog behavior | Done | Tests cover draft/private exclusion. | Keep route/API tests current as public routes expand. |
 | Content service | Partial | Create, update, workflow, search, entitlement, moderation, telemetry, and upsert helpers exist. | Add production authorization, pagination, full tier support, and persistence tests as flows go live. |
@@ -43,8 +43,8 @@ The repository is **CI-backed on the repo side** after the production-lock harde
 | Export system | Partial | SRT/export utilities and tests exist; fake completed seed proof was removed. | Implement API, worker, storage writes, downloads, and owner/admin guards. |
 | Ecosystem integration contracts | Partial | Ecosystem schema/docs/check/test exist. | Have consuming URAI repos adopt and validate the shared contract. |
 | Observability | Partial | Basic health/status paths exist; live monitoring evidence is not attached. | Add safe logging/alerts and record uptime/monitoring evidence. |
-| Browser E2E / visual tests | Partial | Route smoke exists and is green in CI; full browser E2E/visual evidence is incomplete. | Add browser flows and screenshots. |
-| CI | Done | Recent repair/docs PRs completed green Governance, URAI Production Verify, and main `ci` workflows. | Keep release evidence linked in `docs/EVIDENCE_LOG.md`. |
+| Browser E2E / visual tests | Partial | Route smoke and repo-side browser smoke are green in CI; full deployed browser E2E/visual evidence is incomplete. | Add browser flows, deployed-host runs, and screenshots. |
+| CI | Done | Recent repair/docs/CI PRs completed green Governance, URAI Production Verify, and main `ci` workflows, including isolated web and browser-smoke jobs. | Keep release evidence linked in `docs/EVIDENCE_LOG.md`. |
 | Deployment | Blocked | No live deploy, DNS, SSL, monitoring, deployed smoke, or rollback evidence is attached. | Configure provider, run deployed smoke, and record evidence. |
 
 ## Current CI Evidence
@@ -55,6 +55,7 @@ Recent repo-side gates are green:
 - PR #48 landed evidence wording cleanup after green Governance, URAI Production Verify, and main `ci`.
 - PR #50 refreshed production readiness wording after green Governance, URAI Production Verify, and main `ci`.
 - PR #51 refreshed the readiness dashboard after green Governance, URAI Production Verify, and main `ci`, including web check and route smoke.
+- PR #54 isolated route smoke and browser smoke into separate CI jobs after green Governance, URAI Production Verify, and main `ci`; main `ci` now includes green `validate`, `web`, and `browser-smoke` jobs.
 
 Keep exact run IDs and release-SHA evidence in `docs/EVIDENCE_LOG.md` for each launch/release candidate.
 
@@ -81,11 +82,12 @@ npm run check
 npm run web:install
 npm run web:check
 npm run web:smoke:routes
+npm run web:e2e
 ```
 
 ## Anti-Fake Completion Rule
 
-Do not mark deployment, DNS, SSL, provider production, payments, live monitoring, browser E2E, rollback, or post-deploy smoke complete unless real command output, commit SHA, deployed URL, provider evidence, and blocker status are recorded in `docs/EVIDENCE_LOG.md` or release evidence.
+Do not mark deployment, DNS, SSL, provider production, payments, live monitoring, full browser E2E, rollback, or post-deploy smoke complete unless real command output, commit SHA, deployed URL, provider evidence, and blocker status are recorded in `docs/EVIDENCE_LOG.md` or release evidence.
 
 ## Launch Readiness Commands After Hosting Is Configured
 
