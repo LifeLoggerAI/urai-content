@@ -11,9 +11,10 @@ This file prevents false completion claims for `urai-content`.
 - root package checks are covered by `npm run done`
 - web runtime checks are covered by `npm run web:check`
 - local route smoke is covered by `npm run web:smoke:routes`
-- GitHub Actions now runs package validation, web validation, and local web route smoke coverage
+- local public-route browser smoke is covered by `npm run web:e2e`
+- GitHub Actions runs package validation, web validation, local web route smoke, and isolated browser-smoke coverage
 
-This is not the same as a live production launch. `www.uraicontent.com` is not considered deployed until live hosting, DNS, SSL, secrets, and post-deploy smoke evidence are recorded.
+This is not the same as a live production launch. `www.uraicontent.com` is not considered deployed until live hosting, DNS, SSL, provider runtime evidence, secrets, post-deploy smoke, monitoring, and rollback evidence are recorded.
 
 ## Blockers to live deployment at www.uraicontent.com
 
@@ -45,7 +46,7 @@ The deployment owner must provide or confirm:
 - Firestore database target
 - Storage bucket
 - Auth providers
-- service account or CI deployment token
+- deployment token or provider-side deploy identity
 - production/staging environment separation
 - Firestore rules and indexes
 - Storage rules
@@ -77,32 +78,32 @@ Required behaviors:
 - audit/provenance records server-side
 - emulator or staging tests for rules and repository behavior
 
-### 5. Stripe configuration required for paid tiers
+### 5. Payment configuration required for paid tiers
 
-To activate paid content and creator marketplace flows, the owner must provide:
+To activate paid content and creator marketplace flows, the owner must provide provider-backed payment and entitlement proof.
 
-- Stripe secret key
-- Stripe webhook signing secret
-- price IDs for all paid tiers
-- success/cancel URLs
-- tax/refund/support policy decisions
+Until configured, marketplace checkout must remain disabled, gated, or safe dev-only.
 
-Until configured, marketplace checkout must remain in safe mock/dev mode.
+### 6. Browser and deployed-route evidence required
 
-### 6. E2E browser environment required
+CI performs local route smoke and repo-side public-route browser smoke against a started Next server. Full deployed browser E2E is still required for production launch.
 
-CI now performs local route smoke coverage against a started Next server. Full browser E2E is still required for production launch.
+Current repo-side evidence:
 
-Required:
+- local route smoke is green in CI
+- isolated browser-smoke is green in CI
+- full deployed browser E2E/visual evidence is not attached
 
-- Playwright or Cypress setup
-- public route tests
-- mobile viewport tests
-- auth/dev mock flow
+Required before live launch:
+
+- public route tests against the deployed production URL
+- mobile viewport tests against the deployed production URL
+- auth/dev mock or provider-backed auth flow evidence
 - admin/creator route tests
 - export job tests
 - marketplace gating tests
 - deployed URL smoke tests after staging/prod launch
+- screenshots or artifacts for launch-critical browser flows
 
 ### 7. Monitoring and alerting required
 
@@ -111,8 +112,8 @@ Production cannot be called hardened until monitoring exists.
 Required:
 
 - uptime monitoring for staging and production
-- Sentry or equivalent for frontend/server errors
-- alert routing for 5xx spikes, auth/admin anomalies, Stripe webhook failures, and export job failures
+- frontend/server error monitoring
+- alert routing for 5xx spikes, auth/admin anomalies, payment webhook failures, and export job failures
 - rollback drill evidence
 - operational runbook
 
@@ -128,6 +129,7 @@ Required:
 - integration contracts
 - public web route shells
 - route/API smoke scripts
+- local browser smoke tests
 - deployment docs
 - roadmap docs
 - package tests
@@ -143,7 +145,7 @@ Do not claim:
 - DNS is configured
 - SSL is valid
 - Firebase Hosting/Cloud Run/Vercel production is deployed
-- Stripe is wired
+- paid payment flows are wired
 - production Firestore/Storage rules are deployed
 - browser E2E tests pass against the live standalone website
 - admin/creator/payment/export flows are production-complete
@@ -155,10 +157,10 @@ unless those systems have actually been implemented and verified with command ou
 1. Choose the production host for `apps/web`.
 2. Provide Firebase project and hosting details if Firebase is selected.
 3. Provide DNS access for `uraicontent.com` and `www.uraicontent.com`.
-4. Provide Stripe test/live keys when monetization should be activated.
-5. Configure staging/prod environment variables and secrets.
+4. Provide payment provider test/live configuration when monetization should be activated.
+5. Configure staging/prod environment variables and deployment identity.
 6. Run deployment from an environment with npm registry access, GitHub write access, hosting provider access, and DNS permissions.
-7. Attach smoke-test output and rollback evidence to issue #14.
+7. Attach smoke-test output and rollback evidence to issue #14 or the release evidence log.
 
 ## Required pre-launch commands
 
@@ -170,6 +172,7 @@ npm run done
 npm run web:install
 npm run web:check
 npm run web:smoke:routes -- --base-url=http://127.0.0.1:3000
+npm run web:e2e
 ```
 
 Live gates after deployment:
@@ -180,6 +183,7 @@ curl -I https://uraicontent.com
 curl https://www.uraicontent.com/api/health
 curl https://www.uraicontent.com/api/version
 npm run web:smoke:routes -- --base-url=https://www.uraicontent.com
+URAI_CONTENT_BASE_URL=https://www.uraicontent.com npm run web:e2e
 ```
 
 ## Final rule
