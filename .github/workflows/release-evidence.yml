@@ -43,5 +43,7 @@ jobs:
         run: npm run web:check
       - name: Run deployed route smoke
         run: npm run smoke:routes --prefix apps/web -- --base-url="${URAI_CONTENT_BASE_URL}"
+      - name: Install browser runtime
+        run: npm run e2e:install --prefix apps/web
       - name: Run deployed browser smoke
         run: npm run e2e --prefix apps/web
