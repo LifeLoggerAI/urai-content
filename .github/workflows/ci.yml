@@ -45,6 +45,20 @@ jobs:
       - run: npm run web:check
       - name: Smoke test web routes
         run: npm run web:smoke:routes
+
+  browser-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npm run web:install
+      - run: npm run web:check
       - name: Install browser smoke runtime
         run: npm run e2e:install --prefix apps/web
       - name: Browser smoke test
