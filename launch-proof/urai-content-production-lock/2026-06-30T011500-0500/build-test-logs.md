@@ -1,9 +1,9 @@
 # Build and Test Logs
 
 Starting SHA: 4366390d7691d0cf5b3e728f2452c729a75b893f
-Ending SHA: final branch head after proof commits; see PR/final response.
+Latest branch SHA in this evidence update: 31dd18e079f45d87cca1e9a652f8ac5544feff04
 Branch: production-lock-content-2026-06-30
-Evidence scope: command attempt plus blocked status.
+Evidence scope: local command attempt plus GitHub Actions evidence.
 
 ## Local execution attempt
 
@@ -21,30 +21,41 @@ Error:
 fatal: unable to access 'https://github.com/LifeLoggerAI/urai-content.git/': Could not resolve host: github.com
 ```
 
-## Required root commands
+## GitHub Actions for PR head 9debd5f54c85bb4beadfac60f3806c9da86decfc
 
-- npm ci — BLOCKED, local clone unavailable.
-- npm run lint — BLOCKED, local clone unavailable.
-- npm run typecheck — BLOCKED, local clone unavailable.
-- npm test — BLOCKED, local clone unavailable.
-- npm run build — BLOCKED, local clone unavailable.
-- npm run validate:content — BLOCKED, local clone unavailable.
-- npm run validate:sprites — BLOCKED, local clone unavailable.
-- npm run content:index — BLOCKED, local clone unavailable.
-- npm run seed:check — BLOCKED, local clone unavailable.
-- npm run seed:system:check — BLOCKED, local clone unavailable.
-- npm run check:governance — BLOCKED, local clone unavailable.
-- npm run check:secrets — BLOCKED, local clone unavailable.
-- npm run check:ecosystem — BLOCKED, local clone unavailable.
-- npm run check — BLOCKED, local clone unavailable.
+- URAI Production Verify — PASS.
+- ci / browser-smoke — PASS.
+- ci / web — PASS.
+- ci / validate — FAIL at `npm run verify` after earlier validation steps passed.
+- Governance validation — FAIL at governance validation.
 
-## Required web commands
+## CI commands proven PASS before governance failure
 
-- npm run web:install — BLOCKED, local clone unavailable.
-- npm run web:check — BLOCKED, local clone unavailable.
-- npm run web:smoke:routes — BLOCKED, local clone unavailable.
-- npm run web:e2e — BLOCKED, local clone unavailable.
+From the failed `ci / validate` job, these completed successfully before `npm run verify` failed:
 
-## Required CI action
+- npm ci — PASS in CI.
+- npm run lint — PASS in CI.
+- npm run typecheck — PASS in CI.
+- npm run validate:content — PASS in CI.
+- npm run validate:sprites — PASS in CI.
+- npm run content:index — PASS in CI.
+- git diff --exit-code — PASS in CI.
+- npm run smoke — PASS in CI.
+- npm test — PASS in CI.
+- npm run build — PASS in CI.
+- npm run seed:check — PASS in CI.
+- npm run seed:system:check — PASS in CI.
+- web install/check/route smoke — PASS in CI web job.
+- browser smoke — PASS in CI browser-smoke job.
 
-The PR must run CI before merge. Do not mark source fixes GREEN until CI passes.
+## Fix applied after failed CI
+
+Commit 31dd18e079f45d87cca1e9a652f8ac5544feff04 restored the exact governance phrase required by `scripts/checkGovernanceDocs.ts` in `docs/ROUTE_COVERAGE.md` while preserving the newer READY/PARTIAL/GATED/BLOCKED truth matrix.
+
+## Required next CI action
+
+The latest branch head after this proof update must run CI again. Do not merge until `ci`, `Governance validation`, and `URAI Production Verify` are green for the latest head SHA.
+
+## Remaining non-CI blockers
+
+Even with green CI, public production READY still requires Firebase/Auth/Firestore/Storage provider proof, deployed smoke, creator/operator role proof, export/media/payment lifecycle proof, observability, and rollback evidence.
