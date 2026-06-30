@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 export const workflowStatusSchema = z.enum(['draft', 'review', 'approved', 'published', 'archived']);
 export const accessTierSchema = z.enum(['free', 'pro', 'paid']);
+export const creatorSubmissionStatusSchema = z.enum(['submitted', 'approved', 'rejected', 'changes_requested']);
 
 export const contentItemSchema = z.object({
   id: z.string().min(1),
@@ -63,21 +64,34 @@ export const marketplaceItemSchema = z.object({
 });
 
 export const creatorSubmissionSchema = z.object({
-  id: z.string(),
-  creatorId: z.string(),
-  contentItemId: z.string(),
+  id: z.string().min(1),
+  creatorId: z.string().min(1),
+  title: z.string().min(1).max(160),
+  body: z.string().min(1).max(20000),
+  contentType: z.enum(['story', 'ritual', 'narrator', 'marketplace', 'export']).default('story'),
+  tags: z.array(z.string().min(1).max(64)).max(24).default([]),
+  locale: z.string().min(2).max(32).default('en-US'),
+  status: creatorSubmissionStatusSchema,
   submittedAt: z.string().datetime(),
-  notes: z.string(),
-  status: z.enum(['pending', 'accepted', 'rejected'])
+  updatedAt: z.string().datetime(),
+  moderationNotes: z.string().max(4000).nullable().optional(),
+  moderatedAt: z.string().datetime().optional(),
+  moderatedBy: z.string().nullable().optional(),
+  sourceContentItemId: z.string().min(1).optional(),
+  migrationSource: z.string().optional()
 });
 
 export const moderationQueueSchema = z.object({
   id: z.string(),
   entityId: z.string(),
   entityType: z.enum(['contentItem', 'marketplaceItem', 'creatorSubmission']),
-  status: z.enum(['pending', 'approved', 'rejected']),
-  reviewerId: z.string().nullable(),
-  decisionNotes: z.string().optional()
+  status: z.enum(['pending', 'approved', 'rejected', 'changes_requested']).default('pending'),
+  reviewerId: z.string().nullable().optional(),
+  decisionNotes: z.string().optional(),
+  decision: creatorSubmissionStatusSchema.optional(),
+  notes: z.string().nullable().optional(),
+  moderatedAt: z.string().datetime().optional(),
+  moderatedBy: z.string().optional()
 });
 
 export const publishingReleaseSchema = z.object({
