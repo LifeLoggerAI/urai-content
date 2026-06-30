@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { ContentService } from '../src/backend/contentService.js';
 import { InMemoryContentRepository } from '../src/backend/inMemoryRepository.js';
-import type { PublishingRelease } from '../src/schemas/content.js';
+import { creatorSubmissionSchema, type PublishingRelease } from '../src/schemas/content.js';
 
 class ReleaseCapturingRepository extends InMemoryContentRepository {
   readonly capturedReleases: PublishingRelease[] = [];
@@ -122,5 +122,39 @@ describe('content service', () => {
     expect(await service.canAccess('u1', 'free')).toBe(true);
     expect(await service.canAccess('u1', 'pro')).toBe(true);
     expect(await service.canAccess('u1', 'paid')).toBe(false);
+  });
+
+  it('accepts the runtime creator submission shape as the canonical schema', () => {
+    const now = new Date().toISOString();
+    const parsed = creatorSubmissionSchema.parse({
+      id: 'submission-1',
+      creatorId: 'creator-1',
+      title: 'Moonlit Ritual Draft',
+      body: 'A creator-owned content submission.',
+      contentType: 'story',
+      tags: ['moonlit'],
+      locale: 'en-US',
+      status: 'submitted',
+      submittedAt: now,
+      updatedAt: now
+    });
+
+    expect(parsed.status).toBe('submitted');
+    expect(parsed.title).toBe('Moonlit Ritual Draft');
+  });
+
+  it('rejects legacy creator submission statuses that drift from runtime API contracts', () => {
+    const now = new Date().toISOString();
+    const parsed = creatorSubmissionSchema.safeParse({
+      id: 'submission-legacy',
+      creatorId: 'creator-1',
+      contentItemId: 'content-1',
+      submittedAt: now,
+      updatedAt: now,
+      notes: 'Legacy shape',
+      status: 'accepted'
+    });
+
+    expect(parsed.success).toBe(false);
   });
 });
