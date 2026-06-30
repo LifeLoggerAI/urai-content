@@ -6,6 +6,16 @@ Canonical content engine, asset/story library, and launch-governed web-runtime s
 
 The repo also contains a standalone Next.js runtime scaffold under `apps/web` for the future URAI Content public site and runtime route/API surface. The runtime scaffold is repo-side work; production deployment remains blocked until Firebase/hosting/DNS/secrets/Stripe/observability/rollback evidence is complete.
 
+## Current Production Status
+
+Repo-side production-lock work is complete and merged, but the public production launch remains **external-env blocked** until deployment/provider evidence is attached.
+
+- Production-lock merge commit: `431cdf1189ec01ed5c519ce19c2f03801df92dbf`
+- Proof folder: `launch-proof/urai-content-production-lock/2026-06-30T011500-0500/`
+- Open blocker tracker: https://github.com/LifeLoggerAI/urai-content/issues/61
+
+Do **not** mark this repository production-live READY until issue #61 is closed with URLs, commands, timestamps, deploy IDs, Firebase/Auth/Firestore/Storage proof, smoke-test evidence, observability evidence, and rollback evidence.
+
 ## Repo Type
 
 This repository is both:
