@@ -13,6 +13,7 @@ Repo-side production-lock work is complete and merged, but the public production
 - Production-lock merge commit: `431cdf1189ec01ed5c519ce19c2f03801df92dbf`
 - Proof folder: `launch-proof/urai-content-production-lock/2026-06-30T011500-0500/`
 - Open blocker tracker: https://github.com/LifeLoggerAI/urai-content/issues/61
+- External deployment handoff: `docs/EXTERNAL_ENV_DEPLOYMENT_HANDOFF.md`
 
 Do **not** mark this repository production-live READY until issue #61 is closed with URLs, commands, timestamps, deploy IDs, Firebase/Auth/Firestore/Storage proof, smoke-test evidence, observability evidence, and rollback evidence.
 
