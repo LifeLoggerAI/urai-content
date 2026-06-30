@@ -1,0 +1,158 @@
+name: Deploy URAI Content Web
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Deployment environment label
+        required: true
+        default: staging
+        type: choice
+        options:
+          - staging
+          - production
+      base_url:
+        description: Expected deployed base URL for post-deploy smoke, for example https://content.urai.app
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: urai-content-web-deploy-${{ github.event.inputs.environment }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Guarded deploy and live smoke
+    runs-on: ubuntu-latest
+    env:
+      EXPECTED_BASE_URL: ${{ github.event.inputs.base_url }}
+      DEPLOY_ENVIRONMENT: ${{ github.event.inputs.environment }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Validate required deployment secrets
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          set -euo pipefail
+          missing=0
+          for name in VERCEL_TOKEN VERCEL_ORG_ID VERCEL_PROJECT_ID; do
+            if [ -z "${!name:-}" ]; then
+              echo "::error::$name is not configured. Add it as a GitHub Actions secret before deploying."
+              missing=1
+            fi
+          done
+          if [ "$missing" -ne 0 ]; then
+            exit 1
+          fi
+
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Verify root package and governance
+        run: npm run check
+
+      - name: Install web dependencies
+        run: npm run web:install
+
+      - name: Verify web runtime
+        run: npm run web:check
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Pull Vercel environment
+        working-directory: apps/web
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          set -euo pipefail
+          if [ "$DEPLOY_ENVIRONMENT" = "production" ]; then
+            vercel pull --yes --environment=production --token "$VERCEL_TOKEN"
+          else
+            vercel pull --yes --environment=preview --token "$VERCEL_TOKEN"
+          fi
+
+      - name: Build with Vercel
+        working-directory: apps/web
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: vercel build ${{ github.event.inputs.environment == 'production' && '--prod' || '' }} --token "$VERCEL_TOKEN"
+
+      - name: Deploy prebuilt artifact
+        id: deploy
+        working-directory: apps/web
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          set -euo pipefail
+          if [ "$DEPLOY_ENVIRONMENT" = "production" ]; then
+            url=$(vercel deploy --prebuilt --prod --token "$VERCEL_TOKEN")
+          else
+            url=$(vercel deploy --prebuilt --token "$VERCEL_TOKEN")
+          fi
+          echo "deployed_url=$url" >> "$GITHUB_OUTPUT"
+          echo "$url" > ../../deploy-url.txt
+          echo "Deployed URL: $url"
+
+      - name: Validate expected URL input
+        run: |
+          set -euo pipefail
+          case "$EXPECTED_BASE_URL" in
+            http://*|https://*) ;;
+            *) echo "::error::base_url must start with http:// or https://"; exit 1 ;;
+          esac
+
+      - name: Live HTTP smoke
+        run: |
+          set -euo pipefail
+          mkdir -p launch-proof/live-deploy
+          {
+            echo "# Live deployment smoke"
+            echo
+            echo "Date: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "Commit: $GITHUB_SHA"
+            echo "Environment: $DEPLOY_ENVIRONMENT"
+            echo "Expected base URL: $EXPECTED_BASE_URL"
+            echo "Vercel deploy URL: $(cat deploy-url.txt)"
+            echo
+            echo "## HTTP checks"
+            curl -fsS -I "$EXPECTED_BASE_URL/"
+            curl -fsS -I "$EXPECTED_BASE_URL/content"
+            curl -fsS "$EXPECTED_BASE_URL/api/health"
+            curl -fsS "$EXPECTED_BASE_URL/api/version"
+          } | tee launch-proof/live-deploy/latest-smoke.md
+
+      - name: Runtime route smoke
+        run: npm run web:smoke:routes -- --base-url="$EXPECTED_BASE_URL"
+
+      - name: Production smoke
+        run: npm run smoke:production -- --base-url="$EXPECTED_BASE_URL"
+
+      - name: Upload deploy evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: urai-content-live-deploy-evidence-${{ github.sha }}
+          path: |
+            deploy-url.txt
+            launch-proof/live-deploy/latest-smoke.md
+          if-no-files-found: error
