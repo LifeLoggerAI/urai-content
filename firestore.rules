@@ -25,6 +25,14 @@ service cloud.firestore {
         (resource.data.visibility == 'public' || resource.data.publicVisibility == 'public');
     }
 
+    function isOwner(fieldName) {
+      return signedIn() && resource.data[fieldName] == request.auth.uid;
+    }
+
+    function isCreateOwner(fieldName) {
+      return signedIn() && request.resource.data[fieldName] == request.auth.uid;
+    }
+
     match /contentItems/{id} {
       allow read: if isPublishedPublic() || isAdmin();
       allow create, update, delete: if isAdmin();
@@ -41,31 +49,38 @@ service cloud.firestore {
     }
 
     match /creatorSubmissions/{id} {
-      allow read: if isAdmin() || (signedIn() && resource.data.creatorId == request.auth.uid);
-      allow create: if isCreator() && request.resource.data.creatorId == request.auth.uid;
+      allow read: if isAdmin() || isOwner('creatorId');
+      allow create: if isCreator() && isCreateOwner('creatorId');
       allow update, delete: if isAdmin();
     }
 
     match /exportJobs/{id} {
-      allow read: if isAdmin() || (signedIn() && resource.data.userId == request.auth.uid);
-      allow create: if signedIn() && request.resource.data.userId == request.auth.uid;
+      allow read: if isAdmin() || isOwner('userId');
+      allow create: if isCreateOwner('userId');
       allow update, delete: if isAdmin();
     }
 
-    match /userEntitlements/{id} {
-      allow read: if isAdmin() || (signedIn() && resource.data.userId == request.auth.uid);
+    // Canonical entitlement collection used by runtime code: userContentEntitlements.
+    match /userContentEntitlements/{id} {
+      allow read: if isAdmin() || isOwner('userId');
       allow write: if isAdmin();
     }
 
+    // Legacy alias retained as deny-by-default to prevent silent writes to the old name.
+    // If old documents exist, migrate them into userContentEntitlements before launch.
+    match /userEntitlements/{id} {
+      allow read, write: if false;
+    }
+
     match /contentLicenses/{id} {
-      allow read: if isAdmin() || (signedIn() && resource.data.licenseeId == request.auth.uid);
+      allow read: if isAdmin() || isOwner('licenseeId');
       allow write: if isAdmin();
     }
 
     match /consentRecords/{id} {
-      allow read: if isAdmin() || (signedIn() && resource.data.userId == request.auth.uid);
-      allow create: if signedIn() && request.resource.data.userId == request.auth.uid;
-      allow update: if isAdmin() || (signedIn() && resource.data.userId == request.auth.uid);
+      allow read: if isAdmin() || isOwner('userId');
+      allow create: if isCreateOwner('userId');
+      allow update: if isAdmin() || isOwner('userId');
       allow delete: if isAdmin();
     }
 
