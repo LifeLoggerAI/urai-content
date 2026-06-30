@@ -1,0 +1,49 @@
+name: Release Evidence Gate
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: Production or staging URL to verify
+        required: true
+        type: string
+
+jobs:
+  release-evidence:
+    runs-on: ubuntu-latest
+    env:
+      URAI_CONTENT_BASE_URL: ${{ inputs.base_url }}
+      PLAYWRIGHT_SKIP_WEB_SERVER: '1'
+      URAI_FIREBASE_PROJECT_ID: ${{ vars.URAI_FIREBASE_PROJECT_ID }}
+      URAI_FIREBASE_HOSTING_TARGET: ${{ vars.URAI_FIREBASE_HOSTING_TARGET }}
+      URAI_DNS_HOSTNAME: ${{ vars.URAI_DNS_HOSTNAME }}
+      URAI_SSL_EVIDENCE_URL: ${{ vars.URAI_SSL_EVIDENCE_URL }}
+      URAI_UPTIME_MONITOR_URL: ${{ vars.URAI_UPTIME_MONITOR_URL }}
+      URAI_ERROR_MONITORING_URL: ${{ vars.URAI_ERROR_MONITORING_URL }}
+      URAI_ALERT_OWNER: ${{ vars.URAI_ALERT_OWNER }}
+      URAI_ROLLBACK_RUNBOOK_URL: ${{ vars.URAI_ROLLBACK_RUNBOOK_URL }}
+      URAI_DEPLOYMENT_ALERT_URL: ${{ secrets.URAI_DEPLOYMENT_ALERT_URL }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npm run web:install
+      - name: Check provider evidence variables
+        run: npm run check:provider-evidence
+      - name: Check observability evidence
+        run: npm run check:observability
+      - name: Check alert evidence
+        run: npm run check:alerts
+      - name: Verify web app build
+        run: npm run web:check
+      - name: Run deployed route smoke
+        run: npm run smoke:routes --prefix apps/web -- --base-url="${URAI_CONTENT_BASE_URL}"
+      - name: Install browser runtime
+        run: npm run e2e:install --prefix apps/web
+      - name: Run deployed browser smoke
+        run: npm run e2e --prefix apps/web
