@@ -24,6 +24,8 @@ A route can be buildable and smoke-tested locally while still not live at `www.u
 - **BLOCKED**: Depends on provider credentials, Firebase, Stripe, DNS, deployment, monitoring, or external setup.
 - **NOT STARTED**: Required by product/docs but no implementation exists in this repository.
 
+Legacy governance phrase: Do not mark a route **Done** unless the route has real implementation evidence, automated verification evidence, provider evidence where applicable, and deployment evidence for the scope being claimed.
+
 ## Public routes
 
 Current status: public route shells exist in the standalone web runtime. They remain **PARTIAL/PREVIEW** until final deployed URL smoke, mobile/browser E2E, production metadata, DNS/SSL, and release evidence are attached.
