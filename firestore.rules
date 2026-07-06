@@ -21,18 +21,19 @@ service cloud.firestore {
     }
 
     function isPublicContentItem() {
-      return resource.data.status == 'published' && resource.data.visibility == 'public';
+      return resource.data.get('status', '') == 'published'
+        && resource.data.get('visibility', '') == 'public';
     }
 
-    function isPublishedContentPack() {
-      return resource.data.status == 'published'
-        && resource.data.tierVisibility is list
-        && resource.data.tierVisibility.size() > 0;
+    function isPublishedFreeContentPack() {
+      return resource.data.get('status', '') == 'published'
+        && resource.data.get('tierVisibility', []) is list
+        && resource.data.get('tierVisibility', []).hasAny(['free']);
     }
 
-    function isApprovedMarketplaceItem() {
-      return resource.data.moderationStatus == 'approved'
-        && resource.data.tier in ['free', 'pro', 'paid'];
+    function isApprovedFreeMarketplaceItem() {
+      return resource.data.get('moderationStatus', '') == 'approved'
+        && resource.data.get('tier', '') == 'free';
     }
 
     function isOwner(fieldName) {
@@ -45,6 +46,13 @@ service cloud.firestore {
 
     function validAnalyticsCreate() {
       return signedIn()
+        && request.resource.data.keys().hasAll([
+          'event',
+          'userId',
+          'entityId',
+          'timestamp',
+          'metadata'
+        ])
         && request.resource.data.keys().hasOnly([
           'event',
           'userId',
@@ -69,7 +77,8 @@ service cloud.firestore {
         && request.resource.data.entityId.size() <= 160
         && request.resource.data.timestamp is string
         && request.resource.data.timestamp.size() <= 64
-        && request.resource.data.metadata is map;
+        && request.resource.data.metadata is map
+        && request.resource.data.metadata.size() <= 20;
     }
 
     match /contentItems/{id} {
@@ -78,12 +87,12 @@ service cloud.firestore {
     }
 
     match /contentPacks/{id} {
-      allow read: if isPublishedContentPack() || isAdmin();
+      allow read: if isPublishedFreeContentPack() || isAdmin();
       allow create, update, delete: if isAdmin();
     }
 
     match /marketplaceItems/{id} {
-      allow read: if isApprovedMarketplaceItem() || isAdmin();
+      allow read: if isApprovedFreeMarketplaceItem() || isAdmin();
       allow create, update, delete: if isAdmin();
     }
 
@@ -140,7 +149,7 @@ service cloud.firestore {
     }
 
     match /expansionModules/{id} {
-      allow read: if resource.data.publicVisibility == 'public' || isAdmin();
+      allow read: if resource.data.get('publicVisibility', '') == 'public' || isAdmin();
       allow write: if isAdmin();
     }
 
@@ -149,7 +158,10 @@ service cloud.firestore {
     }
 
     match /seoPages/{id} {
-      allow read: if (resource.data.status == 'published' && resource.data.noIndex == false) || isAdmin();
+      allow read: if (
+        resource.data.get('status', '') == 'published'
+        && resource.data.get('noIndex', true) == false
+      ) || isAdmin();
       allow write: if isAdmin();
     }
 
