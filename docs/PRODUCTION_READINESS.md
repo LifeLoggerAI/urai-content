@@ -1,48 +1,59 @@
 # URAI Content Production Readiness
 
-Date: 2026-06-29
-Branch: `production-lock/urai-content-done-done`
-Base: `main` at `c5be02363475d18eb5e6fb0c63f7c7c346160d12`
+Last audited: 2026-07-06  
+Canonical branch: `main`  
+Audited SHA: `0630ad96b49db5d70555c5019431af1ce3d273c0`
 
-## Blunt Verdict
+## Verdict
 
-URAI Content is **CI-backed on the repository side** after the production-lock hardening and follow-up repair passes.
+URAI Content is **source-level CI backed**. It is not a verified production content platform.
 
-Deployment/provider evidence is **pending**. This means launch proof still needs to be attached for live deployment, Firebase project, Stripe, DNS, storage, browser E2E, monitoring, rollback, and post-deploy smoke output.
+The root package and web runtime have passing source checks and browser smoke evidence. Production readiness remains blocked by canonical-schema drift, rule/schema contradictions, provider-backed staging proof, durable export/media execution, live deployment evidence, observability, backup/restore and rollback proof.
 
-Current status after these passes: **repo-side production-lock hardening complete / deployment evidence pending**, not a provider-verified launch claim.
+No production URL, live SHA, provider project, rollback target or production traffic is proven in this repository.
 
-Estimated readiness after this branch and green CI repair: **repo foundation substantially hardened; external launch proof still outstanding**.
+## Verified repository-side evidence
 
-## What This Branch Hardens
+- Root lint, typecheck, content validation, seed validation, tests and TypeScript build passed in GitHub Actions.
+- Web typecheck, lint, tests and Next.js build passed.
+- Local route smoke and Playwright browser smoke passed in CI.
+- Production writes fail closed when Firebase Admin is unavailable.
+- Firebase bearer-token verification and RBAC helpers exist.
+- Firestore and Storage rules deny unmatched paths by default.
+- Governance, secret checks, release-evidence gates and a manual Vercel deployment workflow exist.
 
-- Secret scanning no longer ignores the entire `apps/web/tests/api-routes.test.ts` file.
-- The known dummy test token is narrowly redacted using a short replacement before scanning.
-- Runtime persistence now reports an explicit status object.
-- Production without Firebase Admin credentials is degraded and non-writable.
-- Creator submissions, creator detail reads, admin queue reads, and moderation writes fail closed with `503 persistence_not_configured` when production persistence is unavailable.
-- `/api/health` reports degraded status when production persistence is unsafe.
-- `/api/system/firebase` reports persistence mode, writable state, preview mode, and production-safe state without exposing secrets.
-- Web Firestore and Storage rules now use the same canonical custom-claim model as server auth: `role` / `roles` with `admin` and `internalAdmin`.
-- Demo asset manifests, content packs, licenses, and export jobs are downgraded from production-looking published/complete states to review/failed states where actual storage/checksum/export proof is missing.
-- Production seed tests assert that unverified assets and fake completed exports cannot count as production proof.
+The fully inspected green source run is `ci` run `28432792723` on commit `457a2a3d4b9bb621eef13b488c1a3b5826f6c71f`.
 
-## Deployment Evidence Still Pending
+## Source blockers before deployment
 
-| Area | Pending Evidence | Required Proof |
+| Area | Blocker | Required proof |
 | --- | --- | --- |
-| Live deployment | Hosting/DNS/SSL/deployed URL proof was not attached in this pass | URL, deploy command output, route smoke against deployed host |
-| Firebase Admin | Production service credentials/project access proof was not attached in this pass | Secret manager config, `/api/system/firebase`, rules deploy, emulator/staging proof |
-| Firestore/Storage rules | Rules normalized; deploy/emulator evidence still needs to be attached | Firebase emulator test output and deployment log |
-| Stripe | Keys/webhook endpoint/checkout proof still needs to be attached | Checkout session test, webhook fixture, entitlement write/read |
-| Protected UI | Creator/admin/dashboard UI proof still needs browser E2E evidence | Browser E2E screenshots/logs and route smoke |
-| Export/media | Export worker/storage/download pipeline proof still needs to be attached | Create/status/download tests, storage object, checksum, authorization proof |
-| Monitoring | Sentry/alerts/uptime proof still needs to be attached | Alert test, dashboard URL, incident path |
-| Rollback | Rollback target/smoke proof still needs to be attached | Rollback command and post-rollback smoke output |
+| Canonical schemas | root and web runtime duplicate types; several runtime records are untyped | one versioned schema package and validation at every persistence/API boundary |
+| Firestore rules | marketplace/content-pack public predicates do not align cleanly with their schemas | collection-specific rules plus emulator tests |
+| Storage rules | claim handling differs from server/Firestore and uploads lack explicit constraints | role/roles parity, size/MIME rules and upload tests |
+| Revisions | version number is derived from list length | transactional concurrent revision test |
+| Deletion | hard delete exists without retention, tombstone, purge or restore evidence | deletion lifecycle, receipts and restore test |
+| Search | full collection substring scan | paginated/indexed search and delete/reindex proof |
+| Integrations | ecosystem adapter is a mock | versioned real contracts and staging consumer tests |
+| Providers | evidence checks exist but provider implementations do not | cost-gated provider operation and receipt proof |
 
-## Operator Deployment Checklist
+## External evidence still pending
 
-Run these only with real provider access and secrets configured in CI/secret manager, never committed to the repo.
+| Area | Required proof |
+| --- | --- |
+| Live deployment | successful deploy run, public URL, SSL/DNS, route smoke and live SHA |
+| Firebase | project identity, Auth, Firestore, indexes, Storage and rules deployment evidence |
+| Creator/admin | two-user owner isolation, moderation and audit evidence against durable persistence |
+| Export/media | queued job, worker, artifact, checksum, authorization, retry and failure recovery |
+| Payments | owner-approved provider, verified webhook and entitlement lifecycle |
+| Monitoring | health/uptime, structured logs, error alerts, provider-spend alerts and incident path |
+| Backups | backup artifact and successful restore drill |
+| Rollback | rollback SHA/URL, command record and post-rollback smoke |
+| Legal/privacy | reviewed privacy, licensing, generated-content ownership and personal-data boundaries |
+
+## Release certification commands
+
+Source checks:
 
 ```bash
 npm ci
@@ -50,26 +61,24 @@ npm run check
 npm run done
 npm run web:install
 npm run web:check
-npm run web:smoke:routes
-npm test
+npm run web:smoke:routes -- --base-url=http://127.0.0.1:3000
+cd apps/web && npm run e2e
 ```
 
-Required provider configuration evidence:
-
-- Public site URL configured for the deployed host.
-- Firebase project, service-account identity, storage bucket, hosting site, and admin UID list configured through CI or secret manager.
-- Seed/admin tokens configured through CI or secret manager.
-- Stripe API and webhook credentials configured through Stripe/provider secrets.
-- No secret values committed to the repository.
-
-Firebase proof commands:
+Deployed checks:
 
 ```bash
-firebase use <production-or-staging-project>
-firebase emulators:exec --only firestore,storage "npm run web:check"
-firebase deploy --only firestore:rules,firestore:indexes,storage
-firebase deploy --only hosting:www-uraicontent
-WEB_SMOKE_BASE_URL=https://www.uraicontent.com npm run web:smoke:routes
+npm run check:release-env
+npm run web:smoke:routes -- --base-url=<deployed-url>
+npm run smoke:production -- --base-url=<deployed-url>
+npm run smoke:rollback -- --base-url=<deployed-url> --rollback-url=<rollback-url>
+cd apps/web && PLAYWRIGHT_SKIP_WEB_SERVER=1 URAI_CONTENT_BASE_URL=<deployed-url> npm run e2e
 ```
 
-Attach every external proof item to `docs/EVIDENCE_LOG.md` before making a provider-verified launch claim.
+Provider, emulator, backup and restore tests must also pass and reference the same release SHA.
+
+## Certification rule
+
+A release may be called production-ready only when all source, schema/rules, security/privacy, provider-backed staging, deployment, observability, backup/restore and rollback evidence is attached for one exact SHA. Until then the truthful status is:
+
+> implemented and tested as a repository scaffold; production deployment and operations blocked.
