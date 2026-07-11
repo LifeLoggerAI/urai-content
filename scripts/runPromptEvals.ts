@@ -41,11 +41,12 @@ function evaluate(testCase: EvalCase, text: string) {
   let score = 0;
   const results = testCase.criteria.map((criterion) => {
     let pattern = criterion.pattern;
-    let flags = 'gmu';
+    let flags = 'gu';
     const inlineFlags = pattern.match(/^\(\?([im]+)\)/);
     if (inlineFlags) {
       pattern = pattern.slice(inlineFlags[0].length);
-      if (inlineFlags[1].includes('i') && !flags.includes('i')) flags += 'i';
+      if (inlineFlags[1].includes('i')) flags += 'i';
+      if (inlineFlags[1].includes('m')) flags += 'm';
     }
     const regex = new RegExp(pattern, flags);
     const matches = [...text.matchAll(regex)].length;
@@ -95,7 +96,10 @@ if (fixtureMode) {
   }
 }
 
-const reportPath = fixtureMode ? join(root, 'prompt-eval-fixture-report.json') : join(outputsDir!, 'prompt-eval-report.json');
-writeFileSync(reportPath, JSON.stringify({ generated_at: new Date().toISOString(), fixture_mode: fixtureMode, reports }, null, 2) + '\n');
-console.log(`Report: ${reportPath}`);
+const shouldWriteReport = !fixtureMode || process.env.CI === 'true';
+if (shouldWriteReport) {
+  const reportPath = fixtureMode ? join(root, 'prompt-eval-fixture-report.json') : join(outputsDir!, 'prompt-eval-report.json');
+  writeFileSync(reportPath, JSON.stringify({ generated_at: new Date().toISOString(), fixture_mode: fixtureMode, reports }, null, 2) + '\n');
+  console.log(`Report: ${reportPath}`);
+}
 if (failures > 0) process.exit(1);
