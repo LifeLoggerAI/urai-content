@@ -22,6 +22,17 @@ for (const file of requiredFiles) {
   if (!existsSync(join(root, file))) failures.push(`Missing required prompt-library file: ${file}`);
 }
 
+function compilePattern(sourcePattern: string): void {
+  let pattern = sourcePattern;
+  let flags = 'u';
+  const inlineFlags = pattern.match(/^\(\?([im]+)\)/);
+  if (inlineFlags) {
+    pattern = pattern.slice(inlineFlags[0].length);
+    flags += inlineFlags[1];
+  }
+  new RegExp(pattern, flags);
+}
+
 if (failures.length === 0) {
   const version = read('prompts/VERSION').trim();
   const prompt = read('prompts/autonomous-research-agent-master-prompt.md');
@@ -51,7 +62,9 @@ if (failures.length === 0) {
   const suite = JSON.parse(read('prompts/evals/cases.json')) as {
     suite_version: string;
     prompt_version: string;
-    cases: Array<{ id: string; criteria: Array<{ weight: number }> }>;
+    prohibited_patterns: Array<{ id: string; pattern: string }>;
+    cases: Array<{ id: string; fixture: string; criteria: Array<{ weight: number; pattern: string }> }>;
+    negative_fixtures: Array<{ case_id: string; fixture: string }>;
   };
   if (suite.prompt_version !== version) failures.push(`Evaluation suite prompt_version ${suite.prompt_version} does not match ${version}.`);
   const ids = new Set<string>();
@@ -60,6 +73,19 @@ if (failures.length === 0) {
     ids.add(testCase.id);
     const weight = testCase.criteria.reduce((sum, criterion) => sum + criterion.weight, 0);
     if (weight !== 100) failures.push(`Evaluation case ${testCase.id} weights total ${weight}, expected 100.`);
+    const fixturePath = join(root, 'prompts/evals', testCase.fixture);
+    if (!existsSync(fixturePath)) failures.push(`Missing passing fixture for ${testCase.id}: ${testCase.fixture}`);
+    for (const criterion of testCase.criteria) {
+      try { compilePattern(criterion.pattern); } catch (error) { failures.push(`Invalid criterion regex in ${testCase.id}: ${String(error)}`); }
+    }
+  }
+  for (const rule of suite.prohibited_patterns) {
+    try { compilePattern(rule.pattern); } catch (error) { failures.push(`Invalid prohibited regex ${rule.id}: ${String(error)}`); }
+  }
+  for (const negative of suite.negative_fixtures) {
+    if (!ids.has(negative.case_id)) failures.push(`Negative fixture references unknown case: ${negative.case_id}`);
+    const fixturePath = join(root, 'prompts/evals', negative.fixture);
+    if (!existsSync(fixturePath)) failures.push(`Missing negative fixture: ${negative.fixture}`);
   }
 }
 
@@ -72,15 +98,10 @@ for (const file of markdownFiles) {
     const target = match[1].trim().replace(/^<|>$/g, '');
     if (!target || target.startsWith('#') || /^[a-z]+:/i.test(target)) continue;
     const clean = target.split('#')[0].split('?')[0];
-    const resolved = clean.startsWith('/')
-      ? resolve(root, clean.slice(1))
-      : resolve(root, dirname(file), clean);
+    const resolved = clean.startsWith('/') ? resolve(root, clean.slice(1)) : resolve(root, dirname(file), clean);
     const fromRoot = relative(root, resolved);
-    if (fromRoot === '..' || fromRoot.startsWith(`..${process.platform === 'win32' ? '\\' : '/'}`)) {
-      failures.push(`${file} links outside the repository: ${target}`);
-    } else if (!existsSync(resolved)) {
-      failures.push(`${file} has a broken local link: ${target}`);
-    }
+    if (fromRoot === '..' || fromRoot.startsWith(`..${process.platform === 'win32' ? '\\' : '/'}`)) failures.push(`${file} links outside the repository: ${target}`);
+    else if (!existsSync(resolved)) failures.push(`${file} has a broken local link: ${target}`);
   }
 }
 
@@ -89,4 +110,4 @@ if (failures.length > 0) {
   for (const failure of failures) console.error(`- ${failure}`);
   process.exit(1);
 }
-console.log('Prompt library validation passed: parity, sections, versions, eval schema, and local links are consistent.');
+console.log('Prompt library validation passed: parity, sections, versions, safety rules, eval schema, fixtures, and local links are consistent.');
