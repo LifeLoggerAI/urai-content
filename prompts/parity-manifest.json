@@ -1,7 +1,25 @@
 {
   "version": "1.0.0",
-  "source": "Synchronized Google Doc export",
-  "source_sha256": "d2fe8fe5754296bcf7b5f22665e2051221e5dd003f938fd5987921b9c6abddfa",
+  "source": "Google Docs text/plain export snapshot",
+  "source_document_id": "1dnIErxoHoIqpqR9uyYuR6rphdZv8h5VOpxZEwZ-g1c4",
+  "source_revision_id": "ALtnJHyCtNBrFmtFrqzaXtYs5iClC2gF9e0Hq2w1SPBEIqh18EH37RZialJC42ZhQde52aMZLH29JK-bANunaMxE2h4bp6G5VU8lfSf0kt4",
+  "source_export_format": "text/plain",
+  "source_snapshot_normalization": "UTF-8; strip one leading BOM; convert CRLF/CR to LF; exclude only lines beginning with 'Source export SHA-256:' before canonical hashing",
+  "source_snapshot_sha256": "c4dfdd2ed942649aec4cd79f38f7fe358d6581dcac89fed413395b11e58b0ea5",
+  "source_snapshot_full_text_sha256": "b2e63e22c385a9111dabb79d7e35e2d71f98cc13a6b9abfd8187368198ff69bc",
+  "legacy_self_reported_source_sha256": "d2fe8fe5754296bcf7b5f22665e2051221e5dd003f938fd5987921b9c6abddfa",
+  "source_snapshot_parts": [
+    {"path":"prompts/sources/autonomous-research-agent-google-doc-v1.0.0/part-01.txt","sha256":"bb958ccfc4d4410fe3432bc173c9aa5713d349a51c1ee994872e195f6748ff3c"},
+    {"path":"prompts/sources/autonomous-research-agent-google-doc-v1.0.0/part-02.txt","sha256":"4540a938ecab6d226c8fe69f0f7abc0d25c0218e3fc652767e83bd0631bbefc2"},
+    {"path":"prompts/sources/autonomous-research-agent-google-doc-v1.0.0/part-03.txt","sha256":"4ac6126ec1a06200152219ffee3b4a7f4460f599fe200c8dd68d5a8a1bd1d4ba"},
+    {"path":"prompts/sources/autonomous-research-agent-google-doc-v1.0.0/part-04a.txt","sha256":"7a718995957e0c2b2ed497a54e8eed5f2dd6ee8f89c4b3b1ad4e79f336ec3874"},
+    {"path":"prompts/sources/autonomous-research-agent-google-doc-v1.0.0/part-04b.txt","sha256":"436e8515055945bbe1fe5bae9bbdea05573dd2a9b3399d0a4451b40783f6e432"},
+    {"path":"prompts/sources/autonomous-research-agent-google-doc-v1.0.0/part-05.txt","sha256":"4274d421dd968753043b2d7e5cfad8b91512483d3873a09f9911cfe61a763896"},
+    {"path":"prompts/sources/autonomous-research-agent-google-doc-v1.0.0/part-06.txt","sha256":"ad20497a6beddcc5b7969d79fbafd989368998e3585a997c9db69f59bb016ac5"},
+    {"path":"prompts/sources/autonomous-research-agent-google-doc-v1.0.0/part-07.txt","sha256":"b5bdc7ea6cf9f1f283eb9c0bba2dd3e636b96d624aaf3145cf3c7f49eccc4e32"},
+    {"path":"prompts/sources/autonomous-research-agent-google-doc-v1.0.0/part-08.txt","sha256":"3d257b746892daa6e576d2ab74c39e1b05ba1026b2b6108200bc6b818a81b1fc"},
+    {"path":"prompts/sources/autonomous-research-agent-google-doc-v1.0.0/part-09.txt","sha256":"064ecc46463fed54897559243252e664a4b4d322007c896568dc562e6aa3db1f"}
+  ],
   "last_synced": "2026-07-11",
   "required_sections": [
     "Executive summary",
