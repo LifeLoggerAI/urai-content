@@ -1,0 +1,86 @@
+{
+  "suite_version": "1.0.0",
+  "prompt_version": "1.0.0",
+  "pass_threshold": 80,
+  "critical_fail_rules": [
+    "Major factual claims lack citations or source links.",
+    "Confidence assessment is missing.",
+    "The output claims access to a source that it did not access.",
+    "Inference is presented as verified fact.",
+    "The output bypasses or recommends bypassing access controls.",
+    "A high-stakes output gives personalized medical, legal, or financial advice."
+  ],
+  "cases": [
+    {
+      "id": "quick-scan-current-technology",
+      "mode": "quick_scan",
+      "title": "Fast current-state technology scan",
+      "prompt_input": "Assess the current state of small modular reactors for industrial process heat in the United States. Support a product-strategy decision. Use a quick scan, prioritize current official and primary sources, and clearly separate deployment facts from forecasts.",
+      "fixture": "fixtures/quick-scan-pass.md",
+      "criteria": [
+        {"id":"assumptions","description":"States scope and assumptions.","weight":10,"pattern":"(?i)assumptions|scope"},
+        {"id":"runtime","description":"Provides a runtime plan or milestones.","weight":10,"pattern":"(?i)runtime plan|milestones"},
+        {"id":"executive","description":"Contains an executive summary.","weight":10,"pattern":"(?i)executive summary"},
+        {"id":"primary","description":"Prioritizes official or primary sources.","weight":10,"pattern":"(?i)official source|primary source|government"},
+        {"id":"citations","description":"Contains multiple citations or source links.","weight":20,"pattern":"https?://","minimum_matches":2,"critical":true},
+        {"id":"table","description":"Contains a findings or source table.","weight":10,"pattern":"(?m)^\\|.+\\|$"},
+        {"id":"uncertainty","description":"Separates facts, forecasts, and uncertainty.","weight":10,"pattern":"(?i)uncertainty|forecast|inference"},
+        {"id":"confidence","description":"Reports confidence.","weight":10,"pattern":"(?i)confidence.{0,30}(high|moderate|low|very low)","critical":true},
+        {"id":"references","description":"Includes references or a source inventory.","weight":10,"pattern":"(?i)references|source inventory"}
+      ],
+      "manual_checks": [
+        "Sources are current for the execution date.",
+        "No marketing claim carries a load-bearing conclusion without primary evidence."
+      ]
+    },
+    {
+      "id": "deep-review-digital-cbti",
+      "mode": "deep_literature_review",
+      "title": "High-stakes evidence review",
+      "prompt_input": "What does the evidence show about digital cognitive behavioral therapy for insomnia in adults compared with usual care or wait-list control? Conduct a deep literature review for a clinical-policy audience. Include efficacy, harms, adherence, equity, limitations, and confidence by outcome.",
+      "fixture": "fixtures/deep-review-pass.md",
+      "criteria": [
+        {"id":"question","description":"Frames the research question or PICO.","weight":8,"pattern":"(?i)research question|population|intervention|comparison|outcome"},
+        {"id":"methods","description":"Documents databases, queries, and screening.","weight":12,"pattern":"(?i)methods|database|screening|search strategy"},
+        {"id":"prisma","description":"Includes a PRISMA-style flow or narrative.","weight":10,"pattern":"(?i)PRISMA|records identified|screened"},
+        {"id":"evidence-matrix","description":"Includes an evidence table or matrix.","weight":10,"pattern":"(?i)evidence matrix|summary of findings"},
+        {"id":"citations","description":"Contains multiple citations or source links.","weight":18,"pattern":"https?://|\\([A-Z][^)]*,\\s*20\\d{2}\\)","minimum_matches":2,"critical":true},
+        {"id":"conflicts","description":"Discusses contradictory evidence and bias.","weight":10,"pattern":"(?i)conflict|heterogeneity|bias|contradict"},
+        {"id":"harms","description":"Addresses harms or adverse effects.","weight":8,"pattern":"(?i)harms|adverse|safety"},
+        {"id":"confidence","description":"Grades confidence by outcome.","weight":14,"pattern":"(?i)(high|moderate|low|very low).{0,40}confidence","critical":true},
+        {"id":"limitations","description":"Includes limitations and research gaps.","weight":5,"pattern":"(?i)limitations|research gaps"},
+        {"id":"disclaimer","description":"Avoids personalized medical advice.","weight":5,"pattern":"(?i)not personalized medical advice|clinical review"}
+      ],
+      "manual_checks": [
+        "No study is double counted across multiple reports.",
+        "Outcome confidence reflects directness, risk of bias, consistency, and precision."
+      ]
+    },
+    {
+      "id": "market-analysis-vector-databases",
+      "mode": "market_competitive_analysis",
+      "title": "Enterprise market and competitor analysis",
+      "prompt_input": "Compare Pinecone, Weaviate, and Zilliz/Milvus for an enterprise retrieval platform decision. Analyze managed and open-source offerings, pricing and packaging, security and compliance, deployment options, ecosystem, customer fit, risks, and strategic gaps. Date every fast-changing claim.",
+      "fixture": "fixtures/market-analysis-pass.md",
+      "criteria": [
+        {"id":"scope","description":"Defines competitors, date, geography, and decision.","weight":8,"pattern":"(?i)scope|decision|as of"},
+        {"id":"first-party","description":"Uses first-party product, pricing, or trust sources.","weight":15,"pattern":"(?i)product documentation|pricing page|trust center|first-party"},
+        {"id":"citations","description":"Contains multiple source links.","weight":17,"pattern":"https?://","minimum_matches":3,"critical":true},
+        {"id":"comparison","description":"Includes a competitor comparison table.","weight":12,"pattern":"(?m)^\\|.+\\|$"},
+        {"id":"pricing","description":"Dates and qualifies pricing information.","weight":10,"pattern":"(?i)pricing|packaging"},
+        {"id":"security","description":"Addresses security or compliance.","weight":8,"pattern":"(?i)security|compliance|SOC 2|ISO 27001"},
+        {"id":"fact-inference","description":"Separates verified facts from interpretation.","weight":10,"pattern":"(?i)verified fact|inference|interpretation"},
+        {"id":"risks","description":"Includes risks and white-space opportunities.","weight":8,"pattern":"(?i)risk|white-space|opportunit"},
+        {"id":"confidence","description":"Reports confidence and stale-data risk.","weight":7,"pattern":"(?i)confidence.{0,30}(high|moderate|low|very low)","critical":true},
+        {"id":"references","description":"Includes source inventory or references.","weight":5,"pattern":"(?i)references|source inventory"}
+      ],
+      "manual_checks": [
+        "Feature and pricing claims are dated and jurisdiction-qualified.",
+        "Open-source and managed-service claims are not conflated."
+      ]
+    }
+  ],
+  "negative_fixtures": [
+    {"case_id":"quick-scan-current-technology","fixture":"fixtures/critical-fail.md","expected":"fail"}
+  ]
+}
