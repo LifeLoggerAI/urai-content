@@ -39,6 +39,7 @@ const requiredFiles = [
   'prompts/SYNC.md',
   'prompts/GOVERNANCE.md',
   'prompts/CHANGELOG.md',
+  'prompts/parity-manifest.json',
   'prompts/evals/README.md',
   'prompts/evals/cases.json'
 ];
@@ -99,6 +100,7 @@ const requiredPhrases: Array<[string, string]> = [
   ['.github/workflows/web-e2e.yml', 'playwright-report'],
   ['.github/workflows/prompt-library.yml', 'npm run check:prompts'],
   ['.github/workflows/prompt-library.yml', 'npm run test:prompt-evals'],
+  ['.github/workflows/prompt-library.yml', 'prompt-parity-report.json'],
   ['.github/workflows/prompt-review-gate.yml', 'Independent prompt approval'],
   ['package.json', 'check:provider-evidence'],
   ['package.json', 'check:alerts'],
@@ -111,9 +113,13 @@ const requiredPhrases: Array<[string, string]> = [
   ['.github/CODEOWNERS', 'URAI Content code ownership'],
   ['.github/CODEOWNERS', 'prompts/ @LifeLoggerAI'],
   ['prompts/SYNC.md', 'GitHub is the authoritative source of truth'],
+  ['prompts/SYNC.md', 'exact Drive document ID and revision ID'],
   ['prompts/GOVERNANCE.md', 'Required independent reviewer'],
   ['prompts/GOVERNANCE.md', '80/100'],
-  ['prompts/PARITY.md', 'Status: PASS'],
+  ['prompts/PARITY.md', 'Status: SOURCE VERIFIED — RELEASE BLOCKED'],
+  ['prompts/PARITY.md', 'legacy document metadata'],
+  ['prompts/parity-manifest.json', 'source_snapshot_sha256'],
+  ['prompts/parity-manifest.json', 'source_revision_id'],
   ['prompts/evals/README.md', 'Minimum automated score'],
   ['prompts/CHANGELOG.md', '[1.0.0]']
 ];
