@@ -18,8 +18,14 @@ interface EvalCase {
   criteria: Criterion[];
   manual_checks: string[];
 }
+interface ProhibitedPattern {
+  id: string;
+  description: string;
+  pattern: string;
+}
 interface Suite {
   pass_threshold: number;
+  prohibited_patterns: ProhibitedPattern[];
   cases: EvalCase[];
   negative_fixtures: Array<{ case_id: string; fixture: string; expected: 'fail' }>;
 }
@@ -37,30 +43,39 @@ if (!fixtureMode && !outputsDir) {
   process.exit(2);
 }
 
+function countMatches(sourcePattern: string, text: string): number {
+  let pattern = sourcePattern;
+  let flags = 'gu';
+  const inlineFlags = pattern.match(/^\(\?([im]+)\)/);
+  if (inlineFlags) {
+    pattern = pattern.slice(inlineFlags[0].length);
+    if (inlineFlags[1].includes('i')) flags += 'i';
+    if (inlineFlags[1].includes('m')) flags += 'm';
+  }
+  return [...text.matchAll(new RegExp(pattern, flags))].length;
+}
+
 function evaluate(testCase: EvalCase, text: string) {
   let score = 0;
   const results = testCase.criteria.map((criterion) => {
-    let pattern = criterion.pattern;
-    let flags = 'gu';
-    const inlineFlags = pattern.match(/^\(\?([im]+)\)/);
-    if (inlineFlags) {
-      pattern = pattern.slice(inlineFlags[0].length);
-      if (inlineFlags[1].includes('i')) flags += 'i';
-      if (inlineFlags[1].includes('m')) flags += 'm';
-    }
-    const regex = new RegExp(pattern, flags);
-    const matches = [...text.matchAll(regex)].length;
+    const matches = countMatches(criterion.pattern, text);
     const passed = matches >= (criterion.minimum_matches ?? 1);
     if (passed) score += criterion.weight;
     return { ...criterion, matches, passed };
   });
-  const criticalFailures = results.filter((result) => result.critical && !result.passed).map((result) => result.id);
+  const criticalFailures = results
+    .filter((result) => result.critical && !result.passed)
+    .map((result) => result.id);
+  const prohibitedFailures = suite.prohibited_patterns
+    .map((rule) => ({ ...rule, matches: countMatches(rule.pattern, text) }))
+    .filter((rule) => rule.matches > 0);
   return {
     case_id: testCase.id,
     score,
     threshold: suite.pass_threshold,
-    automated_pass: score >= suite.pass_threshold && criticalFailures.length === 0,
+    automated_pass: score >= suite.pass_threshold && criticalFailures.length === 0 && prohibitedFailures.length === 0,
     critical_failures: criticalFailures,
+    prohibited_failures: prohibitedFailures,
     criteria: results,
     manual_checks: testCase.manual_checks
   };
@@ -82,6 +97,7 @@ for (const testCase of suite.cases) {
   if (!report.automated_pass) failures += 1;
   console.log(`${report.automated_pass ? 'PASS' : 'FAIL'} ${testCase.id}: ${report.score}/100`);
   if (report.critical_failures.length) console.log(`  critical: ${report.critical_failures.join(', ')}`);
+  if (report.prohibited_failures.length) console.log(`  prohibited: ${report.prohibited_failures.map((rule) => rule.id).join(', ')}`);
 }
 
 if (fixtureMode) {
