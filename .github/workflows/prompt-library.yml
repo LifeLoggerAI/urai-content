@@ -36,7 +36,7 @@ concurrency:
 
 jobs:
   prompt-library:
-    name: Source parity, version, links, and evaluation regressions
+    name: Source parity, version, links, and fixture regressions
     runs-on: ubuntu-latest
     steps:
       - name: Checkout exact candidate
@@ -54,13 +54,13 @@ jobs:
         run: npm ci
       - name: Validate prompt library and immutable source parity
         run: npm run check:prompts
-      - name: Run evaluation regression fixtures
+      - name: Run evaluator fixture regressions (not live release evidence)
         run: npm run test:prompt-evals
-      - name: Upload exact-head parity and evaluator evidence
+      - name: Upload exact-head parity and fixture-regression evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: prompt-library-evidence-${{ github.event.pull_request.head.sha || github.sha }}
+          name: prompt-library-fixture-regression-${{ github.event.pull_request.head.sha || github.sha }}
           retention-days: 90
           if-no-files-found: error
           path: |
