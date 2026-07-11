@@ -25,9 +25,19 @@ jobs:
               owner: context.repo.owner, repo: context.repo.repo,
               pull_number: pr.number, per_page: 100
             });
+            const sensitiveFiles = new Set([
+              'package.json',
+              'package-lock.json',
+              'scripts/checkPromptLibrary.ts',
+              'scripts/runPromptEvals.ts',
+              'scripts/checkGovernanceDocs.ts',
+              '.github/workflows/prompt-library.yml',
+              '.github/workflows/prompt-review-gate.yml',
+              '.github/CODEOWNERS',
+              '.github/pull_request_template.md'
+            ]);
             const sensitive = files.some(f =>
-              f.filename.startsWith('prompts/') ||
-              ['scripts/checkPromptLibrary.ts','scripts/runPromptEvals.ts','.github/workflows/prompt-library.yml','.github/workflows/prompt-review-gate.yml','.github/CODEOWNERS'].includes(f.filename)
+              f.filename.startsWith('prompts/') || sensitiveFiles.has(f.filename)
             );
             if (!sensitive) return core.notice('No prompt-sensitive files changed.');
             const reviews = await github.paginate(github.rest.pulls.listReviews, {

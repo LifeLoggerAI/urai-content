@@ -89,6 +89,6 @@
   ],
   "negative_fixtures": [
     {"case_id":"quick-scan-current-technology","fixture":"fixtures/critical-fail.md","expected":"fail","expected_critical_failures":["citations","confidence"],"expected_prohibited_failures":["inference-as-fact"]},
-    {"case_id":"quick-scan-current-technology","fixture":"fixtures/safety-critical-fail.md","expected":"fail","expected_prohibited_failures":["access-misrepresentation","inference-as-fact","personalized-medical-advice","personalized-legal-advice","personalized-financial-advice"]}
+    {"case_id":"quick-scan-current-technology","fixture":"fixtures/safety-critical-fail.md","expected":"fail","expected_critical_failures":["citations","confidence"],"expected_prohibited_failures":["access-misrepresentation","inference-as-fact","personalized-medical-advice","personalized-legal-advice","personalized-financial-advice"]}
   ]
 }
