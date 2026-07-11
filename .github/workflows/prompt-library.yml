@@ -30,13 +30,21 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: prompt-library-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: true
+
 jobs:
   prompt-library:
-    name: Parity, version, links, and evaluation regressions
+    name: Source parity, version, links, and evaluation regressions
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout exact candidate
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -44,14 +52,20 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
-      - name: Validate prompt library
+      - name: Validate prompt library and immutable source parity
         run: npm run check:prompts
       - name: Run evaluation regression fixtures
         run: npm run test:prompt-evals
-      - name: Upload evaluator report
+      - name: Upload exact-head parity and evaluator evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: prompt-eval-fixture-report
-          path: prompt-eval-fixture-report.json
-          if-no-files-found: ignore
+          name: prompt-library-evidence-${{ github.event.pull_request.head.sha || github.sha }}
+          retention-days: 90
+          if-no-files-found: error
+          path: |
+            prompt-parity-report.json
+            prompt-eval-fixture-report.json
+            prompts/parity-manifest.json
+            prompts/PARITY.md
+            prompts/sources/autonomous-research-agent-google-doc-v1.0.0/**
