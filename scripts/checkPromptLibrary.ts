@@ -1,4 +1,5 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, extname, join, relative, resolve } from 'node:path';
 
 const root = resolve(process.cwd());
@@ -18,6 +19,10 @@ const requiredFiles = [
 ];
 
 const read = (path: string) => readFileSync(join(root, path), 'utf8');
+const sha256 = (value: string | Buffer) => createHash('sha256').update(value).digest('hex');
+const validSha256 = (value: unknown): value is string =>
+  typeof value === 'string' && /^[0-9a-f]{64}$/.test(value);
+
 for (const file of requiredFiles) {
   if (!existsSync(join(root, file))) failures.push(`Missing required prompt-library file: ${file}`);
 }
@@ -33,22 +38,134 @@ function compilePattern(sourcePattern: string): void {
   new RegExp(pattern, flags);
 }
 
+function safeRepositoryPath(path: string): boolean {
+  if (!path || path.startsWith('/') || path.includes('\\')) return false;
+  const resolved = resolve(root, path);
+  const fromRoot = relative(root, resolved);
+  return fromRoot !== '..' && !fromRoot.startsWith(`..${process.platform === 'win32' ? '\\' : '/'}`);
+}
+
+type SourcePart = { path: string; sha256: string };
+type ParityManifest = {
+  version: string;
+  source: string;
+  source_document_id: string;
+  source_revision_id: string;
+  source_export_format: string;
+  source_snapshot_normalization: string;
+  source_snapshot_sha256: string;
+  source_snapshot_full_text_sha256: string;
+  legacy_self_reported_source_sha256: string;
+  source_snapshot_parts: SourcePart[];
+  required_sections: string[];
+  anchors: Array<{ section: string; text: string }>;
+};
+
+let parityReport: Record<string, unknown> | null = null;
+
 if (failures.length === 0) {
   const version = read('prompts/VERSION').trim();
   const prompt = read('prompts/autonomous-research-agent-master-prompt.md');
   const readme = read('prompts/README.md');
+  const parity = read('prompts/PARITY.md');
   const changelog = read('prompts/CHANGELOG.md');
-  const manifest = JSON.parse(read('prompts/parity-manifest.json')) as {
-    version: string;
-    source_sha256: string;
-    required_sections: string[];
-    anchors: Array<{ section: string; text: string }>;
-  };
+  const manifest = JSON.parse(read('prompts/parity-manifest.json')) as ParityManifest;
+
+  if (manifest.version !== version) failures.push(`Parity manifest version ${manifest.version} does not match ${version}.`);
+  if (!manifest.source_document_id || !/^[A-Za-z0-9_-]+$/.test(manifest.source_document_id)) {
+    failures.push('Parity manifest lacks a valid Google Doc document ID.');
+  }
+  if (!manifest.source_revision_id || manifest.source_revision_id.length < 20) {
+    failures.push('Parity manifest lacks an exact Google Doc revision ID.');
+  }
+  if (manifest.source_export_format !== 'text/plain') {
+    failures.push('Parity source export format must be text/plain.');
+  }
+  for (const [field, value] of [
+    ['source_snapshot_sha256', manifest.source_snapshot_sha256],
+    ['source_snapshot_full_text_sha256', manifest.source_snapshot_full_text_sha256],
+    ['legacy_self_reported_source_sha256', manifest.legacy_self_reported_source_sha256]
+  ] as const) {
+    if (!validSha256(value)) failures.push(`Parity manifest ${field} is not a lowercase SHA-256.`);
+  }
+
+  if (!Array.isArray(manifest.source_snapshot_parts) || manifest.source_snapshot_parts.length < 1) {
+    failures.push('Parity manifest must enumerate source snapshot parts.');
+  } else {
+    const seen = new Set<string>();
+    const buffers: Buffer[] = [];
+    for (const [index, part] of manifest.source_snapshot_parts.entries()) {
+      if (!part || typeof part.path !== 'string' || !safeRepositoryPath(part.path)) {
+        failures.push(`Source snapshot part ${index} has an unsafe path.`);
+        continue;
+      }
+      if (seen.has(part.path)) failures.push(`Duplicate source snapshot part: ${part.path}`);
+      seen.add(part.path);
+      if (!validSha256(part.sha256)) failures.push(`Source snapshot part ${part.path} has an invalid SHA-256.`);
+      const absolute = join(root, part.path);
+      if (!existsSync(absolute)) {
+        failures.push(`Missing source snapshot part: ${part.path}`);
+        continue;
+      }
+      const bytes = readFileSync(absolute);
+      const actualPartHash = sha256(bytes);
+      if (actualPartHash !== part.sha256) {
+        failures.push(`Source snapshot part hash mismatch for ${part.path}: ${actualPartHash}`);
+      }
+      buffers.push(bytes);
+    }
+
+    if (buffers.length === manifest.source_snapshot_parts.length) {
+      const exactText = Buffer.concat(buffers).toString('utf8');
+      const normalized = exactText.replace(/^\uFEFF/, '').replace(/\r\n?/g, '\n');
+      const fullTextHash = sha256(normalized);
+      const canonical = normalized
+        .split('\n')
+        .filter((line) => !line.startsWith('Source export SHA-256:'))
+        .join('\n');
+      const canonicalHash = sha256(canonical);
+
+      if (fullTextHash !== manifest.source_snapshot_full_text_sha256) {
+        failures.push(`Full source snapshot hash mismatch: ${fullTextHash}`);
+      }
+      if (canonicalHash !== manifest.source_snapshot_sha256) {
+        failures.push(`Canonical source snapshot hash mismatch: ${canonicalHash}`);
+      }
+      if (!manifest.source_snapshot_normalization.includes("exclude only lines beginning with 'Source export SHA-256:'")) {
+        failures.push('Parity manifest does not document the self-reference exclusion rule.');
+      }
+      if (!parity.includes(manifest.source_revision_id)) {
+        failures.push('PARITY.md does not identify the exact Google Doc revision.');
+      }
+      if (!parity.includes(canonicalHash)) {
+        failures.push('PARITY.md does not identify the computed canonical source hash.');
+      }
+
+      const legacyPromptHash = prompt.match(/^source_sha256:\s*([0-9a-f]{64})\s*$/m)?.[1];
+      if (legacyPromptHash !== manifest.legacy_self_reported_source_sha256) {
+        failures.push('Prompt legacy source_sha256 metadata differs from the explicitly non-authoritative legacy value.');
+      }
+
+      parityReport = {
+        schemaVersion: '1.0.0',
+        version,
+        sourceDocumentId: manifest.source_document_id,
+        sourceRevisionId: manifest.source_revision_id,
+        sourceExportFormat: manifest.source_export_format,
+        snapshotParts: manifest.source_snapshot_parts,
+        normalizedFullTextSha256: fullTextHash,
+        canonicalSourceSha256: canonicalHash,
+        legacyPromptSourceSha256: legacyPromptHash,
+        legacyPromptHashAuthoritative: false,
+        selfReferenceExclusion: 'lines beginning with Source export SHA-256:',
+        status: failures.length === 0 ? 'verified' : 'failed'
+      };
+    }
+  }
+
   if (!prompt.includes(`version: ${version}`)) failures.push(`Prompt frontmatter version does not match prompts/VERSION (${version}).`);
   if (!readme.includes(`Version:** \`${version}\``)) failures.push(`prompts/README.md does not advertise version ${version}.`);
   if (!changelog.includes(`## [${version}]`)) failures.push(`prompts/CHANGELOG.md has no ${version} release heading.`);
-  if (manifest.version !== version) failures.push(`Parity manifest version ${manifest.version} does not match ${version}.`);
-  if (!prompt.includes(`source_sha256: ${manifest.source_sha256}`)) failures.push('Prompt frontmatter source_sha256 does not match the parity manifest.');
 
   for (const section of manifest.required_sections) {
     const escaped = section.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -105,9 +222,15 @@ for (const file of markdownFiles) {
   }
 }
 
+if (parityReport) {
+  parityReport.status = failures.length === 0 ? 'verified' : 'failed';
+  parityReport.failures = failures;
+  writeFileSync('prompt-parity-report.json', JSON.stringify(parityReport, null, 2) + '\n');
+}
+
 if (failures.length > 0) {
   console.error('Prompt library validation failed:');
   for (const failure of failures) console.error(`- ${failure}`);
   process.exit(1);
 }
-console.log('Prompt library validation passed: parity, sections, versions, safety rules, eval schema, fixtures, and local links are consistent.');
+console.log('Prompt library validation passed: immutable source bytes, exact Drive revision, semantic anchors, versions, safety rules, eval schema, fixtures, and local links are consistent.');
