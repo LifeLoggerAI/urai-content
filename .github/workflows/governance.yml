@@ -12,9 +12,12 @@ on:
       - URAI_FINAL_COMPLETION_AUDIT.md
       - DEPLOYMENT_BLOCKERS.md
       - docs/**
+      - prompts/**
       - .github/**
       - scripts/checkGovernanceDocs.ts
       - scripts/checkNoSecrets.ts
+      - scripts/checkPromptLibrary.ts
+      - scripts/runPromptEvals.ts
       - package.json
       - package-lock.json
   workflow_dispatch:
@@ -44,3 +47,9 @@ jobs:
 
       - name: Run secret leakage validation
         run: npm run check:secrets
+
+      - name: Run prompt library validation
+        run: npm run check:prompts
+
+      - name: Run prompt evaluator regressions
+        run: npm run test:prompt-evals
