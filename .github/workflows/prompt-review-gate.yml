@@ -1,7 +1,7 @@
 name: Prompt independent review gate
 
 on:
-  pull_request:
+  pull_request_target:
     branches: [main]
     types: [opened, synchronize, reopened, ready_for_review]
   pull_request_review:
@@ -21,6 +21,7 @@ jobs:
           script: |
             const pr = context.payload.pull_request;
             if (!pr) return core.setFailed('Pull request context required.');
+            if (pr.base.ref !== 'main') return core.notice(`Ignoring non-main pull request base: ${pr.base.ref}`);
             const files = await github.paginate(github.rest.pulls.listFiles, {
               owner: context.repo.owner, repo: context.repo.repo,
               pull_number: pr.number, per_page: 100
@@ -31,6 +32,7 @@ jobs:
               'scripts/checkPromptLibrary.ts',
               'scripts/runPromptEvals.ts',
               'scripts/checkGovernanceDocs.ts',
+              '.github/workflows/governance.yml',
               '.github/workflows/prompt-library.yml',
               '.github/workflows/prompt-review-gate.yml',
               '.github/CODEOWNERS',
