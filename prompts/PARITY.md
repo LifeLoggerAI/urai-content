@@ -2,13 +2,21 @@
 
 ## Result
 
-**Status: PASS**
+**Status: SOURCE VERIFIED — RELEASE BLOCKED**
 
-The GitHub prompt contains every substantive section present in the synchronized Google Doc export. The verified export hash is recorded for reproducibility, while CI enforces section and content-anchor parity.
+The collaboration mirror is now bound to an immutable, readable `text/plain` snapshot committed in this branch. CI no longer accepts two matching metadata strings as parity evidence.
 
 - Version: `1.0.0`
+- Google Doc ID: `1dnIErxoHoIqpqR9uyYuR6rphdZv8h5VOpxZEwZ-g1c4`
+- Exact Drive revision: `ALtnJHyCtNBrFmtFrqzaXtYs5iClC2gF9e0Hq2w1SPBEIqh18EH37RZialJC42ZhQde52aMZLH29JK-bANunaMxE2h4bp6G5VU8lfSf0kt4`
+- Export format: `text/plain`
 - Sync date: `2026-07-11`
-- SHA-256: `d2fe8fe5754296bcf7b5f22665e2051221e5dd003f938fd5987921b9c6abddfa`
+- Normalized full-export SHA-256: `b2e63e22c385a9111dabb79d7e35e2d71f98cc13a6b9abfd8187368198ff69bc`
+- Canonical source SHA-256: `c4dfdd2ed942649aec4cd79f38f7fe358d6581dcac89fed413395b11e58b0ea5`
+
+The canonical hash normalizes line endings, removes one leading UTF-8 BOM, and excludes only the line beginning `Source export SHA-256:`. That exclusion is necessary because the Google Doc embeds its own prior hash, making a literal full-document hash self-referential. Every other byte remains in scope.
+
+The prompt frontmatter still contains the prior self-reported value `d2fe8fe5754296bcf7b5f22665e2051221e5dd003f938fd5987921b9c6abddfa`. It is retained only as legacy document metadata and is explicitly **not authoritative evidence**. The ordered snapshot files, their individual SHA-256 values, the exact Drive revision, and the recomputed canonical hash are authoritative.
 
 ## Section matrix
 
@@ -37,4 +45,15 @@ Run:
 npm run check:prompts
 ```
 
-The check validates required sections, representative content anchors, source-hash metadata consistency, version consistency, evaluation-suite schema, and local Markdown links. Any missing section or inconsistent metadata fails CI.
+The check now validates:
+
+- every ordered source-snapshot file and its exact SHA-256;
+- normalized full-export and canonical source hashes;
+- exact Google Doc document and revision identity;
+- the explicit self-reference exclusion rule;
+- required sections and representative content anchors;
+- version consistency, evaluation schema, fixtures, and local Markdown links.
+
+A source file change, missing part, reordered part, substituted hash, stale revision, missing anchor, or inconsistent version fails CI.
+
+This source verification does not satisfy the separate release gates. Current-head CI, actual model-run evidence where required, manual checks, independent non-author approval, merge, release tag, and post-merge mirror synchronization remain mandatory.
