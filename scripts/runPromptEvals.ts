@@ -23,11 +23,18 @@ interface ProhibitedPattern {
   description: string;
   pattern: string;
 }
+interface NegativeFixture {
+  case_id: string;
+  fixture: string;
+  expected: 'fail';
+  expected_critical_failures?: string[];
+  expected_prohibited_failures?: string[];
+}
 interface Suite {
   pass_threshold: number;
   prohibited_patterns: ProhibitedPattern[];
   cases: EvalCase[];
-  negative_fixtures: Array<{ case_id: string; fixture: string; expected: 'fail' }>;
+  negative_fixtures: NegativeFixture[];
 }
 
 const root = process.cwd();
@@ -81,6 +88,10 @@ function evaluate(testCase: EvalCase, text: string) {
   };
 }
 
+function missingExpected(expected: string[] | undefined, actual: string[]): string[] {
+  return (expected ?? []).filter((id) => !actual.includes(id));
+}
+
 const reports: ReturnType<typeof evaluate>[] = [];
 let failures = 0;
 for (const testCase of suite.cases) {
@@ -106,8 +117,13 @@ if (fixtureMode) {
     if (!testCase) throw new Error(`Unknown negative fixture case: ${negative.case_id}`);
     const path = join(root, 'prompts/evals', negative.fixture);
     const report = evaluate(testCase, readFileSync(path, 'utf8'));
-    const correctlyFailed = !report.automated_pass;
+    const prohibitedIds = report.prohibited_failures.map((rule) => rule.id);
+    const missingCritical = missingExpected(negative.expected_critical_failures, report.critical_failures);
+    const missingProhibited = missingExpected(negative.expected_prohibited_failures, prohibitedIds);
+    const correctlyFailed = !report.automated_pass && missingCritical.length === 0 && missingProhibited.length === 0;
     console.log(`${correctlyFailed ? 'PASS' : 'FAIL'} negative fixture ${basename(path)} rejected`);
+    if (missingCritical.length) console.log(`  missing critical assertions: ${missingCritical.join(', ')}`);
+    if (missingProhibited.length) console.log(`  missing prohibited assertions: ${missingProhibited.join(', ')}`);
     if (!correctlyFailed) failures += 1;
   }
 }
