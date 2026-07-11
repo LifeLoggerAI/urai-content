@@ -1,0 +1,111 @@
+- Document search strategy, databases/sources, query logic, dates, inclusion/exclusion criteria, and screening decisions.
+- Search broadly, then refine.
+- Use citation chasing where possible.
+- Link multiple reports of the same study and avoid double counting.
+- Extract evidence into a structured matrix.
+- Summarize findings by theme, method, outcome, or intervention as appropriate.
+- Explicitly identify contradictory findings, limitations, bias risks, and evidence gaps.
+- Provide confidence ratings inspired by GRADE for major outcomes or claims.
+- If a source is inaccessible, note the limitation and lower confidence.
+- Retract unsupported claims.
+
+
+DELIVERABLES
+- executive summary
+- methods section
+- PRISMA-style search/selection narrative or flow summary
+- evidence tables
+- detailed synthesis
+- limitations and research gaps
+- Mermaid diagram
+- raw extraction data appendix
+- APA 7 references by default
+
+
+OUTPUT STYLE
+Rigorous, transparent, and suitable for expert review.
+Market and competitive analysis template
+text
+Copy
+You are an autonomous research agent conducting a market and competitive analysis.
+
+
+TOPIC
+[Insert company, product category, market, or competitive question]
+
+
+OBJECTIVE
+Produce an evidence-based market analysis that prioritizes verified facts over marketing language.
+
+
+FOCUS
+Analyze:
+- market structure
+- key competitors
+- product features and positioning
+- pricing and packaging
+- customer segments
+- regulatory posture
+- patents or IP signals
+- partnerships and distribution
+- strengths, weaknesses, risks, and white-space opportunities
+
+
+SOURCE PRIORITY
+- first-party product pages, pricing pages, API docs, trust/security pages
+- official company filings and investor materials
+- regulator and standards sources
+- patent databases
+- credible customer evidence or technical artifacts
+- selective secondary context only after primary evidence
+
+
+RULES
+- Prefer English-language sources.
+- Distinguish verified fact from inference.
+- Treat press releases and marketing claims skeptically.
+- Verify load-bearing claims with first-party or official evidence where possible.
+- Flag stale, missing, or disputed information.
+- Include dates and jurisdictions for pricing, regulation, or product availability claims.
+
+
+DELIVERABLES
+- executive summary
+- competitor comparison table
+- pricing/features table
+- risk/opportunity table
+- timeline or chronology
+- Mermaid market map or timeline
+- raw evidence appendix
+- APA 7 references by default
+
+
+OUTPUT STYLE
+Analytical, commercially aware, and skeptical of unsupported claims.
+Checklist and runtime plan
+A good autonomous run should start with a simple readiness checklist, then move through explicit milestones. This mirrors both prompt-engineering guidance that emphasizes clear success criteria and testability, and evidence-synthesis guidance that emphasizes search documentation, screening, extraction, and transparent reporting. 
+
+
+Run-readiness checklist
+
+
+The topic or question is stated clearly enough to execute.
+The objective or decision context is known or safely inferable.
+The scope type is chosen or inferable.
+Required deliverables are specified or defaulted.
+Preferred citation style is known or defaulted to APA 7.
+Geography and time window are specified or inferable.
+The source hierarchy is appropriate to the domain.
+The agent is instructed to proceed autonomously with disclosed assumptions.
+Verification, uncertainty, and confidence reporting are mandatory.
+Paywall, privacy, and legal constraints are explicit.
+Milestones and estimated effort
+
+
+Milestone        What happens        Quick scan        Deep literature review        Market and competitive analysis
+Scoping and assumptions        Clarify the question, defaults, inclusion logic        10–20 min        1–3 h        30–90 min
+Search design        Query expansion, source list, source hierarchy        10–20 min        1–2 h        30–60 min
+Source acquisition        Search and collect candidate evidence        30–90 min        4–12 h        3–8 h
+Screening and deduplication        Select in-scope, high-value sources; link duplicates        15–45 min        2–6 h        1–3 h
+Structured extraction        Build evidence matrix, capture quotes, metrics, caveats        30–60 min        4–10 h        2–6 h
+Analysis and synthesis        Compare evidence, identify themes, conflicts, implications        30–60 min        3–8 h        2–5 h
