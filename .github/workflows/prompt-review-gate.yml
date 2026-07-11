@@ -27,26 +27,27 @@ jobs:
             });
             const sensitive = files.some(f =>
               f.filename.startsWith('prompts/') ||
-              f.filename === 'scripts/checkPromptLibrary.ts' ||
-              f.filename === 'scripts/runPromptEvals.ts' ||
-              f.filename === '.github/workflows/prompt-library.yml' ||
-              f.filename === '.github/workflows/prompt-review-gate.yml' ||
-              f.filename === '.github/CODEOWNERS'
+              ['scripts/checkPromptLibrary.ts','scripts/runPromptEvals.ts','.github/workflows/prompt-library.yml','.github/workflows/prompt-review-gate.yml','.github/CODEOWNERS'].includes(f.filename)
             );
             if (!sensitive) return core.notice('No prompt-sensitive files changed.');
             const reviews = await github.paginate(github.rest.pulls.listReviews, {
               owner: context.repo.owner, repo: context.repo.repo,
               pull_number: pr.number, per_page: 100
             });
-            const approved = [];
-            for (const r of reviews) {
-              const u = r.user;
-              if (!u || r.state !== 'APPROVED' || u.login === pr.user.login) continue;
-              if (r.commit_id !== pr.head.sha || u.type === 'Bot') continue;
-              const p = await github.rest.repos.getCollaboratorPermissionLevel({
-                owner: context.repo.owner, repo: context.repo.repo, username: u.login
-              });
-              if (['admin','maintain','write','triage'].includes(p.data.permission)) approved.push(u.login);
+            const latest = new Map();
+            for (const review of reviews) {
+              const login = review.user?.login;
+              if (!login || login === pr.user.login || review.user.type === 'Bot') continue;
+              const prior = latest.get(login);
+              if (!prior || new Date(review.submitted_at || 0) >= new Date(prior.submitted_at || 0)) latest.set(login, review);
             }
-            if (!approved.length) core.setFailed('Current-head approval from a human repository collaborator is required.');
-            else core.notice(`Independent approval present from: ${[...new Set(approved)].join(', ')}`);
+            const approved = [];
+            for (const [login, review] of latest) {
+              if (review.state !== 'APPROVED' || review.commit_id !== pr.head.sha) continue;
+              const permission = await github.rest.repos.getCollaboratorPermissionLevel({
+                owner: context.repo.owner, repo: context.repo.repo, username: login
+              });
+              if (['admin','maintain','write','triage'].includes(permission.data.permission)) approved.push(login);
+            }
+            if (!approved.length) core.setFailed('Latest current-head review from a human repository collaborator must be APPROVED.');
+            else core.notice(`Independent approval present from: ${approved.join(', ')}`);
