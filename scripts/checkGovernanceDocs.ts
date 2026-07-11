@@ -22,12 +22,25 @@ const requiredFiles = [
   '.github/CODEOWNERS',
   '.github/workflows/governance.yml',
   '.github/workflows/web-e2e.yml',
+  '.github/workflows/prompt-library.yml',
+  '.github/workflows/prompt-review-gate.yml',
   'scripts/productionSmoke.ts',
   'scripts/rollbackSmoke.ts',
   'scripts/checkNoSecrets.ts',
   'scripts/checkObservabilityEnv.ts',
   'scripts/checkProviderEvidence.ts',
-  'scripts/checkAlertWebhook.ts'
+  'scripts/checkAlertWebhook.ts',
+  'scripts/checkPromptLibrary.ts',
+  'scripts/runPromptEvals.ts',
+  'prompts/VERSION',
+  'prompts/README.md',
+  'prompts/autonomous-research-agent-master-prompt.md',
+  'prompts/PARITY.md',
+  'prompts/SYNC.md',
+  'prompts/GOVERNANCE.md',
+  'prompts/CHANGELOG.md',
+  'prompts/evals/README.md',
+  'prompts/evals/cases.json'
 ];
 
 const requiredReadmeLinks = [
@@ -77,18 +90,32 @@ const requiredPhrases: Array<[string, string]> = [
   ['.github/pull_request_template.md', 'Secret scan fails'],
   ['.github/pull_request_template.md', 'Observability verification fails'],
   ['.github/pull_request_template.md', 'Rollback smoke fails'],
+  ['.github/pull_request_template.md', 'npm run check:prompts'],
+  ['.github/pull_request_template.md', 'Independent non-author approval obtained'],
   ['.github/workflows/governance.yml', 'npm run check:governance'],
   ['.github/workflows/governance.yml', 'npm run check:secrets'],
   ['.github/workflows/web-e2e.yml', 'npm run e2e'],
   ['.github/workflows/web-e2e.yml', 'workflow_dispatch'],
   ['.github/workflows/web-e2e.yml', 'playwright-report'],
+  ['.github/workflows/prompt-library.yml', 'npm run check:prompts'],
+  ['.github/workflows/prompt-library.yml', 'npm run test:prompt-evals'],
+  ['.github/workflows/prompt-review-gate.yml', 'Independent prompt approval'],
   ['package.json', 'check:provider-evidence'],
   ['package.json', 'check:alerts'],
   ['package.json', 'check:release-env'],
   ['package.json', 'web:e2e'],
+  ['package.json', 'check:prompts'],
+  ['package.json', 'test:prompt-evals'],
   ['.github/ISSUE_TEMPLATE/launch_task.md', 'Evidence required before GREEN'],
   ['.github/ISSUE_TEMPLATE/runtime_bug.md', 'Do not close this issue without reproducible evidence'],
-  ['.github/CODEOWNERS', 'URAI Content code ownership']
+  ['.github/CODEOWNERS', 'URAI Content code ownership'],
+  ['.github/CODEOWNERS', 'prompts/ @LifeLoggerAI'],
+  ['prompts/SYNC.md', 'GitHub is the authoritative source of truth'],
+  ['prompts/GOVERNANCE.md', 'Required independent reviewer'],
+  ['prompts/GOVERNANCE.md', '80/100'],
+  ['prompts/PARITY.md', 'Status: PASS'],
+  ['prompts/evals/README.md', 'Minimum automated score'],
+  ['prompts/CHANGELOG.md', '[1.0.0]']
 ];
 
 function read(path: string): string {
@@ -98,35 +125,25 @@ function read(path: string): string {
 const failures: string[] = [];
 
 for (const file of requiredFiles) {
-  if (!existsSync(join(root, file))) {
-    failures.push(`Missing required governance file: ${file}`);
-  }
+  if (!existsSync(join(root, file))) failures.push(`Missing required governance file: ${file}`);
 }
 
 if (existsSync(join(root, 'README.md'))) {
   const readme = read('README.md');
   for (const link of requiredReadmeLinks) {
-    if (!readme.includes(link)) {
-      failures.push(`README.md does not reference ${link}`);
-    }
+    if (!readme.includes(link)) failures.push(`README.md does not reference ${link}`);
   }
 }
 
 for (const [file, phrase] of requiredPhrases) {
-  if (!existsSync(join(root, file))) {
-    continue;
-  }
+  if (!existsSync(join(root, file))) continue;
   const content = read(file);
-  if (!content.includes(phrase)) {
-    failures.push(`${file} is missing required governance phrase: ${phrase}`);
-  }
+  if (!content.includes(phrase)) failures.push(`${file} is missing required governance phrase: ${phrase}`);
 }
 
 if (failures.length > 0) {
   console.error('Governance docs check failed:');
-  for (const failure of failures) {
-    console.error(`- ${failure}`);
-  }
+  for (const failure of failures) console.error(`- ${failure}`);
   process.exit(1);
 }
 
