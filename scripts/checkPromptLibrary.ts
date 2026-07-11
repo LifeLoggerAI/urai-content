@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs';
-import { dirname, extname, join, normalize, resolve } from 'node:path';
+import { dirname, extname, join, relative, resolve } from 'node:path';
 
-const root = process.cwd();
+const root = resolve(process.cwd());
 const failures: string[] = [];
 const requiredFiles = [
   'prompts/VERSION',
@@ -72,9 +72,15 @@ for (const file of markdownFiles) {
     const target = match[1].trim().replace(/^<|>$/g, '');
     if (!target || target.startsWith('#') || /^[a-z]+:/i.test(target)) continue;
     const clean = target.split('#')[0].split('?')[0];
-    const resolved = normalize(resolve(root, dirname(file), clean));
-    if (!resolved.startsWith(normalize(root))) failures.push(`${file} links outside the repository: ${target}`);
-    else if (!existsSync(resolved)) failures.push(`${file} has a broken local link: ${target}`);
+    const resolved = clean.startsWith('/')
+      ? resolve(root, clean.slice(1))
+      : resolve(root, dirname(file), clean);
+    const fromRoot = relative(root, resolved);
+    if (fromRoot === '..' || fromRoot.startsWith(`..${process.platform === 'win32' ? '\\' : '/'}`)) {
+      failures.push(`${file} links outside the repository: ${target}`);
+    } else if (!existsSync(resolved)) {
+      failures.push(`${file} has a broken local link: ${target}`);
+    }
   }
 }
 
