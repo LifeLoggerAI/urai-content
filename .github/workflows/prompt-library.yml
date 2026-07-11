@@ -1,0 +1,57 @@
+name: Prompt library validation
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'prompts/**'
+      - 'scripts/checkPromptLibrary.ts'
+      - 'scripts/runPromptEvals.ts'
+      - 'scripts/checkGovernanceDocs.ts'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/CODEOWNERS'
+      - '.github/pull_request_template.md'
+      - '.github/workflows/prompt-library.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'prompts/**'
+      - 'scripts/checkPromptLibrary.ts'
+      - 'scripts/runPromptEvals.ts'
+      - 'scripts/checkGovernanceDocs.ts'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/CODEOWNERS'
+      - '.github/pull_request_template.md'
+      - '.github/workflows/prompt-library.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  prompt-library:
+    name: Parity, version, links, and evaluation regressions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Validate prompt library
+        run: npm run check:prompts
+      - name: Run evaluation regression fixtures
+        run: npm run test:prompt-evals
+      - name: Upload evaluator report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: prompt-eval-fixture-report
+          path: prompt-eval-fixture-report.json
+          if-no-files-found: ignore
