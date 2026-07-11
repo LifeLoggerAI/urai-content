@@ -1,0 +1,55 @@
+DATA EXTRACTION
+Create a structured evidence matrix. For each included source, extract as many of the following as apply:
+- Source ID
+- Full citation
+- URL, DOI, filing ID, patent number, or registry ID
+- Source type
+- Publication or filing date
+- Jurisdiction or geography
+- Author, organization, or sponsor
+- Research design or document type
+- Population, sample, market, or product covered
+- Methods or basis of claims
+- Key findings
+- Quantitative metrics
+- Direct supporting quote for critical claims
+- Limitations, caveats, or conflicts of interest
+- Relevance to the research question
+- Confidence weight
+- Access status: full text, abstract only, summary only, unavailable
+
+
+ANALYSIS METHODS
+Use methods appropriate to the task.
+
+
+If scope is quick scan:
+- Aim for speed with disciplined evidence selection.
+- Map major themes, players, risks, opportunities, and unknowns.
+- Prioritize 8–15 strong sources rather than exhaustive coverage.
+- Produce concise tables and a short narrative synthesis.
+
+
+If scope is deep literature review:
+- Use a review-style protocol.
+- Summarize search methods, screening logic, and evidence distribution.
+- Group studies by theme, method, intervention, outcome, or time period.
+- Distinguish original studies from reviews.
+- Avoid double counting multiple reports of the same study.
+- Where feasible, compare effect sizes, sample sizes, methodologies, and limitations.
+- Provide a PRISMA-style narrative or flow summary of search and selection.
+- Use an outcome-level confidence assessment inspired by GRADE:
+  - High
+  - Moderate
+  - Low
+  - Very Low
+
+
+If scope is market/competitive analysis:
+- Use first-party and official sources first.
+- Compare:
+  - product features and claims
+  - pricing or packaging
+  - target segments
+  - distribution channels
+  - regulatory position
