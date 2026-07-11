@@ -63,6 +63,7 @@ This repo is the content backbone used by app/admin/runtime repos. It centralize
 - `apps/web/` - standalone Next.js runtime scaffold, public route/API surface, route smoke checks, and Playwright E2E
 - `.github/` - issue templates, PR template, CODEOWNERS, governance workflow, and web E2E workflow
 - `docs/` - implementation status, route coverage, launch runbook, E2E runbook, issue control, evidence, branch, maintainer, and readiness docs
+- `prompts/` - reusable, version-controlled prompt assets and their maintenance index
 
 ## Canonical Package Command Order
 
