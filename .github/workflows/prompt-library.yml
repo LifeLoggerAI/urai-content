@@ -8,11 +8,14 @@ on:
       - 'scripts/checkPromptLibrary.ts'
       - 'scripts/runPromptEvals.ts'
       - 'scripts/checkGovernanceDocs.ts'
+      - 'scripts/verifyPromptWorkflowPins.mjs'
       - 'package.json'
       - 'package-lock.json'
       - '.github/CODEOWNERS'
       - '.github/pull_request_template.md'
       - '.github/workflows/prompt-library.yml'
+      - '.github/workflows/prompt-review-gate.yml'
+      - '.github/workflows/governance.yml'
   push:
     branches: [main]
     paths:
@@ -20,11 +23,14 @@ on:
       - 'scripts/checkPromptLibrary.ts'
       - 'scripts/runPromptEvals.ts'
       - 'scripts/checkGovernanceDocs.ts'
+      - 'scripts/verifyPromptWorkflowPins.mjs'
       - 'package.json'
       - 'package-lock.json'
       - '.github/CODEOWNERS'
       - '.github/pull_request_template.md'
       - '.github/workflows/prompt-library.yml'
+      - '.github/workflows/prompt-review-gate.yml'
+      - '.github/workflows/governance.yml'
   workflow_dispatch:
 
 permissions:
@@ -36,20 +42,32 @@ concurrency:
 
 jobs:
   prompt-library:
-    name: Source parity, version, links, and fixture regressions
-    runs-on: ubuntu-latest
+    name: Source parity, version, links, fixture regressions, and workflow pins
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
     steps:
       - name: Checkout exact candidate
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
           persist-credentials: false
+      - name: Prove exact clean candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          EXPECTED_SHA='${{ github.event.pull_request.head.sha || github.sha }}'
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          test -z "$(git status --porcelain --untracked-files=all)"
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22
           cache: npm
+      - name: Verify governed workflow action pins
+        run: |
+          node --check scripts/verifyPromptWorkflowPins.mjs
+          node scripts/verifyPromptWorkflowPins.mjs
       - name: Install dependencies
         run: npm ci
       - name: Validate prompt library and immutable source parity
@@ -58,7 +76,7 @@ jobs:
         run: npm run test:prompt-evals
       - name: Upload exact-head parity and fixture-regression evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: prompt-library-fixture-regression-${{ github.event.pull_request.head.sha || github.sha }}
           retention-days: 90
