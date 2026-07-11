@@ -15,4 +15,13 @@ permissions:
 jobs:
   prompt-review:
     name: Independent prompt approval
-    runs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require a current-head human approval for prompt-sensitive changes
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            if (!pr) {
+              core.notice('No pull request payload; manual dispatch is informational only.');
+              return;
