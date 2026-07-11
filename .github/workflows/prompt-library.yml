@@ -7,24 +7,30 @@ on:
       - 'prompts/**'
       - 'scripts/checkPromptLibrary.ts'
       - 'scripts/runPromptEvals.ts'
+      - 'scripts/runPromptReleaseCandidate.ts'
       - 'scripts/checkGovernanceDocs.ts'
       - 'package.json'
       - 'package-lock.json'
       - '.github/CODEOWNERS'
       - '.github/pull_request_template.md'
+      - '.github/workflows/governance.yml'
       - '.github/workflows/prompt-library.yml'
+      - '.github/workflows/prompt-review-gate.yml'
   push:
     branches: [main]
     paths:
       - 'prompts/**'
       - 'scripts/checkPromptLibrary.ts'
       - 'scripts/runPromptEvals.ts'
+      - 'scripts/runPromptReleaseCandidate.ts'
       - 'scripts/checkGovernanceDocs.ts'
       - 'package.json'
       - 'package-lock.json'
       - '.github/CODEOWNERS'
       - '.github/pull_request_template.md'
+      - '.github/workflows/governance.yml'
       - '.github/workflows/prompt-library.yml'
+      - '.github/workflows/prompt-review-gate.yml'
   workflow_dispatch:
 
 permissions:
@@ -56,6 +62,8 @@ jobs:
         run: npm run check:prompts
       - name: Run evaluator fixture regressions (not live release evidence)
         run: npm run test:prompt-evals
+      - name: Verify live reports remain candidate-only
+        run: npm run test:prompt-release-authority
       - name: Upload exact-head parity and fixture-regression evidence
         if: always()
         uses: actions/upload-artifact@v4
