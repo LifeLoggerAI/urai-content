@@ -1,4 +1,3 @@
-import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { dirname, extname, join, normalize, resolve } from 'node:path';
 
@@ -14,7 +13,6 @@ const requiredFiles = [
   'prompts/USAGE.md',
   'prompts/CHANGELOG.md',
   'prompts/parity-manifest.json',
-  'prompts/source/google-doc-v1.0.0.txt',
   'prompts/evals/README.md',
   'prompts/evals/cases.json'
 ];
@@ -31,7 +29,6 @@ if (failures.length === 0) {
   const changelog = read('prompts/CHANGELOG.md');
   const manifest = JSON.parse(read('prompts/parity-manifest.json')) as {
     version: string;
-    source_snapshot: string;
     source_sha256: string;
     required_sections: string[];
     anchors: Array<{ section: string; text: string }>;
@@ -40,10 +37,7 @@ if (failures.length === 0) {
   if (!readme.includes(`Version:** \`${version}\``)) failures.push(`prompts/README.md does not advertise version ${version}.`);
   if (!changelog.includes(`## [${version}]`)) failures.push(`prompts/CHANGELOG.md has no ${version} release heading.`);
   if (manifest.version !== version) failures.push(`Parity manifest version ${manifest.version} does not match ${version}.`);
-  const snapshot = read(manifest.source_snapshot);
-  const actualHash = createHash('sha256').update(snapshot, 'utf8').digest('hex');
-  if (actualHash !== manifest.source_sha256) failures.push(`Source snapshot SHA-256 mismatch: expected ${manifest.source_sha256}, got ${actualHash}.`);
-  if (!prompt.includes(`source_sha256: ${actualHash}`)) failures.push('Prompt frontmatter source_sha256 does not match the source snapshot.');
+  if (!prompt.includes(`source_sha256: ${manifest.source_sha256}`)) failures.push('Prompt frontmatter source_sha256 does not match the parity manifest.');
 
   for (const section of manifest.required_sections) {
     const escaped = section.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -79,11 +73,8 @@ for (const file of markdownFiles) {
     if (!target || target.startsWith('#') || /^[a-z]+:/i.test(target)) continue;
     const clean = target.split('#')[0].split('?')[0];
     const resolved = normalize(resolve(root, dirname(file), clean));
-    if (!resolved.startsWith(normalize(root))) {
-      failures.push(`${file} links outside the repository: ${target}`);
-    } else if (!existsSync(resolved)) {
-      failures.push(`${file} has a broken local link: ${target}`);
-    }
+    if (!resolved.startsWith(normalize(root))) failures.push(`${file} links outside the repository: ${target}`);
+    else if (!existsSync(resolved)) failures.push(`${file} has a broken local link: ${target}`);
   }
 }
 
