@@ -1,0 +1,61 @@
+{
+  "version": "1.0.0",
+  "source": "Google Doc export snapshot",
+  "source_snapshot": "prompts/source/google-doc-v1.0.0.txt",
+  "source_sha256": "d2fe8fe5754296bcf7b5f22665e2051221e5dd003f938fd5987921b9c6abddfa",
+  "last_synced": "2026-07-11",
+  "required_sections": [
+    "Executive summary",
+    "Design principles",
+    "Copy-paste master prompt",
+    "Adaptable templates",
+    "Quick scan template",
+    "Deep literature review template",
+    "Market and competitive analysis template",
+    "Checklist and runtime plan",
+    "Run-readiness checklist",
+    "Milestones and estimated effort",
+    "Sample Mermaid timeline",
+    "Sample runtime plan for a deep literature review",
+    "Customization guide",
+    "Document control"
+  ],
+  "anchors": [
+    {
+      "section": "Executive summary",
+      "text": "A reliable “single autonomous prompt” is not just a task description."
+    },
+    {
+      "section": "Design principles",
+      "text": "The most effective master prompt should minimize unnecessary follow-up questions"
+    },
+    {
+      "section": "Copy-paste master prompt",
+      "text": "You are an autonomous research agent operating as a rigorous analyst"
+    },
+    {
+      "section": "Adaptable templates",
+      "text": "The three templates below are deliberately narrower than the master prompt."
+    },
+    {
+      "section": "Quick scan template",
+      "text": "Execute a fast but evidence-based scan"
+    },
+    {
+      "section": "Deep literature review template",
+      "text": "conducting a deep literature review"
+    },
+    {
+      "section": "Market and competitive analysis template",
+      "text": "conducting a market and competitive analysis"
+    },
+    {
+      "section": "Checklist and runtime plan",
+      "text": "A good autonomous run should start with a simple readiness checklist"
+    },
+    {
+      "section": "Customization guide",
+      "text": "customize only a few “control knobs”"
+    }
+  ]
+}
