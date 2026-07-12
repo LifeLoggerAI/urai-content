@@ -58,6 +58,7 @@ for (const [workflowPath, expectedActions] of Object.entries(requiredByWorkflow)
 
 const promptLibrary = readFileSync(path.join(root, '.github/workflows/prompt-library.yml'), 'utf8')
 for (const requiredPath of [
+  "'scripts/runPromptReleaseCandidate.ts'",
   "'scripts/verifyPromptWorkflowPins.mjs'",
   "'.github/workflows/prompt-review-gate.yml'",
   "'.github/workflows/governance.yml'",
@@ -65,18 +66,49 @@ for (const requiredPath of [
   if (!promptLibrary.includes(requiredPath)) failures.push(`Prompt library workflow path filters omit ${requiredPath}`)
 }
 if (!promptLibrary.includes('node scripts/verifyPromptWorkflowPins.mjs')) failures.push('Prompt library workflow does not execute the action-pin verifier')
+if (!promptLibrary.includes('npm run test:prompt-release-authority')) failures.push('Prompt library workflow does not verify candidate-only prompt release authority')
 
-const reviewGate = readFileSync(path.join(root, '.github/workflows/prompt-review-gate.yml'), 'utf8')
-if (!reviewGate.includes("'scripts/verifyPromptWorkflowPins.mjs'")) failures.push('Independent-review gate does not classify the action-pin verifier as prompt-sensitive')
+const reviewGate = readFileSync(path.join(root, '.github/workflows/prompt-review-gate.yml'), 'utf8').replace(/\r\n?/g, '\n')
+if (!/^\s{2}pull_request_target:\s*$/m.test(reviewGate)) failures.push('Independent-review gate must execute from pull_request_target default-branch authority')
+if (/^\s{2}pull_request:\s*$/m.test(reviewGate)) failures.push('Independent-review gate must not execute approval logic from PR-controlled pull_request workflow code')
+if (reviewGate.includes('actions/checkout@')) failures.push('Independent-review gate must not checkout or execute pull-request code')
+for (const requiredMarker of [
+  "'scripts/runPromptReleaseCandidate.ts'",
+  "'scripts/verifyPromptWorkflowPins.mjs'",
+  "review.commit_id !== pr.head.sha",
+  "['admin', 'maintain', 'write']",
+  "review.user.type === 'Bot'",
+  "pr.base.ref !== 'main'",
+]) {
+  if (!reviewGate.includes(requiredMarker)) failures.push(`Independent-review gate missing authority marker: ${requiredMarker}`)
+}
+if (reviewGate.includes("'triage'")) failures.push('Independent-review gate must not accept triage permission as release approval authority')
 
 const governance = readFileSync(path.join(root, '.github/workflows/governance.yml'), 'utf8')
-if (!governance.includes('scripts/verifyPromptWorkflowPins.mjs')) failures.push('Governance workflow does not trigger on or execute the action-pin verifier')
+for (const requiredMarker of [
+  'scripts/runPromptReleaseCandidate.ts',
+  'scripts/verifyPromptWorkflowPins.mjs',
+  'npm run test:prompt-release-authority',
+]) {
+  if (!governance.includes(requiredMarker)) failures.push(`Governance workflow missing release-authority marker: ${requiredMarker}`)
+}
+
+const packageJson = JSON.parse(readFileSync(path.join(root, 'package.json'), 'utf8'))
+if (packageJson.scripts?.['eval:prompts'] !== 'tsx scripts/runPromptReleaseCandidate.ts') failures.push('eval:prompts must route through the candidate-only release-authority wrapper')
+if (packageJson.scripts?.['test:prompt-release-authority'] !== 'tsx scripts/runPromptReleaseCandidate.ts --self-test') failures.push('package.json must expose the prompt release-authority self-test')
+if (!String(packageJson.scripts?.check ?? '').includes('npm run test:prompt-release-authority')) failures.push('Full repository check must include prompt release-authority self-test')
 
 const report = {
-  schemaVersion: 'urai-content-prompt-workflow-pins-1',
+  schemaVersion: 'urai-content-prompt-workflow-pins-2',
   ok: failures.length === 0,
   workflows,
   allowedActions: [...allowedActions],
+  reviewAuthority: {
+    event: 'pull_request_target',
+    checksOutPullRequestCode: false,
+    qualifyingPermissions: ['admin', 'maintain', 'write'],
+    exactHeadApprovalRequired: true,
+  },
   failures,
 }
 
