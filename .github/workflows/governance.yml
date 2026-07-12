@@ -18,6 +18,7 @@ on:
       - scripts/checkNoSecrets.ts
       - scripts/checkPromptLibrary.ts
       - scripts/runPromptEvals.ts
+      - scripts/runPromptReleaseCandidate.ts
       - scripts/verifyPromptWorkflowPins.mjs
       - package.json
       - package-lock.json
@@ -28,7 +29,7 @@ permissions:
 
 jobs:
   governance:
-    name: Governance, security, and workflow-pin validation
+    name: Governance, security, release-authority, and workflow-pin validation
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
@@ -53,7 +54,7 @@ jobs:
           node-version: 22
           cache: npm
 
-      - name: Verify governed workflow action pins
+      - name: Verify governed workflow action pins and authority
         run: |
           node --check scripts/verifyPromptWorkflowPins.mjs
           node scripts/verifyPromptWorkflowPins.mjs
@@ -70,5 +71,8 @@ jobs:
       - name: Run prompt library validation
         run: npm run check:prompts
 
-      - name: Run prompt evaluator regressions
+      - name: Run prompt evaluator fixture regressions
         run: npm run test:prompt-evals
+
+      - name: Verify live prompt reports remain candidate-only
+        run: npm run test:prompt-release-authority
