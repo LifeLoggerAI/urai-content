@@ -11,8 +11,8 @@ The collaboration mirror is now bound to an immutable, readable `text/plain` sna
 - Exact Drive revision: `ALtnJHyCtNBrFmtFrqzaXtYs5iClC2gF9e0Hq2w1SPBEIqh18EH37RZialJC42ZhQde52aMZLH29JK-bANunaMxE2h4bp6G5VU8lfSf0kt4`
 - Export format: `text/plain`
 - Sync date: `2026-07-11`
-- Normalized full-export SHA-256: `b2e63e22c385a9111dabb79d7e35e2d71f98cc13a6b9abfd8187368198ff69bc`
-- Canonical source SHA-256: `c4dfdd2ed942649aec4cd79f38f7fe358d6581dcac89fed413395b11e58b0ea5`
+- Normalized full-export SHA-256: `53fa0e5c43e7a68fd32eeb261c0830bd29413679ccf7cef8d14bcaed80e5b312`
+- Canonical source SHA-256: `18ab7d41ae103c7186bab3d9adcb67eecf152d95f6c2b1476d02a71daa6f199c`
 
 The canonical hash normalizes line endings, removes one leading UTF-8 BOM, and excludes only the line beginning `Source export SHA-256:`. That exclusion is necessary because the Google Doc embeds its own prior hash, making a literal full-document hash self-referential. Every other byte remains in scope.
 

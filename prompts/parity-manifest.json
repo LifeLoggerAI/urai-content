@@ -5,8 +5,8 @@
   "source_revision_id": "ALtnJHyCtNBrFmtFrqzaXtYs5iClC2gF9e0Hq2w1SPBEIqh18EH37RZialJC42ZhQde52aMZLH29JK-bANunaMxE2h4bp6G5VU8lfSf0kt4",
   "source_export_format": "text/plain",
   "source_snapshot_normalization": "UTF-8; strip one leading BOM; convert CRLF/CR to LF; exclude only lines beginning with 'Source export SHA-256:' before canonical hashing",
-  "source_snapshot_sha256": "c4dfdd2ed942649aec4cd79f38f7fe358d6581dcac89fed413395b11e58b0ea5",
-  "source_snapshot_full_text_sha256": "b2e63e22c385a9111dabb79d7e35e2d71f98cc13a6b9abfd8187368198ff69bc",
+  "source_snapshot_sha256": "18ab7d41ae103c7186bab3d9adcb67eecf152d95f6c2b1476d02a71daa6f199c",
+  "source_snapshot_full_text_sha256": "53fa0e5c43e7a68fd32eeb261c0830bd29413679ccf7cef8d14bcaed80e5b312",
   "legacy_self_reported_source_sha256": "d2fe8fe5754296bcf7b5f22665e2051221e5dd003f938fd5987921b9c6abddfa",
   "source_snapshot_parts": [
     {"path":"prompts/sources/autonomous-research-agent-google-doc-v1.0.0/part-01.txt","sha256":"bb958ccfc4d4410fe3432bc173c9aa5713d349a51c1ee994872e195f6748ff3c"},
@@ -18,7 +18,7 @@
     {"path":"prompts/sources/autonomous-research-agent-google-doc-v1.0.0/part-06.txt","sha256":"ad20497a6beddcc5b7969d79fbafd989368998e3585a997c9db69f59bb016ac5"},
     {"path":"prompts/sources/autonomous-research-agent-google-doc-v1.0.0/part-07.txt","sha256":"b5bdc7ea6cf9f1f283eb9c0bba2dd3e636b96d624aaf3145cf3c7f49eccc4e32"},
     {"path":"prompts/sources/autonomous-research-agent-google-doc-v1.0.0/part-08.txt","sha256":"3d257b746892daa6e576d2ab74c39e1b05ba1026b2b6108200bc6b818a81b1fc"},
-    {"path":"prompts/sources/autonomous-research-agent-google-doc-v1.0.0/part-09.txt","sha256":"064ecc46463fed54897559243252e664a4b4d322007c896568dc562e6aa3db1f"}
+    {"path":"prompts/sources/autonomous-research-agent-google-doc-v1.0.0/part-09.txt","sha256":"aa09bb78c97fc84b8f7fe6bcc1074c5c0c90caf772e66e4f4cd4679cf648ec0a"}
   ],
   "last_synced": "2026-07-11",
   "required_sections": [
