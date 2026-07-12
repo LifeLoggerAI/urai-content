@@ -7,6 +7,7 @@ on:
       - 'prompts/**'
       - 'scripts/checkPromptLibrary.ts'
       - 'scripts/runPromptEvals.ts'
+      - 'scripts/runPromptReleaseCandidate.ts'
       - 'scripts/checkGovernanceDocs.ts'
       - 'scripts/verifyPromptWorkflowPins.mjs'
       - 'package.json'
@@ -22,6 +23,7 @@ on:
       - 'prompts/**'
       - 'scripts/checkPromptLibrary.ts'
       - 'scripts/runPromptEvals.ts'
+      - 'scripts/runPromptReleaseCandidate.ts'
       - 'scripts/checkGovernanceDocs.ts'
       - 'scripts/verifyPromptWorkflowPins.mjs'
       - 'package.json'
@@ -42,7 +44,7 @@ concurrency:
 
 jobs:
   prompt-library:
-    name: Source parity, version, links, fixture regressions, and workflow pins
+    name: Source parity, version, links, fixture regressions, authority, and workflow pins
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
@@ -64,7 +66,7 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - name: Verify governed workflow action pins
+      - name: Verify governed workflow action pins and authority
         run: |
           node --check scripts/verifyPromptWorkflowPins.mjs
           node scripts/verifyPromptWorkflowPins.mjs
@@ -74,6 +76,8 @@ jobs:
         run: npm run check:prompts
       - name: Run evaluator fixture regressions (not live release evidence)
         run: npm run test:prompt-evals
+      - name: Verify live reports remain candidate-only
+        run: npm run test:prompt-release-authority
       - name: Upload exact-head parity and fixture-regression evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
