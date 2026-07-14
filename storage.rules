@@ -5,12 +5,21 @@ service firebase.storage {
       return request.auth != null;
     }
 
-    function hasRole(role) {
+    function hasScalarRole(role) {
       return signedIn()
-        && (
-          request.auth.token.role == role
-          || (request.auth.token.roles is list && request.auth.token.roles.hasAny([role]))
-        );
+        && request.auth.token.keys().hasAny(['role'])
+        && request.auth.token.role == role;
+    }
+
+    function hasRoleList(role) {
+      return signedIn()
+        && request.auth.token.keys().hasAny(['roles'])
+        && request.auth.token.roles is list
+        && request.auth.token.roles.hasAny([role]);
+    }
+
+    function hasRole(role) {
+      return hasScalarRole(role) || hasRoleList(role);
     }
 
     function isAdmin() {
