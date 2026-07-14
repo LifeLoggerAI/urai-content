@@ -136,6 +136,6 @@ if (args.includes('--self-test')) {
     console.error('Usage: npm run eval:prompts -- --outputs <directory>');
     process.exit(2);
   }
-  await import('./runPromptEvals.ts');
+  await import('./runPromptEvals.js');
   finalizePromptReport(join(outputsDirectory, 'prompt-eval-report.json'));
 }
