@@ -17,7 +17,7 @@
     "start": "node dist/index.js",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
-    "test": "vitest run --dir tests --exclude=tests/rules-emulator/**",
+    "test": "vitest run --config vitest.config.ts",
     "validate:content": "tsx src/lib/content/validate.ts",
     "validate:sprites": "tsx src/lib/content/validate.ts",
     "content:index": "tsx scripts/contentIndex.ts",
