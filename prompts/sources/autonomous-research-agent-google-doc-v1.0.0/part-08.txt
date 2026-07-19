@@ -1,0 +1,73 @@
+Verification and red-team pass        Check claims, retract unsupported points, assess confidence        15–30 min        1–4 h        1–3 h
+Final packaging        Write report, tables, charts, Mermaid, references, raw data        15–30 min        1–3 h        1–2 h
+Typical total        End-to-end run time        2–5 h        16–46 h        10–28 h
+
+
+Those estimates are practical planning ranges, not rigid requirements. Actual duration depends on source accessibility, novelty of the topic, the amount of contradictory evidence, and whether the question demands systematic completeness or just a strong directional answer.
+
+
+Sample Mermaid timeline
+
+
+Jul 11
+Jul 12
+Jul 13
+Jul 14
+Jul 15
+Jul 16
+Jul 17
+Jul 18
+Jul 19
+Jul 20
+Jul 21
+Jul 22
+Jul 23
+Jul 24
+Scope and assumptions
+Search design and source map
+Broad retrieval
+Focused retrieval and citation chasing
+Screening and deduplication
+Structured extraction
+Synthesis and comparison
+Verification and confidence pass
+Report, tables, diagram, raw data
+Setup
+Evidence collection
+Evidence processing
+Analysis
+Packaging
+Sample runtime plan for a deep literature review
+
+
+
+
+Show code
+Customization guide
+The master prompt is most useful when you customize only a few “control knobs” instead of rewriting the whole thing every time.
+
+
+Change the question frame first. If you want explanation, ask “What does the evidence show about X?” If you want decision support, ask “What should a buyer, policymaker, founder, clinician, or investor conclude about X?” If you want comparison, ask “How do A, B, and C differ on cost, performance, evidence quality, and risk?” Clear success criteria improve the prompt far more than decorative wording. 
+
+
+Raise or lower completeness intentionally. For a fast-moving topic, set the scope to quick scan, require the most recent authoritative information, and cap the source count. For a stable technical or scientific subject, set scope to deep literature review, expand the source net, and require a PRISMA-style search record plus outcome-level confidence ratings. That tradeoff reflects the difference between exploratory scanning and systematic evidence synthesis. 
+
+
+Adjust the source hierarchy by domain. For software or model questions, prioritize official docs, standards, benchmarks, and original papers. For health, prioritize guidelines, registries, regulatory sources, and original studies, and avoid overstating efficacy or safety. For markets, move filings, patents, regulator pages, and first-party product materials to the top. SEC EDGAR, trial registries, WHO ICTRP, and USPTO search tools are especially useful anchors in those respective domain types. 
+
+
+Tune the evidence bar for risk. If the topic could affect health, safety, law, privacy, or money, instruct the agent to require stronger evidence, prefer direct sources, quote critical passages, and say “insufficient evidence” when necessary. That is especially important because GDPR requires purpose limitation and data minimization, HIPAA applies specific obligations to covered entities and business associates handling PHI, and FTC guidance expects competent and reliable scientific evidence for health-related claims. 
+
+
+Customize the deliverables, not just the wording. If the output will be used in a memo, keep it to an executive summary plus evidence appendix. If it will drive a product strategy discussion, require comparison tables, market maps, and a chronology. If it will support a scientific decision, require a methods section, evidence matrix, and confidence-by-outcome table. GRADE’s summary-of-findings logic is especially useful when the user needs to make a decision rather than just read a narrative. 
+
+
+Keep the prompt versioned if you use it repeatedly. OpenAI’s current documentation is clear that prompts should be treated like application code: version them, test them, review changes, run evaluations, and keep rollbacks possible. If you plan to use this prompt as part of a larger workflow, resist the temptation to let it drift informally. Stable research quality comes from stable instructions plus explicit evaluations. 
+
+
+Document control
+Version: 1.0.0
+Source of truth: GitHub
+Collaboration mirror: This Google Doc
+Canonical repository: https://github.com/LifeLoggerAI/urai-content/blob/main/prompts/autonomous-research-agent-master-prompt.md
+Repository path: LifeLoggerAI/urai-content/prompts/autonomous-research-agent-master-prompt.md

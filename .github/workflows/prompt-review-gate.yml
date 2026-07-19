@@ -1,0 +1,91 @@
+name: Prompt independent review gate
+
+on:
+  pull_request_target:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+  pull_request_review:
+    branches: [main]
+    types: [submitted, dismissed]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: prompt-review-${{ github.event.pull_request.number || github.event.review.pull_request_url || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  prompt-review:
+    name: Independent prompt approval
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Require latest exact-head non-author approval from default-branch authority
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            if (!pr) return core.setFailed('Pull request context required.');
+            if (pr.base.ref !== 'main') return core.notice(`Ignoring non-main pull request base: ${pr.base.ref}`);
+
+            const files = await github.paginate(github.rest.pulls.listFiles, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number,
+              per_page: 100,
+            });
+            const sensitiveFiles = new Set([
+              'package.json',
+              'package-lock.json',
+              'scripts/checkPromptLibrary.ts',
+              'scripts/runPromptEvals.ts',
+              'scripts/runPromptReleaseCandidate.ts',
+              'scripts/checkGovernanceDocs.ts',
+              'scripts/verifyPromptWorkflowPins.mjs',
+              '.github/workflows/prompt-library.yml',
+              '.github/workflows/prompt-review-gate.yml',
+              '.github/workflows/governance.yml',
+              '.github/CODEOWNERS',
+              '.github/pull_request_template.md',
+            ]);
+            const sensitive = files.some(
+              (file) => file.filename.startsWith('prompts/') || sensitiveFiles.has(file.filename),
+            );
+            if (!sensitive) return core.notice('No prompt-sensitive files changed.');
+
+            const reviews = await github.paginate(github.rest.pulls.listReviews, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number,
+              per_page: 100,
+            });
+            const latest = new Map();
+            for (const review of reviews) {
+              const login = review.user?.login;
+              if (!login || login === pr.user.login || review.user.type === 'Bot') continue;
+              const prior = latest.get(login);
+              if (!prior || new Date(review.submitted_at || 0) >= new Date(prior.submitted_at || 0)) {
+                latest.set(login, review);
+              }
+            }
+
+            const approved = [];
+            for (const [login, review] of latest) {
+              if (review.state !== 'APPROVED' || review.commit_id !== pr.head.sha) continue;
+              const permission = await github.rest.repos.getCollaboratorPermissionLevel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                username: login,
+              });
+              if (['admin', 'maintain', 'write'].includes(permission.data.permission)) approved.push(login);
+            }
+
+            if (!approved.length) {
+              core.setFailed(
+                'Latest current-head review from a non-author human collaborator with write, maintain, or admin permission must be APPROVED.',
+              );
+            } else {
+              core.notice(`Independent approval present from: ${approved.join(', ')}`);
+            }

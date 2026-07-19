@@ -12,9 +12,14 @@ on:
       - URAI_FINAL_COMPLETION_AUDIT.md
       - DEPLOYMENT_BLOCKERS.md
       - docs/**
+      - prompts/**
       - .github/**
       - scripts/checkGovernanceDocs.ts
       - scripts/checkNoSecrets.ts
+      - scripts/checkPromptLibrary.ts
+      - scripts/runPromptEvals.ts
+      - scripts/runPromptReleaseCandidate.ts
+      - scripts/verifyPromptWorkflowPins.mjs
       - package.json
       - package-lock.json
   workflow_dispatch:
@@ -24,17 +29,35 @@ permissions:
 
 jobs:
   governance:
-    name: Governance and security validation
-    runs-on: ubuntu-latest
+    name: Governance, security, release-authority, and workflow-pin validation
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout exact candidate
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Prove exact clean candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          EXPECTED_SHA='${{ github.event.pull_request.head.sha || github.sha }}'
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          test -z "$(git status --porcelain --untracked-files=all)"
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22
           cache: npm
+
+      - name: Verify governed workflow action pins and authority
+        run: |
+          node --check scripts/verifyPromptWorkflowPins.mjs
+          node scripts/verifyPromptWorkflowPins.mjs
 
       - name: Install dependencies
         run: npm ci
@@ -44,3 +67,12 @@ jobs:
 
       - name: Run secret leakage validation
         run: npm run check:secrets
+
+      - name: Run prompt library validation
+        run: npm run check:prompts
+
+      - name: Run prompt evaluator fixture regressions
+        run: npm run test:prompt-evals
+
+      - name: Verify live prompt reports remain candidate-only
+        run: npm run test:prompt-release-authority
