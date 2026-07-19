@@ -5,12 +5,50 @@ service firebase.storage {
       return request.auth != null;
     }
 
+    function hasScalarRole(role) {
+      return signedIn()
+        && request.auth.token.keys().hasAny(['role'])
+        && request.auth.token.role == role;
+    }
+
+    function hasRoleList(role) {
+      return signedIn()
+        && request.auth.token.keys().hasAny(['roles'])
+        && request.auth.token.roles is list
+        && request.auth.token.roles.hasAny([role]);
+    }
+
+    function hasRole(role) {
+      return hasScalarRole(role) || hasRoleList(role);
+    }
+
     function isAdmin() {
-      return signedIn() && request.auth.token.role in ['admin', 'internalAdmin'];
+      return hasRole('admin') || hasRole('internalAdmin');
     }
 
     function isCreator() {
-      return signedIn() && request.auth.token.role in ['creator', 'studio', 'admin', 'internalAdmin'];
+      return hasRole('creator') || hasRole('studio') || isAdmin();
+    }
+
+    function isAllowedCreatorContentType() {
+      return request.resource.contentType.matches('image/(png|jpe?g|webp|gif)')
+        || request.resource.contentType.matches('audio/(mpeg|wav|ogg|mp4)')
+        || request.resource.contentType.matches('video/(mp4|webm)')
+        || request.resource.contentType in [
+          'text/plain',
+          'application/json',
+          'application/pdf',
+          'model/gltf+json',
+          'model/gltf-binary'
+        ];
+    }
+
+    function validCreatorUpload() {
+      return request.resource != null
+        && request.resource.size > 0
+        && request.resource.size <= 25 * 1024 * 1024
+        && request.resource.contentType is string
+        && isAllowedCreatorContentType();
     }
 
     match /public/{allPaths=**} {
@@ -20,7 +58,10 @@ service firebase.storage {
 
     match /creator-submissions/{creatorId}/{allPaths=**} {
       allow read: if isAdmin() || (signedIn() && request.auth.uid == creatorId);
-      allow write: if isCreator() && request.auth.uid == creatorId;
+      allow create, update: if isCreator()
+        && request.auth.uid == creatorId
+        && validCreatorUpload();
+      allow delete: if isCreator() && request.auth.uid == creatorId;
     }
 
     match /exports/{userId}/{allPaths=**} {

@@ -1,0 +1,9 @@
+{
+  "name": "urai-content-rules-emulator-tests",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@firebase/rules-unit-testing": "5.0.1",
+    "firebase": "12.13.0"
+  }
+}

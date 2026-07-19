@@ -5,11 +5,21 @@ service cloud.firestore {
       return request.auth != null;
     }
 
+    function hasScalarRole(role) {
+      return signedIn()
+        && request.auth.token.keys().hasAny(['role'])
+        && request.auth.token.role == role;
+    }
+
+    function hasRoleList(role) {
+      return signedIn()
+        && request.auth.token.keys().hasAny(['roles'])
+        && request.auth.token.roles is list
+        && request.auth.token.roles.hasAny([role]);
+    }
+
     function hasRole(role) {
-      return signedIn() && (
-        request.auth.token.role == role ||
-        (request.auth.token.roles is list && request.auth.token.roles.hasAny([role]))
-      );
+      return hasScalarRole(role) || hasRoleList(role);
     }
 
     function isAdmin() {
@@ -20,9 +30,20 @@ service cloud.firestore {
       return hasRole('creator') || hasRole('studio') || isAdmin();
     }
 
-    function isPublishedPublic() {
-      return resource.data.status == 'published' &&
-        (resource.data.visibility == 'public' || resource.data.publicVisibility == 'public');
+    function isPublicContentItem() {
+      return resource.data.get('status', '') == 'published'
+        && resource.data.get('visibility', '') == 'public';
+    }
+
+    function isPublishedFreeContentPack() {
+      return resource.data.get('status', '') == 'published'
+        && resource.data.get('tierVisibility', []) is list
+        && resource.data.get('tierVisibility', []).hasAny(['free']);
+    }
+
+    function isApprovedFreeMarketplaceItem() {
+      return resource.data.get('moderationStatus', '') == 'approved'
+        && resource.data.get('tier', '') == 'free';
     }
 
     function isOwner(fieldName) {
@@ -33,18 +54,55 @@ service cloud.firestore {
       return signedIn() && request.resource.data[fieldName] == request.auth.uid;
     }
 
+    function validAnalyticsCreate() {
+      return signedIn()
+        && request.resource.data.keys().hasAll([
+          'event',
+          'userId',
+          'entityId',
+          'timestamp',
+          'metadata'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'event',
+          'userId',
+          'entityId',
+          'timestamp',
+          'metadata'
+        ])
+        && request.resource.data.event in [
+          'content_viewed',
+          'ritual_previewed',
+          'ritual_added',
+          'story_template_selected',
+          'export_template_used',
+          'marketplace_item_viewed',
+          'marketplace_item_unlocked',
+          'admin_content_published',
+          'moderation_decision_saved'
+        ]
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.entityId is string
+        && request.resource.data.entityId.size() > 0
+        && request.resource.data.entityId.size() <= 160
+        && request.resource.data.timestamp is string
+        && request.resource.data.timestamp.size() <= 64
+        && request.resource.data.metadata is map
+        && request.resource.data.metadata.size() <= 20;
+    }
+
     match /contentItems/{id} {
-      allow read: if isPublishedPublic() || isAdmin();
+      allow read: if isPublicContentItem() || isAdmin();
       allow create, update, delete: if isAdmin();
     }
 
     match /contentPacks/{id} {
-      allow read: if isPublishedPublic() || isAdmin();
+      allow read: if isPublishedFreeContentPack() || isAdmin();
       allow create, update, delete: if isAdmin();
     }
 
     match /marketplaceItems/{id} {
-      allow read: if isPublishedPublic() || isAdmin();
+      allow read: if isApprovedFreeMarketplaceItem() || isAdmin();
       allow create, update, delete: if isAdmin();
     }
 
@@ -60,14 +118,11 @@ service cloud.firestore {
       allow update, delete: if isAdmin();
     }
 
-    // Canonical entitlement collection used by runtime code: userContentEntitlements.
     match /userContentEntitlements/{id} {
       allow read: if isAdmin() || isOwner('userId');
       allow write: if isAdmin();
     }
 
-    // Legacy alias retained as deny-by-default to prevent silent writes to the old name.
-    // If old documents exist, migrate them into userContentEntitlements before launch.
     match /userEntitlements/{id} {
       allow read, write: if false;
     }
@@ -89,7 +144,7 @@ service cloud.firestore {
     }
 
     match /analyticsEvents/{id} {
-      allow create: if signedIn();
+      allow create: if validAnalyticsCreate();
       allow read, update, delete: if isAdmin();
     }
 
@@ -104,7 +159,7 @@ service cloud.firestore {
     }
 
     match /expansionModules/{id} {
-      allow read: if resource.data.publicVisibility == 'public' || isAdmin();
+      allow read: if resource.data.get('publicVisibility', '') == 'public' || isAdmin();
       allow write: if isAdmin();
     }
 
@@ -113,7 +168,10 @@ service cloud.firestore {
     }
 
     match /seoPages/{id} {
-      allow read: if (resource.data.status == 'published' && resource.data.noIndex == false) || isAdmin();
+      allow read: if (
+        resource.data.get('status', '') == 'published'
+        && resource.data.get('noIndex', true) == false
+      ) || isAdmin();
       allow write: if isAdmin();
     }
 
