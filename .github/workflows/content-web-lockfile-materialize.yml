@@ -1,0 +1,90 @@
+name: Content Web Lockfile Materialize
+
+on:
+  push:
+    branches:
+      - agent/content-reproducible-web-lockfile-20260801
+
+permissions:
+  actions: read
+  contents: write
+
+concurrency:
+  group: content-web-lockfile-materialize
+  cancel-in-progress: false
+
+jobs:
+  materialize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      EXPECTED_BRANCH: agent/content-reproducible-web-lockfile-20260801
+      SOURCE_RUN_ID: '30716993166'
+      SOURCE_ARTIFACT: urai-content-web-lockfile-5d17d11a9726abe93bdeef02ebf80f71593b93f5
+      EXPECTED_LOCK_SHA256: 712997543d10909b149169a970c1783763d95e2722f0fde5a840d1ee0f6c3294
+    steps:
+      - name: Enforce isolated branch boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "refs/heads/$EXPECTED_BRANCH"
+          test "$GITHUB_REF_NAME" = "$EXPECTED_BRANCH"
+
+      - name: Checkout exact branch head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: true
+
+      - name: Verify exact clean checkout and absent lockfile
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test -z "$(git status --porcelain --untracked-files=all)"
+          test ! -e apps/web/package-lock.json
+
+      - name: Download independently proven lockfile artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.SOURCE_ARTIFACT }}
+          path: /tmp/urai-content-lockfile
+          github-token: ${{ github.token }}
+          repository: LifeLoggerAI/urai-content
+          run-id: ${{ env.SOURCE_RUN_ID }}
+
+      - name: Verify exact artifact identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f /tmp/urai-content-lockfile/package-lock.json
+          actual="$(sha256sum /tmp/urai-content-lockfile/package-lock.json | awk '{print $1}')"
+          test "$actual" = "$EXPECTED_LOCK_SHA256"
+          node -e "const p=require('/tmp/urai-content-lockfile/package-lock.json'); if(p.lockfileVersion!==3) process.exit(1); if(Object.keys(p.packages||{}).length!==634) process.exit(1);"
+
+      - name: Materialize only the exact generated lockfile
+        shell: bash
+        run: |
+          set -euo pipefail
+          install -m 0644 /tmp/urai-content-lockfile/package-lock.json apps/web/package-lock.json
+          test "$(sha256sum apps/web/package-lock.json | awk '{print $1}')" = "$EXPECTED_LOCK_SHA256"
+          git add -f apps/web/package-lock.json
+          staged="$(git diff --cached --name-only)"
+          test "$staged" = 'apps/web/package-lock.json'
+
+      - name: Commit and push only to isolated repair branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Add generated deterministic web lockfile'
+          test "$(git diff HEAD^ HEAD --name-only)" = 'apps/web/package-lock.json'
+          git push origin "HEAD:$EXPECTED_BRANCH"
+
+      - name: Record boundary
+        run: |
+          echo 'Committed one exact generated lockfile to the isolated draft-PR branch only.'
+          echo 'No merge, deployment, provider, credential, DNS, IAM, Drive, or communication action occurred.'
