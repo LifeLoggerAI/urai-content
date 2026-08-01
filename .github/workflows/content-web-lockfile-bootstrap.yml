@@ -1,6 +1,9 @@
 name: Content Web Lockfile Bootstrap
 
 on:
+  pull_request:
+    branches:
+      - main
   push:
     branches:
       - agent/content-reproducible-web-lockfile-20260801
@@ -10,8 +13,11 @@ permissions:
   contents: read
 
 concurrency:
-  group: content-web-lockfile-${{ github.sha }}
+  group: content-web-lockfile-${{ github.event.pull_request.number || github.ref }}-${{ github.event.pull_request.head.sha || github.sha }}
   cancel-in-progress: true
+
+env:
+  TARGET_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
 
 jobs:
   generate:
@@ -22,14 +28,14 @@ jobs:
       - name: Checkout exact candidate
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.sha }}
+          ref: ${{ env.TARGET_SHA }}
           persist-credentials: false
 
       - name: Verify exact clean checkout
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git rev-parse HEAD)" = "$TARGET_SHA"
           test -z "$(git status --porcelain --untracked-files=all)"
 
       - name: Setup Node
@@ -64,7 +70,7 @@ jobs:
       - name: Upload generated exact-head lockfile
         uses: actions/upload-artifact@v4
         with:
-          name: urai-content-web-lockfile-${{ github.sha }}
+          name: urai-content-web-lockfile-${{ env.TARGET_SHA }}
           path: |
             apps/web/package-lock.json
             apps/web/package-lock.sha256
