@@ -59,13 +59,16 @@ jobs:
         run: |
           set -uo pipefail
           mkdir -p artifacts/content-dependency-audit
+          set +e
           npm audit --json > artifacts/content-dependency-audit/root-audit.json
           root_exit=$?
           npm audit --json --prefix apps/web > artifacts/content-dependency-audit/web-audit.json
           web_exit=$?
+          set -e
           printf '%s\n' "$root_exit" > artifacts/content-dependency-audit/root-exit-code.txt
           printf '%s\n' "$web_exit" > artifacts/content-dependency-audit/web-exit-code.txt
-          exit 0
+          test -s artifacts/content-dependency-audit/root-audit.json
+          test -s artifacts/content-dependency-audit/web-audit.json
 
       - name: Build exact-head audit summary
         shell: bash
@@ -111,6 +114,10 @@ jobs:
             nodeVersion: process.version,
             root: normalize(readJson('root-audit.json')),
             web: normalize(readJson('web-audit.json')),
+            exitCodes: {
+              root: Number(fs.readFileSync(path.join(dir, 'root-exit-code.txt'), 'utf8').trim()),
+              web: Number(fs.readFileSync(path.join(dir, 'web-exit-code.txt'), 'utf8').trim()),
+            },
             files: {
               rootAuditSha256: sha('root-audit.json'),
               webAuditSha256: sha('web-audit.json'),
@@ -124,12 +131,15 @@ jobs:
           console.log(JSON.stringify(summary, null, 2))
           NODE
 
-      - name: Verify audit evidence and clean source tree
+      - name: Verify audit evidence and bounded working tree
         shell: bash
         run: |
           set -euo pipefail
           node -e "for (const f of ['root-audit.json','web-audit.json','summary.json']) JSON.parse(require('node:fs').readFileSync('artifacts/content-dependency-audit/'+f,'utf8'))"
-          test -z "$(git status --porcelain --untracked-files=all)"
+          git diff --exit-code
+          git diff --cached --exit-code
+          unexpected="$(git status --porcelain --untracked-files=all | grep -v '^?? artifacts/content-dependency-audit/' || true)"
+          test -z "$unexpected"
 
       - name: Upload exact-head dependency audit evidence
         uses: actions/upload-artifact@v4
