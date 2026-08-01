@@ -1,0 +1,80 @@
+name: Content Web Lockfile Bootstrap
+
+on:
+  push:
+    branches:
+      - agent/content-reproducible-web-lockfile-20260801
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: content-web-lockfile-${{ github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  generate:
+    name: Generate and prove web lockfile
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+
+      - name: Verify exact clean checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test -z "$(git status --porcelain --untracked-files=all)"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install root graph from committed lockfile
+        run: npm ci --ignore-scripts
+
+      - name: Generate web lockfile from exact package manifest
+        run: npm install --package-lock-only --ignore-scripts --prefix apps/web
+
+      - name: Prove generated web graph is reproducible
+        run: |
+          set -euo pipefail
+          test -f apps/web/package-lock.json
+          npm ci --ignore-scripts --prefix apps/web
+          npm run typecheck --prefix apps/web
+          npm test --prefix apps/web
+          npm run build --prefix apps/web
+
+      - name: Record lockfile identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          sha256sum apps/web/package-lock.json | tee apps/web/package-lock.sha256
+          node -e "const p=require('./apps/web/package-lock.json'); if(p.lockfileVersion!==3) process.exit(1); console.log(JSON.stringify({name:p.name,version:p.version,lockfileVersion:p.lockfileVersion,packages:Object.keys(p.packages||{}).length},null,2));"
+
+      - name: Upload generated exact-head lockfile
+        uses: actions/upload-artifact@v4
+        with:
+          name: urai-content-web-lockfile-${{ github.sha }}
+          path: |
+            apps/web/package-lock.json
+            apps/web/package-lock.sha256
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Prove only generated lockfile artifacts changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          changed="$(git status --porcelain --untracked-files=all | sed 's/^?? //')"
+          printf '%s\n' "$changed"
+          test "$changed" = $'apps/web/package-lock.json\napps/web/package-lock.sha256'
