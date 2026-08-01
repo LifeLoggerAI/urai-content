@@ -1,0 +1,146 @@
+name: Prompt release source receipt
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: urai-content-prompt-source-${{ github.event.pull_request.number || github.ref }}-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: true
+
+env:
+  TARGET_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+
+jobs:
+  prompt-source:
+    name: Exact-head prompt governance and fixture evidence
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact reviewed head
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          ref: ${{ env.TARGET_SHA }}
+          fetch-depth: 1
+          persist-credentials: false
+          show-progress: false
+
+      - name: Prove exact clean source
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$TARGET_SHA"
+          test -z "$(git status --porcelain --untracked-files=all)"
+
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '20.19.5'
+          cache: npm
+
+      - name: Install exact dependencies
+        run: npm ci
+
+      - name: Execute and retain prompt source checks
+        id: checks
+        shell: bash
+        run: |
+          set +e
+          evidence_dir="$RUNNER_TEMP/prompt-release-source"
+          rm -rf -- "$evidence_dir"
+          mkdir -p -- "$evidence_dir"
+          status=0
+          run_check() {
+            name="$1"
+            shift
+            set -o pipefail
+            "$@" 2>&1 | tee "$evidence_dir/${name}.log"
+            code=${PIPESTATUS[0]}
+            printf '%s\n' "$code" > "$evidence_dir/${name}-exit.txt"
+            if [ "$code" -ne 0 ]; then status=1; fi
+          }
+          run_check typecheck npm run typecheck
+          run_check governance npm run check:governance
+          run_check prompt-library npm run check:prompts
+          run_check workflow-pins node scripts/verifyPromptWorkflowPins.mjs
+          run_check fixture-regression npm run test:prompt-evals
+          run_check release-authority npm run test:prompt-release-authority
+          run_check unit-tests npm test
+          run_check build npm run build
+          printf '%s\n' "$status" > "$evidence_dir/aggregate-exit.txt"
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Capture prompt and parity identities
+        if: always()
+        shell: bash
+        run: |
+          evidence_dir="$RUNNER_TEMP/prompt-release-source"
+          sha256sum \
+            prompts/autonomous-research-agent-master-prompt.md \
+            prompts/parity-manifest.json \
+            prompts/evals/cases.json \
+            scripts/runPromptEvals.ts \
+            scripts/runPromptReleaseCandidate.ts \
+            scripts/verifyPromptWorkflowPins.mjs \
+            > "$evidence_dir/source-sha256.txt"
+          cp prompt-eval-fixture-report.json "$evidence_dir/prompt-eval-fixture-report.json"
+          cp prompt-parity-report.json "$evidence_dir/prompt-parity-report.json"
+
+      - name: Write exact-head receipt
+        if: always()
+        env:
+          AGGREGATE_STATUS: ${{ steps.checks.outputs.status }}
+        shell: bash
+        run: |
+          evidence_dir="$RUNNER_TEMP/prompt-release-source"
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const receipt = {
+            schemaVersion: 'urai-content-prompt-source-receipt-1',
+            repository: process.env.GITHUB_REPOSITORY,
+            exactHeadSha: process.env.TARGET_SHA,
+            workflowRunId: process.env.GITHUB_RUN_ID,
+            aggregateStatus: Number(process.env.AGGREGATE_STATUS ?? -1),
+            fixtureEvidenceOnly: true,
+            liveModelEvidence: false,
+            humanApproval: false,
+            releaseEligible: false,
+            tagCreated: false,
+            mirrorMutation: false,
+            deployment: false,
+            providerCall: false,
+            boundary: 'Exact-head source, governance, parity and fixture regression only. Live target-model outputs, independent human review, merge, tag and verified Drive mirror parity remain external gates.',
+          };
+          fs.writeFileSync(`${process.env.RUNNER_TEMP}/prompt-release-source/receipt.json`, `${JSON.stringify(receipt, null, 2)}\n`);
+          NODE
+
+      - name: Upload prompt source evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: urai-content-prompt-source-${{ env.TARGET_SHA }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/prompt-release-source
+          if-no-files-found: error
+          retention-days: 365
+
+      - name: Remove generated fixture reports
+        if: always()
+        shell: bash
+        run: rm -f -- prompt-eval-fixture-report.json prompt-parity-report.json
+
+      - name: Prove final clean source
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$TARGET_SHA"
+          test -z "$(git status --porcelain --untracked-files=all)"
+
+      - name: Enforce source receipt
+        shell: bash
+        run: test "${{ steps.checks.outputs.status }}" = '0'
