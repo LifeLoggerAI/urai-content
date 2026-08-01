@@ -1,0 +1,150 @@
+name: Content Dependency Audit Evidence
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - audit/content-web-dependencies-20260801
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: content-dependency-audit-${{ github.event.pull_request.number || github.ref }}-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: true
+
+env:
+  TARGET_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+
+jobs:
+  audit:
+    name: Produce exact dependency audit evidence
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TARGET_SHA }}
+          persist-credentials: false
+
+      - name: Verify exact clean checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$TARGET_SHA"
+          test -z "$(git status --porcelain --untracked-files=all)"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            apps/web/package-lock.json
+
+      - name: Install exact frozen graphs
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm ci --ignore-scripts
+          npm ci --ignore-scripts --prefix apps/web
+
+      - name: Capture root and web audit JSON without mutation
+        shell: bash
+        run: |
+          set -uo pipefail
+          mkdir -p artifacts/content-dependency-audit
+          set +e
+          npm audit --json > artifacts/content-dependency-audit/root-audit.json
+          root_exit=$?
+          npm audit --json --prefix apps/web > artifacts/content-dependency-audit/web-audit.json
+          web_exit=$?
+          set -e
+          printf '%s\n' "$root_exit" > artifacts/content-dependency-audit/root-exit-code.txt
+          printf '%s\n' "$web_exit" > artifacts/content-dependency-audit/web-exit-code.txt
+          test -s artifacts/content-dependency-audit/root-audit.json
+          test -s artifacts/content-dependency-audit/web-audit.json
+
+      - name: Build exact-head audit summary
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'NODE'
+          const fs = require('node:fs')
+          const crypto = require('node:crypto')
+          const path = require('node:path')
+          const dir = 'artifacts/content-dependency-audit'
+          const readJson = (name) => JSON.parse(fs.readFileSync(path.join(dir, name), 'utf8'))
+          const sha = (name) => crypto.createHash('sha256').update(fs.readFileSync(path.join(dir, name))).digest('hex')
+          const normalize = (report) => {
+            const vulnerabilities = report.vulnerabilities || {}
+            const entries = Object.entries(vulnerabilities).map(([name, detail]) => ({
+              name,
+              severity: detail.severity || null,
+              direct: Boolean(detail.isDirect),
+              via: Array.isArray(detail.via) ? detail.via.map((item) => typeof item === 'string' ? item : {
+                source: item.source || null,
+                name: item.name || null,
+                dependency: item.dependency || null,
+                title: item.title || null,
+                url: item.url || null,
+                severity: item.severity || null,
+                range: item.range || null,
+              }) : [],
+              effects: detail.effects || [],
+              range: detail.range || null,
+              nodes: detail.nodes || [],
+              fixAvailable: detail.fixAvailable ?? false,
+            })).sort((a, b) => a.name.localeCompare(b.name))
+            return {
+              metadata: report.metadata || null,
+              vulnerabilityEntries: entries,
+              entryCount: entries.length,
+              directCount: entries.filter((item) => item.direct).length,
+            }
+          }
+          const summary = {
+            schemaVersion: 'urai-content-dependency-audit-1',
+            exactHead: process.env.TARGET_SHA,
+            nodeVersion: process.version,
+            root: normalize(readJson('root-audit.json')),
+            web: normalize(readJson('web-audit.json')),
+            exitCodes: {
+              root: Number(fs.readFileSync(path.join(dir, 'root-exit-code.txt'), 'utf8').trim()),
+              web: Number(fs.readFileSync(path.join(dir, 'web-exit-code.txt'), 'utf8').trim()),
+            },
+            files: {
+              rootAuditSha256: sha('root-audit.json'),
+              webAuditSha256: sha('web-audit.json'),
+            },
+            mutationPerformed: false,
+            automaticFixPerformed: false,
+            productionDeploymentAttempted: false,
+            providerMutation: false,
+          }
+          fs.writeFileSync(path.join(dir, 'summary.json'), `${JSON.stringify(summary, null, 2)}\n`)
+          console.log(JSON.stringify(summary, null, 2))
+          NODE
+
+      - name: Verify audit evidence and bounded working tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          node -e "for (const f of ['root-audit.json','web-audit.json','summary.json']) JSON.parse(require('node:fs').readFileSync('artifacts/content-dependency-audit/'+f,'utf8'))"
+          git diff --exit-code
+          git diff --cached --exit-code
+          unexpected="$(git status --porcelain --untracked-files=all | grep -v '^?? artifacts/content-dependency-audit/' || true)"
+          test -z "$unexpected"
+
+      - name: Upload exact-head dependency audit evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: content-dependency-audit-${{ env.TARGET_SHA }}
+          path: artifacts/content-dependency-audit
+          if-no-files-found: error
+          retention-days: 365
