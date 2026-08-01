@@ -1,4 +1,4 @@
-name: Content Web Lockfile Bootstrap
+name: Content Web Frozen Lockfile
 
 on:
   pull_request:
@@ -6,11 +6,12 @@ on:
       - main
   push:
     branches:
+      - main
       - agent/content-reproducible-web-lockfile-20260801
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: content-web-lockfile-${{ github.event.pull_request.number || github.ref }}-${{ github.event.pull_request.head.sha || github.sha }}
@@ -20,8 +21,8 @@ env:
   TARGET_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
 
 jobs:
-  bootstrap:
-    name: Generate, prove, and admit web lockfile
+  verify:
+    name: Verify committed web lockfile
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -29,7 +30,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ env.TARGET_SHA }}
-          persist-credentials: true
+          persist-credentials: false
 
       - name: Verify exact clean checkout
         shell: bash
@@ -43,67 +44,70 @@ jobs:
         with:
           node-version: '22'
           cache: npm
-          cache-dependency-path: package-lock.json
+          cache-dependency-path: |
+            package-lock.json
+            apps/web/package-lock.json
 
-      - name: Install root graph from committed lockfile
-        run: npm ci --ignore-scripts
-
-      - name: Materialize web lockfile when absent
-        id: lockfile
-        shell: bash
-        run: |
-          set -euo pipefail
-          if test -f apps/web/package-lock.json; then
-            echo 'generated=false' >> "$GITHUB_OUTPUT"
-          else
-            npm install --package-lock-only --ignore-scripts --prefix apps/web
-            echo 'generated=true' >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Prove frozen web graph
+      - name: Install committed dependency graphs
         shell: bash
         run: |
           set -euo pipefail
           test -f apps/web/package-lock.json
+          npm ci --ignore-scripts
           npm ci --ignore-scripts --prefix apps/web
+
+      - name: Prove web source, tests, and production build
+        shell: bash
+        run: |
+          set -euo pipefail
           npm run typecheck --prefix apps/web
           npm test --prefix apps/web
           npm run build --prefix apps/web
 
-      - name: Record lockfile identity
+      - name: Prove manifest and lockfile remain synchronized
         shell: bash
         run: |
           set -euo pipefail
-          sha256sum apps/web/package-lock.json
-          node -e "const p=require('./apps/web/package-lock.json'); if(p.lockfileVersion!==3) process.exit(1); console.log(JSON.stringify({name:p.name,version:p.version,lockfileVersion:p.lockfileVersion,packages:Object.keys(p.packages||{}).length},null,2));"
+          npm install --package-lock-only --ignore-scripts --prefix apps/web
+          git diff --exit-code -- apps/web/package-lock.json
+          test -z "$(git status --porcelain --untracked-files=all)"
 
-      - name: Upload exact-head lockfile
+      - name: Create exact-head lockfile receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/content-web-lockfile
+          node <<'NODE'
+          const fs = require('node:fs')
+          const crypto = require('node:crypto')
+          const lockPath = 'apps/web/package-lock.json'
+          const bytes = fs.readFileSync(lockPath)
+          const lock = JSON.parse(bytes)
+          if (lock.lockfileVersion !== 3) process.exit(1)
+          const receipt = {
+            schemaVersion: 'urai-content-web-lockfile-1',
+            exactHead: process.env.TARGET_SHA,
+            lockfilePath: lockPath,
+            sha256: crypto.createHash('sha256').update(bytes).digest('hex'),
+            name: lock.name,
+            version: lock.version,
+            lockfileVersion: lock.lockfileVersion,
+            packageEntries: Object.keys(lock.packages || {}).length,
+            frozenInstallPassed: true,
+            typecheckPassed: true,
+            testsPassed: true,
+            buildPassed: true,
+            productionDeploymentAttempted: false,
+            providerMutation: false,
+          }
+          fs.writeFileSync('artifacts/content-web-lockfile/receipt.json', `${JSON.stringify(receipt, null, 2)}\n`)
+          console.log(JSON.stringify(receipt, null, 2))
+          NODE
+
+      - name: Upload exact-head lockfile receipt
         uses: actions/upload-artifact@v4
         with:
-          name: urai-content-web-lockfile-${{ env.TARGET_SHA }}
-          path: apps/web/package-lock.json
+          name: content-web-lockfile-receipt-${{ env.TARGET_SHA }}
+          path: artifacts/content-web-lockfile/receipt.json
           if-no-files-found: error
-          retention-days: 30
-
-      - name: Prove bounded working-tree state
-        shell: bash
-        run: |
-          set -euo pipefail
-          changed="$(git status --porcelain --untracked-files=all)"
-          printf '%s\n' "$changed"
-          if test "${{ steps.lockfile.outputs.generated }}" = 'true'; then
-            test "$changed" = '?? apps/web/package-lock.json'
-          else
-            test -z "$changed"
-          fi
-
-      - name: Commit generated lockfile to governed source branch
-        if: github.event_name == 'push' && github.ref_name == 'agent/content-reproducible-web-lockfile-20260801' && steps.lockfile.outputs.generated == 'true'
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add apps/web/package-lock.json
-          git commit -m 'Adopt deterministic web lockfile'
-          git push origin "HEAD:${GITHUB_REF_NAME}"
+          retention-days: 365
