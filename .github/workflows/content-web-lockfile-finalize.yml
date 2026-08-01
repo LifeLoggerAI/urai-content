@@ -1,0 +1,189 @@
+name: Content Web Lockfile Finalize
+
+on:
+  push:
+    branches:
+      - agent/content-reproducible-web-lockfile-20260801
+
+permissions:
+  contents: write
+
+concurrency:
+  group: content-web-lockfile-finalize
+  cancel-in-progress: false
+
+jobs:
+  finalize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      EXPECTED_BRANCH: agent/content-reproducible-web-lockfile-20260801
+      EXPECTED_LOCK_SHA256: 712997543d10909b149169a970c1783763d95e2722f0fde5a840d1ee0f6c3294
+    steps:
+      - name: Enforce isolated branch boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "refs/heads/$EXPECTED_BRANCH"
+          test "$GITHUB_REF_NAME" = "$EXPECTED_BRANCH"
+
+      - name: Checkout exact branch head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 2
+          persist-credentials: true
+
+      - name: Verify exact lockfile identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test -z "$(git status --porcelain --untracked-files=all)"
+          test -f apps/web/package-lock.json
+          test "$(sha256sum apps/web/package-lock.json | awk '{print $1}')" = "$EXPECTED_LOCK_SHA256"
+          node -e "const p=require('./apps/web/package-lock.json'); if(p.lockfileVersion!==3) process.exit(1); if(Object.keys(p.packages||{}).length!==634) process.exit(1);"
+
+      - name: Convert mutable web installs to frozen installs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          roots = [Path('package.json'), Path('.github'), Path('scripts')]
+          changed = []
+          for root in roots:
+              candidates = [root] if root.is_file() else [p for p in root.rglob('*') if p.is_file()]
+              for path in candidates:
+                  if path.name in {
+                      'content-web-lockfile-bootstrap.yml',
+                      'content-web-lockfile-materialize.yml',
+                      'content-web-lockfile-finalize.yml',
+                  }:
+                      continue
+                  try:
+                      text = path.read_text(encoding='utf-8')
+                  except UnicodeDecodeError:
+                      continue
+                  updated = text.replace('npm install --prefix apps/web', 'npm ci --prefix apps/web')
+                  updated = updated.replace('npm install --ignore-scripts --prefix apps/web', 'npm ci --ignore-scripts --prefix apps/web')
+                  if updated != text:
+                      path.write_text(updated, encoding='utf-8')
+                      changed.append(path.as_posix())
+          if not changed:
+              raise SystemExit('no mutable web install path was found')
+          print('\n'.join(changed))
+          PY
+          ! grep -R --line-number --fixed-strings 'npm install --prefix apps/web' package.json .github scripts \
+            --exclude='content-web-lockfile-bootstrap.yml' \
+            --exclude='content-web-lockfile-materialize.yml' \
+            --exclude='content-web-lockfile-finalize.yml'
+
+      - name: Replace temporary workflows with permanent read-only guard
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/content-web-lockfile-bootstrap.yml
+          rm -f .github/workflows/content-web-lockfile-materialize.yml
+          cat > .github/workflows/content-web-lockfile-guard.yml <<'YAML'
+          name: Content Web Frozen Lockfile
+
+          on:
+            pull_request:
+              branches: [main]
+            push:
+              branches: [main]
+
+          permissions:
+            contents: read
+
+          concurrency:
+            group: content-web-lockfile-${{ github.event.pull_request.number || github.ref }}-${{ github.event.pull_request.head.sha || github.sha }}
+            cancel-in-progress: true
+
+          env:
+            TARGET_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+
+          jobs:
+            verify:
+              name: Exact-head frozen web graph
+              runs-on: ubuntu-latest
+              timeout-minutes: 25
+              steps:
+                - name: Checkout exact reviewed SHA
+                  uses: actions/checkout@v4
+                  with:
+                    ref: ${{ env.TARGET_SHA }}
+                    persist-credentials: false
+
+                - name: Verify exact clean checkout
+                  shell: bash
+                  run: |
+                    set -euo pipefail
+                    test "$(git rev-parse HEAD)" = "$TARGET_SHA"
+                    test -z "$(git status --porcelain --untracked-files=all)"
+
+                - name: Setup Node
+                  uses: actions/setup-node@v4
+                  with:
+                    node-version: '22'
+                    cache: npm
+                    cache-dependency-path: |
+                      package-lock.json
+                      apps/web/package-lock.json
+
+                - name: Install frozen root and web graphs
+                  run: |
+                    npm ci --ignore-scripts
+                    npm ci --ignore-scripts --prefix apps/web
+
+                - name: Verify web source
+                  run: |
+                    npm run typecheck --prefix apps/web
+                    npm test --prefix apps/web
+                    npm run build --prefix apps/web
+
+                - name: Prove immutable checkout
+                  run: test -z "$(git status --porcelain --untracked-files=all)"
+          YAML
+          rm -f .github/workflows/content-web-lockfile-finalize.yml
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            apps/web/package-lock.json
+
+      - name: Prove frozen graph and web source before commit
+        run: |
+          set -euo pipefail
+          npm ci --ignore-scripts
+          npm ci --ignore-scripts --prefix apps/web
+          npm run typecheck --prefix apps/web
+          npm test --prefix apps/web
+          npm run build --prefix apps/web
+          test "$(sha256sum apps/web/package-lock.json | awk '{print $1}')" = "$EXPECTED_LOCK_SHA256"
+
+      - name: Commit bounded reproducibility repair
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add -A
+          test -n "$(git diff --cached --name-only)"
+          test "$(git diff --cached --name-only | grep -Fx 'apps/web/package-lock.json')" = 'apps/web/package-lock.json'
+          test "$(git diff --cached --name-only | grep -Fx '.github/workflows/content-web-lockfile-guard.yml')" = '.github/workflows/content-web-lockfile-guard.yml'
+          ! git diff --cached --name-only | grep -E '^apps/web/package-lock\.sha256$'
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Adopt deterministic Content web lockfile'
+          git push origin "HEAD:$EXPECTED_BRANCH"
+
+      - name: Record boundary
+        run: |
+          echo 'Replaced temporary branch-write workflows with one permanent read-only exact-head guard.'
+          echo 'No merge, deployment, provider, credential, DNS, IAM, Drive, or communication action occurred.'
