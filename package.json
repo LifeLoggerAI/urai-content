@@ -39,7 +39,7 @@
     "check:release-env": "npm run check:provider-evidence && npm run check:observability && npm run check:alerts",
     "verify": "npm run check",
     "done": "npm run audit && npm run smoke && npm run check",
-    "web:install": "npm install --prefix apps/web",
+    "web:install": "npm ci --prefix apps/web",
     "web:dev": "npm run dev --prefix apps/web",
     "web:typecheck": "npm run typecheck --prefix apps/web",
     "web:test": "npm test --prefix apps/web",

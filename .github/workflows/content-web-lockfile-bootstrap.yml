@@ -1,0 +1,113 @@
+name: Content Web Frozen Lockfile
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+      - agent/content-reproducible-web-lockfile-20260801
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: content-web-lockfile-${{ github.event.pull_request.number || github.ref }}-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: true
+
+env:
+  TARGET_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+
+jobs:
+  verify:
+    name: Verify committed web lockfile
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TARGET_SHA }}
+          persist-credentials: false
+
+      - name: Verify exact clean checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$TARGET_SHA"
+          test -z "$(git status --porcelain --untracked-files=all)"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            apps/web/package-lock.json
+
+      - name: Install committed dependency graphs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f apps/web/package-lock.json
+          npm ci --ignore-scripts
+          npm ci --ignore-scripts --prefix apps/web
+
+      - name: Prove web source, tests, and production build
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run typecheck --prefix apps/web
+          npm test --prefix apps/web
+          npm run build --prefix apps/web
+
+      - name: Prove manifest and lockfile remain synchronized
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --package-lock-only --ignore-scripts --prefix apps/web
+          git diff --exit-code -- apps/web/package-lock.json
+          test -z "$(git status --porcelain --untracked-files=all)"
+
+      - name: Create exact-head lockfile receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/content-web-lockfile
+          node <<'NODE'
+          const fs = require('node:fs')
+          const crypto = require('node:crypto')
+          const lockPath = 'apps/web/package-lock.json'
+          const bytes = fs.readFileSync(lockPath)
+          const lock = JSON.parse(bytes)
+          if (lock.lockfileVersion !== 3) process.exit(1)
+          const receipt = {
+            schemaVersion: 'urai-content-web-lockfile-1',
+            exactHead: process.env.TARGET_SHA,
+            lockfilePath: lockPath,
+            sha256: crypto.createHash('sha256').update(bytes).digest('hex'),
+            name: lock.name,
+            version: lock.version,
+            lockfileVersion: lock.lockfileVersion,
+            packageEntries: Object.keys(lock.packages || {}).length,
+            frozenInstallPassed: true,
+            typecheckPassed: true,
+            testsPassed: true,
+            buildPassed: true,
+            productionDeploymentAttempted: false,
+            providerMutation: false,
+          }
+          fs.writeFileSync('artifacts/content-web-lockfile/receipt.json', `${JSON.stringify(receipt, null, 2)}\n`)
+          console.log(JSON.stringify(receipt, null, 2))
+          NODE
+
+      - name: Upload exact-head lockfile receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: content-web-lockfile-receipt-${{ env.TARGET_SHA }}
+          path: artifacts/content-web-lockfile/receipt.json
+          if-no-files-found: error
+          retention-days: 365
