@@ -34,12 +34,12 @@ export function SiteHeader() {
       <TrackedLink className="brand" href="/" aria-label="URAI home" eventLabel="brand_home">URAI</TrackedLink>
       <nav className="nav" aria-label="Primary navigation">
         <TrackedLink href="/product" eventLabel="nav_product">Product</TrackedLink>
-        <TrackedLink href="/how-it-works" eventLabel="nav_how_it_works">How It Works</TrackedLink>
+        <TrackedLink href="/how-it-works" eventLabel="nav_how_it_works">How it works</TrackedLink>
         <TrackedLink href="/privacy" eventLabel="nav_privacy">Privacy</TrackedLink>
-        <TrackedLink href="/data-ownership" eventLabel="nav_data_ownership">Data Ownership</TrackedLink>
-        <TrackedLink href="/demo" eventLabel="nav_demo">Demo</TrackedLink>
+        <TrackedLink href="/data-ownership" eventLabel="nav_data_ownership">Data control</TrackedLink>
+        <TrackedLink href="/demo" eventLabel="nav_demo">Experience</TrackedLink>
       </nav>
-      <TrackedLink className="button compact" href="/waitlist" eventLabel="header_waitlist">Join Waitlist</TrackedLink>
+      <TrackedLink className="button compact" href="/waitlist" eventLabel="header_waitlist">Join early access</TrackedLink>
     </header>
   );
 }
@@ -49,12 +49,12 @@ export function SiteFooter() {
     <footer className="site-footer">
       <div>
         <strong>URAI Labs</strong>
-        <p>Passive, privacy-first personal intelligence for the life data you already create.</p>
+        <p>Private personal intelligence for memory, reflection, relationships, and the data you choose to connect.</p>
       </div>
       <nav aria-label="Footer navigation">
         <TrackedLink href="/about" eventLabel="footer_about">About</TrackedLink>
-        <TrackedLink href="/users" eventLabel="footer_users">Users</TrackedLink>
-        <TrackedLink href="/researchers" eventLabel="footer_researchers">Researchers</TrackedLink>
+        <TrackedLink href="/users" eventLabel="footer_users">For users</TrackedLink>
+        <TrackedLink href="/researchers" eventLabel="footer_researchers">Research</TrackedLink>
         <TrackedLink href="/partners" eventLabel="footer_partners">Partners</TrackedLink>
         <TrackedLink href="/investors" eventLabel="footer_investors">Investors</TrackedLink>
         <TrackedLink href="/faq" eventLabel="footer_faq">FAQ</TrackedLink>
@@ -88,7 +88,7 @@ export function PublicPage(props: PublicPageProps) {
 export function Actions({ page }: { page: SitePage }) {
   if (!page.primaryCta && !page.secondaryCta) return null;
   return (
-    <div className="actions" aria-label="Primary actions">
+    <div className="actions" aria-label="Page actions">
       {page.primaryCta ? <TrackedLink className="button" href={page.primaryCta.href} eventLabel={`${page.route}:primary`}>{page.primaryCta.label}</TrackedLink> : null}
       {page.secondaryCta ? <TrackedLink className="button secondary" href={page.secondaryCta.href} eventLabel={`${page.route}:secondary`}>{page.secondaryCta.label}</TrackedLink> : null}
     </div>
