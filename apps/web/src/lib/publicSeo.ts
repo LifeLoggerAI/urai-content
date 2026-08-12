@@ -26,7 +26,7 @@ function titleizeRoute(route: ImplementedPublicRoute): string {
 function makeSeo(route: ImplementedPublicRoute, title = titleizeRoute(route), description?: string): PublicSeoMetadata {
   const finalDescription =
     description ??
-    `Explore ${title} on the URAI public site, a privacy-first personal intelligence platform for passive life data, emotional timelines, cognitive mirrors, and user-controlled data.`;
+    `Explore ${title} in URAI, a private personal-intelligence experience for memory, reflection, relationships, and user-controlled data.`;
 
   return {
     route,
@@ -43,53 +43,53 @@ function makeSeo(route: ImplementedPublicRoute, title = titleizeRoute(route), de
 const overrides: Partial<Record<ImplementedPublicRoute, PublicSeoMetadata>> = {
   '/': makeSeo(
     '/',
-    'URAI — A Privacy-First Life Operating System',
-    'URAI helps you understand your life through passive, privacy-first personal intelligence, emotional timelines, cognitive mirrors, and user-controlled data ownership.'
+    'URAI — Your private world',
+    'URAI brings memory, reflection, relationships, and personal context into a private experience designed to stay understandable and under your control.'
   ),
   '/about': makeSeo(
     '/about',
     'About URAI Labs',
-    'Learn why URAI Labs is building a passive, privacy-first life operating system for personal intelligence and user-owned data.'
+    'Learn why URAI Labs is building private personal intelligence that returns useful context and control to the person living the life.'
   ),
   '/product': makeSeo(
     '/product',
     'Product',
-    'Explore URAI features including passive capture, Cognitive Mirror, Emotional Timeline, Memory Map, Council Companion, and data ownership.'
+    'Explore URAI experiences including the Cognitive Mirror, Emotional Timeline, Life Map, Council, and user-controlled data permissions.'
   ),
   '/how-it-works': makeSeo(
     '/how-it-works',
     'How URAI Works',
-    'See how URAI turns permission-based life signals into private reflections, emotional timelines, and user-controlled insights.'
+    'See how permissioned life signals can become private reflections, timelines, memory experiences, and user-controlled insights.'
   ),
   '/privacy': makeSeo(
     '/privacy',
     'Privacy',
-    'URAI privacy principles: consent-first access, user control, transparency, export/delete controls, and non-medical reflection.'
+    'Review URAI privacy principles for consent, transparency, access, export, deletion, and non-medical personal reflection.'
   ),
   '/data-ownership': makeSeo(
     '/data-ownership',
-    'Data Ownership',
-    'Learn how URAI approaches user-controlled data, optional data participation, transparency, and consent.'
+    'Data Control',
+    'Learn how URAI approaches permissions, provenance, user-controlled data, optional participation, transparency, and consent.'
   ),
   '/demo': makeSeo(
     '/demo',
-    'Demo',
-    'Preview URAI with public-safe sample data across Cognitive Mirror, Emotional Timeline, Memory Map, and Council reflections.'
+    'URAI Experience',
+    'Explore a public-safe URAI experience without exposing real private user data.'
   ),
   '/waitlist': makeSeo(
     '/waitlist',
-    'Waitlist',
-    'Join the URAI waitlist for early access to passive personal intelligence, Cognitive Mirror, Emotional Timeline, and data ownership tools.'
+    'Early Access',
+    'Join URAI early access for a private personal-intelligence experience built around memory, reflection, relationships, and user control.'
   ),
   '/terms': makeSeo(
     '/terms',
     'Terms and Disclaimer',
-    'URAI legal and safety disclaimer covering non-medical insights, crisis support boundaries, and optional data participation.'
+    'Review URAI legal and safety boundaries for non-medical insights, crisis support, optional participation, and product use.'
   ),
   '/contact': makeSeo(
     '/contact',
     'Contact',
-    'Contact URAI Labs for demo access, investor interest, partnerships, research collaboration, press, or general questions.'
+    'Contact URAI Labs about product access, investment, partnerships, research, press, or general questions.'
   )
 };
 
