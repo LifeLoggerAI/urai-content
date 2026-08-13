@@ -30,7 +30,7 @@ export type SitePage = {
 };
 
 export const defaultSeo = {
-  title: 'URAI — A Privacy-First Life Operating System',
+  title: 'URAI — Private Personal Intelligence',
   description:
     'URAI helps you understand your life through passive, privacy-first personal intelligence, emotional timelines, cognitive mirrors, and user-controlled data ownership.'
 };
@@ -41,10 +41,10 @@ export const publicPages = {
     eyebrow: 'URAI',
     title: 'Understand your life from the data you already create.',
     lede:
-      'URAI is a passive, privacy-first life operating system that turns everyday signals into emotional timelines, cognitive mirrors, relationship insights, and personal data ownership tools — all under your control.',
+      'URAI is a passive, privacy-first personal intelligence experience that turns everyday signals into emotional timelines, cognitive mirrors, relationship insights, and personal data ownership tools — all under your control.',
     metadata: defaultSeo,
-    primaryCta: { label: 'Join the Waitlist', href: '/waitlist' },
-    secondaryCta: { label: 'View the Demo', href: '/demo' },
+    primaryCta: { label: 'Join Early Access', href: '/waitlist' },
+    secondaryCta: { label: 'Explore the Experience', href: '/demo' },
     sections: [
       {
         title: 'What URAI is',
@@ -82,9 +82,9 @@ export const publicPages = {
       'URAI Labs exists to help people transform scattered personal signals into reflection, memory, pattern recognition, and agency without surrendering control of their identity.',
     metadata: {
       title: 'About URAI Labs',
-      description: 'Learn why URAI Labs is building a passive, privacy-first life operating system for personal intelligence and user-owned data.'
+      description: 'Learn why URAI Labs is building passive, privacy-first personal intelligence with user-owned data controls.'
     },
-    primaryCta: { label: 'Join the Waitlist', href: '/waitlist' },
+    primaryCta: { label: 'Join Early Access', href: '/waitlist' },
     secondaryCta: { label: 'Contact URAI Labs', href: '/contact' },
     sections: [
       {
@@ -109,13 +109,13 @@ export const publicPages = {
     eyebrow: 'Product',
     title: 'URAI turns passive life signals into personal intelligence.',
     lede:
-      'URAI connects routines, emotions, relationships, places, habits, memories, and digital behavior, then reflects them back through a private visual operating system.',
+      'URAI connects routines, emotions, relationships, places, habits, memories, and digital behavior, then reflects them back through a private visual intelligence experience.',
     metadata: {
       title: 'Product',
       description: 'Explore URAI features including passive capture, Cognitive Mirror, Emotional Timeline, Memory Map, Council Companion, and data ownership.'
     },
-    primaryCta: { label: 'Explore Demo', href: '/demo' },
-    secondaryCta: { label: 'Join Waitlist', href: '/waitlist' },
+    primaryCta: { label: 'Explore Experience', href: '/demo' },
+    secondaryCta: { label: 'Join Early Access', href: '/waitlist' },
     sections: [
       {
         title: 'Passive capture',
@@ -154,8 +154,8 @@ export const publicPages = {
       title: 'How URAI Works',
       description: 'See how URAI turns permission-based life signals into private reflections, emotional timelines, and user-controlled insights.'
     },
-    primaryCta: { label: 'See Demo', href: '/demo' },
-    secondaryCta: { label: 'Join Waitlist', href: '/waitlist' },
+    primaryCta: { label: 'Explore Experience', href: '/demo' },
+    secondaryCta: { label: 'Join Early Access', href: '/waitlist' },
     sections: [
       { title: '1. Permission', body: 'URAI begins with consent. Users choose which sources to connect and can disable them later. No passive signal should be collected without clear user permission.' },
       { title: '2. Patterning', body: 'Approved signals are organized into structured patterns across time, place, mood, routine, relationship, memory, behavior, recovery, focus, and context.' },
@@ -173,7 +173,7 @@ export const publicPages = {
       title: 'Privacy',
       description: 'URAI privacy principles: consent-first access, user control, transparency, export/delete controls, and non-medical reflection.'
     },
-    primaryCta: { label: 'Join Waitlist', href: '/waitlist' },
+    primaryCta: { label: 'Join Early Access', href: '/waitlist' },
     secondaryCta: { label: 'Read Data Ownership', href: '/data-ownership' },
     sections: [
       { title: 'Consent first', body: 'URAI only works with data sources a user chooses to enable. Passive access should never be hidden, assumed, or bundled into unrelated features.' },
@@ -192,7 +192,7 @@ export const publicPages = {
       title: 'Data Ownership',
       description: 'Learn how URAI approaches user-controlled data, optional data participation, transparency, and consent.'
     },
-    primaryCta: { label: 'Join Data Ownership Waitlist', href: '/waitlist' },
+    primaryCta: { label: 'Join Data Ownership Early Access', href: '/waitlist' },
     secondaryCta: { label: 'For Researchers', href: '/researchers' },
     sections: [
       { title: 'User-owned data philosophy', body: 'Every day, people generate valuable behavioral, emotional, contextual, and lifestyle signals. URAI is designed to return insight and control to the person creating those signals.' },
@@ -209,7 +209,7 @@ export const publicPages = {
       title: 'For Users',
       description: 'URAI helps users understand emotional, relational, behavioral, and routine patterns with privacy-first passive intelligence.'
     },
-    primaryCta: { label: 'Join Waitlist', href: '/waitlist' },
+    primaryCta: { label: 'Join Early Access', href: '/waitlist' },
     sections: [
       { title: 'Less manual tracking', body: 'URAI reduces the burden of constant journaling by organizing signals users already create and choose to connect.' },
       { title: 'More useful reflection', body: 'The Cognitive Mirror and Council companion convert patterns into language that feels calm, human, and actionable.' },
@@ -269,35 +269,35 @@ export const publicPages = {
   },
   demo: {
     route: '/demo',
-    eyebrow: 'Demo',
-    title: 'See the URAI experience with public-safe sample data.',
+    eyebrow: 'Experience',
+    title: 'Explore URAI with public-safe example data.',
     lede:
-      'The URAI demo shows the Cognitive Mirror, Emotional Timeline, Memory Map, Council reflections, and data ownership controls without exposing real private user data.',
+      'This guided URAI experience introduces the Cognitive Mirror, Emotional Timeline, Memory Map, Council reflections, and data ownership controls without exposing real private user data.',
     metadata: {
-      title: 'Demo',
-      description: 'Preview URAI with public-safe sample data across Cognitive Mirror, Emotional Timeline, Memory Map, and Council reflections.'
+      title: 'URAI Experience',
+      description: 'Explore URAI with public-safe example data across Cognitive Mirror, Emotional Timeline, Memory Map, and Council reflections.'
     },
-    primaryCta: { label: 'Request Demo Access', href: '/contact?type=demo' },
-    secondaryCta: { label: 'Join Waitlist', href: '/waitlist' },
+    primaryCta: { label: 'Request Experience Access', href: '/contact?type=demo' },
+    secondaryCta: { label: 'Join Early Access', href: '/waitlist' },
     sections: [
-      { title: 'Cognitive Mirror preview', body: 'Sample cards show focus rhythm, emotional load, recovery periods, and routine patterns.' },
-      { title: 'Emotional Timeline preview', body: 'A public-safe timeline demonstrates how URAI can show emotional seasons, turning points, and rebound arcs.' },
-      { title: 'Memory Map preview', body: 'Constellation-style demo moments show how conversations, places, routines, and milestones can become navigable memory points.' },
-      { title: 'Council reflection preview', body: 'The Council explains demo patterns in calm, non-clinical language that is grounded in sample signals.' }
+      { title: 'Cognitive Mirror', body: 'Example cards show focus rhythm, emotional load, recovery periods, and routine patterns.' },
+      { title: 'Emotional Timeline', body: 'A public-safe timeline shows how URAI can surface emotional seasons, turning points, and rebound arcs.' },
+      { title: 'Memory Map', body: 'Constellation-style example moments show how conversations, places, routines, and milestones can become navigable memory points.' },
+      { title: 'Council reflection', body: 'The Council explains example patterns in calm, non-clinical language grounded in visible example signals.' }
     ]
   },
   waitlist: {
     route: '/waitlist',
-    eyebrow: 'Waitlist',
+    eyebrow: 'Early Access',
     title: 'Be first to experience passive personal intelligence.',
-    lede: 'Join the URAI waitlist for early access to the demo, launch updates, and future private beta invitations.',
+    lede: 'Join URAI early access for product updates, guided experience access, and future invitations as availability expands.',
     metadata: {
-      title: 'Waitlist',
-      description: 'Join the URAI waitlist for early access to passive personal intelligence, Cognitive Mirror, Emotional Timeline, and data ownership tools.'
+      title: 'URAI Early Access',
+      description: 'Join URAI early access for passive personal intelligence, Cognitive Mirror, Emotional Timeline, and data ownership tools.'
     },
     sections: [
-      { title: 'What you will receive', body: 'Early access updates, demo invitations, private beta opportunities, and product notes from URAI Labs.' },
-      { title: 'Confirmation copy', body: 'You are on the URAI waitlist. We will send updates as early access opens.' }
+      { title: 'What you will receive', body: 'Product updates, guided experience invitations, expanding-access opportunities, and notes from URAI Labs.' },
+      { title: 'Confirmation copy', body: 'You are on the URAI early-access list. We will send updates as access expands.' }
     ]
   },
   faq: {
@@ -309,10 +309,10 @@ export const publicPages = {
       title: 'FAQ',
       description: 'Answers about URAI privacy, passive data, Council companion, mental health disclaimers, and optional data participation.'
     },
-    primaryCta: { label: 'Join Waitlist', href: '/waitlist' },
+    primaryCta: { label: 'Join Early Access', href: '/waitlist' },
     sections: [],
     faqs: [
-      { question: 'What is URAI?', answer: 'URAI is a passive, privacy-first life operating system that helps users understand emotional, behavioral, relational, and contextual patterns from data they choose to connect.' },
+      { question: 'What is URAI?', answer: 'URAI is a passive, privacy-first personal intelligence experience that helps users understand emotional, behavioral, relational, and contextual patterns from data they choose to connect.' },
       { question: 'Is URAI a therapy app?', answer: 'No. URAI is not therapy, medical care, diagnosis, or crisis support. It provides reflective personal insights and should not replace professional support.' },
       { question: 'What does passive mean?', answer: 'Passive means URAI is designed to reduce manual input. Instead of forcing users to constantly journal or track, URAI can organize approved background signals into useful reflections.' },
       { question: 'Does URAI sell my data?', answer: 'URAI’s core experience does not require selling personal data. Future data participation programs should be opt-in, consent-based, and transparent.' },
@@ -340,26 +340,26 @@ export const publicPages = {
   updates: {
     route: '/updates',
     eyebrow: 'Updates',
-    title: 'Launch notes from URAI Labs.',
-    lede: 'Follow public progress as URAI moves from demo, waitlist, and private beta toward wider launch.',
+    title: 'Product notes from URAI Labs.',
+    lede: 'Follow public progress as URAI expands access and continues refining the product experience.',
     metadata: {
       title: 'Updates',
-      description: 'URAI Labs launch updates, product notes, demo milestones, and public progress.'
+      description: 'URAI Labs product updates, experience milestones, privacy decisions, and public progress.'
     },
-    primaryCta: { label: 'Join Waitlist', href: '/waitlist' },
+    primaryCta: { label: 'Join Early Access', href: '/waitlist' },
     sections: [
-      { title: 'Launch announcement', body: 'URAI is opening early access for people who want passive, privacy-first personal intelligence built around emotional timelines, cognitive mirrors, and user-controlled data.' },
-      { title: 'Founder notes', body: 'Future updates will share product progress, privacy decisions, demo releases, and partnership milestones.' }
+      { title: 'Access update', body: 'URAI is expanding access for people who want passive, privacy-first personal intelligence built around emotional timelines, cognitive mirrors, and user-controlled data.' },
+      { title: 'Steward notes', body: 'Future updates will share product progress, privacy decisions, experience releases, and partnership milestones.' }
     ]
   },
   contact: {
     route: '/contact',
     eyebrow: 'Contact',
     title: 'Start a conversation with URAI Labs.',
-    lede: 'Use the contact form for demo access, investor interest, partnerships, research collaboration, press, or general questions.',
+    lede: 'Use the contact form for product access, investor interest, partnerships, research collaboration, press, or general questions.',
     metadata: {
       title: 'Contact',
-      description: 'Contact URAI Labs for demo access, investor interest, partnerships, research collaboration, press, or general questions.'
+      description: 'Contact URAI Labs for product access, investor interest, partnerships, research collaboration, press, or general questions.'
     },
     sections: [
       { title: 'Best fit', body: 'Choose the inquiry type that best matches your interest so the URAI Labs team can route it correctly.' }
@@ -372,8 +372,8 @@ export const publicNavigation = [
   { label: 'How It Works', href: '/how-it-works' },
   { label: 'Privacy', href: '/privacy' },
   { label: 'Data Ownership', href: '/data-ownership' },
-  { label: 'Demo', href: '/demo' },
-  { label: 'Waitlist', href: '/waitlist' }
+  { label: 'Experience', href: '/demo' },
+  { label: 'Early Access', href: '/waitlist' }
 ];
 
 export const footerNavigation = [
