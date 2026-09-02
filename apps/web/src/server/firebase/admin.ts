@@ -1,8 +1,8 @@
 import 'server-only';
-import { cert, getApps, initializeApp, type App } from 'firebase-admin/app';
+import { applicationDefault, getApps, initializeApp, type App } from 'firebase-admin/app';
 import { getAuth, type Auth } from 'firebase-admin/auth';
 import { getFirestore, type Firestore } from 'firebase-admin/firestore';
-import { getRequiredFirebaseAdminEnv, hasFirebaseAdminCredentials, normalizePrivateKey } from './adminEnv';
+import { getRequiredFirebaseAdminEnv, hasFirebaseAdminCredentials } from './adminEnv';
 
 export function isFirebaseAdminConfigured(): boolean {
   return hasFirebaseAdminCredentials();
@@ -15,11 +15,8 @@ export function getFirebaseAdminApp(): App {
   const env = getRequiredFirebaseAdminEnv();
 
   return initializeApp({
-    credential: cert({
-      projectId: env.FIREBASE_PROJECT_ID,
-      clientEmail: env.FIREBASE_CLIENT_EMAIL,
-      privateKey: normalizePrivateKey(env.FIREBASE_PRIVATE_KEY)
-    }),
+    credential: applicationDefault(),
+    projectId: env.FIREBASE_PROJECT_ID,
     storageBucket: env.FIREBASE_STORAGE_BUCKET
   });
 }

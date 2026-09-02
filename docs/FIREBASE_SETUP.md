@@ -15,17 +15,19 @@ Reference constants and contracts in:
 
 ## Web app Firebase Admin status
 
-The public web app uses optional Firebase Admin credentials for public intake and analytics endpoints.
+The public web app uses optional Firebase Admin Application Default Credentials for public intake and analytics endpoints.
 
-If these credentials are absent, the public forms return a successful preview-mode response without writing to Firestore. This keeps local previews and static verification from failing while making production writes available when credentials are configured.
+If verified WIF credentials are absent, the public forms return a successful preview-mode response without writing to Firestore. This keeps local previews and static verification non-mutating. Production writes remain **NO-GO** until provider-side short-lived identity, least-privilege IAM, negative unauthorized-identity proof, historical-key revocation, and runtime read-back are independently verified.
 
-Required environment variables for production Firestore writes:
+Required environment variables for a future non-Google production runtime:
 
 - `FIREBASE_PROJECT_ID`
-- `FIREBASE_CLIENT_EMAIL`
-- `FIREBASE_PRIVATE_KEY`
+- `GOOGLE_APPLICATION_CREDENTIALS` pointing to a protected, regular, non-symlinked `external_account` WIF file
+- `URAI_CONTENT_FIREBASE_ADMIN_ADC_READY=1`, set only after the identity is independently verified
 - `FIREBASE_STORAGE_BUCKET` optional for storage-backed features
 - `NEXT_PUBLIC_SITE_URL`
+
+Long-lived `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY`, service-account JSON, and authorized-user ADC are forbidden. The guarded deployment workflow rejects production before provider credentials or mutation are available; preview verification may run with `URAI_CONTENT_FIREBASE_ADMIN_ADC_READY=0`.
 
 ## Public intake collections
 
