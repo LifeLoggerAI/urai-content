@@ -71,6 +71,22 @@ describe('Firebase Admin environment helpers', () => {
     }))).toThrow('external_account WIF');
   });
 
+  it('rejects non-regular paths before reading and empty credential sources', () => {
+    const env = getFirebaseAdminEnv({
+      FIREBASE_PROJECT_ID: 'urai-content-test',
+      GOOGLE_APPLICATION_CREDENTIALS: ADC_PATH,
+      URAI_CONTENT_FIREBASE_ADMIN_ADC_READY: '1'
+    });
+    let readAttempted = false;
+    expect(() => assertExternalAccountAdc(env, {
+      lstatSyncFn: () => ({ isFile: () => false, isSymbolicLink: () => false }),
+      realpathSyncFn: () => ADC_PATH,
+      readFileSyncFn: () => { readAttempted = true; return ''; }
+    })).toThrow('regular non-symlinked file');
+    expect(readAttempted).toBe(false);
+    expect(() => assertExternalAccountAdc(env, regularFileOps({ ...validExternalAccount, credential_source: {} }))).toThrow('protected subject-token file');
+  });
+
   it('rejects legacy long-lived credential variables', () => {
     expect(() => getFirebaseAdminEnv({
       FIREBASE_PROJECT_ID: 'urai-content-test',
