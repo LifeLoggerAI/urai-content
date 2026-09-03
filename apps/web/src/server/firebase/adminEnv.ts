@@ -71,19 +71,27 @@ export function assertExternalAccountAdc(
   }
 
   let metadata: Pick<Stats, 'isFile' | 'isSymbolicLink'>;
+  try {
+    metadata = lstatSyncFn(credentialPath);
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : String(error);
+    throw new Error(`Firebase Admin ADC file cannot be inspected safely: ${reason}`);
+  }
+  if (metadata.isSymbolicLink() || !metadata.isFile()) {
+    throw new Error('Firebase Admin ADC must be a regular non-symlinked file.');
+  }
+
   let resolvedPath: string;
   let raw: string;
   try {
-    metadata = lstatSyncFn(credentialPath);
     resolvedPath = realpathSyncFn(credentialPath);
+    if (resolvedPath !== credentialPath) {
+      throw new Error('credential path is not canonical');
+    }
     raw = readFileSyncFn(credentialPath, 'utf8');
   } catch (error) {
     const reason = error instanceof Error ? error.message : String(error);
     throw new Error(`Firebase Admin ADC file cannot be read safely: ${reason}`);
-  }
-
-  if (metadata.isSymbolicLink() || !metadata.isFile() || resolvedPath !== credentialPath) {
-    throw new Error('Firebase Admin ADC must be a regular non-symlinked file at its canonical path.');
   }
 
   let credential: Record<string, unknown>;
@@ -106,6 +114,12 @@ export function assertExternalAccountAdc(
   }
   for (const field of ['audience', 'subject_token_type', 'token_url', 'credential_source', 'service_account_impersonation_url']) {
     if (!credential[field]) throw new Error(`Firebase Admin external_account ADC is missing ${field}.`);
+  }
+  const credentialSource = credential.credential_source;
+  if (!credentialSource || typeof credentialSource !== 'object' || Array.isArray(credentialSource)
+    || typeof (credentialSource as Record<string, unknown>).file !== 'string'
+    || !(credentialSource as Record<string, string>).file.trim()) {
+    throw new Error('Firebase Admin external_account ADC credential_source must name a protected subject-token file.');
   }
   if (
     typeof credential.service_account_impersonation_url !== 'string'
