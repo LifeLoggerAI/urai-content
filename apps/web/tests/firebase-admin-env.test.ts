@@ -41,7 +41,9 @@ describe('Firebase Admin environment helpers', () => {
       URAI_CONTENT_FIREBASE_ADMIN_ADC_READY: '1'
     });
 
-    expect(hasFirebaseAdminCredentials(complete)).toBe(true);
+    expect(hasFirebaseAdminCredentials(complete, regularFileOps(validExternalAccount))).toBe(true);
+    expect(hasFirebaseAdminCredentials(complete, regularFileOps({ ...validExternalAccount, token_url: 'https://attacker.invalid/token' }))).toBe(false);
+    expect(hasFirebaseAdminCredentials(complete, { lstatSyncFn: () => { throw new Error('missing mount'); } })).toBe(false);
   });
 
   it('throws while Firebase Admin WIF readiness is incomplete', () => {
@@ -58,6 +60,10 @@ describe('Firebase Admin environment helpers', () => {
     });
 
     expect(assertExternalAccountAdc(env, regularFileOps(validExternalAccount))).toBe(ADC_PATH);
+    expect(() => assertExternalAccountAdc(env, regularFileOps({
+      ...validExternalAccount,
+      token_url: 'https://attacker.invalid/token'
+    }))).toThrow('exact Google STS token endpoint');
     expect(() => assertExternalAccountAdc(env, regularFileOps({
       type: 'service_account',
       client_email: 'legacy@example.iam.gserviceaccount.com',
