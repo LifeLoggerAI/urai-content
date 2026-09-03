@@ -112,8 +112,14 @@ export function assertExternalAccountAdc(
   if (credential.token_url !== 'https://sts.googleapis.com/v1/token') {
     throw new Error('Firebase Admin external_account ADC must use the exact Google STS token endpoint.');
   }
-  for (const field of ['audience', 'subject_token_type', 'token_url', 'credential_source', 'service_account_impersonation_url']) {
-    if (!credential[field]) throw new Error(`Firebase Admin external_account ADC is missing ${field}.`);
+  if (
+    typeof credential.audience !== 'string'
+    || !credential.audience.startsWith('//iam.googleapis.com/projects/')
+  ) {
+    throw new Error('Firebase Admin external_account ADC audience must be a Google Workload Identity Provider resource.');
+  }
+  if (credential.subject_token_type !== 'urn:ietf:params:oauth:token-type:jwt') {
+    throw new Error('Firebase Admin external_account ADC must use a JWT subject token type.');
   }
   const credentialSource = credential.credential_source;
   if (!credentialSource || typeof credentialSource !== 'object' || Array.isArray(credentialSource)
@@ -121,6 +127,21 @@ export function assertExternalAccountAdc(
     || !(credentialSource as Record<string, string>).file.trim()) {
     throw new Error('Firebase Admin external_account ADC credential_source must name a protected subject-token file.');
   }
+  const subjectTokenPath = (credentialSource as Record<string, string>).file.trim();
+  let subjectTokenMetadata: Pick<Stats, 'isFile' | 'isSymbolicLink'>;
+  try {
+    subjectTokenMetadata = lstatSyncFn(subjectTokenPath);
+    if (subjectTokenMetadata.isSymbolicLink() || !subjectTokenMetadata.isFile()) {
+      throw new Error('subject-token path is not a regular file');
+    }
+    if (realpathSyncFn(subjectTokenPath) !== subjectTokenPath) {
+      throw new Error('subject-token path is not canonical');
+    }
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : String(error);
+    throw new Error(`Firebase Admin subject-token file cannot be inspected safely: ${reason}`);
+  }
+
   if (
     typeof credential.service_account_impersonation_url !== 'string'
     || !credential.service_account_impersonation_url.startsWith('https://iamcredentials.googleapis.com/')
