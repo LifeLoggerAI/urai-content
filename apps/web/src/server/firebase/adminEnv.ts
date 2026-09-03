@@ -42,12 +42,19 @@ export function getFirebaseAdminEnv(input: EnvInput = process.env): FirebaseAdmi
   return firebaseAdminEnvSchema.parse(input);
 }
 
-export function hasFirebaseAdminCredentials(env: FirebaseAdminEnv = getFirebaseAdminEnv()): boolean {
-  return Boolean(
-    env.FIREBASE_PROJECT_ID
-    && env.URAI_CONTENT_FIREBASE_ADMIN_ADC_READY === '1'
-    && env.GOOGLE_APPLICATION_CREDENTIALS
-  );
+export function hasFirebaseAdminCredentials(
+  env: FirebaseAdminEnv = getFirebaseAdminEnv(),
+  fileOps: AdcFileOps = {}
+): boolean {
+  if (!env.FIREBASE_PROJECT_ID || env.URAI_CONTENT_FIREBASE_ADMIN_ADC_READY !== '1' || !env.GOOGLE_APPLICATION_CREDENTIALS) {
+    return false;
+  }
+  try {
+    assertExternalAccountAdc(env, fileOps);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 export function assertExternalAccountAdc(
@@ -93,6 +100,9 @@ export function assertExternalAccountAdc(
   }
   if ('private_key' in credential || 'client_email' in credential) {
     throw new Error('Firebase Admin ADC must not contain raw service-account key material.');
+  }
+  if (credential.token_url !== 'https://sts.googleapis.com/v1/token') {
+    throw new Error('Firebase Admin external_account ADC must use the exact Google STS token endpoint.');
   }
   for (const field of ['audience', 'subject_token_type', 'token_url', 'credential_source', 'service_account_impersonation_url']) {
     if (!credential[field]) throw new Error(`Firebase Admin external_account ADC is missing ${field}.`);
