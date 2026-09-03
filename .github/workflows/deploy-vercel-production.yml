@@ -125,12 +125,17 @@ jobs:
           echo "$url" > ../../deploy-url.txt
           echo "Deployed URL: $url"
 
-      - name: Validate expected URL input
+      - name: Validate HTTPS deployment URLs
         run: |
           set -euo pipefail
           case "$EXPECTED_BASE_URL" in
-            http://*|https://*) ;;
-            *) echo "::error::base_url must start with http:// or https://"; exit 1 ;;
+            https://*) ;;
+            *) echo "::error::base_url must use https://"; exit 1 ;;
+          esac
+          deployed_url="$(cat deploy-url.txt)"
+          case "$deployed_url" in
+            https://*) ;;
+            *) echo "::error::Vercel deployment URL must use https://"; exit 1 ;;
           esac
 
       - name: Live HTTP smoke
