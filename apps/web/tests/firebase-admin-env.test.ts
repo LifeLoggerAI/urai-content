@@ -15,7 +15,7 @@ const regularFileOps = (credential: Record<string, unknown>) => ({
     isFile: () => true,
     isSymbolicLink: () => false
   }),
-  realpathSyncFn: () => ADC_PATH,
+  realpathSyncFn: (path: string) => path,
   readFileSyncFn: () => JSON.stringify(credential)
 });
 
@@ -85,6 +85,15 @@ describe('Firebase Admin environment helpers', () => {
     })).toThrow('regular non-symlinked file');
     expect(readAttempted).toBe(false);
     expect(() => assertExternalAccountAdc(env, regularFileOps({ ...validExternalAccount, credential_source: {} }))).toThrow('protected subject-token file');
+    expect(() => assertExternalAccountAdc(env, regularFileOps({ ...validExternalAccount, audience: {} }))).toThrow('audience must be');
+    expect(() => assertExternalAccountAdc(env, regularFileOps({ ...validExternalAccount, subject_token_type: 1 }))).toThrow('JWT subject token type');
+    expect(() => assertExternalAccountAdc(env, {
+      ...regularFileOps(validExternalAccount),
+      lstatSyncFn: (path: string) => {
+        if (path === validExternalAccount.credential_source.file) throw new Error('missing subject token');
+        return { isFile: () => true, isSymbolicLink: () => false };
+      }
+    })).toThrow('subject-token file cannot be inspected safely');
   });
 
   it('rejects legacy long-lived credential variables', () => {
