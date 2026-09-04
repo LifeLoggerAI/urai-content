@@ -9,14 +9,15 @@ import {
 } from '../src/server/firebase/adminEnv';
 
 const ADC_PATH = '/protected/wif-external-account.json';
+const SUBJECT_TOKEN_PATH = '/var/run/secrets/oidc-token';
 
-const regularFileOps = (credential: Record<string, unknown>) => ({
+const regularFileOps = (credential: Record<string, unknown>, subjectToken = 'header.payload.signature') => ({
   lstatSyncFn: () => ({
     isFile: () => true,
     isSymbolicLink: () => false
   }),
   realpathSyncFn: (path: string) => path,
-  readFileSyncFn: () => JSON.stringify(credential)
+  readFileSyncFn: (path: string) => path === ADC_PATH ? JSON.stringify(credential) : subjectToken
 });
 
 const validExternalAccount = {
@@ -26,7 +27,7 @@ const validExternalAccount = {
   token_url: 'https://sts.googleapis.com/v1/token',
   service_account_impersonation_url: 'https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/content-runtime@urai-4dc1d.iam.gserviceaccount.com:generateAccessToken',
   credential_source: {
-    file: '/var/run/secrets/oidc-token'
+    file: SUBJECT_TOKEN_PATH
   }
 };
 
@@ -90,10 +91,49 @@ describe('Firebase Admin environment helpers', () => {
     expect(() => assertExternalAccountAdc(env, {
       ...regularFileOps(validExternalAccount),
       lstatSyncFn: (path: string) => {
-        if (path === validExternalAccount.credential_source.file) throw new Error('missing subject token');
+        if (path === SUBJECT_TOKEN_PATH) throw new Error('missing subject token');
         return { isFile: () => true, isSymbolicLink: () => false };
       }
     })).toThrow('subject-token file cannot be inspected safely');
+  });
+
+  it('rejects conflicting credential-source mechanisms', () => {
+    const env = getFirebaseAdminEnv({
+      FIREBASE_PROJECT_ID: 'urai-content-test',
+      GOOGLE_APPLICATION_CREDENTIALS: ADC_PATH,
+      URAI_CONTENT_FIREBASE_ADMIN_ADC_READY: '1'
+    });
+
+    for (const competing of [
+      { url: 'https://metadata.invalid/token' },
+      { executable: { command: '/bin/false' } },
+      { certificate: { path: '/tmp/cert' } }
+    ]) {
+      const credential = {
+        ...validExternalAccount,
+        credential_source: { file: SUBJECT_TOKEN_PATH, ...competing }
+      };
+      expect(hasFirebaseAdminCredentials(env, regularFileOps(credential))).toBe(false);
+      expect(() => assertExternalAccountAdc(env, regularFileOps(credential))).toThrow('must use only the protected file mechanism');
+    }
+  });
+
+  it('requires the subject-token file to be readable and nonempty', () => {
+    const env = getFirebaseAdminEnv({
+      FIREBASE_PROJECT_ID: 'urai-content-test',
+      GOOGLE_APPLICATION_CREDENTIALS: ADC_PATH,
+      URAI_CONTENT_FIREBASE_ADMIN_ADC_READY: '1'
+    });
+
+    expect(hasFirebaseAdminCredentials(env, regularFileOps(validExternalAccount, ''))).toBe(false);
+    expect(() => assertExternalAccountAdc(env, regularFileOps(validExternalAccount, '   \n'))).toThrow('subject-token file is empty');
+    expect(() => assertExternalAccountAdc(env, {
+      ...regularFileOps(validExternalAccount),
+      readFileSyncFn: (path: string) => {
+        if (path === SUBJECT_TOKEN_PATH) throw new Error('permission denied');
+        return JSON.stringify(validExternalAccount);
+      }
+    })).toThrow('subject-token file cannot be inspected safely: permission denied');
   });
 
   it('rejects legacy long-lived credential variables', () => {
