@@ -11,7 +11,7 @@ import {
 const ADC_PATH = '/protected/wif-external-account.json';
 const SUBJECT_TOKEN_PATH = '/var/run/secrets/oidc-token';
 
-const regularFileOps = (credential: Record<string, unknown>, subjectToken = 'header.payload.signature') => ({
+const regularFileOps = (credential: Record<string, unknown>, subjectToken = 'fixture-jwt') => ({
   lstatSyncFn: () => ({
     isFile: () => true,
     isSymbolicLink: () => false
