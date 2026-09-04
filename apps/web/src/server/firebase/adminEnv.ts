@@ -121,14 +121,24 @@ export function assertExternalAccountAdc(
   if (credential.subject_token_type !== 'urn:ietf:params:oauth:token-type:jwt') {
     throw new Error('Firebase Admin external_account ADC must use a JWT subject token type.');
   }
+
   const credentialSource = credential.credential_source;
-  if (!credentialSource || typeof credentialSource !== 'object' || Array.isArray(credentialSource)
-    || typeof (credentialSource as Record<string, unknown>).file !== 'string'
-    || !(credentialSource as Record<string, string>).file.trim()) {
+  if (!credentialSource || typeof credentialSource !== 'object' || Array.isArray(credentialSource)) {
     throw new Error('Firebase Admin external_account ADC credential_source must name a protected subject-token file.');
   }
-  const subjectTokenPath = (credentialSource as Record<string, string>).file.trim();
+  const credentialSourceRecord = credentialSource as Record<string, unknown>;
+  if (typeof credentialSourceRecord.file !== 'string' || !credentialSourceRecord.file.trim()) {
+    throw new Error('Firebase Admin external_account ADC credential_source must name a protected subject-token file.');
+  }
+  for (const competingMechanism of ['url', 'executable', 'certificate'] as const) {
+    if (competingMechanism in credentialSourceRecord) {
+      throw new Error(`Firebase Admin external_account ADC credential_source must use only the protected file mechanism; ${competingMechanism} is not allowed.`);
+    }
+  }
+
+  const subjectTokenPath = credentialSourceRecord.file.trim();
   let subjectTokenMetadata: Pick<Stats, 'isFile' | 'isSymbolicLink'>;
+  let subjectToken: string;
   try {
     subjectTokenMetadata = lstatSyncFn(subjectTokenPath);
     if (subjectTokenMetadata.isSymbolicLink() || !subjectTokenMetadata.isFile()) {
@@ -136,6 +146,10 @@ export function assertExternalAccountAdc(
     }
     if (realpathSyncFn(subjectTokenPath) !== subjectTokenPath) {
       throw new Error('subject-token path is not canonical');
+    }
+    subjectToken = readFileSyncFn(subjectTokenPath, 'utf8');
+    if (!subjectToken.trim()) {
+      throw new Error('subject-token file is empty');
     }
   } catch (error) {
     const reason = error instanceof Error ? error.message : String(error);
