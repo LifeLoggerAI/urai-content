@@ -3,14 +3,18 @@ import { readFileSync } from 'node:fs'
 import path from 'node:path'
 
 const root = process.cwd()
+const sourceReceiptWorkflowPath = '.github/workflows/prompt-release-source-receipt.yml'
+const publicRepositoryArtifactRetentionDays = 90
 const workflowPaths = [
   '.github/workflows/prompt-library.yml',
   '.github/workflows/prompt-review-gate.yml',
   '.github/workflows/governance.yml',
+  sourceReceiptWorkflowPath,
 ]
 
 const allowedActions = new Set([
   'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683',
+  'actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5',
   'actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020',
   'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02',
   'actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea',
@@ -45,6 +49,11 @@ const requiredByWorkflow = {
   '.github/workflows/governance.yml': [
     'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683',
     'actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020',
+  ],
+  [sourceReceiptWorkflowPath]: [
+    'actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5',
+    'actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020',
+    'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02',
   ],
 }
 
@@ -93,13 +102,36 @@ for (const requiredMarker of [
   if (!governance.includes(requiredMarker)) failures.push(`Governance workflow missing release-authority marker: ${requiredMarker}`)
 }
 
+const sourceReceiptWorkflow = readFileSync(path.join(root, sourceReceiptWorkflowPath), 'utf8').replace(/\r\n?/g, '\n')
+const retentionValues = [...sourceReceiptWorkflow.matchAll(/^\s*retention-days:\s*(\d+)\s*$/gm)].map((match) => Number(match[1]))
+if (retentionValues.length !== 1 || retentionValues[0] !== publicRepositoryArtifactRetentionDays) {
+  failures.push(`${sourceReceiptWorkflowPath} must set exactly one retention-days value to the supported public-repository maximum of ${publicRepositoryArtifactRetentionDays}; found ${retentionValues.length ? retentionValues.join(', ') : 'none'}`)
+}
+for (const requiredMarker of [
+  'githubArtifactRetentionDays: 90',
+  'durableExternalArchiveRequiredForLongerRetention: true',
+  'durableExternalArchiveVerified: false',
+]) {
+  if (!sourceReceiptWorkflow.includes(requiredMarker)) failures.push(`${sourceReceiptWorkflowPath} missing retention truth marker: ${requiredMarker}`)
+}
+
+const promptGovernance = readFileSync(path.join(root, 'prompts/GOVERNANCE.md'), 'utf8')
+for (const requiredMarker of [
+  '`retention-days: 90`',
+  'not durable archival',
+  'approved external durable archive',
+  '`durableExternalArchiveVerified` remains `false`',
+]) {
+  if (!promptGovernance.includes(requiredMarker)) failures.push(`Prompt governance missing retention policy marker: ${requiredMarker}`)
+}
+
 const packageJson = JSON.parse(readFileSync(path.join(root, 'package.json'), 'utf8'))
 if (packageJson.scripts?.['eval:prompts'] !== 'tsx scripts/runPromptReleaseCandidate.ts') failures.push('eval:prompts must route through the candidate-only release-authority wrapper')
 if (packageJson.scripts?.['test:prompt-release-authority'] !== 'tsx scripts/runPromptReleaseCandidate.ts --self-test') failures.push('package.json must expose the prompt release-authority self-test')
 if (!String(packageJson.scripts?.check ?? '').includes('npm run test:prompt-release-authority')) failures.push('Full repository check must include prompt release-authority self-test')
 
 const report = {
-  schemaVersion: 'urai-content-prompt-workflow-pins-2',
+  schemaVersion: 'urai-content-prompt-workflow-pins-3',
   ok: failures.length === 0,
   workflows,
   allowedActions: [...allowedActions],
@@ -108,6 +140,12 @@ const report = {
     checksOutPullRequestCode: false,
     qualifyingPermissions: ['admin', 'maintain', 'write'],
     exactHeadApprovalRequired: true,
+  },
+  retentionAuthority: {
+    repositoryVisibility: 'public',
+    githubArtifactRetentionDays: publicRepositoryArtifactRetentionDays,
+    longerRetentionRequiresVerifiedExternalArchive: true,
+    longerRetentionClaimedBySourceReceipt: false,
   },
   failures,
 }

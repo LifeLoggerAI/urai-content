@@ -39,6 +39,13 @@ A change affecting `prompts/**`, prompt validators, evaluation cases, or prompt 
 6. Synchronize the Google Doc mirror and record the commit/tag in its document-control section.
 7. Retain the previous tag for immediate rollback.
 
+## Evidence retention
+
+- GitHub-hosted prompt-release source artifacts in this public repository use `retention-days: 90`, the current supported repository maximum.
+- That 90-day GitHub artifact window is not durable archival and must not be described as one-year, permanent, or otherwise longer-lived evidence.
+- If governance, legal, audit, or release policy requires evidence beyond 90 days, the exact-SHA-bound artifact must be copied to an approved external durable archive. The archive receipt must bind the source SHA, artifact identity or digest, destination/object identity, archive timestamp, and retention policy before a longer-lived retention claim is made.
+- Until that external receipt is actually produced and verified, the source receipt records `durableExternalArchiveVerified` remains `false` and no longer-lived retention claim is authorized.
+
 ## Pass criteria
 
 A release passes when:
