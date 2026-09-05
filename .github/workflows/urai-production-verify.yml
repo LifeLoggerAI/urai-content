@@ -4,52 +4,157 @@ on:
   workflow_dispatch:
   pull_request:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: urai-content-production-verify-${{ github.event.pull_request.number || github.ref }}-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: true
+
+env:
+  TARGET_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+
 jobs:
   verify:
     name: Build, test, and QA
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout exact reviewed head
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          ref: ${{ env.TARGET_SHA }}
+          fetch-depth: 1
+          persist-credentials: false
+          show-progress: false
+
+      - name: Prove exact clean source
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$TARGET_SHA"
+          test -z "$(git status --porcelain --untracked-files=all)"
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
-          node-version: '20'
-
-      - name: Enable Corepack
-        run: corepack enable
+          node-version: '20.19.5'
+          cache: npm
 
       - name: Install dependencies
+        run: npm ci
+
+      - name: Capture typecheck
+        id: typecheck
         shell: bash
         run: |
-          if [ -f pnpm-lock.yaml ]; then
-            corepack prepare pnpm@latest --activate
-            pnpm install --frozen-lockfile
-          elif [ -f package-lock.json ]; then
-            npm ci
-          elif [ -f package.json ]; then
-            npm install
+          set +e
+          set -o pipefail
+          evidence_dir="$RUNNER_TEMP/content-production-verify"
+          mkdir -p -- "$evidence_dir"
+          npm run typecheck 2>&1 | tee "$evidence_dir/typecheck.log"
+          status=${PIPESTATUS[0]}
+          printf '%s\n' "$status" > "$evidence_dir/typecheck-exit.txt"
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Capture tests
+        id: tests
+        shell: bash
+        run: |
+          set +e
+          set -o pipefail
+          evidence_dir="$RUNNER_TEMP/content-production-verify"
+          npm test 2>&1 | tee "$evidence_dir/tests.log"
+          status=${PIPESTATUS[0]}
+          printf '%s\n' "$status" > "$evidence_dir/tests-exit.txt"
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Capture build
+        id: build
+        shell: bash
+        run: |
+          set +e
+          set -o pipefail
+          evidence_dir="$RUNNER_TEMP/content-production-verify"
+          npm run build 2>&1 | tee "$evidence_dir/build.log"
+          status=${PIPESTATUS[0]}
+          printf '%s\n' "$status" > "$evidence_dir/build-exit.txt"
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Capture URAI QA
+        id: qa
+        shell: bash
+        run: |
+          set +e
+          set -o pipefail
+          evidence_dir="$RUNNER_TEMP/content-production-verify"
+          if node -e "const p=require('./package.json'); process.exit(p.scripts?.['urai:qa'] ? 0 : 1)"; then
+            npm run urai:qa 2>&1 | tee "$evidence_dir/qa.log"
+            status=${PIPESTATUS[0]}
           else
-            echo "No package.json found; skipping install."
+            echo 'No urai:qa script declared; no QA claim executed.' | tee "$evidence_dir/qa.log"
+            status=0
           fi
+          printf '%s\n' "$status" > "$evidence_dir/qa-exit.txt"
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          exit 0
 
-      - name: Run typecheck
+      - name: Write exact-head receipt
+        if: always()
+        env:
+          TYPECHECK_STATUS: ${{ steps.typecheck.outputs.status }}
+          TEST_STATUS: ${{ steps.tests.outputs.status }}
+          BUILD_STATUS: ${{ steps.build.outputs.status }}
+          QA_STATUS: ${{ steps.qa.outputs.status }}
         shell: bash
         run: |
-          if [ -f pnpm-lock.yaml ]; then pnpm run typecheck --if-present; elif [ -f package.json ]; then npm run typecheck --if-present; fi
+          evidence_dir="$RUNNER_TEMP/content-production-verify"
+          mkdir -p -- "$evidence_dir"
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const receipt = {
+            schemaVersion: 'urai-content-production-verify-receipt-1',
+            repository: process.env.GITHUB_REPOSITORY,
+            exactHeadSha: process.env.TARGET_SHA,
+            workflowRunId: process.env.GITHUB_RUN_ID,
+            statuses: {
+              typecheck: Number(process.env.TYPECHECK_STATUS ?? -1),
+              tests: Number(process.env.TEST_STATUS ?? -1),
+              build: Number(process.env.BUILD_STATUS ?? -1),
+              qa: Number(process.env.QA_STATUS ?? -1),
+            },
+            certification: false,
+            deployment: false,
+            productionDataMutation: false,
+            boundary: 'Exact-head repository typecheck, tests, build and declared QA only; providers, protected staging, deployment, monitoring and rollback remain separate gates.',
+          };
+          fs.writeFileSync(`${process.env.RUNNER_TEMP}/content-production-verify/receipt.json`, `${JSON.stringify(receipt, null, 2)}\n`);
+          NODE
 
-      - name: Run tests
+      - name: Upload exact-head verification evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: urai-content-production-verify-${{ env.TARGET_SHA }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/content-production-verify
+          if-no-files-found: error
+          retention-days: 365
+
+      - name: Prove final clean source
+        if: always()
         shell: bash
         run: |
-          if [ -f pnpm-lock.yaml ]; then pnpm test --if-present; elif [ -f package.json ]; then npm test --if-present; fi
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$TARGET_SHA"
+          test -z "$(git status --porcelain --untracked-files=all)"
 
-      - name: Build
+      - name: Enforce verification result
         shell: bash
         run: |
-          if [ -f pnpm-lock.yaml ]; then pnpm run build --if-present; elif [ -f package.json ]; then npm run build --if-present; fi
-
-      - name: Run URAI QA
-        shell: bash
-        run: |
-          if [ -f pnpm-lock.yaml ]; then pnpm run urai:qa --if-present; elif [ -f package.json ]; then npm run urai:qa --if-present; fi
+          test "${{ steps.typecheck.outputs.status }}" = '0'
+          test "${{ steps.tests.outputs.status }}" = '0'
+          test "${{ steps.build.outputs.status }}" = '0'
+          test "${{ steps.qa.outputs.status }}" = '0'
