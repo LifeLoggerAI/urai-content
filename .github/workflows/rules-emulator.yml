@@ -125,6 +125,8 @@ jobs:
             deployment: false,
             productionDataMutation: false,
             certification: false,
+            artifactRetentionDays: 90,
+            durableExternalArchivalRequiredForOneYear: true,
             boundary: 'Firestore and Storage emulator authorization behavior only; protected cloud deployment, live identities, monitoring and rollback remain separate gates.',
           };
           fs.writeFileSync(`${process.env.RUNNER_TEMP}/content-rules-evidence/receipt.json`, `${JSON.stringify(receipt, null, 2)}\n`);
@@ -137,7 +139,7 @@ jobs:
           name: urai-content-rules-emulator-${{ env.TARGET_SHA }}-${{ github.run_id }}
           path: ${{ runner.temp }}/content-rules-evidence
           if-no-files-found: error
-          retention-days: 365
+          retention-days: 90
 
       - name: Remove generated test dependencies
         if: always()
