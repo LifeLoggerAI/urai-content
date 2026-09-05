@@ -32,11 +32,30 @@ jobs:
       EXPECTED_BASE_URL: ${{ github.event.inputs.base_url }}
       DEPLOY_ENVIRONMENT: ${{ github.event.inputs.environment }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout exact requested source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+
+      - name: Prove exact clean checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test -z "$(git status --porcelain --untracked-files=all)"
+
+      - name: Enforce production ADC identity gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$DEPLOY_ENVIRONMENT" = "production" ]; then
+            echo '::error::URAI Content production deployment is NO-GO until a Vercel-compatible short-lived Google/Firebase runtime identity is independently provisioned, verified, and recorded. This repository does not accept long-lived Firebase service-account private keys as a substitute.'
+            exit 1
+          fi
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22
           cache: npm
@@ -74,7 +93,7 @@ jobs:
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
 
-      - name: Pull Vercel environment
+      - name: Pull Vercel preview environment
         working-directory: apps/web
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
@@ -82,11 +101,7 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: |
           set -euo pipefail
-          if [ "$DEPLOY_ENVIRONMENT" = "production" ]; then
-            vercel pull --yes --environment=production --token "$VERCEL_TOKEN"
-          else
-            vercel pull --yes --environment=preview --token "$VERCEL_TOKEN"
-          fi
+          vercel pull --yes --environment=preview --token "$VERCEL_TOKEN"
 
       - name: Build with Vercel
         working-directory: apps/web
@@ -94,9 +109,9 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: vercel build ${{ github.event.inputs.environment == 'production' && '--prod' || '' }} --token "$VERCEL_TOKEN"
+        run: vercel build --token "$VERCEL_TOKEN"
 
-      - name: Deploy prebuilt artifact
+      - name: Deploy prebuilt preview artifact
         id: deploy
         working-directory: apps/web
         env:
@@ -105,21 +120,22 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: |
           set -euo pipefail
-          if [ "$DEPLOY_ENVIRONMENT" = "production" ]; then
-            url=$(vercel deploy --prebuilt --prod --token "$VERCEL_TOKEN")
-          else
-            url=$(vercel deploy --prebuilt --token "$VERCEL_TOKEN")
-          fi
+          url=$(vercel deploy --prebuilt --token "$VERCEL_TOKEN")
           echo "deployed_url=$url" >> "$GITHUB_OUTPUT"
           echo "$url" > ../../deploy-url.txt
           echo "Deployed URL: $url"
 
-      - name: Validate expected URL input
+      - name: Validate HTTPS deployment URLs
         run: |
           set -euo pipefail
           case "$EXPECTED_BASE_URL" in
-            http://*|https://*) ;;
-            *) echo "::error::base_url must start with http:// or https://"; exit 1 ;;
+            https://*) ;;
+            *) echo "::error::base_url must use https://"; exit 1 ;;
+          esac
+          deployed_url="$(cat deploy-url.txt)"
+          case "$deployed_url" in
+            https://*) ;;
+            *) echo "::error::Vercel deployment URL must use https://"; exit 1 ;;
           esac
 
       - name: Live HTTP smoke
@@ -145,13 +161,10 @@ jobs:
       - name: Runtime route smoke
         run: npm run web:smoke:routes -- --base-url="$EXPECTED_BASE_URL"
 
-      - name: Production smoke
-        run: npm run smoke:production -- --base-url="$EXPECTED_BASE_URL"
-
       - name: Upload deploy evidence
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: urai-content-live-deploy-evidence-${{ github.sha }}
+          name: urai-content-preview-deploy-evidence-${{ github.sha }}
           path: |
             deploy-url.txt
             launch-proof/live-deploy/latest-smoke.md
