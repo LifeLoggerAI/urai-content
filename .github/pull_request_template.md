@@ -3,7 +3,7 @@
 ## Scope
 
 ```text
-Scope type: package / web-runtime / Firebase / auth / Stripe / export / deployment / observability / docs
+Scope type: package / web-runtime / Firebase / auth / Stripe / export / deployment / observability / docs / prompt-library
 Related issue(s):
 Launch lane:
 Expected status change: RED -> YELLOW / YELLOW -> GREEN / no status change
@@ -73,6 +73,19 @@ Provider evidence, if applicable:
 - [ ] Docs updated when needed
 - [ ] Broken/orphaned references checked
 - [ ] Duplicate content/systems checked
+
+## Prompt library impact
+
+- [ ] N/A, this PR does not change prompt behavior, prompt tests, or prompt governance
+- [ ] Prompt version impact identified: patch / minor / major
+- [ ] Behavioral impact and migration risk described
+- [ ] `npm run check:prompts` passes
+- [ ] `npm run test:prompt-evals` passes
+- [ ] Real model-run outputs were scored with `npm run eval:prompts -- --outputs <directory>`
+- [ ] Evaluation report and raw outputs are attached for material behavior changes
+- [ ] Content parity, source hash, version, and changelog are updated
+- [ ] Google Doc mirror sync is planned after merge
+- [ ] Independent non-author approval obtained
 
 ## Governance impact
 
@@ -147,6 +160,9 @@ Do not merge if any are true:
 - CI fails without explicit owner-approved override
 - Governance verification fails
 - Secret scan fails
+- Prompt parity, version, link, or evaluation-regression checks fail
+- Prompt-sensitive changes lack independent approval
+- Material prompt behavior changes lack real evaluation evidence
 - Observability verification fails for deployment claims
 - Security rules are missing or untested where applicable
 - Auth/admin routes fail open

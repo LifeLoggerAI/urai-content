@@ -4,29 +4,34 @@ Reusable, version-controlled prompts for URAI research, content, and agent workf
 
 ## Current release
 
-- **Version:** 1.0
+- **Version:** `1.0.0`
+- **Source of truth:** GitHub
 - **Last synchronized:** July 11, 2026
-- **Canonical editable copy:** [Google Docs](https://docs.google.com/document/d/1dnIErxoHoIqpqR9uyYuR6rphdZv8h5VOpxZEwZ-g1c4/edit?usp=drivesdk)
-- **Version-controlled copy:** [Autonomous Research Agent Master Prompt](./autonomous-research-agent-master-prompt.md)
+- **Collaboration mirror:** [Google Docs](https://docs.google.com/document/d/1dnIErxoHoIqpqR9uyYuR6rphdZv8h5VOpxZEwZ-g1c4/edit)
+- **Version-controlled prompt:** [Autonomous Research Agent Master Prompt](./autonomous-research-agent-master-prompt.md)
+- **Parity status:** [PASS](./PARITY.md)
 
 ## Library contents
 
-### [Autonomous Research Agent Master Prompt](./autonomous-research-agent-master-prompt.md)
+- [Autonomous Research Agent Master Prompt](./autonomous-research-agent-master-prompt.md) — full report, master prompt, specialized templates, runtime plan, and customization guide.
+- [Usage Guide](./USAGE.md) — mode selection and operating instructions.
+- [Evaluation Suite](./evals/README.md) — representative cases, scoring, fixtures, and release evidence workflow.
+- [Content Parity Report](./PARITY.md) — Google Doc-to-GitHub section verification and source hash.
+- [Synchronization Workflow](./SYNC.md) — authority, update flow, conflict rules, and acceptance checklist.
+- [Governance Policy](./GOVERNANCE.md) — ownership, review gates, versioning, approvals, and rollback.
+- [Changelog](./CHANGELOG.md) — release history.
 
-An audit-ready research protocol for autonomous agents. It covers task scoping, source prioritization, search strategy, evidence screening, structured extraction, synthesis, uncertainty handling, claim verification, and final report packaging.
+## Commands
 
-### [Usage Guide](./USAGE.md)
+```bash
+npm run check:prompts
+npm run test:prompt-evals
+npm run eval:prompts -- --outputs <directory>
+```
 
-Explains how to select the master, quick-scan, deep-literature-review, or market-analysis mode; define inputs; execute the workflow; and apply quality gates.
+## Maintenance rules
 
-### [Changelog](./CHANGELOG.md)
-
-Records prompt releases, behavioral changes, distribution links, and versioning policy.
-
-## Maintenance
-
-- Treat prompt changes like application-code changes: review, version, evaluate, and preserve rollback history.
-- Keep the Google Doc and repository copy synchronized.
-- Prefer primary and official sources in examples and embedded research guidance.
-- Record material behavioral changes in the changelog and commit message.
-- Update the version and synchronization date whenever the behavioral contract changes.
+- Treat prompt changes like application-code changes: branch, review, evaluate, version, and preserve rollback history.
+- GitHub is authoritative; the Google Doc is updated after merge.
+- Behavioral changes require independent approval and passing prompt checks.
+- Update the version and synchronization date whenever the published behavioral contract changes.
