@@ -129,6 +129,8 @@ jobs:
             certification: false,
             deployment: false,
             productionDataMutation: false,
+            artifactRetentionDays: 90,
+            durableExternalArchivalRequiredForOneYear: true,
             boundary: 'Exact-head repository typecheck, tests, build and declared QA only; providers, protected staging, deployment, monitoring and rollback remain separate gates.',
           };
           fs.writeFileSync(`${process.env.RUNNER_TEMP}/content-production-verify/receipt.json`, `${JSON.stringify(receipt, null, 2)}\n`);
@@ -141,7 +143,7 @@ jobs:
           name: urai-content-production-verify-${{ env.TARGET_SHA }}-${{ github.run_id }}
           path: ${{ runner.temp }}/content-production-verify
           if-no-files-found: error
-          retention-days: 365
+          retention-days: 90
 
       - name: Prove final clean source
         if: always()
