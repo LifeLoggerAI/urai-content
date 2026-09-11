@@ -112,14 +112,16 @@ jobs:
         shell: bash
         run: |
           evidence_dir="$RUNNER_TEMP/content-rules-evidence"
+          mkdir -p -- "$evidence_dir"
           node - <<'NODE'
           const fs = require('node:fs');
+          const exitStatus = (value) => /^\d+$/.test(String(value ?? '')) ? Number(value) : -1;
           const receipt = {
             schemaVersion: 'urai-content-rules-emulator-receipt-1',
             repository: process.env.GITHUB_REPOSITORY,
             exactHeadSha: process.env.TARGET_SHA,
             workflowRunId: process.env.GITHUB_RUN_ID,
-            emulatorStatus: Number(process.env.EMULATOR_STATUS ?? -1),
+            emulatorStatus: exitStatus(process.env.EMULATOR_STATUS),
             projectId: 'urai-content-rules-test',
             credentialed: false,
             deployment: false,

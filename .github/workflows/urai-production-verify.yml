@@ -115,16 +115,17 @@ jobs:
           mkdir -p -- "$evidence_dir"
           node - <<'NODE'
           const fs = require('node:fs');
+          const exitStatus = (value) => /^\d+$/.test(String(value ?? '')) ? Number(value) : -1;
           const receipt = {
             schemaVersion: 'urai-content-production-verify-receipt-1',
             repository: process.env.GITHUB_REPOSITORY,
             exactHeadSha: process.env.TARGET_SHA,
             workflowRunId: process.env.GITHUB_RUN_ID,
             statuses: {
-              typecheck: Number(process.env.TYPECHECK_STATUS ?? -1),
-              tests: Number(process.env.TEST_STATUS ?? -1),
-              build: Number(process.env.BUILD_STATUS ?? -1),
-              qa: Number(process.env.QA_STATUS ?? -1),
+              typecheck: exitStatus(process.env.TYPECHECK_STATUS),
+              tests: exitStatus(process.env.TEST_STATUS),
+              build: exitStatus(process.env.BUILD_STATUS),
+              qa: exitStatus(process.env.QA_STATUS),
             },
             certification: false,
             deployment: false,
