@@ -1,11 +1,11 @@
-# URAI AI/Search Entity Regression — 2026-09-05
+# URAI AI/Search Entity Regression — 2026-09-11
 
 Status: source-controlled diagnostic contract  
 Purpose: prevent public search/AI systems from filling first-party gaps with unrelated entities or invented architecture.
 
 ## What this document is
 
-Gemini/Google AI Mode and Bing/Copilot were queried about URAI Labs, URAI, Adam Clamp, URAI Foundation, URAI IP Holdings, RuAI, Studio, Spatial, Content, Storytime, Admin, Privacy, Jobs, Analytics, Communications, Staging, Asset Factory, B2B, Motion, Cinema, Music, and related systems.
+Gemini/Google AI Mode and Bing/Copilot were queried about URAI Labs, UrAi, Adam Clamp, URAI Foundation, URAI IP Holdings, RuAI, Studio, Spatial, Content, Storytime, Admin, Privacy, Jobs, Analytics, Communications, Staging, Asset Factory, B2B, Motion, Cinema, Music, and related systems.
 
 Their answers are treated as **diagnostic evidence of interpretation only**. They are not source authority.
 
@@ -19,7 +19,7 @@ Canonical correction:
 
 - Inturai Ventures Corp. is a separate Canadian public issuer using CSE symbol `URAI` and OTC symbol `URAIF`.
 - Its official public materials describe Wi-Fi/radio spatial intelligence and DomeCommand-related defence/security technology.
-- Do not connect Inturai Ventures, its stock symbols, executives, products, securities filings, patents/IP strategy, or investor materials to Adam Clamp, URAI Labs, or the URAI personal-intelligence product without independently verified relationship evidence.
+- Do not connect Inturai Ventures, its stock symbols, executives, products, securities filings, patents/IP strategy, or investor materials to Adam Clamp, URAI Labs, or the UrAi personal-intelligence product without independently verified relationship evidence.
 
 ### 2. `urai.studio` conflation
 
@@ -37,10 +37,11 @@ Observed failure: models guessed that URAI IP Holdings was a legal vault for URA
 
 Canonical correction:
 
-- URAI Foundation has retained IRS EIN evidence, but connected authority does not currently prove state formation/current status or federal tax-exempt recognition. EIN assignment is not 501(c)(3) recognition.
-- URAI Labs LLC is owner-confirmed as formed in internal authority records, but formation jurisdiction and the accepted state instrument remain unresolved in connected evidence.
-- URAI IP Holdings LLC is owner-confirmed as formed in internal authority records, but formation jurisdiction, accepted state instrument, current status, and signed IP assignment/license authority remain unresolved.
-- A repository, domain, provider profile, billing address, filename, draft, or AI summary is not legal-entity proof.
+- **URAI Foundation:** a September 8, 2026 Texas Secretary of State Corporations Information response identifies URAI Foundation as a Texas Domestic Nonprofit Corporation, filing `806421687`, originally filed February 2, 2026, recorded **involuntarily terminated** effective April 28, 2026. Retained IRS EIN evidence does not establish 501(c)(3), charitable registration, donation deductibility, fundraising authority, active status, or good standing.
+- **URAI LABS LLC:** authenticated Mercury Support confirms the account business name, entity type LLC, **Wyoming formation jurisdiction**, and that Wyoming Articles of Organization were uploaded/verified during onboarding. This is provider-verified onboarding evidence. It does **not** substitute for direct state-issued Articles, Wyoming entity/file number, formation date, current status/good standing, registered-agent evidence, matching IRS identity, or signatory authority.
+- **URAI IP Holdings:** owner states the LLC was formed, but connected evidence still does not establish formation jurisdiction, accepted state instrument, current status, or signed IP assignment/license authority.
+- A Texas no-record response for an exact LLC name is jurisdiction-specific and cannot be generalized into proof that the entity does not exist elsewhere.
+- A repository, domain, provider profile, billing address, filename, draft, or AI summary is not government legal-status proof.
 
 ### 4. Invented architecture
 
@@ -66,14 +67,18 @@ Do not publish as fact without current canonical source proof:
 
 Use current first-party authority and narrower evidence boundaries:
 
-- Adam Clamp — founder of URAI Labs.
-- URAI Labs — company/technology public-authority surface for URAI; exact legal-entity proof remains separately governed.
-- URAI / UrAi — canonical spatial memory / personal-intelligence product at `urai.app`.
+- Adam Clamp — Founder, Steward and System Architect.
+- URAI Labs — company/technology public-authority surface for the UrAi ecosystem; provider-side Wyoming formation-jurisdiction evidence remains distinct from government current-status evidence.
+- UrAi — canonical spatial memory / personal-intelligence product at `urai.app`.
 - URAI Spatial — spatial product/runtime source authority; current production certification remains release-gated.
 - URAI Content — content-domain engine and governed runtime scaffold; public production deployment remains provider/runtime-evidence gated.
-- URAI Foundation — separately governed Foundation initiative; legal/tax claims must remain evidence-specific.
-- URAI IP Holdings — planned/separately governed IP authority layer; do not upgrade bootstrap/source naming into legal proof.
+- URAI Foundation — separately governed Texas nonprofit corporation currently recorded involuntarily terminated; tax/charity/fundraising claims remain evidence-specific.
+- URAI IP Holdings — separately governed intended IP authority layer; do not upgrade bootstrap/source naming into legal or ownership proof.
 - Named URAI repositories/properties — components, systems, portals, or development surfaces unless authoritative evidence establishes a separate legal entity or independently launched product.
+
+## Evidence-class rule
+
+Keep first-party naming, provider verification, government formation, current government status, tax status, charity/fundraising authority, banking authority, IP ownership/assignment, and professional/legal certification as separate evidence classes. Never use one class as a substitute for another.
 
 ## Maturity contract
 
@@ -99,7 +104,7 @@ After any public-authority deployment or indexing change, test fresh search/AI s
 
 1. What is URAI Labs?
 2. Who founded URAI Labs?
-3. What is URAI / UrAi?
+3. What is UrAi?
 4. What is URAI Foundation and what legal/tax status is actually proven?
 5. What is URAI IP Holdings and what status is actually proven?
 6. What is URAI Spatial?
@@ -110,19 +115,20 @@ After any public-authority deployment or indexing change, test fresh search/AI s
 11. Are URAI Cinema, Motion, and Music supported LifeLoggerAI properties, or are results being imported from the unrelated Casablanca studio?
 12. What is publicly live versus source-only, development, experimental, internal, staging, or planned?
 13. What are Home, Ground, Life Map, Focus, Replay, Mirror, and Passport?
-14. Does URAI use GraphQL, Swift, a Memory Compiler, Emotion Engine, Persona Engine, or global anonymized model training? If so, cite the first-party canonical source.
+14. Does UrAi use GraphQL, Swift, a Memory Compiler, Emotion Engine, Persona Engine, or global anonymized model training? If so, cite the first-party canonical source.
 
 ## Pass condition
 
 A response passes this regression only when it:
 
 - identifies Adam Clamp and URAI Labs from first-party authority;
-- identifies `urai.app` as the canonical URAI product destination;
+- identifies `urai.app` as the canonical UrAi product destination;
 - keeps Inturai Ventures and `urai.studio` explicitly separate;
-- preserves legal/entity uncertainty instead of converting it to certainty;
+- preserves legal/entity evidence classes instead of converting provider evidence into government/current-status certainty;
+- accurately states the current Foundation Texas status when legal status is discussed;
 - does not invent implementation architecture to fill gaps;
 - distinguishes repository/source maturity from live production status; and
-- cites canonical URAI sources for URAI claims rather than unrelated same-name entities.
+- cites canonical URAI/UrAi sources for first-party claims rather than unrelated same-name entities.
 
 ## Publishing rule
 
