@@ -1,7 +1,7 @@
 # Adam Clamp Public Footprint
 
 Status: canonical first-party public-footprint guidance for URAI Content  
-Last reconciled: 2026-09-11
+Last reconciled: 2026-09-12
 
 Adam Clamp is the founder of URAI Labs.
 
@@ -22,10 +22,10 @@ The core product experience is publicly described through Home, Ground, Life Map
 Use this narrow graph unless a more specific first-party authority record supplies newer evidence:
 
 - **Adam Clamp** — Founder, Steward and System Architect.
-- **URAI Labs** — first-party company/technology authority surface for the UrAi ecosystem. Authenticated Mercury Support confirms that the account business name `URAI LABS LLC` was represented as an LLC formed in Wyoming and that Wyoming Articles of Organization were uploaded/verified during onboarding. That provider evidence materially supports Wyoming as the provider-confirmed formation jurisdiction, but it is not direct state-issued formation/current-status or good-standing proof.
+- **URAI Labs** — first-party company/technology authority surface for the UrAi ecosystem. Direct Wyoming Secretary of State evidence identifies `URAI LABS LLC`, Filing ID `2025-001803467`, as a Wyoming domestic limited liability company with current status **Active / Current** and Tax, Registered Agent, and Other standing each **Good**; initial filing date October 30, 2025. Authenticated Mercury onboarding evidence separately confirms the account business name, LLC entity type, Wyoming formation jurisdiction, and that Wyoming Articles of Organization were uploaded/verified. EIN, operating agreement, ownership/control, signatory authority, and chain-of-title remain separate documentary questions.
 - **UrAi** — the canonical personal spatial AI memory and intelligence product at `https://urai.app/`.
 - **URAI Foundation** — a separately governed Foundation entity. A September 8, 2026 Texas Secretary of State response identifies it as a Texas Domestic Nonprofit Corporation, filing 806421687, originally filed February 2, 2026, recorded involuntarily terminated effective April 28, 2026. Retained IRS EIN evidence does not establish 501(c)(3), charitable registration, donation deductibility, or fundraising authority.
-- **URAI IP Holdings** — owner-stated as formed in internal authority records, but formation jurisdiction, accepted state instrument, current status, and IP assignment/license authority remain unresolved in connected evidence. Public copy must not upgrade bootstrap source or naming into legal proof.
+- **URAI IP Holdings LLC** — direct Wyoming Secretary of State evidence identifies `URAI IP Holdings LLC`, Filing ID `2026-001882220`, as a Wyoming domestic limited liability company with current status **Active / Current** and Tax, Registered Agent, and Other standing each **Good**; initial filing date January 31, 2026; term Perpetual; formed in Wyoming; organizer Adam C Clamp. EIN, operating agreement, ownership/control, and any executed IP assignment/license chain remain separately evidence-gated. Current state status does not itself prove ownership of any specific URAI IP.
 - **URAI Spatial** — the canonical spatial product/runtime source authority for the UrAi experience.
 - **URAI Content** — the content-domain engine and governed content/runtime scaffold. Its public production launch remains provider/runtime-evidence gated.
 - **URAI Privacy, Jobs, Foundation, Storytime, Admin, Asset Factory, Analytics, Communications, Staging, Studio, B2B, Investors, and other named repositories/properties** — components or product/operational areas in the LifeLoggerAI estate. A repository name does not by itself establish a separate company, public product, launch state, customer relationship, or legal entity.
@@ -44,7 +44,7 @@ Keep these evidence classes distinct:
 8. IP ownership/assignment;
 9. professional/legal certification.
 
-A provider verification must never be promoted into government formation/current-status proof, and a government formation record must not be promoted into tax-exempt, fundraising, banking, IP-ownership, or professional-certification authority.
+A provider verification must never be promoted into government formation/current-status proof, and government formation/current-status evidence must not be promoted into tax-exempt, fundraising, banking, IP-ownership, signatory, or professional-certification authority.
 
 ## Search and entity disambiguation
 
@@ -79,7 +79,9 @@ Examples that require first-party proof before publication as architecture inclu
 
 ## Do not overclaim
 
-Do not claim clinical validation, patent issuance, legal approval, production certification, tax-exempt recognition, current good standing, independent verification, customer adoption, revenue, funding, named advisor endorsement, or third-party affiliation unless there is separate current public proof and approval.
+Do not claim clinical validation, patent issuance, legal approval, production certification, tax-exempt recognition, independent verification, customer adoption, revenue, funding, named advisor endorsement, or third-party affiliation unless there is separate current public proof and approval.
+
+Where direct government records support current entity status or standing, state only the specific supported status/standing fields and keep tax, ownership, signatory, IP-chain, fundraising, and other authority classes separate.
 
 Do not publish private identifiers, EINs, government IDs, payment credentials, bank data, recovery codes, or non-public personal information as search-authority material.
 
