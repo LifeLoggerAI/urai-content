@@ -147,4 +147,4 @@ jobs:
           name: content-dependency-audit-${{ env.TARGET_SHA }}
           path: artifacts/content-dependency-audit
           if-no-files-found: error
-          retention-days: 365
+          retention-days: 90
