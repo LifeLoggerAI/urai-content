@@ -1,4 +1,4 @@
-# URAI AI/Search Entity Regression — 2026-09-11
+# URAI AI/Search Entity Regression — 2026-09-12
 
 Status: source-controlled diagnostic contract  
 Purpose: prevent public search/AI systems from filling first-party gaps with unrelated entities or invented architecture.
@@ -38,8 +38,8 @@ Observed failure: models guessed that URAI IP Holdings was a legal vault for URA
 Canonical correction:
 
 - **URAI Foundation:** a September 8, 2026 Texas Secretary of State Corporations Information response identifies URAI Foundation as a Texas Domestic Nonprofit Corporation, filing `806421687`, originally filed February 2, 2026, recorded **involuntarily terminated** effective April 28, 2026. Retained IRS EIN evidence does not establish 501(c)(3), charitable registration, donation deductibility, fundraising authority, active status, or good standing.
-- **URAI LABS LLC:** authenticated Mercury Support confirms the account business name, entity type LLC, **Wyoming formation jurisdiction**, and that Wyoming Articles of Organization were uploaded/verified during onboarding. This is provider-verified onboarding evidence. It does **not** substitute for direct state-issued Articles, Wyoming entity/file number, formation date, current status/good standing, registered-agent evidence, matching IRS identity, or signatory authority.
-- **URAI IP Holdings:** owner states the LLC was formed, but connected evidence still does not establish formation jurisdiction, accepted state instrument, current status, or signed IP assignment/license authority.
+- **URAI LABS LLC:** direct Wyoming Secretary of State evidence identifies `URAI LABS LLC`, Filing ID `2025-001803467`, as a Wyoming domestic limited liability company with current status **Active / Current** and Tax, Registered Agent, and Other standing each **Good**; initial filing date October 30, 2025. Authenticated Mercury onboarding separately confirms the account business name, LLC entity type, Wyoming formation jurisdiction, and uploaded/verified Wyoming Articles. EIN, operating agreement, ownership/control, signatory authority, and chain-of-title remain separate documentary questions.
+- **URAI IP Holdings LLC:** direct Wyoming Secretary of State evidence identifies `URAI IP Holdings LLC`, Filing ID `2026-001882220`, as a Wyoming domestic limited liability company with current status **Active / Current** and Tax, Registered Agent, and Other standing each **Good**; initial filing date January 31, 2026; term Perpetual; formed in Wyoming; organizer Adam C Clamp. EIN, operating agreement, ownership/control, and any executed IP assignment/license chain remain separately evidence-gated. Current state status does not itself prove ownership of specific URAI IP.
 - A Texas no-record response for an exact LLC name is jurisdiction-specific and cannot be generalized into proof that the entity does not exist elsewhere.
 - A repository, domain, provider profile, billing address, filename, draft, or AI summary is not government legal-status proof.
 
@@ -68,12 +68,12 @@ Do not publish as fact without current canonical source proof:
 Use current first-party authority and narrower evidence boundaries:
 
 - Adam Clamp — Founder, Steward and System Architect.
-- URAI Labs — company/technology public-authority surface for the UrAi ecosystem; provider-side Wyoming formation-jurisdiction evidence remains distinct from government current-status evidence.
+- URAI Labs — company/technology public-authority surface for the UrAi ecosystem; Wyoming formation/current-status/standing is directly evidenced by current state records, while provider evidence and ownership/signatory/EIN questions remain separate classes.
 - UrAi — canonical spatial memory / personal-intelligence product at `urai.app`.
 - URAI Spatial — spatial product/runtime source authority; current production certification remains release-gated.
 - URAI Content — content-domain engine and governed runtime scaffold; public production deployment remains provider/runtime-evidence gated.
 - URAI Foundation — separately governed Texas nonprofit corporation currently recorded involuntarily terminated; tax/charity/fundraising claims remain evidence-specific.
-- URAI IP Holdings — separately governed intended IP authority layer; do not upgrade bootstrap/source naming into legal or ownership proof.
+- URAI IP Holdings LLC — separately governed Wyoming LLC with direct current state-status evidence; ownership of specific IP and executed assignment/license authority remain evidence-gated.
 - Named URAI repositories/properties — components, systems, portals, or development surfaces unless authoritative evidence establishes a separate legal entity or independently launched product.
 
 ## Evidence-class rule
@@ -124,8 +124,9 @@ A response passes this regression only when it:
 - identifies Adam Clamp and URAI Labs from first-party authority;
 - identifies `urai.app` as the canonical UrAi product destination;
 - keeps Inturai Ventures and `urai.studio` explicitly separate;
-- preserves legal/entity evidence classes instead of converting provider evidence into government/current-status certainty;
+- preserves legal/entity evidence classes instead of converting one class into another;
 - accurately states the current Foundation Texas status when legal status is discussed;
+- accurately recognizes direct Wyoming current-status/standing evidence for URAI LABS LLC and URAI IP Holdings LLC without upgrading that into ownership, signatory, EIN, or IP-chain claims;
 - does not invent implementation architecture to fill gaps;
 - distinguishes repository/source maturity from live production status; and
 - cites canonical URAI/UrAi sources for first-party claims rather than unrelated same-name entities.
