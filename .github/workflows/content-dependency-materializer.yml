@@ -45,9 +45,18 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          npm install --package-lock-only --ignore-scripts --save-dev vitest@4.1.11
-          npm install --package-lock-only --ignore-scripts --prefix apps/web next@16.3.3 @next/env@16.3.3 firebase-admin@14.4.0
-          npm install --package-lock-only --ignore-scripts --prefix apps/web --save-dev eslint-config-next@16.3.3 vitest@4.1.11
+          # Avoid npm/arborist's in-place package-lock-only bug by updating manifests
+          # first, clearing installed trees, then resolving fresh lockfiles.
+          npm pkg set 'devDependencies.vitest=4.1.11'
+          npm --prefix apps/web pkg set \
+            'dependencies.next=15.5.24' \
+            'dependencies.@next/env=15.5.24' \
+            'dependencies.firebase-admin=14.4.0' \
+            'devDependencies.eslint-config-next=15.5.24' \
+            'devDependencies.vitest=4.1.11'
+          rm -rf node_modules apps/web/node_modules
+          npm install --package-lock-only --ignore-scripts
+          npm install --package-lock-only --ignore-scripts --prefix apps/web
 
       - name: Verify synchronized frozen installs
         shell: bash
