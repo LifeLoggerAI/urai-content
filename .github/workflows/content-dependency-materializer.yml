@@ -48,17 +48,26 @@ jobs:
           npm install --global npm@11
           npm --version | tee artifacts/candidate/npm-version.txt
 
-      - name: Materialize bounded direct upgrades
+      - name: Materialize bounded dependency upgrades
         shell: bash
         run: |
           set -euo pipefail
-          npm pkg set 'devDependencies.vitest=4.1.11'
+          npm pkg set \
+            'devDependencies.vitest=4.1.11' \
+            'devDependencies.tsx=4.23.9' \
+            'overrides.minimatch@3.1.5.brace-expansion=1.1.18' \
+            'overrides.minimatch@10.2.5.brace-expansion=5.0.9' \
+            'overrides.js-yaml=4.3.2'
           npm --prefix apps/web pkg set \
             'dependencies.next=15.5.24' \
             'dependencies.@next/env=15.5.24' \
             'dependencies.firebase-admin=14.4.0' \
             'devDependencies.eslint-config-next=15.5.24' \
-            'devDependencies.vitest=4.1.11'
+            'devDependencies.vitest=4.1.11' \
+            'overrides.next.postcss=8.5.23' \
+            'overrides.next.sharp=0.35.4' \
+            'overrides.gaxios@6.7.1.uuid=11.1.1' \
+            'overrides.js-yaml=4.3.2'
           rm -rf node_modules apps/web/node_modules
           npm install --package-lock-only --ignore-scripts
           npm install --package-lock-only --ignore-scripts --prefix apps/web
