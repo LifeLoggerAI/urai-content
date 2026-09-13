@@ -41,12 +41,17 @@ jobs:
           npm audit --json > artifacts/before/root-audit.json || true
           npm audit --json --prefix apps/web > artifacts/before/web-audit.json || true
 
+      - name: Upgrade package manager for remediation only
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --global npm@11
+          npm --version | tee artifacts/candidate/npm-version.txt
+
       - name: Materialize bounded direct upgrades
         shell: bash
         run: |
           set -euo pipefail
-          # Avoid npm/arborist's in-place package-lock-only bug by updating manifests
-          # first, clearing installed trees, then resolving fresh lockfiles.
           npm pkg set 'devDependencies.vitest=4.1.11'
           npm --prefix apps/web pkg set \
             'dependencies.next=15.5.24' \
