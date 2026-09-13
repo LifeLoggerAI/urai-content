@@ -1,0 +1,87 @@
+name: Content Dependency Remediation Materializer
+
+on:
+  push:
+    branches:
+      - agent/content-dependency-materialize-20260913
+
+permissions:
+  contents: read
+
+concurrency:
+  group: content-dependency-materializer-${{ github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout exact source
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            apps/web/package-lock.json
+
+      - name: Capture before audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/before artifacts/after artifacts/candidate
+          npm ci --ignore-scripts
+          npm ci --ignore-scripts --prefix apps/web
+          npm audit --json > artifacts/before/root-audit.json || true
+          npm audit --json --prefix apps/web > artifacts/before/web-audit.json || true
+
+      - name: Materialize bounded direct upgrades
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --package-lock-only --ignore-scripts --save-dev vitest@4.1.11
+          npm install --package-lock-only --ignore-scripts --prefix apps/web next@16.3.3 @next/env@16.3.3 firebase-admin@14.4.0
+          npm install --package-lock-only --ignore-scripts --prefix apps/web --save-dev eslint-config-next@16.3.3 vitest@4.1.11
+
+      - name: Verify synchronized frozen installs
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf node_modules apps/web/node_modules
+          npm ci
+          npm ci --prefix apps/web
+
+      - name: Run source verification
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run check
+          npm run check --prefix apps/web
+
+      - name: Capture after audit and candidate
+        if: always()
+        shell: bash
+        run: |
+          set -u
+          npm audit --json > artifacts/after/root-audit.json || true
+          npm audit --json --prefix apps/web > artifacts/after/web-audit.json || true
+          cp package.json package-lock.json artifacts/candidate/
+          mkdir -p artifacts/candidate/apps/web
+          cp apps/web/package.json apps/web/package-lock.json artifacts/candidate/apps/web/
+          git diff -- package.json package-lock.json apps/web/package.json apps/web/package-lock.json > artifacts/candidate/dependency-remediation.diff || true
+          printf '%s\n' "${{ github.sha }}" > artifacts/candidate/source-sha.txt
+
+      - name: Upload candidate and audit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: content-dependency-remediation-${{ github.sha }}
+          path: artifacts
+          if-no-files-found: error
+          retention-days: 90
