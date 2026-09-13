@@ -1,4 +1,4 @@
-name: Content Dependency Remediation Materializer
+name: Content Dependency Remediation Promotion
 
 on:
   push:
@@ -6,21 +6,29 @@ on:
       - agent/content-dependency-materialize-20260913
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
-  group: content-dependency-materializer-${{ github.sha }}
-  cancel-in-progress: true
+  group: content-dependency-promotion
+  cancel-in-progress: false
 
 jobs:
-  materialize:
+  promote:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - name: Checkout exact source
+      - name: Checkout certified main parent
         uses: actions/checkout@v4
         with:
-          persist-credentials: false
+          ref: main
+          fetch-depth: 1
+
+      - name: Fail closed on parent drift
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "4b38589be76dff88e310fc11b9bba5ce8b793d19"
+          test "$(git status --porcelain)" = ""
 
       - name: Setup Node 22
         uses: actions/setup-node@v4
@@ -31,24 +39,14 @@ jobs:
             package-lock.json
             apps/web/package-lock.json
 
-      - name: Capture before audit
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p artifacts/before artifacts/after artifacts/candidate
-          npm ci --ignore-scripts
-          npm ci --ignore-scripts --prefix apps/web
-          npm audit --json > artifacts/before/root-audit.json || true
-          npm audit --json --prefix apps/web > artifacts/before/web-audit.json || true
-
-      - name: Upgrade package manager for remediation only
+      - name: Use remediation package manager
         shell: bash
         run: |
           set -euo pipefail
           npm install --global npm@11
-          npm --version | tee artifacts/candidate/npm-version.txt
+          npm --version
 
-      - name: Materialize bounded dependency upgrades
+      - name: Materialize verified zero-audit graph
         shell: bash
         run: |
           set -euo pipefail
@@ -91,59 +89,42 @@ jobs:
           npm ci
           npm ci --prefix apps/web
 
-      - name: Checkpoint candidate for source verification
+      - name: Prove zero audit findings
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm audit --audit-level=low
+          npm audit --audit-level=low --prefix apps/web
+
+      - name: Commit exactly four dependency files locally
         shell: bash
         run: |
           set -euo pipefail
           unexpected="$(git diff --name-only | grep -Ev '^(package.json|package-lock.json|apps/web/package.json|apps/web/package-lock.json)$' || true)"
           if [ -n "$unexpected" ]; then
-            echo "Unexpected tracked changes before candidate verification:"
+            echo "Unexpected tracked changes:"
             echo "$unexpected"
             exit 1
           fi
-          git config user.name "URAI dependency materializer"
+          git config user.name "URAI dependency remediation"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add package.json package-lock.json apps/web/package.json apps/web/package-lock.json
-          git commit -m "chore: ephemeral dependency remediation candidate"
+          test "$(git diff --cached --name-only | wc -l)" -eq 4
+          git commit -m "security: remediate Content dependency audit findings"
 
-      - name: Verify root source
-        shell: bash
-        run: npm run check
-
-      - name: Verify web typecheck
-        shell: bash
-        run: npm run typecheck --prefix apps/web
-
-      - name: Verify web lint
-        shell: bash
-        run: npm run lint --prefix apps/web
-
-      - name: Verify web tests
-        shell: bash
-        run: npm test --prefix apps/web
-
-      - name: Verify web production build
-        shell: bash
-        run: npm run build --prefix apps/web
-
-      - name: Capture after audit and candidate
-        if: always()
+      - name: Re-earn source and web verification
         shell: bash
         run: |
-          set -u
-          npm audit --json > artifacts/after/root-audit.json || true
-          npm audit --json --prefix apps/web > artifacts/after/web-audit.json || true
-          cp package.json package-lock.json artifacts/candidate/
-          mkdir -p artifacts/candidate/apps/web
-          cp apps/web/package.json apps/web/package-lock.json artifacts/candidate/apps/web/
-          git show --format= -- package.json package-lock.json apps/web/package.json apps/web/package-lock.json > artifacts/candidate/dependency-remediation.diff || true
-          printf '%s\n' "${{ github.sha }}" > artifacts/candidate/source-sha.txt
+          set -euo pipefail
+          npm run check
+          npm run typecheck --prefix apps/web
+          npm run lint --prefix apps/web
+          npm test --prefix apps/web
+          npm run build --prefix apps/web
+          git diff --exit-code
 
-      - name: Upload candidate and audit evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: content-dependency-remediation-${{ github.sha }}
-          path: artifacts
-          if-no-files-found: error
-          retention-days: 90
+      - name: Publish clean successor branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git push origin HEAD:refs/heads/security/content-dependencies-20260913
