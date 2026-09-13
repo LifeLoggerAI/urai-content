@@ -71,12 +71,25 @@ jobs:
           npm ci
           npm ci --prefix apps/web
 
-      - name: Run source verification
+      - name: Verify root source
         shell: bash
-        run: |
-          set -euo pipefail
-          npm run check
-          npm run check --prefix apps/web
+        run: npm run check
+
+      - name: Verify web typecheck
+        shell: bash
+        run: npm run typecheck --prefix apps/web
+
+      - name: Verify web lint
+        shell: bash
+        run: npm run lint --prefix apps/web
+
+      - name: Verify web tests
+        shell: bash
+        run: npm test --prefix apps/web
+
+      - name: Verify web production build
+        shell: bash
+        run: npm run build --prefix apps/web
 
       - name: Capture after audit and candidate
         if: always()
