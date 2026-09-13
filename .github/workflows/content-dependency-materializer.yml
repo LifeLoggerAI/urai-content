@@ -71,6 +71,21 @@ jobs:
           npm ci
           npm ci --prefix apps/web
 
+      - name: Checkpoint candidate for source verification
+        shell: bash
+        run: |
+          set -euo pipefail
+          unexpected="$(git diff --name-only | grep -Ev '^(package.json|package-lock.json|apps/web/package.json|apps/web/package-lock.json)$' || true)"
+          if [ -n "$unexpected" ]; then
+            echo "Unexpected tracked changes before candidate verification:"
+            echo "$unexpected"
+            exit 1
+          fi
+          git config user.name "URAI dependency materializer"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json package-lock.json apps/web/package.json apps/web/package-lock.json
+          git commit -m "chore: ephemeral dependency remediation candidate"
+
       - name: Verify root source
         shell: bash
         run: npm run check
@@ -101,7 +116,7 @@ jobs:
           cp package.json package-lock.json artifacts/candidate/
           mkdir -p artifacts/candidate/apps/web
           cp apps/web/package.json apps/web/package-lock.json artifacts/candidate/apps/web/
-          git diff -- package.json package-lock.json apps/web/package.json apps/web/package-lock.json > artifacts/candidate/dependency-remediation.diff || true
+          git show --format= -- package.json package-lock.json apps/web/package.json apps/web/package-lock.json > artifacts/candidate/dependency-remediation.diff || true
           printf '%s\n' "${{ github.sha }}" > artifacts/candidate/source-sha.txt
 
       - name: Upload candidate and audit evidence
