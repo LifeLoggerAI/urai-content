@@ -1,0 +1,119 @@
+name: One-time content dependency maintenance 2026-09-13
+
+on:
+  push:
+    branches: [maintenance-20260913]
+    paths:
+      - .github/workflows/one-time-content-maintenance-20260913.yml
+
+permissions:
+  contents: write
+
+jobs:
+  maintain:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact maintenance branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          persist-credentials: true
+
+      - name: Setup Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            apps/web/package-lock.json
+
+      - name: Prove bounded starting authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = "8b26ecdc68c04dec8c8cf9b43680508879d3d6f9"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/one-time-content-maintenance-20260913.yml"
+
+      - name: Resolve, audit, and verify bounded upgrades
+        id: maintenance
+        shell: bash
+        run: |
+          set -uo pipefail
+          mkdir -p maintenance-evidence
+          failed=0
+
+          npm audit --package-lock-only --json > maintenance-evidence/root-before.json || true
+          (cd apps/web && npm audit --package-lock-only --json > ../../maintenance-evidence/web-before.json) || true
+
+          npm pkg set devDependencies.vitest=4.1.11 || failed=1
+          if [ "$failed" -eq 0 ]; then
+            cd apps/web
+            npm pkg set \
+              dependencies.next='^15.5.24' \
+              dependencies.'@next/env'='^15.5.24' \
+              dependencies.'firebase-admin'='^14.4.0' \
+              devDependencies.'eslint-config-next'='^15.5.24' \
+              devDependencies.vitest=4.1.11 || failed=1
+            cd ../..
+          fi
+
+          if [ "$failed" -eq 0 ]; then npm install --package-lock-only --ignore-scripts || failed=1; fi
+          if [ "$failed" -eq 0 ]; then (cd apps/web && npm install --package-lock-only --ignore-scripts) || failed=1; fi
+          if [ "$failed" -eq 0 ]; then npm ci || failed=1; fi
+          if [ "$failed" -eq 0 ]; then npm ci --prefix apps/web || failed=1; fi
+
+          if [ "$failed" -eq 0 ]; then npm run check || failed=1; fi
+          if [ "$failed" -eq 0 ]; then npm run web:check || failed=1; fi
+          if [ "$failed" -eq 0 ]; then npm run web:smoke:routes || failed=1; fi
+          if [ "$failed" -eq 0 ]; then npm run e2e:install --prefix apps/web || failed=1; fi
+          if [ "$failed" -eq 0 ]; then npm run web:e2e || failed=1; fi
+
+          npm audit --package-lock-only --json > maintenance-evidence/root-after.json || true
+          (cd apps/web && npm audit --package-lock-only --json > ../../maintenance-evidence/web-after.json) || true
+
+          {
+            echo "base=8b26ecdc68c04dec8c8cf9b43680508879d3d6f9"
+            echo "node=$(node --version)"
+            echo "npm=$(npm --version)"
+            echo "vitest_target=4.1.11"
+            echo "next_target=15.5.24"
+            echo "firebase_admin_target=14.4.0"
+            echo "verification_failed=$failed"
+          } > maintenance-evidence/summary.txt
+          echo "failed=$failed" >> "$GITHUB_OUTPUT"
+
+      - name: Upload maintenance evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: content-dependency-maintenance-${{ github.run_id }}
+          retention-days: 90
+          if-no-files-found: warn
+          path: maintenance-evidence/**
+
+      - name: Commit verified candidate or restore exact source tree
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          workflow='.github/workflows/one-time-content-maintenance-20260913.yml'
+
+          if [ "${{ steps.maintenance.outputs.failed }}" = "0" ]; then
+            rm -f "$workflow"
+            git add package.json package-lock.json apps/web/package.json apps/web/package-lock.json "$workflow"
+            changed="$(git diff --cached --name-only | sort)"
+            expected="$(printf '%s\n' "$workflow" apps/web/package-lock.json apps/web/package.json package-lock.json package.json | sort)"
+            test "$changed" = "$expected"
+            git commit -m "fix: remediate bounded content dependencies"
+          else
+            git restore package.json package-lock.json apps/web/package.json apps/web/package-lock.json
+            rm -f "$workflow"
+            git add "$workflow"
+            git commit -m "chore: close failed dependency maintenance attempt"
+          fi
+
+          git push origin HEAD:maintenance-20260913
