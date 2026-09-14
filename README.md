@@ -4,6 +4,15 @@ Canonical content engine, asset/story library, and launch-governed web-runtime s
 
 `urai-content` is URAI's **content domain engine**: a typed contract, validation system, and backend service layer for narrator prompts, ritual/story templates, marketplace assets, publishing workflow, export copy, and canonical app content.
 
+Canonical product destination: `https://urai.app/`.
+
+Public identity and search-authority guidance:
+
+- `docs/ADAM_CLAMP_PUBLIC_FOOTPRINT.md`
+- `docs/AI_SEARCH_ENTITY_REGRESSION_2026-09-05.md`
+
+These documents distinguish first-party URAI authority from unrelated same-name entities and require legal, maturity, deployment, and architecture claims to remain evidence-specific. Search-engine or AI-generated summaries are diagnostic interpretation, not source authority.
+
 The repo also contains a standalone Next.js runtime scaffold under `apps/web` for the future URAI Content public site and runtime route/API surface. The runtime scaffold is repo-side work; production deployment remains blocked until Firebase/hosting/DNS/secrets/Stripe/observability/rollback evidence is complete.
 
 ## Current Production Status
