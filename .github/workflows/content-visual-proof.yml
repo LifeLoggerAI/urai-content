@@ -1,0 +1,54 @@
+name: Content Visual Proof
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  visual-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      EXACT_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+      URAI_CONTENT_VISUAL_DIR: artifacts/content-visual
+    steps:
+      - name: Checkout exact head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.EXACT_HEAD }}
+          persist-credentials: false
+      - name: Prove exact head
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXACT_HEAD"
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+      - name: Install web
+        run: npm ci --prefix apps/web
+      - name: Install Chromium
+        run: npm exec --prefix apps/web playwright install --with-deps chromium
+      - name: Run exact-head visual proof
+        run: npm exec --prefix apps/web playwright test e2e/visual-proof.spec.ts
+      - name: Write exact-head receipt
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p apps/web/artifacts/content-visual
+          printf '{"exactHead":"%s","proof":"content-public-and-fail-closed-responsive-pixels"}\n' "$EXACT_HEAD" > apps/web/artifacts/content-visual/receipt.json
+      - name: Upload visual proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: urai-content-visual-${{ env.EXACT_HEAD }}
+          path: |
+            apps/web/artifacts/content-visual
+            apps/web/playwright-report
+          if-no-files-found: error
