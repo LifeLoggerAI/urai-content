@@ -32,7 +32,7 @@ jobs:
           cache: npm
           cache-dependency-path: apps/web/package-lock.json
       - name: Install web
-        run: npm ci --prefix apps/web
+        run: npx --yes npm@11.19.1 ci --prefix apps/web
       - name: Install Chromium
         run: npm exec --prefix apps/web playwright install --with-deps chromium
       - name: Run exact-head visual proof
