@@ -36,7 +36,8 @@ jobs:
       - name: Install Chromium
         run: npm exec --prefix apps/web playwright install --with-deps chromium
       - name: Run exact-head visual proof
-        run: npm exec --prefix apps/web playwright test e2e/visual-proof.spec.ts
+        working-directory: apps/web
+        run: npm exec playwright test e2e/visual-proof.spec.ts
       - name: Write exact-head receipt
         if: always()
         shell: bash
