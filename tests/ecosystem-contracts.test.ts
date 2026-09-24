@@ -10,13 +10,13 @@ import {
 } from '../scripts/checkEcosystemContracts.js';
 
 describe('URAI ecosystem integration contract', () => {
-  it('keeps the launch-facing ecosystem base compatible with required collections', () => {
+  it('keeps the current governed ecosystem v2 compatible with required collections', () => {
     const schema = loadEcosystemSchema();
     const result = validateEcosystemSchema(schema);
     expect(result.errors).toEqual([]);
     expect(result.ok).toBe(true);
     expect(schema.required).toEqual(expect.arrayContaining([...REQUIRED_ECOSYSTEM_COLLECTIONS]));
-    expect(schema.$id).toBe('urai://contracts/ecosystem-schema-v1');
+    expect(schema.$id).toBe('urai://contracts/ecosystem-schema-v2');
   });
 
   it('keeps Content governance in a separately versioned extension', () => {
