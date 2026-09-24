@@ -39,6 +39,10 @@ type DocumentReferenceLike = {
   get(): Promise<DocumentSnapshotLike>;
   delete(): Promise<unknown>;
 };
+type TransactionLike = {
+  get(ref: DocumentReferenceLike): Promise<DocumentSnapshotLike>;
+  set(ref: DocumentReferenceLike, data: FirestoreData, options?: { merge?: boolean }): unknown;
+};
 type QueryLike = {
   where(field: string, operator: '==', value: unknown): QueryLike;
   orderBy(field: string, direction?: 'asc' | 'desc'): QueryLike;
@@ -47,7 +51,10 @@ type QueryLike = {
 };
 type CollectionReferenceLike = QueryLike & { doc(id?: string): DocumentReferenceLike; add(data: FirestoreData): Promise<unknown> };
 
-export type FirestoreLike = { collection(path: string): CollectionReferenceLike };
+export type FirestoreLike = {
+  collection(path: string): CollectionReferenceLike;
+  runTransaction<T>(update: (transaction: TransactionLike) => Promise<T>): Promise<T>;
+};
 
 function collection(db: FirestoreLike, path: string): CollectionReferenceLike { return db.collection(path); }
 function asRecord<T>(value: T): FirestoreData { return value as FirestoreData; }
@@ -72,10 +79,21 @@ export function createFirestoreContentRepository(db: FirestoreLike): ContentRepo
     },
     async deleteContent(id: string): Promise<void> { await collection(db, FIRESTORE_COLLECTIONS.contentItems).doc(id).delete(); },
     async addVersion(contentId: string, snapshot: ContentItem): Promise<number> {
-      const versions = await this.listVersions(contentId);
-      const version = versions.length + 1;
-      await collection(db, FIRESTORE_COLLECTIONS.contentVersions).doc(`${contentId}-v${version}`).set(asRecord({ contentId, version, snapshot }));
-      return version;
+      const counterRef = collection(db, 'contentRevisionCounters').doc(contentId);
+      return db.runTransaction(async (transaction) => {
+        const counterSnapshot = await transaction.get(counterRef);
+        const counterData = counterSnapshot.exists ? counterSnapshot.data() : undefined;
+        const previousVersion = counterData?.version === undefined ? 0 : Number(counterData.version);
+        if (!Number.isSafeInteger(previousVersion) || previousVersion < 0) {
+          throw new Error('Invalid content revision counter for ' + contentId);
+        }
+
+        const version = previousVersion + 1;
+        const versionRef = collection(db, FIRESTORE_COLLECTIONS.contentVersions).doc(`${contentId}-v${version}`);
+        transaction.set(versionRef, asRecord({ contentId, version, snapshot }));
+        transaction.set(counterRef, { contentId, version, updatedAt: new Date().toISOString() }, { merge: true });
+        return version;
+      });
     },
     async listVersions(contentId: string): Promise<Array<{ version: number; snapshot: ContentItem }>> {
       const snap = await collection(db, FIRESTORE_COLLECTIONS.contentVersions).where('contentId', '==', contentId).get();
