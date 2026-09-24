@@ -38,3 +38,6 @@ export * from './integrations/envelope.js';
 export * from './accessibility/review.js';
 export * from './publishing/release.js';
 export * from './syndication/contracts.js';
+export * from './editorial/workflow.js';
+export * from './integrations/registry.js';
+export * from './localization/coverage.js';
