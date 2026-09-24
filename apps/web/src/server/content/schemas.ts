@@ -149,7 +149,7 @@ export const contentVersionRecordSchema = z.object({
   snapshot: contentItemSchema
 });
 
-export function parseRuntimeRecord<T>(schema: z.ZodType<T>, collection: string, value: unknown): T {
+export function parseRuntimeRecord<S extends z.ZodTypeAny>(schema: S, collection: string, value: unknown): z.output<S> {
   const result = schema.safeParse(value);
   if (!result.success) {
     throw new Error('Invalid ' + collection + ' record: ' + result.error.issues.map((issue) => issue.path.join('.') + ' ' + issue.message).join('; '));
