@@ -124,7 +124,15 @@ export const telemetryEventSchema = z.object({
   userId: z.string().nullable(),
   entityId: z.string(),
   timestamp: z.string().datetime(),
-  metadata: z.record(z.string(), z.unknown()).default({})
+  metadata: z.object({
+    contentVersion: z.string().max(80).optional(),
+    locale: z.string().max(32).optional(),
+    surface: z.string().max(80).optional(),
+    lifecycleStatus: z.enum(['draft','review','approved','published','archived']).optional(),
+    contentType: z.enum(['narrator','story','ritual','export','marketplace']).optional(),
+    sourceSystem: z.string().max(80).optional(),
+    experimentKey: z.string().max(120).optional()
+  }).strict().default({})
 });
 
 export const userContentEntitlementSchema = z.object({
