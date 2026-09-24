@@ -27,4 +27,15 @@ describe('taxonomy and relationship contracts', () => {
       { id: 'r1', fromId: 'a', toId: 'a', type: 'related', provenanceRecordId: 'p1' },
     ])).toThrow('cannot target itself');
   });
+  it('rejects hierarchy cycles and invalid deprecation replacements', () => {
+    expect(() => validateTaxonomyTerms([
+      { id: 'a', slug: 'a', label: 'A', parentId: 'b', aliases: [], status: 'active' },
+      { id: 'b', slug: 'b', label: 'B', parentId: 'a', aliases: [], status: 'active' },
+    ])).toThrow('cycle');
+
+    expect(() => validateTaxonomyTerms([
+      { id: 'a', slug: 'a', label: 'A', parentId: null, aliases: [], status: 'deprecated', replacementTermId: 'missing' },
+    ])).toThrow('Unknown taxonomy replacement');
+  });
+
 });
