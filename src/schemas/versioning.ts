@@ -35,7 +35,8 @@ export function migrateContentRecord(input: unknown): VersionedContentItem {
 
 export function stripContentSchemaEnvelope(input: unknown): ContentItem {
   const migrated = migrateContentRecord(input);
-  const { schemaVersion: _schemaVersion, ...content } = migrated;
+  const { schemaVersion, ...content } = migrated;
+  void schemaVersion;
   return contentItemSchema.parse(content);
 }
 
