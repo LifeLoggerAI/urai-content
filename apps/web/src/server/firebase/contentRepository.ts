@@ -14,6 +14,21 @@ import type {
   UserContentEntitlement
 } from '../content/types';
 import { FIRESTORE_COLLECTIONS } from '../content/types';
+import {
+  contentItemSchema,
+  contentVersionRecordSchema,
+  creatorSubmissionSchema,
+  exportTemplateSchema,
+  marketplaceItemSchema,
+  moderationQueueSchema,
+  narratorPromptSchema,
+  parseRuntimeRecord,
+  publishingReleaseSchema,
+  ritualTemplateSchema,
+  storyTemplateSchema,
+  telemetryEventSchema,
+  userContentEntitlementSchema
+} from '../content/schemas';
 
 type FirestoreData = Record<string, unknown>;
 
@@ -36,7 +51,6 @@ export type FirestoreLike = { collection(path: string): CollectionReferenceLike 
 
 function collection(db: FirestoreLike, path: string): CollectionReferenceLike { return db.collection(path); }
 function asRecord<T>(value: T): FirestoreData { return value as FirestoreData; }
-function asType<T>(value: FirestoreData): T { return value as T; }
 function sortByVersion<T extends { version: number }>(items: T[]): T[] { return [...items].sort((a, b) => a.version - b.version); }
 function sortSubmissions(items: CreatorSubmission[]): CreatorSubmission[] {
   return [...items].sort((a, b) => String(b.submittedAt ?? b.updatedAt ?? '').localeCompare(String(a.submittedAt ?? a.updatedAt ?? '')));
@@ -47,14 +61,14 @@ function queueLimit(limit?: number): number {
 
 export function createFirestoreContentRepository(db: FirestoreLike): ContentRepository {
   return {
-    async upsertContent(item: ContentItem): Promise<void> { await collection(db, FIRESTORE_COLLECTIONS.contentItems).doc(item.id).set(asRecord(item), { merge: true }); },
+    async upsertContent(item: ContentItem): Promise<void> { const parsed = parseRuntimeRecord(contentItemSchema, FIRESTORE_COLLECTIONS.contentItems, item); await collection(db, FIRESTORE_COLLECTIONS.contentItems).doc(parsed.id).set(asRecord(parsed), { merge: true }); },
     async getContent(id: string): Promise<ContentItem | null> {
       const snap = await collection(db, FIRESTORE_COLLECTIONS.contentItems).doc(id).get();
-      return snap.exists && snap.data() ? asType<ContentItem>(snap.data()!) : null;
+      return snap.exists && snap.data() ? parseRuntimeRecord(contentItemSchema, FIRESTORE_COLLECTIONS.contentItems, snap.data()!) : null;
     },
     async listContent(): Promise<ContentItem[]> {
       const snap = await collection(db, FIRESTORE_COLLECTIONS.contentItems).get();
-      return snap.docs.map((doc) => asType<ContentItem>(doc.data()));
+      return snap.docs.map((doc) => parseRuntimeRecord(contentItemSchema, FIRESTORE_COLLECTIONS.contentItems, doc.data()));
     },
     async deleteContent(id: string): Promise<void> { await collection(db, FIRESTORE_COLLECTIONS.contentItems).doc(id).delete(); },
     async addVersion(contentId: string, snapshot: ContentItem): Promise<number> {
@@ -65,32 +79,32 @@ export function createFirestoreContentRepository(db: FirestoreLike): ContentRepo
     },
     async listVersions(contentId: string): Promise<Array<{ version: number; snapshot: ContentItem }>> {
       const snap = await collection(db, FIRESTORE_COLLECTIONS.contentVersions).where('contentId', '==', contentId).get();
-      const versions = snap.docs.map((doc) => asType<{ contentId: string; version: number; snapshot: ContentItem }>(doc.data()));
+      const versions = snap.docs.map((doc) => parseRuntimeRecord(contentVersionRecordSchema, FIRESTORE_COLLECTIONS.contentVersions, doc.data()));
       return sortByVersion(versions).map(({ version, snapshot }) => ({ version, snapshot }));
     },
-    async logModeration(item: ModerationQueueItem): Promise<void> { await collection(db, FIRESTORE_COLLECTIONS.moderationQueue).doc(item.id).set(asRecord(item)); },
-    async logRelease(release: PublishingRelease): Promise<void> { await collection(db, FIRESTORE_COLLECTIONS.publishingReleases).doc(release.id).set(asRecord(release)); },
-    async addTelemetry(event: TelemetryEvent): Promise<void> { await collection(db, FIRESTORE_COLLECTIONS.telemetryEvents).add(asRecord(event)); },
+    async logModeration(item: ModerationQueueItem): Promise<void> { const parsed = parseRuntimeRecord(moderationQueueSchema, FIRESTORE_COLLECTIONS.moderationQueue, item); await collection(db, FIRESTORE_COLLECTIONS.moderationQueue).doc(parsed.id).set(asRecord(parsed)); },
+    async logRelease(release: PublishingRelease): Promise<void> { const parsed = parseRuntimeRecord(publishingReleaseSchema, FIRESTORE_COLLECTIONS.publishingReleases, release); await collection(db, FIRESTORE_COLLECTIONS.publishingReleases).doc(parsed.id).set(asRecord(parsed)); },
+    async addTelemetry(event: TelemetryEvent): Promise<void> { const parsed = parseRuntimeRecord(telemetryEventSchema, FIRESTORE_COLLECTIONS.telemetryEvents, event); await collection(db, FIRESTORE_COLLECTIONS.telemetryEvents).add(asRecord(parsed)); },
     async listTelemetry(limit = 100): Promise<TelemetryEvent[]> {
       const snap = await collection(db, FIRESTORE_COLLECTIONS.telemetryEvents).orderBy('timestamp', 'desc').limit(limit).get();
-      return snap.docs.map((doc) => asType<TelemetryEvent>(doc.data()));
+      return snap.docs.map((doc) => parseRuntimeRecord(telemetryEventSchema, FIRESTORE_COLLECTIONS.telemetryEvents, doc.data()));
     },
     async listEntitlements(userId: string): Promise<UserContentEntitlement[]> {
       const snap = await collection(db, FIRESTORE_COLLECTIONS.userContentEntitlements).where('userId', '==', userId).get();
-      return snap.docs.map((doc) => asType<UserContentEntitlement>(doc.data()));
+      return snap.docs.map((doc) => parseRuntimeRecord(userContentEntitlementSchema, FIRESTORE_COLLECTIONS.userContentEntitlements, doc.data()));
     },
-    async upsertNarratorPrompt(prompt: NarratorPrompt): Promise<void> { await collection(db, FIRESTORE_COLLECTIONS.narratorPrompts).doc(prompt.id).set(asRecord(prompt), { merge: true }); },
-    async upsertStoryTemplate(template: StoryTemplate): Promise<void> { await collection(db, FIRESTORE_COLLECTIONS.storyTemplates).doc(template.id).set(asRecord(template), { merge: true }); },
-    async upsertRitualTemplate(template: RitualTemplate): Promise<void> { await collection(db, FIRESTORE_COLLECTIONS.ritualTemplates).doc(template.id).set(asRecord(template), { merge: true }); },
-    async upsertMarketplaceItem(item: MarketplaceItem): Promise<void> { await collection(db, FIRESTORE_COLLECTIONS.marketplaceItems).doc(item.id).set(asRecord(item), { merge: true }); },
-    async upsertCreatorSubmission(item: CreatorSubmission): Promise<void> { await collection(db, FIRESTORE_COLLECTIONS.creatorSubmissions).doc(item.id).set(asRecord(item), { merge: true }); },
+    async upsertNarratorPrompt(prompt: NarratorPrompt): Promise<void> { const parsed = parseRuntimeRecord(narratorPromptSchema, FIRESTORE_COLLECTIONS.narratorPrompts, prompt); await collection(db, FIRESTORE_COLLECTIONS.narratorPrompts).doc(parsed.id).set(asRecord(parsed), { merge: true }); },
+    async upsertStoryTemplate(template: StoryTemplate): Promise<void> { const parsed = parseRuntimeRecord(storyTemplateSchema, FIRESTORE_COLLECTIONS.storyTemplates, template); await collection(db, FIRESTORE_COLLECTIONS.storyTemplates).doc(parsed.id).set(asRecord(parsed), { merge: true }); },
+    async upsertRitualTemplate(template: RitualTemplate): Promise<void> { const parsed = parseRuntimeRecord(ritualTemplateSchema, FIRESTORE_COLLECTIONS.ritualTemplates, template); await collection(db, FIRESTORE_COLLECTIONS.ritualTemplates).doc(parsed.id).set(asRecord(parsed), { merge: true }); },
+    async upsertMarketplaceItem(item: MarketplaceItem): Promise<void> { const parsed = parseRuntimeRecord(marketplaceItemSchema, FIRESTORE_COLLECTIONS.marketplaceItems, item); await collection(db, FIRESTORE_COLLECTIONS.marketplaceItems).doc(parsed.id).set(asRecord(parsed), { merge: true }); },
+    async upsertCreatorSubmission(item: CreatorSubmission): Promise<void> { const parsed = parseRuntimeRecord(creatorSubmissionSchema, FIRESTORE_COLLECTIONS.creatorSubmissions, item); await collection(db, FIRESTORE_COLLECTIONS.creatorSubmissions).doc(parsed.id).set(asRecord(parsed), { merge: true }); },
     async getCreatorSubmission(id: string): Promise<CreatorSubmission | null> {
       const snap = await collection(db, FIRESTORE_COLLECTIONS.creatorSubmissions).doc(id).get();
-      return snap.exists && snap.data() ? asType<CreatorSubmission>(snap.data()!) : null;
+      return snap.exists && snap.data() ? parseRuntimeRecord(creatorSubmissionSchema, FIRESTORE_COLLECTIONS.creatorSubmissions, snap.data()!) : null;
     },
     async listCreatorSubmissions(creatorId: string): Promise<CreatorSubmission[]> {
       const snap = await collection(db, FIRESTORE_COLLECTIONS.creatorSubmissions).where('creatorId', '==', creatorId).get();
-      return sortSubmissions(snap.docs.map((doc) => asType<CreatorSubmission>(doc.data())));
+      return sortSubmissions(snap.docs.map((doc) => parseRuntimeRecord(creatorSubmissionSchema, FIRESTORE_COLLECTIONS.creatorSubmissions, doc.data())));
     },
     async listCreatorSubmissionQueue(options: CreatorSubmissionQueueOptions = {}): Promise<CreatorSubmission[]> {
       const limit = queueLimit(options.limit);
@@ -98,8 +112,8 @@ export function createFirestoreContentRepository(db: FirestoreLike): ContentRepo
         ? collection(db, FIRESTORE_COLLECTIONS.creatorSubmissions).where('status', '==', options.status).limit(limit)
         : collection(db, FIRESTORE_COLLECTIONS.creatorSubmissions).limit(limit);
       const snap = await query.get();
-      return sortSubmissions(snap.docs.map((doc) => asType<CreatorSubmission>(doc.data()))).slice(0, limit);
+      return sortSubmissions(snap.docs.map((doc) => parseRuntimeRecord(creatorSubmissionSchema, FIRESTORE_COLLECTIONS.creatorSubmissions, doc.data()))).slice(0, limit);
     },
-    async upsertExportTemplate(item: ExportTemplate): Promise<void> { await collection(db, FIRESTORE_COLLECTIONS.exportTemplates).doc(item.id).set(asRecord(item), { merge: true }); }
+    async upsertExportTemplate(item: ExportTemplate): Promise<void> { const parsed = parseRuntimeRecord(exportTemplateSchema, FIRESTORE_COLLECTIONS.exportTemplates, item); await collection(db, FIRESTORE_COLLECTIONS.exportTemplates).doc(parsed.id).set(asRecord(parsed), { merge: true }); }
   };
 }
