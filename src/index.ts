@@ -28,3 +28,8 @@ export * from './portability/package.js';
 export * from './schemas/versioning.js';
 export * from './query/pagination.js';
 export * from './lifecycle/contentLifecycle.js';
+export * from './governance/rights.js';
+export * from './jobs/contentJobs.js';
+export * from './search/document.js';
+export * from './localization/uraiLocales.js';
+export * from './localization/bundle.js';
