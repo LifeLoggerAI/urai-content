@@ -41,10 +41,11 @@ This file describes the current execution state. Historical July roadmap text is
 
 The prior duplicate use of `urai://contracts/ecosystem-schema-v1` for incompatible schemas is superseded.
 
-- Whole-ecosystem base authority: `LifeLoggerAI/UrAi/docs/contracts/URAI_ECOSYSTEM_SCHEMA_V1.json`
-- Content governance extension authority: `docs/contracts/URAI_CONTENT_ECOSYSTEM_EXTENSION_V1.json`
-- Content validates both.
-- Consumer sync PRs must preserve the authority split and earn local CI/review.
+- V1 is historical compatibility only; `LifeLoggerAI/UrAi` is legacy containment / NEVER DEPLOY.
+- Current cross-repository compatibility authority: `docs/contracts/URAI_ECOSYSTEM_SCHEMA_V2.json` under Content PR #84.
+- Current consumer runtime/release authority remains `LifeLoggerAI/urai-spatial`.
+- Stronger Content-specific governance remains in `docs/contracts/URAI_CONTENT_ECOSYSTEM_EXTENSION_V1.json`.
+- Consumer sync PRs must adopt V2 additively and earn local CI/review; schema compatibility does not transfer runtime authority.
 
 ## Governed launch locales
 
