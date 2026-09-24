@@ -35,3 +35,6 @@ export * from './localization/uraiLocales.js';
 export * from './localization/bundle.js';
 export * from './telemetry/policy.js';
 export * from './integrations/envelope.js';
+export * from './accessibility/review.js';
+export * from './publishing/release.js';
+export * from './syndication/contracts.js';
