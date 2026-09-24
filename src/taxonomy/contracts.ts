@@ -7,6 +7,7 @@ export type TaxonomyTerm = {
   parentId: string | null;
   aliases: string[];
   status: TaxonomyTermStatus;
+  replacementTermId?: string | null;
 };
 
 export type ContentRelationshipType =
@@ -46,6 +47,21 @@ export function validateTaxonomyTerms(terms: TaxonomyTerm[]): TaxonomyTerm[] {
       throw new Error('Unknown taxonomy parent: ' + term.parentId);
     }
     if (term.parentId === term.id) throw new Error('Taxonomy term cannot parent itself');
+    if (term.replacementTermId && !ids.has(term.replacementTermId)) {
+      throw new Error('Unknown taxonomy replacement: ' + term.replacementTermId);
+    }
+    if (term.replacementTermId === term.id) throw new Error('Taxonomy term cannot replace itself');
+  }
+
+  const byId = new Map(terms.map((term) => [term.id, term] as const));
+  for (const term of terms) {
+    const seen = new Set<string>();
+    let current: TaxonomyTerm | undefined = term;
+    while (current?.parentId) {
+      if (seen.has(current.parentId)) throw new Error('Taxonomy parent cycle detected at: ' + current.parentId);
+      seen.add(current.parentId);
+      current = byId.get(current.parentId);
+    }
   }
 
   return terms.map((term) => ({
