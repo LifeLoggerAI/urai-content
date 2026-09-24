@@ -55,7 +55,7 @@ function enumValues(schemaPart: unknown): string[] {
 }
 
 export function loadEcosystemSchema(
-  schemaPath = resolve(process.cwd(), 'docs/contracts/URAI_ECOSYSTEM_SCHEMA_V1.json')
+  schemaPath = resolve(process.cwd(), 'docs/contracts/URAI_ECOSYSTEM_SCHEMA_V2.json')
 ): JsonSchema {
   return JSON.parse(readFileSync(schemaPath, 'utf8')) as JsonSchema;
 }
@@ -68,7 +68,7 @@ export function loadContentEcosystemExtension(
 
 export function validateEcosystemSchema(schema: JsonSchema): ValidationResult {
   const errors: string[] = [];
-  if (schema.$id !== 'urai://contracts/ecosystem-schema-v1') {
+  if (schema.$id !== 'urai://contracts/ecosystem-schema-v2') {
     errors.push('Unexpected ecosystem base schema id');
   }
 
@@ -79,7 +79,7 @@ export function validateEcosystemSchema(schema: JsonSchema): ValidationResult {
   }
 
   const defs = schema.$defs ?? {};
-  for (const defName of ['user','memory','emotionalField','lifeMapNode','generatedAsset','spatialScene','job','contentPack','b2bAccount','xrSceneObject']) {
+  for (const defName of ['user','memory','emotionalField','lifeMapNode','generatedAsset','spatialScene','job','contentPack','b2bAccount','xrSceneObject','governance','provenance','integrationTarget','lifecycleStatus','visibility']) {
     if (!defs[defName]) errors.push(`Missing ecosystem base definition: ${defName}`);
   }
 
