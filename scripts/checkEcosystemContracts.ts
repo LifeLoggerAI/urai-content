@@ -33,6 +33,7 @@ export const REQUIRED_INTEGRATION_TARGETS = [
 ] as const;
 
 type JsonSchema = {
+  $id?: string;
   required?: unknown;
   properties?: Record<string, unknown>;
   $defs?: Record<string, unknown>;
@@ -53,50 +54,60 @@ function enumValues(schemaPart: unknown): string[] {
   return Array.isArray(rawEnum) ? rawEnum.filter((value): value is string => typeof value === 'string') : [];
 }
 
-export function loadEcosystemSchema(schemaPath = resolve(process.cwd(), 'docs/contracts/URAI_ECOSYSTEM_SCHEMA_V1.json')): JsonSchema {
+export function loadEcosystemSchema(
+  schemaPath = resolve(process.cwd(), 'docs/contracts/URAI_ECOSYSTEM_SCHEMA_V1.json')
+): JsonSchema {
+  return JSON.parse(readFileSync(schemaPath, 'utf8')) as JsonSchema;
+}
+
+export function loadContentEcosystemExtension(
+  schemaPath = resolve(process.cwd(), 'docs/contracts/URAI_CONTENT_ECOSYSTEM_EXTENSION_V1.json')
+): JsonSchema {
   return JSON.parse(readFileSync(schemaPath, 'utf8')) as JsonSchema;
 }
 
 export function validateEcosystemSchema(schema: JsonSchema): ValidationResult {
   const errors: string[] = [];
-  const required = Array.isArray(schema.required) ? schema.required : [];
+  if (schema.$id !== 'urai://contracts/ecosystem-schema-v1') {
+    errors.push('Unexpected ecosystem base schema id');
+  }
 
+  const required = Array.isArray(schema.required) ? schema.required : [];
   for (const collection of REQUIRED_ECOSYSTEM_COLLECTIONS) {
-    if (!required.includes(collection)) {
-      errors.push(`Missing required ecosystem collection: ${collection}`);
-    }
-    if (!schema.properties?.[collection]) {
-      errors.push(`Missing schema property for ecosystem collection: ${collection}`);
-    }
+    if (!required.includes(collection)) errors.push(`Missing required ecosystem collection: ${collection}`);
+    if (!schema.properties?.[collection]) errors.push(`Missing schema property for ecosystem collection: ${collection}`);
   }
 
   const defs = schema.$defs ?? {};
-  for (const defName of ['ecosystemRecord', 'contentPack', 'xrSceneObject', 'provenance']) {
-    if (!defs[defName]) {
-      errors.push(`Missing schema definition: ${defName}`);
-    }
+  for (const defName of ['user','memory','emotionalField','lifeMapNode','generatedAsset','spatialScene','job','contentPack','b2bAccount','xrSceneObject']) {
+    if (!defs[defName]) errors.push(`Missing ecosystem base definition: ${defName}`);
   }
 
-  const integrationTarget = asObject(defs.integrationTarget);
-  const targets = enumValues(integrationTarget);
+  return { ok: errors.length === 0, errors };
+}
+
+export function validateContentEcosystemExtension(schema: JsonSchema): ValidationResult {
+  const errors: string[] = [];
+  if (schema.$id !== 'urai://contracts/content-ecosystem-extension-v1') {
+    errors.push('Unexpected Content ecosystem extension schema id');
+  }
+
+  const defs = schema.$defs ?? {};
+  for (const defName of ['contentPackGovernance','provenance','integrationTarget','lifecycleStatus','visibility']) {
+    if (!defs[defName]) errors.push(`Missing Content extension definition: ${defName}`);
+  }
+
+  const targets = enumValues(defs.integrationTarget);
   for (const target of REQUIRED_INTEGRATION_TARGETS) {
-    if (!targets.includes(target)) {
-      errors.push(`Missing integration target enum: ${target}`);
-    }
+    if (!targets.includes(target)) errors.push(`Missing integration target enum: ${target}`);
   }
 
-  const lifecycleStatus = asObject(defs.lifecycleStatus);
-  for (const status of ['draft', 'review', 'approved', 'published', 'archived', 'blocked']) {
-    if (!enumValues(lifecycleStatus).includes(status)) {
-      errors.push(`Missing lifecycle status enum: ${status}`);
-    }
+  for (const status of ['draft','review','approved','published','archived','blocked']) {
+    if (!enumValues(defs.lifecycleStatus).includes(status)) errors.push(`Missing lifecycle status enum: ${status}`);
   }
 
-  const visibility = asObject(defs.visibility);
-  for (const value of ['public', 'private', 'tiered', 'licensed', 'internal']) {
-    if (!enumValues(visibility).includes(value)) {
-      errors.push(`Missing visibility enum: ${value}`);
-    }
+  for (const value of ['public','private','tiered','licensed','internal']) {
+    if (!enumValues(defs.visibility).includes(value)) errors.push(`Missing visibility enum: ${value}`);
   }
 
   return { ok: errors.length === 0, errors };
@@ -104,20 +115,14 @@ export function validateEcosystemSchema(schema: JsonSchema): ValidationResult {
 
 export function validateContentPackContract(candidate: Record<string, unknown>): ValidationResult {
   const errors: string[] = [];
-
-  for (const field of ['id', 'version', 'slug', 'lifecycleStatus', 'visibility', 'integrationTargets', 'provenance', 'assetIds']) {
-    if (!(field in candidate)) {
-      errors.push(`Content pack is missing ${field}`);
-    }
+  for (const field of ['id','version','slug','lifecycleStatus','visibility','integrationTargets','provenance','assetIds']) {
+    if (!(field in candidate)) errors.push(`Content pack is missing ${field}`);
   }
 
   if (typeof candidate.slug !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(candidate.slug)) {
     errors.push('Content pack slug must be lowercase kebab-case');
   }
-
-  if (!Array.isArray(candidate.assetIds)) {
-    errors.push('Content pack assetIds must be an array');
-  }
+  if (!Array.isArray(candidate.assetIds)) errors.push('Content pack assetIds must be an array');
 
   if (!Array.isArray(candidate.integrationTargets) || candidate.integrationTargets.length === 0) {
     errors.push('Content pack integrationTargets must be a non-empty array');
@@ -130,18 +135,17 @@ export function validateContentPackContract(candidate: Record<string, unknown>):
   }
 
   const provenance = asObject(candidate.provenance);
-  if (!provenance?.source || typeof provenance.source !== 'string') {
-    errors.push('Content pack provenance.source is required');
-  }
-  if (!provenance?.createdAt || typeof provenance.createdAt !== 'string') {
-    errors.push('Content pack provenance.createdAt is required');
-  }
+  if (!provenance?.source || typeof provenance.source !== 'string') errors.push('Content pack provenance.source is required');
+  if (!provenance?.createdAt || typeof provenance.createdAt !== 'string') errors.push('Content pack provenance.createdAt is required');
 
   return { ok: errors.length === 0, errors };
 }
 
 export function checkEcosystemContracts(): ValidationResult {
-  return validateEcosystemSchema(loadEcosystemSchema());
+  const base = validateEcosystemSchema(loadEcosystemSchema());
+  const extension = validateContentEcosystemExtension(loadContentEcosystemExtension());
+  const errors = [...base.errors, ...extension.errors];
+  return { ok: errors.length === 0, errors };
 }
 
 const isDirectRun = process.argv[1] ? fileURLToPath(import.meta.url) === resolve(process.argv[1]) : false;
@@ -153,6 +157,5 @@ if (isDirectRun) {
     for (const error of result.errors) console.error(`- ${error}`);
     process.exit(1);
   }
-
-  console.log('URAI ecosystem contract check passed.');
+  console.log('URAI ecosystem base + Content extension contract check passed.');
 }
