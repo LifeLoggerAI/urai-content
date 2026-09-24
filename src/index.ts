@@ -25,3 +25,6 @@ export * from './accessibility/manifest.js';
 export * from './generation/contracts.js';
 export * from './search/contracts.js';
 export * from './portability/package.js';
+export * from './schemas/versioning.js';
+export * from './query/pagination.js';
+export * from './lifecycle/contentLifecycle.js';
