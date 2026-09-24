@@ -1,53 +1,61 @@
-# URAI Content Type Matrix
+# URAI Content Type Matrix — Current Convergence Authority
 
-Maturity values: verified production, implemented and tested, implemented but unverified, partial, scaffold only, documentation only, missing, blocked, obsolete.
+Maturity values distinguish source foundations from production certification.
 
-| Area | Content type | Evidence | Maturity | Primary gap |
-| --- | --- | --- | --- | --- |
-| Core text | UI, onboarding, help, privacy, accessibility, status, errors, marketing, SEO | `content/`, `src/lib/content/`, public page registries | implemented and tested | no unified localization catalog or editorial ownership workflow |
-| Templates | Narrator prompts | `narratorPromptSchema`, seed data | implemented and tested | no provider execution/version receipt |
-| Templates | Story templates and beats | `storyTemplateSchema` | implemented and tested | no durable media/replay rendering pipeline |
-| Templates | Ritual templates | `ritualTemplateSchema` | implemented and tested | no safety-review workflow evidence |
-| Editorial | Creator submissions | schema, APIs, Firestore adapter, tests | implemented but unverified | staging persistence and owner-scope proof missing |
-| Editorial | Moderation queue and release records | schemas, admin APIs, repository methods | implemented but unverified | durable audit/release proof missing |
-| Marketplace | Marketplace items and entitlements | schemas, routes, rules | partial | rules/schema mismatch, payment and entitlement proof missing |
-| Export | Export templates | schema and package services | implemented and tested | only templates, not artifact generation |
-| Export | Export jobs/artifacts | production schema and seed records | scaffold only | worker, storage, checksums, retries and authorization missing |
-| Media | Asset manifests | `assetManifestSchema` | scaffold only | no ingestion, variants, transcoding or object proof |
-| Media | Images, thumbnails, audio, video, captions, subtitles | manifest kinds and docs | documentation only | processing and delivery pipelines missing |
-| Spatial | 3D/XR content packs | XR contract docs and generic manifests | documentation only | no versioned runtime assets or consumer proof |
-| Personal life | Memories, journals, life events, reflections, goals, routines | no canonical schema in audited runtime | missing | should be owned by privacy-governed personal-data service |
-| Personal life | Relationship, family, legacy and place memories | no canonical schema | missing | define references and consent boundaries, not copied records |
-| Personal life | Voice transcripts and imported personal data | no ingestion schema/lifecycle | missing | privacy classification, consent, retention and deletion required |
-| Replay | Replay manifests and emotional beats | story/export concepts only | partial | dedicated replay schema, media timeline and provenance missing |
-| Structured | Taxonomies, tags and collections | tags arrays only | partial | registry, hierarchy, governance and migrations missing |
-| Structured | Localization keys and translations | locale fields/localization map | partial | language registry, key completeness and review state missing |
-| Structured | Provenance and AI attribution | `provenanceRecordSchema` | scaffold only | not wired to every write/generation path |
-| Structured | Consent | `consentRecordSchema` and rules | scaffold only | consent authority and lifecycle integration missing |
-| Structured | Rights and licenses | `contentLicenseSchema` | scaffold only | legal review, enforcement and artifact proof missing |
-| Structured | Revision history | `contentVersionSchema`, repository methods | partial | race-safe transactions and immutable history missing |
-| Structured | Retention/deletion | hard delete only | missing | tombstones, purge jobs, export/deletion receipts missing |
-| Search | Keyword discovery | runtime substring scan | partial | pagination, indexes, ranking and multilingual support missing |
-| AI | Text/image/audio/video/translation/moderation providers | evidence scripts/docs only | missing | provider-neutral interfaces and implementations missing |
+| Area | Capability | Current source state | Remaining boundary |
+| --- | --- | --- | --- |
+| Public catalog | public/demo content registry | implemented/tested lineage | fresh #84 proof + deployed public smoke |
+| Editorial | content workflow schemas/services | implemented/tested lineage | provider-backed persistence and operator E2E |
+| Editorial | creator submissions/moderation/releases | implemented + fail-closed runtime schemas | authenticated staging owner/admin proof |
+| Revisioning | history/version records | implemented foundation | atomic Firestore transaction allocation still unproven |
+| Lifecycle | stale-write detection | implemented foundation | provider-backed transaction enforcement |
+| Lifecycle | tombstone/restore/purge eligibility | implemented foundation | Privacy-governed worker + retention receipts |
+| Pagination | opaque bounded cursors | implemented/tested foundation | provider query/index wiring |
+| Marketplace | governed lifecycle + entitlement receipts | hard-off implementation foundation | payments/payout/legal/provider gates |
+| Export | deterministic manifests/checksums/idempotency | hard-off implementation foundation | Jobs/Storage execution and auth/download/delete proof |
+| Jobs | durable Content job state contract | implemented foundation | canonical urai-jobs worker integration |
+| Media | asset manifests | existing schema foundation | Asset Factory promotion + storage/delivery proof |
+| Narrator | consent/quiet-hours/equivalent-media contract | hard-off implementation foundation | provider/voice activation + review |
+| Taxonomy | hierarchy/aliases/deprecation/replacements | implemented/tested foundation | governed production registry adoption |
+| Relationships | typed provenance-bound relationships | implemented/tested foundation | consumer integration and deletion propagation |
+| Localization | governed 20-locale registry | implemented/tested foundation | 19 non-English locales are not production-admitted |
+| Localization | translation lifecycle/staleness/bundles | implemented/tested foundation | real translated corpus + native review + RTL/font/glyph QA |
+| Accessibility | image/audio/video/spatial manifest rules | implemented/tested foundation | populate final assets and human/device acceptance |
+| Provenance | provenance records | existing production schema | must be wired to every durable generation/publication path |
+| Rights | licenses + rights decision state | implemented foundation | human/legal approval and rights evidence |
+| Consent | consent schema/rules | existing foundation | Privacy remains canonical authority; protected lifecycle proof |
+| Search | privacy-safe index decision | hard-off implementation foundation | production index/embedding service |
+| Search | versioned locale-aware search document | implemented/tested foundation | index worker/reindex/delete proof |
+| Generation | provider-neutral authorization/cost/idempotency | hard-off implementation foundation | credentials, explicit authorization, provider receipts |
+| Portability | deterministic package/checksum/re-import validation foundation | hard-off implementation foundation | real user export/import + Privacy approval |
+| Ecosystem | whole-ecosystem base | authority restored to `LifeLoggerAI/UrAi` | consumer draft PR CI/review |
+| Ecosystem | Content governance extension | implemented in #84 | consumer compatibility adoption |
+| Security | Firestore/Storage rule hardening | carried into #84 from #66 | fresh #84 emulator + protected deploy proof |
+| Runtime | Firestore record parsing | fail-closed Zod validation implemented in #84 | fresh web CI + protected provider evidence |
+| AI prompt library | governed prompt source/evals | remains separate PR #67 authority | fresh independent human release review |
 
-## Required canonical fields
+## Canonical durable-content expectations
 
-Every durable content record should define:
+Where applicable, durable Content records or their linked governance records must expose:
 
-- stable ID and schema version;
-- owner/tenant or explicit system ownership;
-- content type and lifecycle state;
-- privacy classification and visibility;
-- locale, translation status and source locale;
-- accessibility alternatives;
-- provenance, author and generation attribution;
-- consent reference where personal data is involved;
+- stable identity and explicit schema/version authority;
+- bounded-context content type and lifecycle state;
+- ownership/privacy classification and visibility;
+- locale, source-locale and translation review state;
+- accessibility equivalents and review state;
+- provenance and transformation/provider references;
+- consent reference for user-derived/provider processing;
 - rights/license state;
-- revision and parent relationships;
-- retention, archival and deletion state;
-- media variants, checksums and source receipt;
-- moderation and publication state.
+- revision and relationship references;
+- retention/deletion state;
+- media checksums/source receipts;
+- moderation/publication state.
+
+Not every field belongs physically on every record. Separate governed records are preferred over duplicating domain authority.
 
 ## Language readiness
 
-The audited repository does not prove nineteen-language readiness. It supports locale strings and a localization object, but has no authoritative locale registry, translation catalogs, completeness report, review states, RTL validation, localized media/captions or per-language moderation/search evidence.
+The governed program contains 20 locales:
+`en, zh-Hans, hi, es, fr, ar, bn, pt-BR, ru, ur, id, de, ja, sw, tr, vi, fil, ko, it, fa`.
+
+The registry and governance contracts are implemented. Production translation completeness is **not** proven. Non-English admission remains gated by translation coverage, untranslated-string scans, native review, specialist legal/privacy review where applicable, RTL QA, font/glyph coverage, localized accessibility/media, screenshots/listings where required, and rollback identity.
