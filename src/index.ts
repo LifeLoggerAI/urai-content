@@ -33,3 +33,5 @@ export * from './jobs/contentJobs.js';
 export * from './search/document.js';
 export * from './localization/uraiLocales.js';
 export * from './localization/bundle.js';
+export * from './telemetry/policy.js';
+export * from './integrations/envelope.js';
