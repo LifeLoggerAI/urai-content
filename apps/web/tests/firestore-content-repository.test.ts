@@ -110,6 +110,7 @@ class FakeCollection {
 
 class FakeFirestore implements FirestoreLike {
   private readonly collections = new Map<string, FakeCollection>();
+  private transactionTail: Promise<void> = Promise.resolve();
 
   collection(path: string) {
     if (!this.collections.has(path)) {
@@ -117,6 +118,31 @@ class FakeFirestore implements FirestoreLike {
     }
 
     return this.collections.get(path)!;
+  }
+
+  async runTransaction<T>(update: (transaction: any) => Promise<T>): Promise<T> {
+    const previous = this.transactionTail;
+    let release!: () => void;
+    this.transactionTail = new Promise<void>((resolve) => { release = resolve; });
+    await previous;
+
+    const writes: Promise<unknown>[] = [];
+    try {
+      const result = await update({
+        get: async (ref: { get(): Promise<unknown> }) => ref.get(),
+        set: (
+          ref: { set(data: FirestoreData, options?: { merge?: boolean }): Promise<unknown> },
+          data: FirestoreData,
+          options?: { merge?: boolean }
+        ) => {
+          writes.push(ref.set(data, options));
+        }
+      });
+      await Promise.all(writes);
+      return result;
+    } finally {
+      release();
+    }
   }
 }
 
@@ -160,6 +186,21 @@ describe('createFirestoreContentRepository', () => {
 
     await repo.deleteContent(item.id);
     expect(await repo.getContent(item.id)).toBeNull();
+  });
+
+  it('allocates unique revision numbers under concurrent writes', async () => {
+    const firestore = new FakeFirestore();
+    const repo = createFirestoreContentRepository(firestore);
+    const item = makeContentItem();
+
+    const versions = await Promise.all([
+      repo.addVersion(item.id, item),
+      repo.addVersion(item.id, { ...item, title: 'Concurrent revision' })
+    ]);
+
+    expect([...versions].sort((a, b) => a - b)).toEqual([1, 2]);
+    const retained = await repo.listVersions(item.id);
+    expect(retained.map((version) => version.version)).toEqual([1, 2]);
   });
 
   it('uses merge writes for upserted records that may be edited incrementally', async () => {
