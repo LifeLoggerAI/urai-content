@@ -110,4 +110,4 @@ jobs:
           name: content-web-lockfile-receipt-${{ env.TARGET_SHA }}
           path: artifacts/content-web-lockfile/receipt.json
           if-no-files-found: error
-          retention-days: 365
+          retention-days: 90
