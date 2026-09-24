@@ -19,3 +19,6 @@ export * from './lib/content/loaders.js';
 export * from './exports/manifest.js';
 export * from './marketplace/contracts.js';
 export * from './narrator/session.js';
+export * from './taxonomy/contracts.js';
+export * from './localization/contracts.js';
+export * from './accessibility/manifest.js';
