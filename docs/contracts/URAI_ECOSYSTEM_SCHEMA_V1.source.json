@@ -1,0 +1,13 @@
+{
+  "contract": "urai://contracts/ecosystem-schema-v1",
+  "authorityRepository": "LifeLoggerAI/UrAi",
+  "authorityPath": "docs/contracts/URAI_ECOSYSTEM_SCHEMA_V1.json",
+  "authorityBlobSha": "b664508396d0257a5a54179c332dc19898fe556b",
+  "contentGovernanceExtension": {
+    "contract": "urai://contracts/content-ecosystem-extension-v1",
+    "authorityRepository": "LifeLoggerAI/urai-content",
+    "authorityPath": "docs/contracts/URAI_CONTENT_ECOSYSTEM_EXTENSION_V1.json",
+    "authorityCandidatePr": 84
+  },
+  "rule": "Whole-ecosystem base and Content governance extension have separate contract IDs and authorities."
+}
