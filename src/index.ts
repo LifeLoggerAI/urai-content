@@ -22,3 +22,6 @@ export * from './narrator/session.js';
 export * from './taxonomy/contracts.js';
 export * from './localization/contracts.js';
 export * from './accessibility/manifest.js';
+export * from './generation/contracts.js';
+export * from './search/contracts.js';
+export * from './portability/package.js';
