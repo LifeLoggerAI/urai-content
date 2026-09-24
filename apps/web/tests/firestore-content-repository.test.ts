@@ -214,4 +214,28 @@ describe('createFirestoreContentRepository', () => {
 
     expect(await repo.listTelemetry(1)).toEqual([newEvent]);
   });
+
+  it('fails closed when Firestore returns malformed trusted records', async () => {
+    const firestore = new FakeFirestore();
+    const repo = createFirestoreContentRepository(firestore);
+
+    await firestore.collection('contentItems').doc('bad-content').set({
+      id: 'bad-content',
+      status: 'published',
+      visibility: 'public'
+    });
+
+    await expect(repo.getContent('bad-content')).rejects.toThrow('Invalid contentItems record');
+
+    await firestore.collection('userContentEntitlements').doc('bad-entitlement').set({
+      userId: 'user-1',
+      entitlementKey: 'tier:pro',
+      grantedBy: 'unknown',
+      grantedAt: 'not-a-date',
+      expiresAt: null
+    });
+
+    await expect(repo.listEntitlements('user-1')).rejects.toThrow('Invalid userContentEntitlements record');
+  });
+
 });
