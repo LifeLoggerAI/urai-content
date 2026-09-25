@@ -17,6 +17,8 @@ import { FIRESTORE_COLLECTIONS } from '../content/types';
 import {
   contentItemSchema,
   contentVersionRecordSchema,
+  parseRuntimeContentRecord,
+  serializeRuntimeContentRecord,
   creatorSubmissionSchema,
   exportTemplateSchema,
   marketplaceItemSchema,
@@ -68,14 +70,14 @@ function queueLimit(limit?: number): number {
 
 export function createFirestoreContentRepository(db: FirestoreLike): ContentRepository {
   return {
-    async upsertContent(item: ContentItem): Promise<void> { const parsed = parseRuntimeRecord(contentItemSchema, FIRESTORE_COLLECTIONS.contentItems, item); await collection(db, FIRESTORE_COLLECTIONS.contentItems).doc(parsed.id).set(asRecord(parsed), { merge: true }); },
+    async upsertContent(item: ContentItem): Promise<void> { const parsed = parseRuntimeRecord(contentItemSchema, FIRESTORE_COLLECTIONS.contentItems, item); await collection(db, FIRESTORE_COLLECTIONS.contentItems).doc(parsed.id).set(asRecord(serializeRuntimeContentRecord(parsed)), { merge: true }); },
     async getContent(id: string): Promise<ContentItem | null> {
       const snap = await collection(db, FIRESTORE_COLLECTIONS.contentItems).doc(id).get();
-      return snap.exists && snap.data() ? parseRuntimeRecord(contentItemSchema, FIRESTORE_COLLECTIONS.contentItems, snap.data()!) : null;
+      return snap.exists && snap.data() ? parseRuntimeContentRecord(snap.data()!) : null;
     },
     async listContent(): Promise<ContentItem[]> {
       const snap = await collection(db, FIRESTORE_COLLECTIONS.contentItems).get();
-      return snap.docs.map((doc) => parseRuntimeRecord(contentItemSchema, FIRESTORE_COLLECTIONS.contentItems, doc.data()));
+      return snap.docs.map((doc) => parseRuntimeContentRecord(doc.data()));
     },
     async deleteContent(id: string): Promise<void> { await collection(db, FIRESTORE_COLLECTIONS.contentItems).doc(id).delete(); },
     async addVersion(contentId: string, snapshot: ContentItem): Promise<number> {
