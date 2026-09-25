@@ -208,7 +208,7 @@ describe('createFirestoreContentRepository', () => {
     await repo.upsertContent(item);
 
     expect(firestore.collection('contentItems').setCalls).toEqual([
-      { id: item.id, data: item as unknown as FirestoreData, options: { merge: true } }
+      { id: item.id, data: { ...item, schemaVersion: 1 } as unknown as FirestoreData, options: { merge: true } }
     ]);
   });
 
@@ -251,6 +251,28 @@ describe('createFirestoreContentRepository', () => {
     await repo.addTelemetry(newEvent);
 
     expect(await repo.listTelemetry(1)).toEqual([newEvent]);
+  });
+
+  it('reads legacy unversioned content and current versioned content through one runtime API', async () => {
+    const firestore = new FakeFirestore();
+    const repo = createFirestoreContentRepository(firestore);
+    const item = makeContentItem();
+
+    await firestore.collection('contentItems').doc('legacy').set({ ...item, id: 'legacy' } as FirestoreData);
+    await firestore.collection('contentItems').doc('current').set({ ...item, id: 'current', schemaVersion: 1 } as FirestoreData);
+
+    expect(await repo.getContent('legacy')).toEqual({ ...item, id: 'legacy' });
+    expect(await repo.getContent('current')).toEqual({ ...item, id: 'current' });
+  });
+
+  it('fails closed on unsupported future content schema versions', async () => {
+    const firestore = new FakeFirestore();
+    const repo = createFirestoreContentRepository(firestore);
+    const item = makeContentItem();
+
+    await firestore.collection('contentItems').doc('future').set({ ...item, id: 'future', schemaVersion: 999 } as FirestoreData);
+
+    await expect(repo.getContent('future')).rejects.toThrow();
   });
 
   it('fails closed when Firestore returns malformed trusted records', async () => {
