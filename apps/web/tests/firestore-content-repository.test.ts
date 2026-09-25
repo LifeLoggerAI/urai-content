@@ -3,6 +3,7 @@ import { createFirestoreContentRepository, type FirestoreLike } from '../src/ser
 import type { ContentItem, TelemetryEvent, UserContentEntitlement } from '../../../src/schemas/content';
 
 type FirestoreData = Record<string, unknown>;
+type FirestoreTransaction = Parameters<Parameters<FirestoreLike['runTransaction']>[0]>[0];
 
 type SetCall = {
   id: string;
@@ -120,7 +121,7 @@ class FakeFirestore implements FirestoreLike {
     return this.collections.get(path)!;
   }
 
-  async runTransaction<T>(update: (transaction: any) => Promise<T>): Promise<T> {
+  async runTransaction<T>(update: (transaction: FirestoreTransaction) => Promise<T>): Promise<T> {
     const previous = this.transactionTail;
     let release!: () => void;
     this.transactionTail = new Promise<void>((resolve) => { release = resolve; });
