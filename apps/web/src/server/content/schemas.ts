@@ -21,6 +21,24 @@ export const contentItemSchema = z.object({
   contentType: z.enum(['narrator', 'story', 'ritual', 'export', 'marketplace'])
 });
 
+export const CURRENT_RUNTIME_CONTENT_SCHEMA_VERSION = 1 as const;
+
+export const runtimeContentRecordSchema = contentItemSchema.extend({
+  schemaVersion: z.literal(CURRENT_RUNTIME_CONTENT_SCHEMA_VERSION).optional(),
+});
+
+export function parseRuntimeContentRecord(value: unknown) {
+  const parsed = runtimeContentRecordSchema.parse(value);
+  const { schemaVersion, ...item } = parsed;
+  void schemaVersion;
+  return contentItemSchema.parse(item);
+}
+
+export function serializeRuntimeContentRecord(value: unknown) {
+  const item = contentItemSchema.parse(value);
+  return { ...item, schemaVersion: CURRENT_RUNTIME_CONTENT_SCHEMA_VERSION };
+}
+
 export const creatorSubmissionSchema = z.object({
   id: z.string().min(1),
   creatorId: z.string().min(1),
