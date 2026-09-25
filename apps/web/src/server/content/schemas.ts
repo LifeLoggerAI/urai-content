@@ -28,10 +28,10 @@ export const runtimeContentRecordSchema = contentItemSchema.extend({
 });
 
 export function parseRuntimeContentRecord(value: unknown) {
-  const parsed = runtimeContentRecordSchema.parse(value);
+  const parsed = parseRuntimeRecord(runtimeContentRecordSchema, 'contentItems', value);
   const { schemaVersion, ...item } = parsed;
   void schemaVersion;
-  return contentItemSchema.parse(item);
+  return parseRuntimeRecord(contentItemSchema, 'contentItems', item);
 }
 
 export function serializeRuntimeContentRecord(value: unknown) {
