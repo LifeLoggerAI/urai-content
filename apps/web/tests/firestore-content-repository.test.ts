@@ -130,12 +130,8 @@ class FakeFirestore implements FirestoreLike {
     const writes: Promise<unknown>[] = [];
     try {
       const result = await update({
-        get: async (ref: { get(): Promise<unknown> }) => ref.get(),
-        set: (
-          ref: { set(data: FirestoreData, options?: { merge?: boolean }): Promise<unknown> },
-          data: FirestoreData,
-          options?: { merge?: boolean }
-        ) => {
+        get: async (ref) => ref.get(),
+        set: (ref, data, options) => {
           writes.push(ref.set(data, options));
         }
       });
