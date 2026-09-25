@@ -52,7 +52,7 @@ jobs:
         run: |
           set -euo pipefail
           npm ci --ignore-scripts
-          npm ci --ignore-scripts --prefix apps/web
+          npx --yes npm@11.19.1 ci --ignore-scripts --prefix apps/web
 
       - name: Capture root and web audit JSON without mutation
         shell: bash
@@ -62,7 +62,7 @@ jobs:
           set +e
           npm audit --json > artifacts/content-dependency-audit/root-audit.json
           root_exit=$?
-          npm audit --json --prefix apps/web > artifacts/content-dependency-audit/web-audit.json
+          npx --yes npm@11.19.1 audit --json --prefix apps/web > artifacts/content-dependency-audit/web-audit.json
           web_exit=$?
           set -e
           printf '%s\n' "$root_exit" > artifacts/content-dependency-audit/root-exit-code.txt
@@ -147,4 +147,4 @@ jobs:
           name: content-dependency-audit-${{ env.TARGET_SHA }}
           path: artifacts/content-dependency-audit
           if-no-files-found: error
-          retention-days: 365
+          retention-days: 90

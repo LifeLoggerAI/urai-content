@@ -71,6 +71,7 @@ export async function POST(request: Request, context: RouteContext) {
     id: `${id}-${body.decision}-${Date.now()}`,
     entityType: 'creatorSubmission',
     entityId: id,
+    status: body.decision,
     decision: body.decision,
     notes: body.notes ?? null,
     moderatedAt: now,

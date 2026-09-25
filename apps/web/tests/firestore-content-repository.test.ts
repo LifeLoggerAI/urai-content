@@ -3,6 +3,7 @@ import { createFirestoreContentRepository, type FirestoreLike } from '../src/ser
 import type { ContentItem, TelemetryEvent, UserContentEntitlement } from '../../../src/schemas/content';
 
 type FirestoreData = Record<string, unknown>;
+type FirestoreTransaction = Parameters<Parameters<FirestoreLike['runTransaction']>[0]>[0];
 
 type SetCall = {
   id: string;
@@ -110,6 +111,7 @@ class FakeCollection {
 
 class FakeFirestore implements FirestoreLike {
   private readonly collections = new Map<string, FakeCollection>();
+  private transactionTail: Promise<void> = Promise.resolve();
 
   collection(path: string) {
     if (!this.collections.has(path)) {
@@ -117,6 +119,27 @@ class FakeFirestore implements FirestoreLike {
     }
 
     return this.collections.get(path)!;
+  }
+
+  async runTransaction<T>(update: (transaction: FirestoreTransaction) => Promise<T>): Promise<T> {
+    const previous = this.transactionTail;
+    let release!: () => void;
+    this.transactionTail = new Promise<void>((resolve) => { release = resolve; });
+    await previous;
+
+    const writes: Promise<unknown>[] = [];
+    try {
+      const result = await update({
+        get: async (ref) => ref.get(),
+        set: (ref, data, options) => {
+          writes.push(ref.set(data, options));
+        }
+      });
+      await Promise.all(writes);
+      return result;
+    } finally {
+      release();
+    }
   }
 }
 
@@ -160,6 +183,21 @@ describe('createFirestoreContentRepository', () => {
 
     await repo.deleteContent(item.id);
     expect(await repo.getContent(item.id)).toBeNull();
+  });
+
+  it('allocates unique revision numbers under concurrent writes', async () => {
+    const firestore = new FakeFirestore();
+    const repo = createFirestoreContentRepository(firestore);
+    const item = makeContentItem();
+
+    const versions = await Promise.all([
+      repo.addVersion(item.id, item),
+      repo.addVersion(item.id, { ...item, title: 'Concurrent revision' })
+    ]);
+
+    expect([...versions].sort((a, b) => a - b)).toEqual([1, 2]);
+    const retained = await repo.listVersions(item.id);
+    expect(retained.map((version) => version.version)).toEqual([1, 2]);
   });
 
   it('uses merge writes for upserted records that may be edited incrementally', async () => {
@@ -214,4 +252,28 @@ describe('createFirestoreContentRepository', () => {
 
     expect(await repo.listTelemetry(1)).toEqual([newEvent]);
   });
+
+  it('fails closed when Firestore returns malformed trusted records', async () => {
+    const firestore = new FakeFirestore();
+    const repo = createFirestoreContentRepository(firestore);
+
+    await firestore.collection('contentItems').doc('bad-content').set({
+      id: 'bad-content',
+      status: 'published',
+      visibility: 'public'
+    });
+
+    await expect(repo.getContent('bad-content')).rejects.toThrow('Invalid contentItems record');
+
+    await firestore.collection('userContentEntitlements').doc('bad-entitlement').set({
+      userId: 'user-1',
+      entitlementKey: 'tier:pro',
+      grantedBy: 'unknown',
+      grantedAt: 'not-a-date',
+      expiresAt: null
+    });
+
+    await expect(repo.listEntitlements('user-1')).rejects.toThrow('Invalid userContentEntitlements record');
+  });
+
 });

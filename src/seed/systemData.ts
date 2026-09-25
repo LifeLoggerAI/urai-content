@@ -423,10 +423,10 @@ export const deploymentStatuses: DeploymentStatus[] = [
     surface: 'standaloneWeb',
     status: 'blocked',
     url: 'https://www.uraicontent.com',
-    blockers: ['standalone web app not present in this package repo', 'Firebase/Vercel hosting target not configured', 'DNS access required'],
-    verificationCommand: 'npm run test:e2e && npm run build && deployment smoke test against https://www.uraicontent.com',
+    blockers: ['standalone web runtime exists under apps/web but no production deployment proof is attached', 'Firebase/Vercel hosting target is not verified', 'DNS/SSL and live route smoke evidence are required'],
+    verificationCommand: 'npm run web:check && npm run web:e2e && deployment smoke test against the verified production URL',
     lastVerifiedAt: null,
-    ownerActionRequired: ['choose separate web app or monorepo conversion', 'provide Firebase hosting project', 'configure DNS']
+    ownerActionRequired: ['verify the production hosting target', 'configure and verify DNS/SSL', 'attach exact-head deployed smoke and rollback evidence']
   },
   {
     id: 'firebase-functions-runtime',
