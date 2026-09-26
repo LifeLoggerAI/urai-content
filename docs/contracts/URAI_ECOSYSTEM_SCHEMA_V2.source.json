@@ -1,0 +1,10 @@
+{
+  "contract": "urai://contracts/ecosystem-schema-v2",
+  "state": "current-candidate",
+  "authorityRepository": "LifeLoggerAI/urai-content",
+  "authorityPath": "docs/contracts/URAI_ECOSYSTEM_SCHEMA_V2.json",
+  "authorityCandidatePr": 84,
+  "consumerRuntimeAuthority": "LifeLoggerAI/urai-spatial",
+  "contentGovernanceExtension": "urai://contracts/content-ecosystem-extension-v1",
+  "rule": "V2 is a compatibility contract, not a deployment authority. Each domain repository remains authoritative for its runtime behavior."
+}

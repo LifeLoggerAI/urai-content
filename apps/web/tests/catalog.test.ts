@@ -34,7 +34,7 @@ describe('web catalog loader', () => {
     expect(summary).toMatchObject({
       id: 'page-home',
       slug: '/',
-      visibility: 'public'
+      visibility: 'demo'
     });
     expect('sections' in summary).toBe(false);
   });
