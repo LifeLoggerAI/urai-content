@@ -1,0 +1,4 @@
+Source export SHA-256: d2fe8fe5754296bcf7b5f22665e2051221e5dd003f938fd5987921b9c6abddfa
+Last synchronized: July 11, 2026
+Change workflow: GitHub branch → evaluation → independent review → merge → Google Doc sync
+Release tag: v1.0.0 after merge and approval

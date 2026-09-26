@@ -1,0 +1,28 @@
+Executive summary
+A reliable “single autonomous prompt” is not just a task description. It works best as a compact research protocol that tells the agent what to study, how to search, what counts as success, which sources to trust first, how to extract and compare evidence, how to handle uncertainty, and what finished outputs to deliver. That structure matches current official guidance for tool-using AI systems: OpenAI recommends treating prompts as versioned application code with tests and evaluations, while Anthropic explicitly recommends defining success criteria, prompting for uncertainty admission, grounding claims in direct quotes, and verifying claims with citations. OpenAI’s current agent guidance also frames agents as systems that plan, call tools, collaborate, and maintain state across multi-step work. 
+
+
+For rigorous research, the best prompt also borrows heavily from systematic review practice. PRISMA 2020 provides a checklist and flow diagrams for transparent reporting. Cochrane recommends sensitive multi-source searches, use of both free text and controlled vocabulary, peer review of search strategies, searches of trials registers and regulatory sources where relevant, reproducible documentation of search steps, and careful linking of multiple reports from the same study so they are not double-counted. GRADE provides a practical model for rating confidence by outcome and summarizing evidence in decision-friendly tables. 
+
+
+The copy-paste prompt in this report is designed around those principles. It prioritizes primary and official sources; original papers and first-party documentation; explicit search logs; quote-grounded verification; confidence reporting; and deliverables that include an executive summary, detailed report, tables, charts where justified, Mermaid diagrams, and raw extraction data. It also includes paywall-safe handling, privacy and legal guardrails, and a runtime plan. For high-stakes domains such as health or regulated products, it raises the evidence threshold in line with Belmont ethics, HIPAA and GDPR privacy requirements, NIST trustworthiness guidance, and FTC expectations that health-related claims be supported by competent and reliable scientific evidence. 
+
+
+Design principles
+The most effective master prompt should minimize unnecessary follow-up questions while still surfacing important assumptions. Anthropic’s prompt engineering guidance explicitly starts with clear success criteria and empirical evaluation, and OpenAI recommends that role guidance sit at the highest instruction level while tasks, examples, and tests are kept structured and reviewable. In practice, that means the user should provide only the inputs that materially change the research outcome, and the agent should infer the rest conservatively and list those assumptions before proceeding. 
+
+
+Input from user        Needed level        Recommended default if missing
+Topic or research question        Required        None; if broad, narrow to the most decision-relevant interpretation and state it
+Research objective        Required        “Produce an analytical report that supports decision-making”
+Scope type        Optional        Infer from task: quick scan, deep literature review, or market/competitive analysis
+Audience        Optional        Expert-informed general audience
+Geography        Optional        Global unless the topic is clearly jurisdiction-specific
+Time window        Optional        Fast-changing topics: recent 12–36 months plus foundational sources; stable topics: seminal + recent
+Industry/domain        Optional        Infer from topic
+Citation style        Optional        APA 7
+Deliverables        Optional        Executive summary, detailed report, evidence tables, raw extraction data, charts if warranted, Mermaid diagram
+Time constraint        Optional        No strict limit; optimize for completeness proportional to complexity
+Source-language preference        Optional        Prioritize English; include non-English only when uniquely important
+
+
