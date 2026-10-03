@@ -168,6 +168,11 @@ export function normalizeSlug(slug: string): string {
   return `/${slug.replace(/^\/+|\/+$/g, '')}`;
 }
 
+export function catalogItemApiPath(slug: string): string {
+  const normalized = normalizeSlug(slug);
+  return `/api/content${normalized === '/' ? '' : normalized}`;
+}
+
 export function summarizeCatalogItem(item: CatalogItem) {
   return {
     id: item.id,

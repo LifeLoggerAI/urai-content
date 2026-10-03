@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { getCatalogItemBySlug, listCatalogItems, normalizeSlug, summarizeCatalogItem } from '../src/lib/catalog';
+import React from 'react';
+import { catalogItemApiPath, getCatalogItemBySlug, listCatalogItems, normalizeSlug, summarizeCatalogItem } from '../src/lib/catalog';
+import ContentPage from '../src/app/content/page';
 
 describe('web catalog loader', () => {
   it('loads public and demo canonical content items', () => {
@@ -15,6 +17,37 @@ describe('web catalog loader', () => {
     expect(normalizeSlug('/')).toBe('/');
     expect(normalizeSlug('privacy')).toBe('/privacy');
     expect(normalizeSlug('/privacy/')).toBe('/privacy');
+  });
+
+  it('builds the same content API route with or without a leading slash', () => {
+    expect(catalogItemApiPath('celestial-ui-pack')).toBe('/api/content/celestial-ui-pack');
+    expect(catalogItemApiPath('/celestial-ui-pack')).toBe('/api/content/celestial-ui-pack');
+    expect(catalogItemApiPath('/privacy/')).toBe('/api/content/privacy');
+    expect(catalogItemApiPath('/')).toBe('/api/content');
+    expect(catalogItemApiPath('')).toBe('/api/content');
+  });
+
+  it('renders the slashless demo slug as a reachable API record link', () => {
+    const hrefs: string[] = [];
+    function visit(node: unknown): void {
+      if (Array.isArray(node)) { node.forEach(visit); return; }
+      if (!node || typeof node !== 'object' || !('props' in node)) return;
+      const element = node as { type: unknown; props: { href?: string; children?: unknown } };
+      if (element.type === 'a' && element.props.href) hrefs.push(element.props.href);
+      visit(element.props.children);
+    }
+    // The Node test transform can use classic JSX; Next uses its own JSX runtime.
+    const jsxHost = globalThis as typeof globalThis & { React?: typeof React };
+    const previousReact = jsxHost.React;
+    jsxHost.React = React;
+    try { visit(ContentPage()); }
+    finally {
+      if (previousReact === undefined) delete jsxHost.React;
+      else jsxHost.React = previousReact;
+    }
+    expect(hrefs).toContain('/api/content/celestial-ui-pack');
+    expect(hrefs).toContain('/api/content');
+    expect(hrefs).not.toContain('/api/contentcelestial-ui-pack');
   });
 
   it('finds the root home item and privacy item by slug', () => {
