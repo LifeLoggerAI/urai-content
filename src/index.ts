@@ -41,3 +41,5 @@ export * from './syndication/contracts.js';
 export * from './editorial/workflow.js';
 export * from './integrations/registry.js';
 export * from './localization/coverage.js';
+
+export * from './privacy/deletionLifecycle.js';
