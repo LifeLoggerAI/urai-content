@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urai://contracts/content-ecosystem-extension-v1",
+  "title": "URAI Content Ecosystem Governance Extension V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contentPacks"],
+  "properties": {
+    "contentPacks": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/contentPackGovernance" }
+    }
+  },
+  "$defs": {
+    "lifecycleStatus": {
+      "type": "string",
+      "enum": ["draft", "review", "approved", "published", "archived", "blocked"]
+    },
+    "visibility": {
+      "type": "string",
+      "enum": ["public", "private", "tiered", "licensed", "internal"]
+    },
+    "integrationTarget": {
+      "type": "string",
+      "enum": ["home","jobs","b2bportal","asset-factory","analytics","communications","privacy","studio","spatial","admin","marketing","investors","foundation","licensing"]
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "createdAt"],
+      "properties": {
+        "source": { "type": "string", "minLength": 1 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "createdBy": { "type": "string" },
+        "license": { "type": "string" },
+        "rightsStatus": { "type": "string" }
+      }
+    },
+    "contentPackGovernance": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["id","version","slug","lifecycleStatus","visibility","integrationTargets","provenance","assetIds"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "version": { "type": "string", "minLength": 1 },
+        "slug": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+        "lifecycleStatus": { "$ref": "#/$defs/lifecycleStatus" },
+        "visibility": { "$ref": "#/$defs/visibility" },
+        "entitlementKey": { "type": "string" },
+        "integrationTargets": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/integrationTarget" },
+          "uniqueItems": true
+        },
+        "provenance": { "$ref": "#/$defs/provenance" },
+        "assetIds": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "xrCompatible": { "type": "boolean" },
+        "failsafeStatus": { "type": "string", "enum": ["not_required","pending","passed","blocked"] }
+      }
+    }
+  }
+}

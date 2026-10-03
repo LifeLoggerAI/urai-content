@@ -25,10 +25,12 @@ describe('URAI ecosystem adapter contracts', () => {
     const tierResult = await adapter.syncTierConfig?.(context, tierConfigs);
     expect(tierResult?.ok).toBe(true);
     expect(tierResult?.data?.synced).toBe(tierConfigs.length);
+    expect(tierResult).toMatchObject({ evidenceClass: 'synthetic', persisted: false, providerDispatch: false });
 
     const moduleResult = await adapter.syncExpansionModules?.(context, expansionModules);
     expect(moduleResult?.ok).toBe(true);
     expect(moduleResult?.data?.synced).toBe(expansionModules.length);
+    expect(moduleResult).toMatchObject({ evidenceClass: 'synthetic', persisted: false, providerDispatch: false });
   });
 
   it('throws when adapter coverage is incomplete', () => {

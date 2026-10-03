@@ -14,6 +14,7 @@ import {
   type ContentItem
 } from '../schemas/content.js';
 import type { ContentRepository } from './types.js';
+import { validateContentAnalyticsEvent } from '../telemetry/policy.js';
 
 export class ContentService {
   constructor(private readonly repo: ContentRepository) {}
@@ -83,7 +84,7 @@ export class ContentService {
   }
 
   async logModeration(input: unknown): Promise<void> { await this.repo.logModeration(moderationQueueSchema.parse(input)); }
-  async logTelemetry(input: unknown): Promise<void> { await this.repo.addTelemetry(telemetryEventSchema.parse(input)); }
+  async logTelemetry(input: unknown): Promise<void> { await this.repo.addTelemetry(validateContentAnalyticsEvent(telemetryEventSchema.parse(input))); }
   async upsertNarratorPrompt(input: unknown): Promise<void> { await this.repo.upsertNarratorPrompt(narratorPromptSchema.parse(input)); }
   async upsertStoryTemplate(input: unknown): Promise<void> { await this.repo.upsertStoryTemplate(storyTemplateSchema.parse(input)); }
   async upsertRitualTemplate(input: unknown): Promise<void> { await this.repo.upsertRitualTemplate(ritualTemplateSchema.parse(input)); }

@@ -20,6 +20,9 @@ export type ContentAdapterResult<T> = {
   ok: boolean;
   data: T | null;
   warnings: string[];
+  evidenceClass: 'synthetic' | 'staging' | 'production';
+  persisted: boolean;
+  providerDispatch: boolean;
 };
 
 export type UraiContentAdapter = {
@@ -49,28 +52,40 @@ export const createMockContentAdapter: AdapterFactory = (integration) => ({
     return {
       ok: true,
       data: { remoteId: `mock:${integration.id}:${content.id}` },
-      warnings: ['Mock adapter did not write to an external system.']
+      warnings: ['Mock adapter did not write to an external system.'],
+      evidenceClass: 'synthetic',
+      persisted: false,
+      providerDispatch: false
     };
   },
   async pullContent() {
     return {
       ok: true,
       data: { items: [], nextCursor: null },
-      warnings: ['Mock adapter returned no external content.']
+      warnings: ['Mock adapter returned no external content.'],
+      evidenceClass: 'synthetic',
+      persisted: false,
+      providerDispatch: false
     };
   },
   async syncTierConfig(_context, tiers) {
     return {
       ok: true,
       data: { synced: tiers.length },
-      warnings: ['Mock adapter did not persist tier config externally.']
+      warnings: ['Mock adapter did not persist tier config externally.'],
+      evidenceClass: 'synthetic',
+      persisted: false,
+      providerDispatch: false
     };
   },
   async syncExpansionModules(_context, modules) {
     return {
       ok: true,
       data: { synced: modules.length },
-      warnings: ['Mock adapter did not persist expansion modules externally.']
+      warnings: ['Mock adapter did not persist expansion modules externally.'],
+      evidenceClass: 'synthetic',
+      persisted: false,
+      providerDispatch: false
     };
   }
 });

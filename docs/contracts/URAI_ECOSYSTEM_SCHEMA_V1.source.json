@@ -1,0 +1,12 @@
+{
+  "contract": "urai://contracts/ecosystem-schema-v1",
+  "state": "historical-compatibility",
+  "legacySourceRepository": "LifeLoggerAI/UrAi",
+  "legacySourcePath": "docs/contracts/URAI_ECOSYSTEM_SCHEMA_V1.json",
+  "legacySourceBlobSha": "b664508396d0257a5a54179c332dc19898fe556b",
+  "estateRule": "LifeLoggerAI/UrAi is legacy containment and NEVER DEPLOY. This V1 file is retained only to identify historical compatibility and must not be treated as current runtime authority.",
+  "successorContract": "urai://contracts/ecosystem-schema-v2",
+  "successorAuthorityRepository": "LifeLoggerAI/urai-content",
+  "successorPath": "docs/contracts/URAI_ECOSYSTEM_SCHEMA_V2.json",
+  "successorCandidatePr": 84
+}

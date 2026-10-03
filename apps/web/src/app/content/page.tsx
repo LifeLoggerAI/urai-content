@@ -1,4 +1,4 @@
-import { listCatalogItems, summarizeCatalogItem } from '@/lib/catalog';
+import { catalogItemApiPath, listCatalogItems, summarizeCatalogItem } from '@/lib/catalog';
 
 export const metadata = {
   title: 'Content',
@@ -25,7 +25,7 @@ export default function ContentPage() {
                 <h2>{item.title}</h2>
                 <p>{item.summary}</p>
                 <p style={{ marginTop: 12 }}>
-                  <a href={`/api/content${item.slug === '/' ? '' : item.slug}`}>View API record</a>
+                  <a href={catalogItemApiPath(item.slug)}>View API record</a>
                 </p>
               </article>
             ))}
