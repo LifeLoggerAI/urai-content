@@ -26,6 +26,14 @@ describe('web catalog loader', () => {
     expect(getCatalogItemBySlug('missing-content-item')).toBeNull();
   });
 
+  it('discloses the unavailable demo sprite without a deliverable path', () => {
+    const item = getCatalogItemBySlug('celestial-ui-pack');
+    expect(item).toMatchObject({ status: 'demo', assetAvailability: 'unavailable' });
+    expect(item?.summary).toContain('unavailable');
+    expect(item).not.toHaveProperty('path');
+    expect(summarizeCatalogItem(item!)).toMatchObject({ assetAvailability: 'unavailable' });
+  });
+
   it('summarizes catalog items without sections', () => {
     const item = getCatalogItemBySlug('/');
     expect(item).not.toBeNull();
