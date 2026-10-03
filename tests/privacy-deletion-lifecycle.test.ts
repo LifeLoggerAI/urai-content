@@ -36,17 +36,20 @@ function fixture() {
 describe('content deletion lifecycle', () => {
   it('requires a verified backup bounded by the purge deadline', () => {
     expect(() => createContentDeletionTombstone({
-      ...fixture(),
-      schemaVersion: undefined as never,
-      state: undefined as never,
-      restoredAt: undefined as never,
-      purgeReceipt: undefined as never,
+      tombstoneId: 'delete-late-backup',
+      ownerId: 'user-1',
+      entityType: 'creator-submission',
+      entityId: 'submission-1',
+      requestedAt: '2026-10-03T00:00:00.000Z',
+      restoreUntil: '2026-10-10T00:00:00.000Z',
+      purgeAfter: '2026-11-02T00:00:00.000Z',
       backup: {
         backupId: 'late-backup',
         checksum: sha('late'),
         verifiedAt: '2026-10-04T00:00:00.000Z',
         expiresAt: '2026-11-02T00:00:00.000Z',
       },
+      providerTargets: [],
     })).toThrow('Backup verification must precede deletion request');
   });
 
