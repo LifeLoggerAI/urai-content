@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { getCatalogItemBySlug, listCatalogItems, normalizeSlug, summarizeCatalogItem } from '../src/lib/catalog';
+import { catalogItemApiPath, getCatalogItemBySlug, listCatalogItems, normalizeSlug, summarizeCatalogItem } from '../src/lib/catalog';
 
 describe('web catalog loader', () => {
   it('loads public and demo canonical content items', () => {
@@ -17,6 +17,14 @@ describe('web catalog loader', () => {
     expect(normalizeSlug('/privacy/')).toBe('/privacy');
   });
 
+  it('builds the same content API route with or without a leading slash', () => {
+    expect(catalogItemApiPath('celestial-ui-pack')).toBe('/api/content/celestial-ui-pack');
+    expect(catalogItemApiPath('/celestial-ui-pack')).toBe('/api/content/celestial-ui-pack');
+    expect(catalogItemApiPath('/privacy/')).toBe('/api/content/privacy');
+    expect(catalogItemApiPath('/')).toBe('/api/content');
+    expect(catalogItemApiPath('')).toBe('/api/content');
+  });
+
   it('finds the root home item and privacy item by slug', () => {
     expect(getCatalogItemBySlug('/')?.id).toBe('page-home');
     expect(getCatalogItemBySlug('privacy')?.id).toBe('page-privacy');
@@ -24,6 +32,14 @@ describe('web catalog loader', () => {
 
   it('returns null for missing or non-public content', () => {
     expect(getCatalogItemBySlug('missing-content-item')).toBeNull();
+  });
+
+  it('discloses the unavailable demo sprite without a deliverable path', () => {
+    const item = getCatalogItemBySlug('celestial-ui-pack');
+    expect(item).toMatchObject({ status: 'demo', assetAvailability: 'unavailable' });
+    expect(item?.summary).toContain('unavailable');
+    expect(item).not.toHaveProperty('path');
+    expect(summarizeCatalogItem(item!)).toMatchObject({ assetAvailability: 'unavailable' });
   });
 
   it('summarizes catalog items without sections', () => {

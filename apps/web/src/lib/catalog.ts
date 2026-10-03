@@ -14,7 +14,15 @@ const canonicalContentItemSchema = z.object({
   relatedSystem: z.string().min(1),
   sections: z.array(z.object({ heading: z.string(), body: z.string() })).default([]),
   cta: z.object({ label: z.string(), href: z.string() }).optional(),
+  assetAvailability: z.enum(['ready', 'unavailable']).optional(),
   path: z.string().optional()
+}).superRefine((item, context) => {
+  if (item.assetAvailability === 'unavailable' && item.path !== undefined) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['path'], message: 'Unavailable assets must omit their deliverable path.' });
+  }
+  if (item.assetAvailability === 'ready' && !item.path) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['path'], message: 'Ready assets require a deliverable path.' });
+  }
 });
 
 export type CatalogItem = z.infer<typeof canonicalContentItemSchema>;
@@ -160,6 +168,11 @@ export function normalizeSlug(slug: string): string {
   return `/${slug.replace(/^\/+|\/+$/g, '')}`;
 }
 
+export function catalogItemApiPath(slug: string): string {
+  const normalized = normalizeSlug(slug);
+  return `/api/content${normalized === '/' ? '' : normalized}`;
+}
+
 export function summarizeCatalogItem(item: CatalogItem) {
   return {
     id: item.id,
@@ -171,6 +184,7 @@ export function summarizeCatalogItem(item: CatalogItem) {
     updatedAt: item.updatedAt,
     tags: item.tags,
     relatedSystem: item.relatedSystem,
+    assetAvailability: item.assetAvailability ?? null,
     cta: item.cta ?? null
   };
 }
