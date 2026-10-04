@@ -39,11 +39,11 @@ The broader URAI product includes highly sensitive memories, relationships, loca
 
 Required remediation: publish a data-classification and ownership policy. Store only reusable system content or consented references/derived manifests; delegate private source records to privacy-governed services.
 
-### P1 — Deletion, retention and recovery are not complete
+### P1 — Deletion, retention and recovery lifecycle is implemented in source and remains deployment-gated
 
-The repository contract includes hard deletion but no tombstone, retention state, purge receipt, restore workflow or verified backup. Provider deletion propagation is not implemented.
+The repository now includes a governed deletion tombstone contract with a bounded restore window, a verified backup receipt, provider-deletion targets that fail closed until applicable provider receipts are recorded, deterministic purge readiness, and an immutable purge receipt with checksum verification.
 
-Required remediation: add retention policies, soft deletion, immutable audit evidence, export-before-delete support, purge jobs, backup and restore tests.
+This is source-level lifecycle authority only. It does not claim that a production purge worker is deployed or that any external provider has deleted data unless a real provider deletion receipt is recorded. Deployed retention scheduling, backup infrastructure, provider callbacks, and production purge execution still require environment-specific evidence before production-complete status.
 
 ### P1 — Version creation is race-prone
 

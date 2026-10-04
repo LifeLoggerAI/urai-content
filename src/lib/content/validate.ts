@@ -1,6 +1,6 @@
-import { existsSync } from 'node:fs';
+import { existsSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
-import { contentItemSchema } from './schema.js';
+import { contentItemSchema, spritePreviewSchema } from './schema.js';
 import { loadJsonFile, walkJsonFiles } from './loaders.js';
 
 const unsafeTerms = [
@@ -26,6 +26,15 @@ function toArray(value: unknown): unknown[] {
   return Array.isArray(value) ? value : [value];
 }
 
+function validateAssetPath(root: string, assetPath: string): void {
+  const filePath = join(root, assetPath);
+  if (!existsSync(filePath)) throw new Error(`Missing asset path ${assetPath}`);
+  const file = statSync(filePath);
+  if (!file.isFile() || file.size === 0) {
+    throw new Error(`Asset path must be a nonempty file: ${assetPath}`);
+  }
+}
+
 export function validateContent(options?: { rootDir?: string; contentDir?: string }): void {
   const root = options?.rootDir ?? process.cwd();
   const contentDir = options?.contentDir ?? join(root, 'content');
@@ -41,7 +50,11 @@ export function validateContent(options?: { rootDir?: string; contentDir?: strin
       if (typeof x !== 'object' || x === null || !('id' in (x as object))) return false;
 
       const record = x as Record<string, unknown>;
-      if ('spriteId' in record && 'previewPath' in record) return false;
+      if ('spriteId' in record) {
+        const preview = spritePreviewSchema.parse(record);
+        if (preview.previewPath) validateAssetPath(root, preview.previewPath);
+        return false;
+      }
 
       return true;
     });
@@ -67,9 +80,7 @@ export function validateContent(options?: { rootDir?: string; contentDir?: strin
         }
       }
 
-      if (parsed.path && !existsSync(join(root, parsed.path))) {
-        throw new Error(`Missing asset path ${parsed.path}`);
-      }
+      if (parsed.path) validateAssetPath(root, parsed.path);
     }
   }
 

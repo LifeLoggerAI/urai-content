@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { canCreateCreatorSubmission, isCreatorSession } from '@/server/auth/authorization';
 import { getAuthFailureBody, getAuthFailureStatus, getRequestSession } from '@/server/auth/requestSession';
 import { createRuntimeContentRepository, getRuntimePersistenceStatus } from '@/server/content/service';
+import type { CreatorSubmission } from '@/server/content/types';
 
 export const dynamic = 'force-dynamic';
 
@@ -80,7 +81,7 @@ export async function POST(request: Request) {
   if (unavailable) return unavailable;
 
   const now = new Date().toISOString();
-  const submission = {
+  const submission: CreatorSubmission = {
     id: createSubmissionId(body),
     creatorId: body.creatorId,
     title: body.title,

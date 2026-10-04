@@ -1,1 +1,1 @@
-{"required":["id","title","path","tags","status"]}
+{"required":["id","title","tags","status","assetAvailability"],"oneOf":[{"properties":{"assetAvailability":{"const":"ready"}},"required":["path"]},{"properties":{"assetAvailability":{"const":"unavailable"}},"not":{"required":["path"]}}]}

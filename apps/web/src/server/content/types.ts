@@ -1,54 +1,37 @@
 import 'server-only';
+import type { z } from 'zod';
+import {
+  contentItemSchema,
+  creatorSubmissionSchema,
+  exportTemplateSchema,
+  marketplaceItemSchema,
+  moderationQueueSchema,
+  narratorPromptSchema,
+  publishingReleaseSchema,
+  ritualTemplateSchema,
+  storyTemplateSchema,
+  telemetryEventSchema,
+  userContentEntitlementSchema
+} from './schemas';
 
-export type ContentWorkflowStatus = 'draft' | 'review' | 'approved' | 'published' | 'archived';
-export type ContentVisibility = 'public' | 'unlisted' | 'private';
-export type ContentType = 'story' | 'ritual' | 'narrator' | 'marketplace' | 'export';
+export type ContentItem = z.output<typeof contentItemSchema>;
+export type ContentWorkflowStatus = ContentItem['status'];
+export type ContentVisibility = ContentItem['visibility'];
+export type ContentType = ContentItem['contentType'];
 
-export type ContentItem = {
-  id: string;
-  slug: string;
-  title: string;
-  body: string;
-  tags: string[];
-  locale: string;
-  status: ContentWorkflowStatus;
-  visibility: ContentVisibility;
-  createdBy: string;
-  updatedAt: string;
-  createdAt: string;
-  sourceLabel: string;
-  whyShownCopy: string;
-  safetyNotes: string[];
-  contentType: ContentType;
-};
-
-export type ModerationQueueItem = Record<string, unknown> & { id: string };
-export type PublishingRelease = Record<string, unknown> & { id: string };
-export type NarratorPrompt = Record<string, unknown> & { id: string };
-export type StoryTemplate = Record<string, unknown> & { id: string };
-export type RitualTemplate = Record<string, unknown> & { id: string };
-export type MarketplaceItem = Record<string, unknown> & { id: string };
-export type CreatorSubmission = Record<string, unknown> & { id: string };
-export type ExportTemplate = Record<string, unknown> & { id: string };
-
-export type TelemetryEvent = {
-  event: string;
-  userId?: string | null;
-  entityId?: string | null;
-  timestamp: string;
-  metadata: Record<string, unknown>;
-};
-
-export type UserContentEntitlement = {
-  userId: string;
-  entitlementKey: string;
-  grantedBy: string;
-  grantedAt: string;
-  expiresAt: string | null;
-};
+export type ModerationQueueItem = z.output<typeof moderationQueueSchema>;
+export type PublishingRelease = z.output<typeof publishingReleaseSchema>;
+export type NarratorPrompt = z.output<typeof narratorPromptSchema>;
+export type StoryTemplate = z.output<typeof storyTemplateSchema>;
+export type RitualTemplate = z.output<typeof ritualTemplateSchema>;
+export type MarketplaceItem = z.output<typeof marketplaceItemSchema>;
+export type CreatorSubmission = z.output<typeof creatorSubmissionSchema>;
+export type ExportTemplate = z.output<typeof exportTemplateSchema>;
+export type TelemetryEvent = z.output<typeof telemetryEventSchema>;
+export type UserContentEntitlement = z.output<typeof userContentEntitlementSchema>;
 
 export type CreatorSubmissionQueueOptions = {
-  status?: string;
+  status?: CreatorSubmission['status'];
   limit?: number;
 };
 

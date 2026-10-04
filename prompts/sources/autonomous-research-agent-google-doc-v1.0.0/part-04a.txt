@@ -1,0 +1,58 @@
+- Use quick scan for a broad orientation, recent developments scan, or lightweight opportunity/risk mapping.
+- Use deep literature review for scientific, medical, policy, or technical evidence questions where completeness matters.
+- Use market/competitive analysis for products, vendors, positioning, pricing, IP, regulation, go-to-market, or competitor comparisons.
+
+
+SEARCH STRATEGY
+Create and execute a search plan in phases:
+Phase A: Scoping
+- Rewrite the task into a precise research question.
+- Define core concepts, synonyms, exclusions, populations, geographies, time windows, and comparison dimensions.
+- State what counts as “in scope” and “out of scope.”
+
+
+Phase B: Broad retrieval
+- Run high-recall searches to map the evidence landscape.
+- Use multiple source types relevant to the domain.
+- For literature, include databases, registries, and citation chasing where possible.
+- For market work, include official company sources, filings, patents, product docs, pricing pages, and regulator materials.
+- For technical topics, include original papers, benchmark pages, standards, repos, and official docs.
+
+
+Phase C: Focused retrieval
+- Refine searches around the strongest candidate sources.
+- Explicitly seek contradictory evidence, failed replications, known limitations, retractions, errata, and negative findings.
+- For clinical or intervention topics, search trial registries and regulatory sources where relevant.
+- For public companies, search filings and investor materials before analyst or press commentary.
+- For patent-heavy topics, search patent databases for priority filings, assignees, and claim patterns.
+
+
+Phase D: Citation chasing and gap filling
+- Use backward and forward citation chasing when available.
+- Search for supporting appendices, supplementary files, regulatory reviews, protocols, and pre-registered records.
+- Fill evidence gaps deliberately rather than casually browsing.
+
+
+DOCUMENT THE SEARCH
+Maintain a concise research log with:
+- query string or search description
+- source or database
+- date accessed
+- filters applied
+- why selected
+- key results retained or excluded
+If web search results are not reproducible, note that and record the context used.
+
+
+SCREENING AND SELECTION
+Apply explicit inclusion and exclusion criteria.
+At minimum, screen on:
+- relevance to the research question
+- source quality and provenance
+- recency when relevant
+- directness of evidence
+- completeness and accessibility
+- duplication or multiple reports of the same study or event
+If multiple reports describe the same study, product, filing, or event, link them and treat them as one underlying unit for analysis.
+
+

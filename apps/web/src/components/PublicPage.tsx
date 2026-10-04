@@ -17,11 +17,11 @@ function resolvePage(props: PublicPageProps): SitePage {
 
   return {
     route: '',
-    eyebrow: props.eyebrow ?? 'URAI',
-    title: props.title ?? 'URAI',
+    eyebrow: props.eyebrow ?? 'URAI Content',
+    title: props.title ?? 'URAI Content',
     lede: props.lede ?? '',
     metadata: {
-      title: props.title ?? 'URAI',
+      title: props.title ?? 'URAI Content',
       description: props.lede ?? ''
     },
     sections: []
@@ -31,15 +31,20 @@ function resolvePage(props: PublicPageProps): SitePage {
 export function SiteHeader() {
   return (
     <header className="site-header">
-      <TrackedLink className="brand" href="/" aria-label="URAI home" eventLabel="brand_home">URAI</TrackedLink>
+      <TrackedLink className="brand" href="/" aria-label="URAI Content home" eventLabel="brand_home">
+        URAI Content
+      </TrackedLink>
       <nav className="nav" aria-label="Primary navigation">
-        <TrackedLink href="/product" eventLabel="nav_product">Product</TrackedLink>
-        <TrackedLink href="/how-it-works" eventLabel="nav_how_it_works">How it works</TrackedLink>
+        <TrackedLink href="/content" eventLabel="nav_archive">Archive</TrackedLink>
+        <TrackedLink href="/stories" eventLabel="nav_stories">Stories</TrackedLink>
+        <TrackedLink href="/rituals" eventLabel="nav_rituals">Rituals</TrackedLink>
+        <TrackedLink href="/narrator" eventLabel="nav_narrator">Narrator</TrackedLink>
+        <TrackedLink href="/creator" eventLabel="nav_creator">Creator preview</TrackedLink>
         <TrackedLink href="/privacy" eventLabel="nav_privacy">Privacy</TrackedLink>
-        <TrackedLink href="/data-ownership" eventLabel="nav_data_ownership">Data control</TrackedLink>
-        <TrackedLink href="/demo" eventLabel="nav_demo">Experience</TrackedLink>
       </nav>
-      <TrackedLink className="button compact" href="/waitlist" eventLabel="header_waitlist">Join early access</TrackedLink>
+      <TrackedLink className="button compact" href="/versions" eventLabel="header_versions">
+        Versions
+      </TrackedLink>
     </header>
   );
 }
@@ -48,16 +53,18 @@ export function SiteFooter() {
   return (
     <footer className="site-footer">
       <div>
-        <strong>URAI Labs</strong>
-        <p>Private personal intelligence for memory, reflection, relationships, and the data you choose to connect.</p>
+        <strong>URAI Content</strong>
+        <p>
+          Editorial archive, content registry, and governed publishing surface for URAI. Public, preview,
+          gated, and blocked states remain explicit.
+        </p>
       </div>
       <nav aria-label="Footer navigation">
         <TrackedLink href="/about" eventLabel="footer_about">About</TrackedLink>
-        <TrackedLink href="/users" eventLabel="footer_users">For users</TrackedLink>
-        <TrackedLink href="/researchers" eventLabel="footer_researchers">Research</TrackedLink>
-        <TrackedLink href="/partners" eventLabel="footer_partners">Partners</TrackedLink>
-        <TrackedLink href="/investors" eventLabel="footer_investors">Investors</TrackedLink>
-        <TrackedLink href="/faq" eventLabel="footer_faq">FAQ</TrackedLink>
+        <TrackedLink href="/content" eventLabel="footer_content">Archive</TrackedLink>
+        <TrackedLink href="/creator" eventLabel="footer_creator">Creator preview</TrackedLink>
+        <TrackedLink href="/licensing" eventLabel="footer_licensing">Licensing</TrackedLink>
+        <TrackedLink href="/versions" eventLabel="footer_versions">Versions</TrackedLink>
         <TrackedLink href="/terms" eventLabel="footer_terms">Terms</TrackedLink>
         <TrackedLink href="/contact" eventLabel="footer_contact">Contact</TrackedLink>
       </nav>
@@ -89,8 +96,16 @@ export function Actions({ page }: { page: SitePage }) {
   if (!page.primaryCta && !page.secondaryCta) return null;
   return (
     <div className="actions" aria-label="Page actions">
-      {page.primaryCta ? <TrackedLink className="button" href={page.primaryCta.href} eventLabel={`${page.route}:primary`}>{page.primaryCta.label}</TrackedLink> : null}
-      {page.secondaryCta ? <TrackedLink className="button secondary" href={page.secondaryCta.href} eventLabel={`${page.route}:secondary`}>{page.secondaryCta.label}</TrackedLink> : null}
+      {page.primaryCta ? (
+        <TrackedLink className="button" href={page.primaryCta.href} eventLabel={`${page.route}:primary`}>
+          {page.primaryCta.label}
+        </TrackedLink>
+      ) : null}
+      {page.secondaryCta ? (
+        <TrackedLink className="button secondary" href={page.secondaryCta.href} eventLabel={`${page.route}:secondary`}>
+          {page.secondaryCta.label}
+        </TrackedLink>
+      ) : null}
     </div>
   );
 }
@@ -138,7 +153,11 @@ export function PublicCard({ title, body, href, linkLabel }: { title: string; bo
     <article className="card">
       <h2>{title}</h2>
       <p>{body}</p>
-      {href ? <p className="card-link"><TrackedLink href={href} eventLabel={`card:${title}`}>{linkLabel ?? 'Learn more'}</TrackedLink></p> : null}
+      {href ? (
+        <p className="card-link">
+          <TrackedLink href={href} eventLabel={`card:${title}`}>{linkLabel ?? 'Open'}</TrackedLink>
+        </p>
+      ) : null}
     </article>
   );
 }

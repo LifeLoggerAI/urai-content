@@ -13,6 +13,17 @@
 .github/pull_request_template.md @LifeLoggerAI
 .github/CODEOWNERS @LifeLoggerAI
 
+# Autonomous research prompt library, tests, validators, and release controls
+prompts/ @LifeLoggerAI
+prompts/autonomous-research-agent-master-prompt.md @LifeLoggerAI
+prompts/evals/ @LifeLoggerAI
+prompts/GOVERNANCE.md @LifeLoggerAI
+prompts/SYNC.md @LifeLoggerAI
+scripts/checkPromptLibrary.ts @LifeLoggerAI
+scripts/runPromptEvals.ts @LifeLoggerAI
+.github/workflows/prompt-library.yml @LifeLoggerAI
+.github/workflows/prompt-review-gate.yml @LifeLoggerAI
+
 # Operational truth, launch docs, blockers, route coverage, and release evidence
 docs/ @LifeLoggerAI
 URAI_FINAL_COMPLETION_AUDIT.md @LifeLoggerAI
