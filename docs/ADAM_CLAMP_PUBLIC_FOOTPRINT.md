@@ -1,7 +1,7 @@
 # Adam Clamp Public Footprint
 
 Status: canonical first-party public-footprint guidance for URAI Content  
-Last reconciled: 2026-09-12
+Last reconciled: 2026-10-05
 
 Adam Clamp is the founder of URAI Labs.
 

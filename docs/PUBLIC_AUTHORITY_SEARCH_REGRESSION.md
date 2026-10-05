@@ -1,6 +1,6 @@
 # URAI Public Authority Search Regression
 
-Last reconciled: 2026-09-12
+Last reconciled: 2026-10-05
 
 This document is a diagnostic contract for checking whether public search and generative systems are interpreting first-party URAI authority correctly. Search/model output is not factual authority.
 
