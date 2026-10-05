@@ -32,7 +32,7 @@ export type SitePage = {
 export const defaultSeo = {
   title: 'URAI — Private Personal Intelligence',
   description:
-    'URAI helps you understand your life through passive, privacy-first personal intelligence, emotional timelines, cognitive mirrors, and user-controlled data ownership.'
+    'URAI helps you understand your life through passive, privacy-first personal intelligence, emotional timelines, Mirror reflections, and user-controlled data ownership.'
 };
 
 export const publicPages = {
@@ -41,7 +41,7 @@ export const publicPages = {
     eyebrow: 'URAI',
     title: 'Understand your life from the data you already create.',
     lede:
-      'URAI is a passive, privacy-first personal intelligence experience that turns everyday signals into emotional timelines, cognitive mirrors, relationship insights, and personal data ownership tools — all under your control.',
+      'URAI is a passive, privacy-first personal intelligence experience that turns everyday signals into emotional timelines, Mirror reflections, relationship insights, and personal data ownership tools — all under your control.',
     metadata: defaultSeo,
     primaryCta: { label: 'Join Early Access', href: '/waitlist' },
     secondaryCta: { label: 'Explore the Experience', href: '/demo' },
@@ -60,8 +60,8 @@ export const publicPages = {
       {
         title: 'Core experiences',
         body:
-          'The public product experience centers on the Cognitive Mirror, Emotional Timeline, Memory Map, Council companion, relationship intelligence, mood forecasting, and user-owned data controls.',
-        items: ['Cognitive Mirror', 'Emotional Timeline', 'Memory Map', 'Council Companion', 'Relationship Intelligence', 'Mood Forecasting']
+          'The public product experience centers on the Mirror, Emotional Timeline, Memory Map, Council companion, relationship intelligence, mood forecasting, and user-owned data controls.',
+        items: ['Mirror', 'Emotional Timeline', 'Memory Map', 'Council Companion', 'Relationship Intelligence', 'Mood Forecasting']
       },
       {
         title: 'Privacy-first by design',
@@ -112,7 +112,7 @@ export const publicPages = {
       'URAI connects routines, emotions, relationships, places, habits, memories, and digital behavior, then reflects them back through a private visual intelligence experience.',
     metadata: {
       title: 'Product',
-      description: 'Explore URAI features including passive capture, Cognitive Mirror, Emotional Timeline, Memory Map, Council Companion, and data ownership.'
+      description: 'Explore URAI features including passive capture, Mirror, Emotional Timeline, Memory Map, Council Companion, and data ownership.'
     },
     primaryCta: { label: 'Explore Experience', href: '/demo' },
     secondaryCta: { label: 'Join Early Access', href: '/waitlist' },
@@ -124,7 +124,7 @@ export const publicPages = {
         items: ['Audio reflections and transcriptions', 'Location context', 'Device activity patterns', 'Habit and routine signals', 'Social interaction rhythms', 'Environmental context']
       },
       {
-        title: 'Cognitive Mirror',
+        title: 'Mirror',
         body:
           'A daily and weekly reflection layer that helps users understand mood, energy, focus, stress, recovery, and behavioral patterns without presenting them as medical conclusions.'
       },
@@ -159,7 +159,7 @@ export const publicPages = {
     sections: [
       { title: '1. Permission', body: 'URAI begins with consent. Users choose which sources to connect and can disable them later. No passive signal should be collected without clear user permission.' },
       { title: '2. Patterning', body: 'Approved signals are organized into structured patterns across time, place, mood, routine, relationship, memory, behavior, recovery, focus, and context.' },
-      { title: '3. Reflection', body: 'URAI translates patterns into Cognitive Mirror summaries, Emotional Timeline arcs, Memory Map moments, Council reflections, weekly summaries, and forecast cards.' },
+      { title: '3. Reflection', body: 'URAI translates patterns into Mirror summaries, Emotional Timeline arcs, Memory Map moments, Council reflections, weekly summaries, and forecast cards.' },
       { title: '4. Control', body: 'Users manage permission settings, export options, deletion controls, optional marketplace preferences, privacy preferences, and notification preferences.' }
     ]
   },
@@ -212,7 +212,7 @@ export const publicPages = {
     primaryCta: { label: 'Join Early Access', href: '/waitlist' },
     sections: [
       { title: 'Less manual tracking', body: 'URAI reduces the burden of constant journaling by organizing signals users already create and choose to connect.' },
-      { title: 'More useful reflection', body: 'The Cognitive Mirror and Council companion convert patterns into language that feels calm, human, and actionable.' },
+      { title: 'More useful reflection', body: 'The Mirror and Council companion convert patterns into language that feels calm, human, and actionable.' },
       { title: 'Personal control', body: 'Users choose permissions, review insights, and keep optional data participation separate from the core experience.' }
     ]
   },
@@ -264,7 +264,7 @@ export const publicPages = {
     sections: [
       { title: 'Investor thesis', body: 'People generate massive amounts of personal data, but most of it is fragmented across devices, platforms, and apps. URAI turns fragmented life data into private, user-facing intelligence.' },
       { title: 'Why now', body: 'AI can summarize complex personal patterns, consumers are increasingly privacy-aware, passive tracking is technically possible, and data ownership is becoming a major cultural and regulatory conversation.' },
-      { title: 'The wedge', body: 'URAI begins with reflective user value — Cognitive Mirror, Emotional Timeline, Memory Map, and Council — then expands into ethical data participation and partner infrastructure.' }
+      { title: 'The wedge', body: 'URAI begins with reflective user value — Mirror, Emotional Timeline, Memory Map, and Council — then expands into ethical data participation and partner infrastructure.' }
     ]
   },
   demo: {
@@ -272,15 +272,15 @@ export const publicPages = {
     eyebrow: 'Experience',
     title: 'Explore URAI with public-safe example data.',
     lede:
-      'This guided URAI experience introduces the Cognitive Mirror, Emotional Timeline, Memory Map, Council reflections, and data ownership controls without exposing real private user data.',
+      'This guided URAI experience introduces the Mirror, Emotional Timeline, Memory Map, Council reflections, and data ownership controls without exposing real private user data.',
     metadata: {
       title: 'URAI Experience',
-      description: 'Explore URAI with public-safe example data across Cognitive Mirror, Emotional Timeline, Memory Map, and Council reflections.'
+      description: 'Explore URAI with public-safe example data across Mirror, Emotional Timeline, Memory Map, and Council reflections.'
     },
     primaryCta: { label: 'Request Experience Access', href: '/contact?type=demo' },
     secondaryCta: { label: 'Join Early Access', href: '/waitlist' },
     sections: [
-      { title: 'Cognitive Mirror', body: 'Example cards show focus rhythm, emotional load, recovery periods, and routine patterns.' },
+      { title: 'Mirror', body: 'Example cards show focus rhythm, emotional load, recovery periods, and routine patterns.' },
       { title: 'Emotional Timeline', body: 'A public-safe timeline shows how URAI can surface emotional seasons, turning points, and rebound arcs.' },
       { title: 'Memory Map', body: 'Constellation-style example moments show how conversations, places, routines, and milestones can become navigable memory points.' },
       { title: 'Council reflection', body: 'The Council explains example patterns in calm, non-clinical language grounded in visible example signals.' }
@@ -293,7 +293,7 @@ export const publicPages = {
     lede: 'Join URAI early access for product updates, guided experience access, and future invitations as availability expands.',
     metadata: {
       title: 'URAI Early Access',
-      description: 'Join URAI early access for passive personal intelligence, Cognitive Mirror, Emotional Timeline, and data ownership tools.'
+      description: 'Join URAI early access for passive personal intelligence, Mirror, Emotional Timeline, and data ownership tools.'
     },
     sections: [
       { title: 'What you will receive', body: 'Product updates, guided experience invitations, expanding-access opportunities, and notes from URAI Labs.' },
@@ -348,7 +348,7 @@ export const publicPages = {
     },
     primaryCta: { label: 'Join Early Access', href: '/waitlist' },
     sections: [
-      { title: 'Access update', body: 'URAI is expanding access for people who want passive, privacy-first personal intelligence built around emotional timelines, cognitive mirrors, and user-controlled data.' },
+      { title: 'Access update', body: 'URAI is expanding access for people who want passive, privacy-first personal intelligence built around emotional timelines, Mirror reflections, and user-controlled data.' },
       { title: 'Steward notes', body: 'Future updates will share product progress, privacy decisions, experience releases, and partnership milestones.' }
     ]
   },
