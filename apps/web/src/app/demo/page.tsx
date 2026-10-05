@@ -10,7 +10,7 @@ export default function DemoPage() {
       <LeadForm
         kind="contact"
         title="Request demo access"
-        description="Ask for a public-safe URAI demo walkthrough using sample Cognitive Mirror, Emotional Timeline, Memory Map, and Council data."
+        description="Ask for a public-safe URAI demo walkthrough using sample Mirror, Emotional Timeline, Memory Map, and Council data."
         defaultLeadType="demo"
       />
     </PublicPage>
