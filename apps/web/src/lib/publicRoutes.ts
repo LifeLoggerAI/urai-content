@@ -13,6 +13,8 @@ export const implementedPublicRoutes = [
   '/waitlist',
   '/faq',
   '/terms',
+  '/security',
+  '/accessibility',
   '/updates',
   '/contact',
   '/content',

@@ -30,7 +30,9 @@ function resolvePage(props: PublicPageProps): SitePage {
 
 export function SiteHeader() {
   return (
-    <header className="site-header">
+    <>
+      <a className="skip-link" href="#main-content">Skip to content</a>
+      <header className="site-header">
       <TrackedLink className="brand" href="/" aria-label="URAI Content home" eventLabel="brand_home">
         URAI Content
       </TrackedLink>
@@ -45,7 +47,8 @@ export function SiteHeader() {
       <TrackedLink className="button compact" href="/versions" eventLabel="header_versions">
         Versions
       </TrackedLink>
-    </header>
+      </header>
+    </>
   );
 }
 
@@ -66,6 +69,8 @@ export function SiteFooter() {
         <TrackedLink href="/licensing" eventLabel="footer_licensing">Licensing</TrackedLink>
         <TrackedLink href="/versions" eventLabel="footer_versions">Versions</TrackedLink>
         <TrackedLink href="/terms" eventLabel="footer_terms">Terms</TrackedLink>
+        <TrackedLink href="/security" eventLabel="footer_security">Security</TrackedLink>
+        <TrackedLink href="/accessibility" eventLabel="footer_accessibility">Accessibility</TrackedLink>
         <TrackedLink href="/contact" eventLabel="footer_contact">Contact</TrackedLink>
       </nav>
     </footer>
@@ -76,7 +81,7 @@ export function PublicPage(props: PublicPageProps) {
   const page = resolvePage(props);
 
   return (
-    <main>
+    <main id="main-content">
       <div className="page-shell">
         <section className="hero" aria-labelledby="page-title">
           <p className="eyebrow">{page.eyebrow}</p>
