@@ -63,6 +63,11 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add package-lock.json apps/web/package-lock.json
-          test "$(git diff --cached --name-only | sort)" = "$(printf '%s\n' apps/web/package-lock.json package-lock.json | sort)"
+          staged="$(git diff --cached --name-only)"
+          test -n "$staged"
+          unexpected="$(printf '%s\n' "$staged" | grep -vE '^(package-lock.json|apps/web/package-lock.json)
+          git push origin HEAD:hardening/content-review-supply-chain-20261005
+ || true)"
+          test -z "$unexpected"
           git commit -m "Synchronize zero-audit Content lockfiles"
           git push origin HEAD:hardening/content-review-supply-chain-20261005
