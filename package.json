@@ -59,19 +59,22 @@
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
-    "@typescript-eslint/eslint-plugin": "^8.18.1",
-    "@typescript-eslint/parser": "^8.18.1",
-    "eslint": "^9.17.0",
+    "@typescript-eslint/eslint-plugin": "8.71.0",
+    "@typescript-eslint/parser": "8.71.0",
+    "eslint": "10.11.0",
     "tsx": "4.23.9",
     "typescript": "^5.7.2",
     "vitest": "4.1.11"
   },
   "overrides": {
-    "minimatch@3.1.5": {
-      "brace-expansion": "1.1.18"
+    "minimatch@^3.0.0": {
+      "brace-expansion": "1.1.21"
     },
-    "minimatch@10.2.5": {
-      "brace-expansion": "5.0.9"
+    "minimatch@^5.0.0": {
+      "brace-expansion": "2.1.7"
+    },
+    "minimatch@^10.0.0": {
+      "brace-expansion": "5.0.12"
     },
     "js-yaml": "4.3.2"
   }
