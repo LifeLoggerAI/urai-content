@@ -285,7 +285,7 @@ export const seoPages: SeoPage[] = [
   {
     id: 'seo-home',
     path: '/',
-    title: 'URAI Content | The Publishing Engine for the URAI Emotional OS',
+    title: 'URAI Content | Publishing for Memory, Story, and Emotional Weather',
     description: 'Transform memory, mood, rituals, voice, insight, and story into beautiful exportable content with URAI Content.',
     canonicalUrl: 'https://www.uraicontent.com/',
     openGraphImage: '/og/urai-content-home.png',
