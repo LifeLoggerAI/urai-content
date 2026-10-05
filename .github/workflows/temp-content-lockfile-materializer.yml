@@ -22,10 +22,12 @@ jobs:
         with:
           ref: hardening/content-review-supply-chain-20261005
           fetch-depth: 0
+
       - name: Setup Node
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: '22'
+
       - name: Regenerate synchronized lockfiles only
         shell: bash
         run: |
@@ -34,6 +36,7 @@ jobs:
           npx --yes npm@11.19.1 install --package-lock-only --ignore-scripts --no-audit --no-fund --prefix apps/web
           unexpected="$(git status --porcelain --untracked-files=all | grep -vE '^( M|M |MM) (package-lock.json|apps/web/package-lock.json)$' || true)"
           test -z "$unexpected"
+
       - name: Verify generated graphs and lint compatibility
         shell: bash
         run: |
@@ -45,19 +48,20 @@ jobs:
           npx --yes npm@11.19.1 audit --json --prefix apps/web > /tmp/web-audit.json
           node - <<'NODE'
           const fs = require('node:fs')
-          for (const name of ['root','web']) {
-            const report = JSON.parse(fs.readFileSync('/tmp/' + name + '-audit.json','utf8'))
+          for (const name of ['root', 'web']) {
+            const report = JSON.parse(fs.readFileSync('/tmp/' + name + '-audit.json', 'utf8'))
             const total = Number(report?.metadata?.vulnerabilities?.total ?? 0)
             console.log(name, report.metadata?.vulnerabilities ?? {})
             if (total !== 0) process.exitCode = 1
           }
           NODE
+
       - name: Commit only synchronized lockfiles
-        if: success()
         shell: bash
         run: |
           set -euo pipefail
           if git diff --quiet -- package-lock.json apps/web/package-lock.json; then
+            echo "Lockfiles already synchronized."
             exit 0
           fi
           git config user.name "github-actions[bot]"
@@ -65,9 +69,7 @@ jobs:
           git add package-lock.json apps/web/package-lock.json
           staged="$(git diff --cached --name-only)"
           test -n "$staged"
-          unexpected="$(printf '%s\n' "$staged" | grep -vE '^(package-lock.json|apps/web/package-lock.json)
-          git push origin HEAD:hardening/content-review-supply-chain-20261005
- || true)"
+          unexpected="$(printf '%s\n' "$staged" | grep -vE '^(package-lock.json|apps/web/package-lock.json)$' || true)"
           test -z "$unexpected"
           git commit -m "Synchronize zero-audit Content lockfiles"
           git push origin HEAD:hardening/content-review-supply-chain-20261005
