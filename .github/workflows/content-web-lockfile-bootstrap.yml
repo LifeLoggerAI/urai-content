@@ -8,7 +8,6 @@ on:
     branches:
       - main
       - agent/content-reproducible-web-lockfile-20260801
-      - hardening/content-review-supply-chain-20261005
   workflow_dispatch:
 
 permissions:
@@ -112,39 +111,3 @@ jobs:
           path: artifacts/content-web-lockfile/receipt.json
           if-no-files-found: error
           retention-days: 90
-
-
-  regenerate-pr89:
-    name: Regenerate PR89 web lockfile
-    if: (github.event_name == 'pull_request' && github.event.pull_request.number == 89) || (github.event_name == 'push' && github.ref_name == 'hardening/content-review-supply-chain-20261005')
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    steps:
-      - name: Checkout exact branch head
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
-        with:
-          ref: ${{ github.sha }}
-          persist-credentials: false
-
-      - name: Setup Node
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
-        with:
-          node-version: '22'
-          cache: npm
-          cache-dependency-path: apps/web/package-lock.json
-
-      - name: Regenerate and freeze-check web lockfile
-        shell: bash
-        run: |
-          set -euo pipefail
-          npx --yes npm@11.19.1 install --package-lock-only --ignore-scripts --prefix apps/web
-          npx --yes npm@11.19.1 ci --ignore-scripts --prefix apps/web
-          test -n "$(git diff -- apps/web/package-lock.json)"
-
-      - name: Upload regenerated web lockfile
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        with:
-          name: content-pr89-regenerated-web-lockfile-${{ github.sha }}
-          path: apps/web/package-lock.json
-          if-no-files-found: error
-          retention-days: 7
