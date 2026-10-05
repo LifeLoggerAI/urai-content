@@ -1,0 +1,77 @@
+name: TEMP Content lockfile materializer
+
+on:
+  push:
+    branches:
+      - hardening/content-review-supply-chain-20261005
+
+permissions:
+  contents: write
+
+concurrency:
+  group: temp-content-lockfile-materializer
+  cancel-in-progress: false
+
+jobs:
+  materialize:
+    if: github.actor != 'github-actions[bot]' || contains(github.event.head_commit.message, 'Remediate current Content dependency advisory floor')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact repair branch
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          ref: hardening/content-review-supply-chain-20261005
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '22'
+
+      - name: Regenerate synchronized lockfiles only
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+          npx --yes npm@11.19.1 install --package-lock-only --ignore-scripts --no-audit --no-fund --prefix apps/web
+          unexpected="$(git status --porcelain --untracked-files=all | grep -vE '^( M|M |MM) (package-lock.json|apps/web/package-lock.json)$' || true)"
+          test -z "$unexpected"
+          git diff -- package-lock.json apps/web/package-lock.json
+
+      - name: Verify generated graphs and current audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm ci --ignore-scripts
+          npx --yes npm@11.19.1 ci --ignore-scripts --prefix apps/web
+          set +e
+          npm audit --json > /tmp/root-audit.json
+          root_exit=$?
+          npx --yes npm@11.19.1 audit --json --prefix apps/web > /tmp/web-audit.json
+          web_exit=$?
+          set -e
+          node - <<'NODE'
+          const fs = require('node:fs')
+          for (const name of ['root','web']) {
+            const report = JSON.parse(fs.readFileSync('/tmp/' + name + '-audit.json','utf8'))
+            console.log(name, report.metadata?.vulnerabilities ?? {})
+          }
+          NODE
+          echo "root_audit_exit=$root_exit"
+          echo "web_audit_exit=$web_exit"
+
+      - name: Commit only synchronized lockfiles
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- package-lock.json apps/web/package-lock.json; then
+            echo "Lockfiles already synchronized."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package-lock.json apps/web/package-lock.json
+          test "$(git diff --cached --name-only | sort)" = "$(printf '%s\n' apps/web/package-lock.json package-lock.json | sort)"
+          git commit -m "Synchronize Content advisory-remediation lockfiles"
+          git push origin HEAD:hardening/content-review-supply-chain-20261005
