@@ -16,6 +16,8 @@ const plannedPublicRoutes = [
   '/waitlist',
   '/faq',
   '/terms',
+  '/security',
+  '/accessibility',
   '/updates',
   '/contact',
   '/content',
