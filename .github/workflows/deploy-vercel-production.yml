@@ -91,7 +91,7 @@ jobs:
         run: npm run web:check
 
       - name: Install Vercel CLI
-        run: npm install --global vercel@latest
+        run: npm install --global vercel@59.23.1
 
       - name: Pull Vercel preview environment
         working-directory: apps/web
