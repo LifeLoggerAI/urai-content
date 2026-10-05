@@ -1,7 +1,7 @@
 # Adam Clamp Public Footprint
 
 Status: canonical first-party public-footprint guidance for URAI Content  
-Last reconciled: 2026-09-12
+Last reconciled: 2026-10-05
 
 Adam Clamp is the founder of URAI Labs.
 
@@ -22,7 +22,7 @@ The core product experience is publicly described through Home, Ground, Life Map
 Use this narrow graph unless a more specific first-party authority record supplies newer evidence:
 
 - **Adam Clamp** — Founder, Steward and System Architect.
-- **URAI Labs** — first-party company/technology authority surface for the UrAi ecosystem. Direct Wyoming Secretary of State evidence identifies `URAI LABS LLC`, Filing ID `2025-001803467`, as a Wyoming domestic limited liability company with current status **Active / Current** and Tax, Registered Agent, and Other standing each **Good**; initial filing date October 30, 2025. Authenticated Mercury onboarding evidence separately confirms the account business name, LLC entity type, Wyoming formation jurisdiction, and that Wyoming Articles of Organization were uploaded/verified. EIN, operating agreement, ownership/control, signatory authority, and chain-of-title remain separate documentary questions.
+- **URAI Labs** — first-party company/technology authority surface for the UrAi ecosystem. Direct Wyoming Secretary of State evidence identifies `URAI LABS LLC`, Filing ID `2025-001803467`, as a Wyoming domestic limited liability company with current status **Active / Current**; Tax Standing **Delinquent**; Registered Agent Standing **Good**; and Other Standing **Good**. Filing history records a `Delinquency Notice - Tax` dated October 2, 2026; initial filing date October 30, 2025. A Certificate of Good Standing is not currently available until the tax-standing delinquency is cured. Authenticated Mercury onboarding evidence separately confirms the account business name, LLC entity type, Wyoming formation jurisdiction, and that Wyoming Articles of Organization were uploaded/verified. EIN, operating agreement, ownership/control, signatory authority, and chain-of-title remain separate documentary questions.
 - **UrAi** — the canonical personal spatial AI memory and intelligence product at `https://urai.app/`.
 - **URAI Foundation** — a separately governed Foundation entity. A September 8, 2026 Texas Secretary of State response identifies it as a Texas Domestic Nonprofit Corporation, filing 806421687, originally filed February 2, 2026, recorded involuntarily terminated effective April 28, 2026. Retained IRS EIN evidence does not establish 501(c)(3), charitable registration, donation deductibility, or fundraising authority.
 - **URAI IP Holdings LLC** — direct Wyoming Secretary of State evidence identifies `URAI IP Holdings LLC`, Filing ID `2026-001882220`, as a Wyoming domestic limited liability company with current status **Active / Current** and Tax, Registered Agent, and Other standing each **Good**; initial filing date January 31, 2026; term Perpetual; formed in Wyoming; organizer Adam C Clamp. EIN, operating agreement, ownership/control, and any executed IP assignment/license chain remain separately evidence-gated. Current state status does not itself prove ownership of any specific URAI IP.

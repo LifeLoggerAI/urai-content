@@ -1,6 +1,6 @@
 # URAI Public Authority Search Regression
 
-Last reconciled: 2026-09-12
+Last reconciled: 2026-10-05
 
 This document is a diagnostic contract for checking whether public search and generative systems are interpreting first-party URAI authority correctly. Search/model output is not factual authority.
 
@@ -12,7 +12,7 @@ This document is a diagnostic contract for checking whether public search and ge
 - URAI Spatial -> product/runtime source authority for the spatial UrAi experience
 - URAI Content -> content-domain engine and governed runtime scaffold
 - URAI Foundation -> separately governed Texas Domestic Nonprofit Corporation; September 8, 2026 Texas SOS evidence records it involuntarily terminated effective April 28, 2026; no active/good-standing, 501(c)(3), charity-registration, donation-deductibility, or fundraising claim follows from that record
-- URAI LABS LLC -> direct Wyoming Secretary of State evidence identifies Filing ID `2025-001803467`, Wyoming domestic LLC, current status Active / Current, with Tax, Registered Agent, and Other standing each Good; initial filing October 30, 2025. EIN, operating agreement, ownership/control, signatory authority, and chain-of-title remain separate evidence classes.
+- URAI LABS LLC -> direct Wyoming Secretary of State evidence identifies Filing ID `2025-001803467`, Wyoming domestic LLC, current status Active / Current; Tax Standing Delinquent; Registered Agent and Other Standing Good; filing history records a `Delinquency Notice - Tax` dated October 2, 2026; initial filing October 30, 2025. A Certificate of Good Standing is not currently available until the tax-standing delinquency is cured. EIN, operating agreement, ownership/control, signatory authority, and chain-of-title remain separate evidence classes.
 - URAI IP Holdings LLC -> direct Wyoming Secretary of State evidence identifies Filing ID `2026-001882220`, Wyoming domestic LLC, current status Active / Current, with Tax, Registered Agent, and Other standing each Good; initial filing January 31, 2026; term Perpetual; organizer Adam C Clamp. Specific IP ownership, executed assignments/licenses, EIN, operating agreement, ownership/control, and signatory authority remain separately evidence-gated.
 
 ## Required non-edges
