@@ -26,13 +26,13 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.3.5",
+    "@eslint/eslintrc": "3.3.7",
     "@playwright/test": "^1.53.0",
     "@types/node": "^22.10.2",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "eslint": "^9.17.0",
-    "eslint-config-next": "15.5.24",
+    "eslint": "9.39.3",
+    "eslint-config-next": "15.5.25",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
     "vitest": "4.1.11"
@@ -45,6 +45,23 @@
     "gaxios@6.7.1": {
       "uuid": "11.1.1"
     },
-    "js-yaml": "4.3.2"
+    "minimatch@^3.0.0": {
+      "brace-expansion": "1.1.21"
+    },
+    "minimatch@^5.0.0": {
+      "brace-expansion": "2.1.7"
+    },
+    "minimatch@^10.0.0": {
+      "brace-expansion": "5.0.12"
+    },
+    "@fastify/busboy": "3.2.2",
+    "@grpc/grpc-js": "1.14.5",
+    "js-yaml": "4.3.2",
+    "glob": {
+      "brace-expansion": "2.1.7"
+    },
+    "@next/eslint-plugin-next": {
+      "fast-glob": "npm:tinyglobby@0.2.17"
+    }
   }
 }
