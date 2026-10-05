@@ -1,0 +1,64 @@
+name: Content PR89 Web Lockfile Regenerator
+
+on:
+  push:
+    branches:
+      - hardening/content-review-supply-chain-20261005
+
+permissions:
+  contents: read
+
+concurrency:
+  group: content-pr89-lockfile-regenerator-${{ github.sha }}
+  cancel-in-progress: false
+
+env:
+  TARGET_SHA: ${{ github.sha }}
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+        with:
+          ref: ${{ env.TARGET_SHA }}
+          persist-credentials: false
+
+      - name: Verify exact clean checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$TARGET_SHA"
+          test -z "$(git status --porcelain --untracked-files=all)"
+
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+
+      - name: Regenerate web lockfile with canonical npm
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx --yes npm@11.19.1 install --package-lock-only --ignore-scripts --prefix apps/web
+          npx --yes npm@11.19.1 ci --ignore-scripts --prefix apps/web
+
+      - name: Prove bounded mutation
+        shell: bash
+        run: |
+          set -euo pipefail
+          git status --short
+          test -n "$(git diff -- apps/web/package-lock.json)"
+          test -z "$(git status --porcelain --untracked-files=all | grep -v '^ M apps/web/package-lock.json$' || true)"
+
+      - name: Upload exact generated lockfile
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: content-pr89-web-lockfile-${{ env.TARGET_SHA }}
+          path: apps/web/package-lock.json
+          if-no-files-found: error
+          retention-days: 7
