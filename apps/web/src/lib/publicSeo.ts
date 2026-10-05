@@ -54,7 +54,7 @@ const overrides: Partial<Record<ImplementedPublicRoute, PublicSeoMetadata>> = {
   '/product': makeSeo(
     '/product',
     'Product',
-    'Explore URAI experiences including the Cognitive Mirror, Emotional Timeline, Life Map, Council, and user-controlled data permissions.'
+    'Explore URAI experiences including the Mirror, Emotional Timeline, Life Map, Council, and user-controlled data permissions.'
   ),
   '/how-it-works': makeSeo(
     '/how-it-works',
