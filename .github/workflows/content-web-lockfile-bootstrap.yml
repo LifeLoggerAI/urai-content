@@ -116,7 +116,7 @@ jobs:
 
   regenerate-pr89:
     name: Regenerate PR89 web lockfile
-    if: github.event_name == 'push' && github.ref_name == 'hardening/content-review-supply-chain-20261005'
+    if: (github.event_name == 'pull_request' && github.event.pull_request.number == 89) || (github.event_name == 'push' && github.ref_name == 'hardening/content-review-supply-chain-20261005')
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
