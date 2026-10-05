@@ -4,11 +4,12 @@ import { webEnv } from '@/lib/env';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
+  const routes = [...Object.values(publicPages).map((page) => page.route), '/security', '/accessibility'];
 
-  return Object.values(publicPages).map((page) => ({
-    url: new URL(page.route, webEnv.NEXT_PUBLIC_SITE_URL).toString(),
+  return [...new Set(routes)].map((route) => ({
+    url: new URL(route, webEnv.NEXT_PUBLIC_SITE_URL).toString(),
     lastModified: now,
-    changeFrequency: page.route === '/' ? 'weekly' : 'monthly',
-    priority: page.route === '/' ? 1 : 0.7
+    changeFrequency: route === '/' ? 'weekly' : 'monthly',
+    priority: route === '/' ? 1 : 0.7
   }));
 }
