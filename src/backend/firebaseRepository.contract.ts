@@ -3,6 +3,9 @@ import type { ContentRepository } from './types.js';
 export const FIRESTORE_COLLECTIONS = {
   contentItems: 'contentItems',
   contentVersions: 'contentVersions',
+  contentRevisionCounters: 'contentRevisionCounters',
+  contentDeletionStates: 'contentDeletionStates',
+  contentDeletionTombstones: 'contentDeletionTombstones',
   moderationQueue: 'moderationQueue',
   publishingReleases: 'publishingReleases',
   telemetryEvents: 'telemetryEvents',

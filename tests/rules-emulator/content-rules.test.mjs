@@ -6,7 +6,7 @@ import {
   assertSucceeds,
   initializeTestEnvironment,
 } from '@firebase/rules-unit-testing';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { deleteDoc, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { deleteObject, getBytes, ref, uploadBytes } from 'firebase/storage';
 
 const projectId = 'urai-content-rules-test';
@@ -52,7 +52,7 @@ function validAnalytics(overrides = {}) {
     userId: 'alice',
     entityId: 'content-1',
     timestamp: '2026-07-14T00:00:00.000Z',
-    metadata: { source: 'rules-emulator' },
+    metadata: { sourceSystem: 'rules-emulator' },
     ...overrides,
   };
 }
@@ -188,4 +188,39 @@ test('export and license Storage reads are owner/admin only and writes are admin
   await assertFails(getBytes(ref(bob, 'licenses/alice/license.pdf')));
   await assertFails(uploadBytes(ref(alice, 'exports/alice/user-write.json'), new Uint8Array([1]), { contentType: 'application/json' }));
   await assertSucceeds(uploadBytes(ref(admin, 'exports/alice/admin-write.json'), new Uint8Array([1]), { contentType: 'application/json' }));
+});
+
+test('retained and malformed deletion records are private and client administrators cannot bypass lifecycle transactions', async () => {
+  await seedDoc('contentItems/retained', { status: 'published', visibility: 'public', schemaVersion: 2, body: 'retained private text', deletion: { tombstoneId: 'delete-retained', state: 'retained_for_restore' } });
+  await seedDoc('contentItems/restored', { status: 'published', visibility: 'public', schemaVersion: 2, deletion: { tombstoneId: 'delete-restored', state: 'restored' } });
+  await seedDoc('contentItems/malformed-deletion', { status: 'published', visibility: 'public', deletion: { state: 'unknown' } });
+  await seedDoc('contentDeletionTombstones/delete-retained', { ownerId: 'alice', state: 'retained_for_restore' });
+  await seedDoc('contentDeletionStates/purged', { contentId: 'purged', tombstoneId: 'delete-purged', state: 'purged' });
+  const publicDb = testEnv.unauthenticatedContext().firestore();
+  const owner = testEnv.authenticatedContext('alice', { role: 'creator' }).firestore();
+  const admin = testEnv.authenticatedContext('administrator', { roles: ['admin'] }).firestore();
+  await assertFails(getDoc(doc(publicDb, 'contentItems/retained')));
+  await assertFails(getDoc(doc(owner, 'contentItems/retained')));
+  await assertFails(getDoc(doc(publicDb, 'contentItems/malformed-deletion')));
+  await assertSucceeds(getDoc(doc(publicDb, 'contentItems/restored')));
+  await assertSucceeds(getDoc(doc(admin, 'contentItems/retained')));
+  await assertFails(updateDoc(doc(admin, 'contentItems/retained'), { body: 'resurrected' }));
+  await assertFails(updateDoc(doc(admin, 'contentItems/retained'), { deletion: { tombstoneId: 'delete-retained', state: 'restored' } }));
+  await assertFails(deleteDoc(doc(admin, 'contentItems/retained')));
+  await assertFails(setDoc(doc(admin, 'contentItems/purged'), { status: 'published', visibility: 'public' }));
+  await assertFails(getDoc(doc(owner, 'contentDeletionTombstones/delete-retained')));
+  await assertFails(getDoc(doc(admin, 'contentDeletionTombstones/delete-retained')));
+});
+
+test('analytics persistence enforces the canonical telemetry metadata allowlist and scalar bounds', async () => {
+  const db = testEnv.authenticatedContext('alice').firestore();
+  await assertSucceeds(setDoc(doc(db, 'analyticsEvents/allowed'), validAnalytics({ metadata: { contentVersion: 'v1', locale: 'en-US', surface: 'content', lifecycleStatus: 'published', contentType: 'story', sourceSystem: 'content', experimentKey: 'synthetic' } })));
+  for (const [id, metadata] of [
+    ['private-text', { memoryText: 'private text' }],
+    ['nested', { locale: { raw: 'en' } }],
+    ['long-locale', { locale: 'x'.repeat(33) }],
+    ['bad-status', { lifecycleStatus: 'fake-published' }],
+    ['bad-type', { contentType: 'private-memory' }],
+    ['numeric', { contentVersion: 1 }],
+  ]) await assertFails(setDoc(doc(db, 'analyticsEvents/' + id), validAnalytics({ metadata })));
 });

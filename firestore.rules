@@ -32,7 +32,10 @@ service cloud.firestore {
 
     function isPublicContentItem() {
       return resource.data.get('status', '') == 'published'
-        && resource.data.get('visibility', '') == 'public';
+        && resource.data.get('visibility', '') == 'public'
+        && (!resource.data.keys().hasAny(['schemaVersion']) || resource.data.schemaVersion in [1, 2])
+        && (!resource.data.keys().hasAny(['deletion'])
+          || (resource.data.get('schemaVersion', 0) == 2 && resource.data.deletion is map && resource.data.deletion.get('state', '') == 'restored'));
     }
 
     function isPublishedFreeContentPack() {
@@ -52,6 +55,23 @@ service cloud.firestore {
 
     function isCreateOwner(fieldName) {
       return signedIn() && request.resource.data[fieldName] == request.auth.uid;
+    }
+
+    function boundedMetadataString(metadata, fieldName, maximum) {
+      return !metadata.keys().hasAny([fieldName])
+        || (metadata[fieldName] is string && metadata[fieldName].size() <= maximum);
+    }
+
+    function validAnalyticsMetadata(metadata) {
+      return metadata is map
+        && metadata.keys().hasOnly(['contentVersion', 'locale', 'surface', 'lifecycleStatus', 'contentType', 'sourceSystem', 'experimentKey'])
+        && boundedMetadataString(metadata, 'contentVersion', 80)
+        && boundedMetadataString(metadata, 'locale', 32)
+        && boundedMetadataString(metadata, 'surface', 80)
+        && boundedMetadataString(metadata, 'sourceSystem', 80)
+        && boundedMetadataString(metadata, 'experimentKey', 120)
+        && (!metadata.keys().hasAny(['lifecycleStatus']) || metadata.lifecycleStatus in ['draft', 'review', 'approved', 'published', 'archived'])
+        && (!metadata.keys().hasAny(['contentType']) || metadata.contentType in ['narrator', 'story', 'ritual', 'export', 'marketplace']);
     }
 
     function validAnalyticsCreate() {
@@ -88,12 +108,20 @@ service cloud.firestore {
         && request.resource.data.timestamp is string
         && request.resource.data.timestamp.size() <= 64
         && request.resource.data.metadata is map
-        && request.resource.data.metadata.size() <= 20;
+        && request.resource.data.metadata.size() <= 20
+        && validAnalyticsMetadata(request.resource.data.metadata);
     }
 
     match /contentItems/{id} {
       allow read: if isPublicContentItem() || isAdmin();
-      allow create, update, delete: if isAdmin();
+      // Lifecycle writes require server transactions and the protected provider gate.
+      allow create: if isAdmin() && !request.resource.data.keys().hasAny(['deletion'])
+        && (!exists(/databases/$(database)/documents/contentDeletionStates/$(id))
+          || get(/databases/$(database)/documents/contentDeletionStates/$(id)).data.state == 'restored');
+      allow update: if isAdmin()
+        && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['deletion'])
+        && (!resource.data.keys().hasAny(['deletion']) || resource.data.deletion.get('state', '') == 'restored');
+      allow delete: if false;
     }
 
     match /contentPacks/{id} {

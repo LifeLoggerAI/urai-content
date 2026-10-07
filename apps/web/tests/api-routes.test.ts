@@ -66,7 +66,7 @@ describe('runtime API route handlers', () => {
   });
 
   it('returns catalog summaries and count', async () => {
-    const response = await getCatalog();
+    const response = await getCatalog(new Request('http://localhost/api/catalog'));
     const body = await readJson(response) as { source?: string; count?: number; items?: Array<{ id: string }> };
 
     expect(response.status).toBe(200);
@@ -308,4 +308,15 @@ describe('admin creator submission moderation API route authorization', () => {
       id: 'moderation-submission-1', status: 'approved', moderatedBy: 'admin-1', moderationNotes: 'Looks good.'
     });
   });
+});
+
+it('returns bounded catalog pages and rejects malformed pagination input', async () => {
+  const first = await (await getCatalog(new Request('http://localhost/api/catalog?limit=2'))).json();
+  expect(first.items).toHaveLength(2);
+  expect(typeof first.nextCursor).toBe('string');
+  const second = await (await getCatalog(new Request('http://localhost/api/catalog?limit=2&cursor=' + first.nextCursor))).json();
+  expect(second.items.some((item: { id: string }) => first.items.some((entry: { id: string }) => item.id === entry.id))).toBe(false);
+  for (const query of ['limit=0', 'limit=1.5', 'limit=not-a-number', 'cursor=malformed']) {
+    expect((await getCatalog(new Request('http://localhost/api/catalog?' + query))).status).toBe(400);
+  }
 });
