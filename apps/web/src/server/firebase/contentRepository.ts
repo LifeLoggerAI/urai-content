@@ -81,18 +81,36 @@ export function createFirestoreContentRepository(db: FirestoreLike): ContentRepo
     },
     async deleteContent(id: string): Promise<void> { await collection(db, FIRESTORE_COLLECTIONS.contentItems).doc(id).delete(); },
     async addVersion(contentId: string, snapshot: ContentItem): Promise<number> {
+      const parsedSnapshot = parseRuntimeContentRecord(snapshot);
+      if (parsedSnapshot.id !== contentId) {
+        throw new Error('Content revision identity mismatch for ' + contentId);
+      }
       const counterRef = collection(db, 'contentRevisionCounters').doc(contentId);
       return db.runTransaction(async (transaction) => {
         const counterSnapshot = await transaction.get(counterRef);
         const counterData = counterSnapshot.exists ? counterSnapshot.data() : undefined;
-        const previousVersion = counterData?.version === undefined ? 0 : Number(counterData.version);
-        if (!Number.isSafeInteger(previousVersion) || previousVersion < 0) {
+        const previousVersion = counterSnapshot.exists ? counterData?.version : 0;
+        if (
+          typeof previousVersion !== 'number' ||
+          !Number.isSafeInteger(previousVersion) ||
+          previousVersion < 0 ||
+          previousVersion >= Number.MAX_SAFE_INTEGER ||
+          (counterSnapshot.exists && counterData?.contentId !== contentId)
+        ) {
           throw new Error('Invalid content revision counter for ' + contentId);
         }
 
         const version = previousVersion + 1;
+        const revision = parseRuntimeRecord(contentVersionRecordSchema, FIRESTORE_COLLECTIONS.contentVersions, {
+          contentId, version, snapshot: parsedSnapshot
+        });
         const versionRef = collection(db, FIRESTORE_COLLECTIONS.contentVersions).doc(`${contentId}-v${version}`);
-        transaction.set(versionRef, asRecord({ contentId, version, snapshot }));
+        // A missing or stale counter must never overwrite retained revision history.
+        const existingRevision = await transaction.get(versionRef);
+        if (existingRevision.exists) {
+          throw new Error('Content revision already exists for ' + contentId + ' at version ' + version);
+        }
+        transaction.set(versionRef, asRecord(revision));
         transaction.set(counterRef, { contentId, version, updatedAt: new Date().toISOString() }, { merge: true });
         return version;
       });

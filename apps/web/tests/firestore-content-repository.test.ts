@@ -127,15 +127,18 @@ class FakeFirestore implements FirestoreLike {
     this.transactionTail = new Promise<void>((resolve) => { release = resolve; });
     await previous;
 
-    const writes: Promise<unknown>[] = [];
+    const writes: Array<() => Promise<unknown>> = [];
     try {
       const result = await update({
-        get: async (ref) => ref.get(),
+        get: async (ref) => {
+          if (writes.length > 0) throw new Error('Transaction reads must precede writes');
+          return ref.get();
+        },
         set: (ref, data, options) => {
-          writes.push(ref.set(data, options));
+          writes.push(() => ref.set(data, options));
         }
       });
-      await Promise.all(writes);
+      await Promise.all(writes.map((write) => write()));
       return result;
     } finally {
       release();
@@ -198,6 +201,93 @@ describe('createFirestoreContentRepository', () => {
     expect([...versions].sort((a, b) => a - b)).toEqual([1, 2]);
     const retained = await repo.listVersions(item.id);
     expect(retained.map((version) => version.version)).toEqual([1, 2]);
+  });
+
+  it('preserves a legacy revision when its counter is missing', async () => {
+    const firestore = new FakeFirestore();
+    const repo = createFirestoreContentRepository(firestore);
+    const item = makeContentItem();
+    const retained = { contentId: item.id, version: 1, snapshot: item };
+    const versions = firestore.collection('contentVersions');
+    await versions.doc(`${item.id}-v1`).set(retained);
+
+    await expect(repo.addVersion(item.id, { ...item, title: 'Replacement' }))
+      .rejects.toThrow('Content revision already exists');
+
+    expect(await repo.listVersions(item.id)).toEqual([{ version: 1, snapshot: item }]);
+    expect(versions.setCalls).toHaveLength(1);
+    expect((await firestore.collection('contentRevisionCounters').doc(item.id).get()).exists).toBe(false);
+  });
+
+  it('preserves revision history when a counter points behind an existing revision', async () => {
+    const firestore = new FakeFirestore();
+    const repo = createFirestoreContentRepository(firestore);
+    const item = makeContentItem();
+    const retained = { ...item, title: 'Retained revision' };
+    const versions = firestore.collection('contentVersions');
+    const counters = firestore.collection('contentRevisionCounters');
+    await counters.doc(item.id).set({ contentId: item.id, version: 1 });
+    await versions.doc(`${item.id}-v2`).set({ contentId: item.id, version: 2, snapshot: retained });
+
+    await expect(repo.addVersion(item.id, { ...item, title: 'Replacement' }))
+      .rejects.toThrow('Content revision already exists');
+
+    expect(await repo.listVersions(item.id)).toEqual([{ version: 2, snapshot: retained }]);
+    expect(versions.setCalls).toHaveLength(1);
+    expect((await counters.doc(item.id).get()).data()).toEqual({ contentId: item.id, version: 1 });
+    expect(counters.setCalls).toHaveLength(1);
+  });
+
+  it.each([
+    { label: 'string', version: '1' },
+    { label: 'null', version: null },
+    { label: 'missing', version: undefined },
+    { label: 'fraction', version: 1.5 },
+    { label: 'negative', version: -1 },
+    { label: 'exhausted', version: Number.MAX_SAFE_INTEGER },
+  ])('rejects a $label revision counter without writing', async ({ version }) => {
+    const firestore = new FakeFirestore();
+    const repo = createFirestoreContentRepository(firestore);
+    const item = makeContentItem();
+    const counters = firestore.collection('contentRevisionCounters');
+    await counters.doc(item.id).set({ contentId: item.id, version });
+
+    await expect(repo.addVersion(item.id, item)).rejects.toThrow('Invalid content revision counter');
+    expect(firestore.collection('contentVersions').setCalls).toHaveLength(0);
+    expect(counters.setCalls).toHaveLength(1);
+  });
+
+  it('rejects a revision counter for another content identity', async () => {
+    const firestore = new FakeFirestore();
+    const repo = createFirestoreContentRepository(firestore);
+    const item = makeContentItem();
+    const counters = firestore.collection('contentRevisionCounters');
+    await counters.doc(item.id).set({ contentId: 'another-content', version: 1 });
+
+    await expect(repo.addVersion(item.id, item)).rejects.toThrow('Invalid content revision counter');
+    expect(firestore.collection('contentVersions').setCalls).toHaveLength(0);
+    expect(counters.setCalls).toHaveLength(1);
+  });
+
+  it('validates a revision snapshot before any persistence', async () => {
+    const firestore = new FakeFirestore();
+    const repo = createFirestoreContentRepository(firestore);
+    const item = makeContentItem({ body: '' });
+
+    await expect(repo.addVersion(item.id, item)).rejects.toThrow('Invalid contentItems record');
+    expect(firestore.collection('contentVersions').setCalls).toHaveLength(0);
+    expect(firestore.collection('contentRevisionCounters').setCalls).toHaveLength(0);
+  });
+
+  it('rejects a snapshot for another content identity before any persistence', async () => {
+    const firestore = new FakeFirestore();
+    const repo = createFirestoreContentRepository(firestore);
+    const item = makeContentItem();
+
+    await expect(repo.addVersion(item.id, { ...item, id: 'another-content' }))
+      .rejects.toThrow('Content revision identity mismatch');
+    expect(firestore.collection('contentVersions').setCalls).toHaveLength(0);
+    expect(firestore.collection('contentRevisionCounters').setCalls).toHaveLength(0);
   });
 
   it('uses merge writes for upserted records that may be edited incrementally', async () => {
