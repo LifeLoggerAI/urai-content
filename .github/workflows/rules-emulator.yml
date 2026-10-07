@@ -65,7 +65,7 @@ jobs:
           evidence_dir="$RUNNER_TEMP/content-rules-evidence"
           mkdir -p -- "$evidence_dir"
           sha256sum firestore.rules storage.rules > "$evidence_dir/rules-sha256.txt"
-          npm ls --prefix tests/rules-emulator --all --json > "$evidence_dir/dependency-tree.json"
+          npm ls --prefix tests/rules-emulator --install-links --all --json > "$evidence_dir/dependency-tree.json"
           cp tests/rules-emulator/package.json "$evidence_dir/rules-tool-package.json"
           cp tests/rules-emulator/package-lock.json "$evidence_dir/rules-tool-package-lock.json"
           sha256sum tests/rules-emulator/package.json tests/rules-emulator/package-lock.json > "$evidence_dir/tooling-sha256.txt"
