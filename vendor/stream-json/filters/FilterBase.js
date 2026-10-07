@@ -60,6 +60,7 @@ class FilterBase extends Transform {
     if (chunk.name === 'startObject' || chunk.name === 'startArray') {
       if (++this._inputDepth > 128) return callback(new SyntaxError('JSON nesting exceeds maximum depth (128)'));
     } else if (chunk.name === 'endObject' || chunk.name === 'endArray') {
+      if (this._inputDepth <= 0) return callback(new SyntaxError('unmatched JSON container end'));
       --this._inputDepth;
     }
     return super._write(chunk, encoding, callback);
