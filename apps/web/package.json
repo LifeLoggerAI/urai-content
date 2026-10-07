@@ -17,9 +17,9 @@
     "check": "npm run typecheck && npm run lint && npm test && npm run build"
   },
   "dependencies": {
-    "@next/env": "15.5.24",
+    "@next/env": "15.5.27",
     "firebase-admin": "14.4.0",
-    "next": "15.5.24",
+    "next": "15.5.27",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "server-only": "^0.0.1",
@@ -32,7 +32,7 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "eslint": "9.39.3",
-    "eslint-config-next": "15.5.25",
+    "eslint-config-next": "15.5.27",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
     "vitest": "4.1.11"
