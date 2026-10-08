@@ -6,15 +6,10 @@ import { getFirebaseAdminAuth, isFirebaseAdminConfigured } from '../firebase/adm
 const USER_ID_HEADER = 'x-urai-user-id';
 const ROLE_HEADER = 'x-urai-role';
 
-type DecodedIdTokenLike = {
-  uid: string;
-  role?: unknown;
-  roles?: unknown;
-  entitlements?: unknown;
-};
+type AuthorizationClaimsLike = Record<string, unknown>;
 
 function isHeaderAuthEnabled(): boolean {
-  if (process.env.NODE_ENV === 'production') return process.env.URAI_ENABLE_HEADER_AUTH === '1';
+  if (process.env.NODE_ENV === 'production') return false;
   return process.env.URAI_ENABLE_HEADER_AUTH !== '0';
 }
 
@@ -25,7 +20,7 @@ function getBearerToken(request: Request): string | null {
   return token.length > 0 ? token : null;
 }
 
-function getRoleFromToken(decodedToken: DecodedIdTokenLike): AuthRole | null {
+function getRoleFromToken(decodedToken: AuthorizationClaimsLike): AuthRole | null {
   if (isKnownAuthRole(decodedToken.role)) return decodedToken.role;
 
   if (Array.isArray(decodedToken.roles)) {
@@ -36,7 +31,7 @@ function getRoleFromToken(decodedToken: DecodedIdTokenLike): AuthRole | null {
   return null;
 }
 
-function getEntitlements(decodedToken: DecodedIdTokenLike): string[] {
+function getEntitlements(decodedToken: AuthorizationClaimsLike): string[] {
   return Array.isArray(decodedToken.entitlements)
     ? decodedToken.entitlements.filter((value): value is string => typeof value === 'string')
     : [];
@@ -61,7 +56,24 @@ export async function getRequestSession(request: Request): Promise<AuthSession |
     if (!isFirebaseAdminConfigured()) return null;
 
     try {
-      const decodedToken = await getFirebaseAdminAuth().verifyIdToken(token, true);
+      const auth = getFirebaseAdminAuth();
+      const decodedToken = await auth.verifyIdToken(token, true);
+      if (process.env.NODE_ENV === 'production') {
+        const currentAccount = await auth.getUser(decodedToken.uid);
+        const currentClaims = currentAccount.customClaims;
+        if (currentAccount.uid !== decodedToken.uid || currentAccount.disabled !== false
+          || !currentClaims || typeof currentClaims !== 'object' || Array.isArray(currentClaims)) return null;
+
+        const currentRole = getRoleFromToken(currentClaims);
+        if (!currentRole || currentRole === 'anonymous' || currentRole !== getRoleFromToken(decodedToken)) return null;
+
+        const verifiedEntitlements = new Set(getEntitlements(decodedToken));
+        return {
+          uid: currentAccount.uid,
+          role: currentRole,
+          entitlements: Array.from(new Set(getEntitlements(currentClaims))).filter((entitlement) => verifiedEntitlements.has(entitlement))
+        };
+      }
       return {
         uid: decodedToken.uid,
         role: getRoleFromToken(decodedToken),
