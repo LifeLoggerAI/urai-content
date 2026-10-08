@@ -2,6 +2,15 @@ import { defineConfig, devices } from '@playwright/test';
 
 const baseURL = process.env.URAI_CONTENT_BASE_URL ?? 'http://127.0.0.1:3000';
 
+const visualProduction = process.env.URAI_CONTENT_VISUAL_PRODUCTION === '1';
+const exactHead = process.env.EXACT_HEAD ?? '';
+if (visualProduction && !/^[0-9a-f]{40}$/.test(exactHead)) {
+  throw new Error('Retained Content visual proof requires a complete exact-head identity.');
+}
+if (visualProduction && (process.env.PLAYWRIGHT_SKIP_WEB_SERVER || baseURL !== 'http://127.0.0.1:3000')) {
+  throw new Error('Retained Content visual proof must start its own local production-built server.');
+}
+
 export default defineConfig({
   testDir: './e2e',
   timeout: 30_000,
@@ -50,9 +59,10 @@ export default defineConfig({
   webServer: process.env.PLAYWRIGHT_SKIP_WEB_SERVER
     ? undefined
     : {
-        command: 'npm run dev',
+        command: visualProduction ? 'npm run start -- --hostname 127.0.0.1 --port 3000' : 'npm run dev',
+        env: visualProduction ? { GITHUB_SHA: exactHead, URAI_CONTENT_BUILD_SHA: exactHead } : undefined,
         url: 'http://127.0.0.1:3000',
-        reuseExistingServer: !process.env.CI,
+        reuseExistingServer: !process.env.CI && !visualProduction,
         timeout: 120_000
       }
 });

@@ -14,6 +14,7 @@ jobs:
     env:
       EXACT_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
       URAI_CONTENT_VISUAL_DIR: artifacts/content-visual
+      URAI_CONTENT_VISUAL_PRODUCTION: '1'
     steps:
       - name: Checkout exact head
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -33,17 +34,28 @@ jobs:
           cache-dependency-path: apps/web/package-lock.json
       - name: Install web
         run: npx --yes npm@11.19.1 ci --prefix apps/web
+      - name: Build exact-head web source for retained production proof
+        working-directory: apps/web
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXACT_HEAD"
+          GITHUB_SHA="$EXACT_HEAD" URAI_CONTENT_BUILD_SHA="$EXACT_HEAD" npm run build
       - name: Install Chromium
         run: npm exec --prefix apps/web playwright install --with-deps chromium
       - name: Run exact-head visual proof
         working-directory: apps/web
-        run: npm exec playwright test e2e/visual-proof.spec.ts
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXACT_HEAD"
+          npm exec playwright test e2e/visual-proof.spec.ts
       - name: Write exact-head receipt
         if: always()
         shell: bash
         run: |
           mkdir -p apps/web/artifacts/content-visual
-          printf '{"exactHead":"%s","proof":"content-public-and-fail-closed-responsive-pixels"}\n' "$EXACT_HEAD" > apps/web/artifacts/content-visual/receipt.json
+          printf '{"exactHead":"%s","proof":"content-public-and-current-missing-ui-pixels-with-anonymous-api-denial"}\n' "$EXACT_HEAD" > apps/web/artifacts/content-visual/receipt.json
       - name: Upload visual proof
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
