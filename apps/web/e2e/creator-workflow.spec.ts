@@ -180,7 +180,11 @@ test('mounted pending consent withdrawal cancels output and makes no storage rol
   await page.goto('/creator/submit'); await login(page); await proveTransport(page, captured, { uid: 'creator-a', method: 'GET', response: { status: 200, scenario: 'admitted-history' } }); await fillDraft(page);
   await page.getByRole('button', { name: 'Submit for review', exact: true }).click(); await started;
   await proveTransport(page, captured, { uid: 'creator-a', method: 'POST' });
-  await expect(page.getByRole('checkbox')).toBeVisible(); await page.getByRole('checkbox').uncheck();
+  await expect(page.getByRole('checkbox')).toBeVisible();
+  await expect(page.getByRole('checkbox')).toBeChecked();
+  await page.getByRole('checkbox').click();
+  await expect(page.getByRole('checkbox')).toHaveCount(0);
+  await expect(page.getByLabel('Title', { exact: true })).toHaveCount(0);
   await expect(page.getByText(/Cancellation does not undo storage/)).toBeVisible();
   release(); await expect(page.getByRole('list', { name: 'Your saved submissions' })).toHaveCount(0);
   await expect(page.getByText('Saved for review. This does not publish your content.')).toHaveCount(0); expect(captured.writes).toHaveLength(1); await settle(page, captured);
