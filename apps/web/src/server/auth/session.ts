@@ -59,20 +59,7 @@ export async function getRequestSession(request: Request): Promise<AuthSession |
       const auth = getFirebaseAdminAuth();
       const decodedToken = await auth.verifyIdToken(token, true);
       if (process.env.NODE_ENV === 'production') {
-        const currentAccount = await auth.getUser(decodedToken.uid);
-        const currentClaims = currentAccount.customClaims;
-        if (currentAccount.uid !== decodedToken.uid || currentAccount.disabled !== false
-          || !currentClaims || typeof currentClaims !== 'object' || Array.isArray(currentClaims)) return null;
-
-        const currentRole = getRoleFromToken(currentClaims);
-        if (!currentRole || currentRole === 'anonymous' || currentRole !== getRoleFromToken(decodedToken)) return null;
-
-        const verifiedEntitlements = new Set(getEntitlements(decodedToken));
-        return {
-          uid: currentAccount.uid,
-          role: currentRole,
-          entitlements: Array.from(new Set(getEntitlements(currentClaims))).filter((entitlement) => verifiedEntitlements.has(entitlement))
-        };
+        return await getCurrentAccountSession(decodedToken, auth);
       }
       return {
         uid: decodedToken.uid,
@@ -91,4 +78,25 @@ export async function getRequiredRequestSession(request: Request): Promise<AuthS
   const session = await getRequestSession(request);
   if (!session) throw new Error('Authentication is required.');
   return session;
+}
+
+export async function getCurrentAccountSession(
+  decodedToken: AuthorizationClaimsLike,
+  auth: Pick<ReturnType<typeof getFirebaseAdminAuth>, 'getUser'> = getFirebaseAdminAuth()
+): Promise<AuthSession | null> {
+  if (typeof decodedToken.uid !== 'string' || !decodedToken.uid) return null;
+  const currentAccount = await auth.getUser(decodedToken.uid);
+  const currentClaims = currentAccount.customClaims;
+  if (currentAccount.uid !== decodedToken.uid || currentAccount.disabled !== false
+    || !currentClaims || typeof currentClaims !== 'object' || Array.isArray(currentClaims)) return null;
+
+  const currentRole = getRoleFromToken(currentClaims);
+  if (!currentRole || currentRole === 'anonymous' || currentRole !== getRoleFromToken(decodedToken)) return null;
+
+  const verifiedEntitlements = new Set(getEntitlements(decodedToken));
+  return {
+    uid: currentAccount.uid,
+    role: currentRole,
+    entitlements: Array.from(new Set(getEntitlements(currentClaims))).filter((entitlement) => verifiedEntitlements.has(entitlement))
+  };
 }

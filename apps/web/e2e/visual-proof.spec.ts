@@ -33,16 +33,17 @@ test('retain current public homepage pixels', async ({ page }, testInfo) => {
   expect(errors).toEqual([]);
 });
 
-test('retain current missing dashboard UI state', async ({ page }, testInfo) => {
+test('retain signed-out dashboard without private account data', async ({ page }, testInfo) => {
   const response = await page.goto('/dashboard', { waitUntil: 'networkidle' });
   expect(response).not.toBeNull();
-  expect(response?.status()).toBe(404);
-  await expect(page.locator('body')).toContainText(/404|not found/i);
-  const name = `${testInfo.project.name}-dashboard-missing-ui.png`;
+  expect(response?.status()).toBe(200);
+  await expect(page.getByRole('heading', { name: 'Sign in to your Content account' })).toBeVisible();
+  await expect(page.locator('[data-content-authenticated="true"]')).toHaveCount(0);
+  const name = `${testInfo.project.name}-dashboard-signed-out.png`;
   await page.screenshot({ path: path.join(output, name), fullPage: true });
 });
 
-// Missing UI routes and actual authentication denials are separate evidence.
+// Signed-out UI and actual authentication denials are separate evidence.
 test('actual protected Content APIs deny anonymous reads', async ({ baseURL }, testInfo) => {
   await verifyAnonymousReadBoundaries(baseURL!);
   await fs.writeFile(path.join(output, `${testInfo.project.name}-anonymous-api-denial.json`), JSON.stringify({
