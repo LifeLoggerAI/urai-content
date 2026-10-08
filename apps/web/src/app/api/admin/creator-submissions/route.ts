@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { requireAdmin } from '@/server/auth/authorization';
 import { getAuthFailureBody, getAuthFailureStatus, getRequestSession } from '@/server/auth/requestSession';
+import { recheckRequestSession } from '@/server/auth/currentRequest';
 import { createRuntimeContentRepository, getRuntimePersistenceStatus } from '@/server/content/service';
 
 export const dynamic = 'force-dynamic';
@@ -34,7 +35,8 @@ function persistenceUnavailableResponse() {
 }
 
 export async function GET(request: Request) {
-  const authorization = requireAdmin(await getRequestSession(request));
+  const session = await getRequestSession(request);
+  const authorization = requireAdmin(session);
 
   if (!authorization.ok) {
     return NextResponse.json(getAuthFailureBody(authorization.reason), { status: getAuthFailureStatus(authorization.reason) });
@@ -56,6 +58,10 @@ export async function GET(request: Request) {
   }
 
   const submissions = await createRuntimeContentRepository().listCreatorSubmissionQueue(search);
+  const currentAuthorization = requireAdmin(await recheckRequestSession(request, session!));
+  if (!currentAuthorization.ok) {
+    return NextResponse.json(getAuthFailureBody(currentAuthorization.reason), { status: getAuthFailureStatus(currentAuthorization.reason) });
+  }
 
   return NextResponse.json({
     ok: true,

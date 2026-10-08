@@ -63,6 +63,17 @@ mutations. A UID is not a live Auth or canonical Privacy decision. Public
 content/free/indexable and public Storage reads remain admitted. The existing
 server owner/creator/admin APIs remain available under their established guards;
 the owner detail handler authenticates before any private repository lookup.
+Private owner/creator/admin handlers also recheck the same admitted actor with the
+unchanged canonical session verifier after awaited input/reads and before private
+output. Moderation rechecks after awaited input and its private read before starting
+its mutation. Creator creation already parses input before its fresh admission.
+Private response bodies are withheld if current roles/account/token authority is
+withdrawn during a repository operation. An already-started provider write cannot
+be retroactively cancelled by an Auth reread. The existing audit of a committed
+moderation action is retained, and no false rollback/cancellation success is
+returned. This bounded application check does not claim atomic authorization for
+the complete lifetime of a distributed provider transaction or replace canonical
+Privacy admission/worker receipts.
 Admin SDK server operations continue to require their separately approved IAM
 identity and application authorization; client rules do not grant them.
 
