@@ -82,33 +82,35 @@ test('public Firestore reads require the exact persisted public schemas', async 
   await assertFails(getDoc(doc(db, 'seoPages/missing')));
 });
 
-test('scalar and list administrator claims work while missing claims deny cleanly', async () => {
+test('issued scalar/list administrator claims cannot perform private client operations', async () => {
+  await seedDoc('contentItems/private', { status: 'draft', visibility: 'private' });
   const scalarAdmin = testEnv.authenticatedContext('admin-scalar', { role: 'admin' }).firestore();
   const listAdmin = testEnv.authenticatedContext('admin-list', { roles: ['admin'] }).firestore();
   const internalAdmin = testEnv.authenticatedContext('internal-admin', { roles: ['internalAdmin'] }).firestore();
   const missingClaims = testEnv.authenticatedContext('plain-user').firestore();
 
-  await assertSucceeds(setDoc(doc(scalarAdmin, 'contentItems/scalar-admin'), { status: 'draft' }));
-  await assertSucceeds(setDoc(doc(listAdmin, 'contentItems/list-admin'), { status: 'draft' }));
-  await assertSucceeds(setDoc(doc(internalAdmin, 'contentItems/internal-admin'), { status: 'draft' }));
+  await assertFails(setDoc(doc(scalarAdmin, 'contentItems/scalar-admin'), { status: 'draft' }));
+  await assertFails(setDoc(doc(listAdmin, 'contentItems/list-admin'), { status: 'draft' }));
+  await assertFails(setDoc(doc(internalAdmin, 'contentItems/internal-admin'), { status: 'draft' }));
+  for (const db of [scalarAdmin, listAdmin, internalAdmin]) await assertFails(getDoc(doc(db, 'contentItems/private')));
   await assertFails(setDoc(doc(missingClaims, 'contentItems/plain-user'), { status: 'draft' }));
 });
 
-test('creator submissions are owner-bound and require an accepted creator role shape', async () => {
+test('direct creator mutations are gated despite issued creator/studio claims', async () => {
   const scalarCreator = testEnv.authenticatedContext('alice', { role: 'creator' }).firestore();
   const listCreator = testEnv.authenticatedContext('bob', { roles: ['studio'] }).firestore();
   const plainUser = testEnv.authenticatedContext('mallory').firestore();
 
-  await assertSucceeds(setDoc(doc(scalarCreator, 'creatorSubmissions/a'), { creatorId: 'alice' }));
-  await assertSucceeds(setDoc(doc(listCreator, 'creatorSubmissions/b'), { creatorId: 'bob' }));
+  await assertFails(setDoc(doc(scalarCreator, 'creatorSubmissions/a'), { creatorId: 'alice' }));
+  await assertFails(setDoc(doc(listCreator, 'creatorSubmissions/b'), { creatorId: 'bob' }));
   await assertFails(setDoc(doc(scalarCreator, 'creatorSubmissions/cross'), { creatorId: 'bob' }));
   await assertFails(setDoc(doc(plainUser, 'creatorSubmissions/plain'), { creatorId: 'mallory' }));
 });
 
-test('analytics creation enforces owner, exact keys, event allowlist and bounded fields', async () => {
+test('direct analytics creation is gated even with an issued matching UID and valid metadata', async () => {
   const alice = testEnv.authenticatedContext('alice').firestore();
   const validRef = doc(alice, 'analyticsEvents/valid');
-  await assertSucceeds(setDoc(validRef, validAnalytics()));
+  await assertFails(setDoc(validRef, validAnalytics()));
 
   await assertFails(setDoc(doc(alice, 'analyticsEvents/cross-user'), validAnalytics({ userId: 'bob' })));
   await assertFails(setDoc(doc(alice, 'analyticsEvents/bad-event'), validAnalytics({ event: 'arbitrary_event' })));
@@ -121,16 +123,22 @@ test('analytics creation enforces owner, exact keys, event allowlist and bounded
   })));
 });
 
-test('legacy entitlement alias remains denied while the canonical owner path is readable', async () => {
+test('issued owner UIDs cannot bypass private entitlement and license admission', async () => {
   await seedDoc('userContentEntitlements/alice-entitlement', { userId: 'alice' });
   await seedDoc('userEntitlements/alice-legacy', { userId: 'alice' });
 
   const alice = testEnv.authenticatedContext('alice').firestore();
-  await assertSucceeds(getDoc(doc(alice, 'userContentEntitlements/alice-entitlement')));
+  await assertFails(getDoc(doc(alice, 'userContentEntitlements/alice-entitlement')));
   await assertFails(getDoc(doc(alice, 'userEntitlements/alice-legacy')));
+  for (const claims of [{ role: 'admin' }, { roles: ['internalAdmin'] }]) {
+    const issuedAdmin = testEnv.authenticatedContext('issued-admin', claims).firestore();
+    await assertFails(getDoc(doc(issuedAdmin, 'userContentEntitlements/alice-entitlement')));
+    await assertFails(setDoc(doc(issuedAdmin, 'userContentEntitlements/accidental-paid-grant'), { userId: 'alice', grantedBy: 'purchase', entitlementKey: 'unadmitted-paid-product' }));
+    await assertFails(setDoc(doc(issuedAdmin, 'contentLicenses/accidental-license'), { licenseeId: 'alice' }));
+  }
 });
 
-test('Storage public/admin boundaries support both administrator claim shapes', async () => {
+test('Storage public reads remain available while issued administrator claims cannot write', async () => {
   await seedObject('public/existing.txt', new TextEncoder().encode('public'), 'text/plain');
 
   const publicStorage = testEnv.unauthenticatedContext().storage();
@@ -140,18 +148,18 @@ test('Storage public/admin boundaries support both administrator claim shapes', 
 
   const publicBytes = await assertSucceeds(getBytes(ref(publicStorage, 'public/existing.txt')));
   assert.equal(new TextDecoder().decode(publicBytes), 'public');
-  await assertSucceeds(uploadBytes(ref(scalarAdminStorage, 'public/scalar.txt'), new Uint8Array([1]), { contentType: 'text/plain' }));
-  await assertSucceeds(uploadBytes(ref(listAdminStorage, 'public/list.txt'), new Uint8Array([1]), { contentType: 'text/plain' }));
+  await assertFails(uploadBytes(ref(scalarAdminStorage, 'public/scalar.txt'), new Uint8Array([1]), { contentType: 'text/plain' }));
+  await assertFails(uploadBytes(ref(listAdminStorage, 'public/list.txt'), new Uint8Array([1]), { contentType: 'text/plain' }));
   await assertFails(uploadBytes(ref(missingClaimsStorage, 'public/plain.txt'), new Uint8Array([1]), { contentType: 'text/plain' }));
 });
 
-test('creator Storage uploads enforce owner path, role, nonzero size, size ceiling and MIME allowlist', async () => {
+test('direct creator Storage uploads remain gated even with an issued role and valid owner/MIME', async () => {
   const scalarCreator = testEnv.authenticatedContext('alice', { role: 'creator' }).storage();
   const listCreator = testEnv.authenticatedContext('bob', { roles: ['studio'] }).storage();
   const plainUser = testEnv.authenticatedContext('mallory').storage();
 
-  await assertSucceeds(uploadBytes(ref(scalarCreator, 'creator-submissions/alice/image.png'), new Uint8Array([1]), { contentType: 'image/png' }));
-  await assertSucceeds(uploadBytes(ref(listCreator, 'creator-submissions/bob/photo.jpg'), new Uint8Array([1]), { contentType: 'image/jpeg' }));
+  await assertFails(uploadBytes(ref(scalarCreator, 'creator-submissions/alice/image.png'), new Uint8Array([1]), { contentType: 'image/png' }));
+  await assertFails(uploadBytes(ref(listCreator, 'creator-submissions/bob/photo.jpg'), new Uint8Array([1]), { contentType: 'image/jpeg' }));
   await assertFails(uploadBytes(ref(scalarCreator, 'creator-submissions/bob/cross.png'), new Uint8Array([1]), { contentType: 'image/png' }));
   await assertFails(uploadBytes(ref(plainUser, 'creator-submissions/mallory/plain.png'), new Uint8Array([1]), { contentType: 'image/png' }));
   await assertFails(uploadBytes(ref(scalarCreator, 'creator-submissions/alice/empty.png'), new Uint8Array(0), { contentType: 'image/png' }));
@@ -163,18 +171,18 @@ test('creator Storage uploads enforce owner path, role, nonzero size, size ceili
   ));
 });
 
-test('creator Storage reads and deletes stay owner-bound', async () => {
+test('issued creator owner UIDs cannot bypass private Storage admission', async () => {
   await seedObject('creator-submissions/alice/file.txt', new Uint8Array([1]), 'text/plain');
   const alice = testEnv.authenticatedContext('alice', { role: 'creator' }).storage();
   const bob = testEnv.authenticatedContext('bob', { role: 'creator' }).storage();
 
-  await assertSucceeds(getBytes(ref(alice, 'creator-submissions/alice/file.txt')));
+  await assertFails(getBytes(ref(alice, 'creator-submissions/alice/file.txt')));
   await assertFails(getBytes(ref(bob, 'creator-submissions/alice/file.txt')));
   await assertFails(deleteObject(ref(bob, 'creator-submissions/alice/file.txt')));
-  await assertSucceeds(deleteObject(ref(alice, 'creator-submissions/alice/file.txt')));
+  await assertFails(deleteObject(ref(alice, 'creator-submissions/alice/file.txt')));
 });
 
-test('export and license Storage reads are owner/admin only and writes are admin only', async () => {
+test('issued owner UIDs and admin claims cannot read or mutate private exports and licenses', async () => {
   await seedObject('exports/alice/export.json', new Uint8Array([1]), 'application/json');
   await seedObject('licenses/alice/license.pdf', new Uint8Array([1]), 'application/pdf');
 
@@ -182,12 +190,14 @@ test('export and license Storage reads are owner/admin only and writes are admin
   const bob = testEnv.authenticatedContext('bob').storage();
   const admin = testEnv.authenticatedContext('admin', { roles: ['admin'] }).storage();
 
-  await assertSucceeds(getBytes(ref(alice, 'exports/alice/export.json')));
+  await assertFails(getBytes(ref(alice, 'exports/alice/export.json')));
   await assertFails(getBytes(ref(bob, 'exports/alice/export.json')));
-  await assertSucceeds(getBytes(ref(alice, 'licenses/alice/license.pdf')));
+  await assertFails(getBytes(ref(alice, 'licenses/alice/license.pdf')));
   await assertFails(getBytes(ref(bob, 'licenses/alice/license.pdf')));
   await assertFails(uploadBytes(ref(alice, 'exports/alice/user-write.json'), new Uint8Array([1]), { contentType: 'application/json' }));
-  await assertSucceeds(uploadBytes(ref(admin, 'exports/alice/admin-write.json'), new Uint8Array([1]), { contentType: 'application/json' }));
+  await assertFails(getBytes(ref(admin, 'exports/alice/export.json')));
+  await assertFails(getBytes(ref(admin, 'licenses/alice/license.pdf')));
+  await assertFails(uploadBytes(ref(admin, 'exports/alice/admin-write.json'), new Uint8Array([1]), { contentType: 'application/json' }));
 });
 
 test('retained and malformed deletion records are private and client administrators cannot bypass lifecycle transactions', async () => {
@@ -203,7 +213,7 @@ test('retained and malformed deletion records are private and client administrat
   await assertFails(getDoc(doc(owner, 'contentItems/retained')));
   await assertFails(getDoc(doc(publicDb, 'contentItems/malformed-deletion')));
   await assertSucceeds(getDoc(doc(publicDb, 'contentItems/restored')));
-  await assertSucceeds(getDoc(doc(admin, 'contentItems/retained')));
+  await assertFails(getDoc(doc(admin, 'contentItems/retained')));
   await assertFails(updateDoc(doc(admin, 'contentItems/retained'), { body: 'resurrected' }));
   await assertFails(updateDoc(doc(admin, 'contentItems/retained'), { deletion: { tombstoneId: 'delete-retained', state: 'restored' } }));
   await assertFails(deleteDoc(doc(admin, 'contentItems/retained')));
@@ -212,9 +222,9 @@ test('retained and malformed deletion records are private and client administrat
   await assertFails(getDoc(doc(admin, 'contentDeletionTombstones/delete-retained')));
 });
 
-test('analytics persistence enforces the canonical telemetry metadata allowlist and scalar bounds', async () => {
+test('private client telemetry remains gated for both bounded and private metadata', async () => {
   const db = testEnv.authenticatedContext('alice').firestore();
-  await assertSucceeds(setDoc(doc(db, 'analyticsEvents/allowed'), validAnalytics({ metadata: { contentVersion: 'v1', locale: 'en-US', surface: 'content', lifecycleStatus: 'published', contentType: 'story', sourceSystem: 'content', experimentKey: 'synthetic' } })));
+  await assertFails(setDoc(doc(db, 'analyticsEvents/allowed'), validAnalytics({ metadata: { contentVersion: 'v1', locale: 'en-US', surface: 'content', lifecycleStatus: 'published', contentType: 'story', sourceSystem: 'content', experimentKey: 'synthetic' } })));
   for (const [id, metadata] of [
     ['private-text', { memoryText: 'private text' }],
     ['nested', { locale: { raw: 'en' } }],
@@ -223,4 +233,26 @@ test('analytics persistence enforces the canonical telemetry metadata allowlist 
     ['bad-type', { contentType: 'private-memory' }],
     ['numeric', { contentVersion: 1 }],
   ]) await assertFails(setDoc(doc(db, 'analyticsEvents/' + id), validAnalytics({ metadata })));
+});
+
+test('issued owner UIDs cannot create consent/export work or read private records around account deletion', async () => {
+  await seedDoc('creatorSubmissions/alice-private', { creatorId: 'alice', body: 'private fixture' });
+  await seedDoc('exportJobs/alice-private', { userId: 'alice' });
+  await seedDoc('contentLicenses/alice-private', { licenseeId: 'alice' });
+  await seedDoc('consentRecords/alice-private', { userId: 'alice', granted: true });
+  await seedDoc('privacyDeletionTombstones/alice', { uid: 'alice', requestId: 'canonical-fixture', active: true, status: 'deletion_in_progress' });
+  // The rules deny the alternate private client capability independently of
+  // cached claims, rather than treating this local fixture as canonical proof.
+  for (const claims of [{}, { role: 'creator' }, { roles: ['internalAdmin'] }]) {
+    const db = testEnv.authenticatedContext('alice', claims).firestore();
+    for (const collection of ['creatorSubmissions', 'exportJobs', 'contentLicenses', 'consentRecords']) {
+      await assertFails(getDoc(doc(db, collection + '/alice-private')));
+    }
+    await assertFails(setDoc(doc(db, 'exportJobs/new-owner'), { userId: 'alice' }));
+    await assertFails(setDoc(doc(db, 'consentRecords/new-owner'), { userId: 'alice', granted: true }));
+    await assertFails(updateDoc(doc(db, 'consentRecords/alice-private'), { granted: true }));
+  }
+  const publicDb = testEnv.authenticatedContext('alice', { role: 'creator' }).firestore();
+  await seedDoc('contentItems/still-public', { status: 'published', visibility: 'public' });
+  await assertSucceeds(getDoc(doc(publicDb, 'contentItems/still-public')));
 });
