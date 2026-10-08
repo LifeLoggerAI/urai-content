@@ -31,7 +31,7 @@ export class CreatorWorkflowController {
   private aborts = new Set<AbortController>();
   private listeners = new Set<() => void>();
   private state: WorkflowState = empty();
-  constructor(private readonly request: typeof fetch = fetch) {}
+  constructor(private readonly request: typeof fetch = (input, init) => fetch(input, init)) {}
   subscribe = (listener: () => void) => { this.listeners.add(listener); return () => { this.listeners.delete(listener); }; };
   snapshot = () => this.state;
   get busy() { return this.state.busy; }

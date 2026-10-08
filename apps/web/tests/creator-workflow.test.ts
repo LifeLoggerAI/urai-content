@@ -17,6 +17,27 @@ async function admitted(request = vi.fn<typeof fetch>()) {
 }
 
 describe('creator controller with declared synthetic transport, no provider requests', () => {
+  it('default transport preserves the browser-global receiver for history and saving', async () => {
+    const receivers: unknown[] = [];
+    const request = vi.fn(function (this: unknown, _input: RequestInfo | URL, init?: RequestInit) {
+      receivers.push(this);
+      // Web IDL accepts a free/global call and rejects an incompatible receiver.
+      // This is an in-memory browser-contract model, never a network request.
+      if (this != null && this !== globalThis) throw new TypeError('Illegal invocation');
+      const writing = init?.method === 'POST';
+      return Promise.resolve(response(writing ? { ok: true, stored: true, submission: item() } : history(), writing ? 201 : 200));
+    });
+    vi.stubGlobal('fetch', request);
+    try {
+      const controller = new CreatorWorkflowController(); controller.setActor(actor());
+      const admitted = await controller.refresh();
+      expect(receivers.map((receiver) => receiver === controller ? 'controller' : 'global-compatible')).not.toContain('controller');
+      expect(admitted).toBe(true); expect(controller.snapshot().authorized).toBe(true);
+      controller.setConsent(true); expect(await controller.submit(draft)).toBe(true);
+      expect(controller.snapshot().saved).toEqual(item()); expect(request).toHaveBeenCalledTimes(2);
+      expect(receivers.every((receiver) => receiver == null || receiver === globalThis)).toBe(true);
+    } finally { vi.unstubAllGlobals(); }
+  });
   it('keeps signed-out and unverified SDK accounts neutral', async () => {
     const request = vi.fn<typeof fetch>(); const controller = new CreatorWorkflowController(request);
     await controller.submit(draft); controller.setActor(actor()); controller.setConsent(true); await controller.submit(draft);
