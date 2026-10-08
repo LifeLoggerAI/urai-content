@@ -60,6 +60,7 @@ export async function GET(request: Request) {
   const unavailable = persistenceUnavailableResponse();
   if (unavailable) return unavailable;
 
+  const stored = getRuntimePersistenceStatus().mode === 'firestore';
   const submissions = await createRuntimeContentRepository().listCreatorSubmissions(session.uid);
   const currentSession = await recheckRequestSession(request, session);
   if (!currentSession || !isCreatorSession(currentSession)) {
@@ -67,7 +68,7 @@ export async function GET(request: Request) {
     return NextResponse.json(getAuthFailureBody(reason), { status: getAuthFailureStatus(reason) });
   }
 
-  return NextResponse.json({ ok: true, creatorId: session.uid, count: submissions.length, submissions });
+  return NextResponse.json({ ok: true, stored, creatorId: session.uid, count: submissions.length, submissions });
 }
 
 export async function POST(request: Request) {
@@ -87,6 +88,7 @@ export async function POST(request: Request) {
   const unavailable = persistenceUnavailableResponse();
   if (unavailable) return unavailable;
 
+  const stored = getRuntimePersistenceStatus().mode === 'firestore';
   const now = new Date().toISOString();
   const submission: CreatorSubmission = {
     id: createSubmissionId(body),
@@ -107,5 +109,5 @@ export async function POST(request: Request) {
     return NextResponse.json(getAuthFailureBody(currentAuthorization.reason), { status: getAuthFailureStatus(currentAuthorization.reason) });
   }
 
-  return NextResponse.json({ ok: true, submission }, { status: 201 });
+  return NextResponse.json({ ok: true, stored, submission }, { status: 201 });
 }

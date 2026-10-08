@@ -1,4 +1,5 @@
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import * as runtimeContent from '../src/server/content/service';
 
 import { GET as getCatalog } from '../src/app/api/catalog/route';
 import { GET as getContent } from '../src/app/api/content/[[...slug]]/route';
@@ -43,6 +44,7 @@ function restoreEnv() {
 }
 
 afterEach(() => {
+  vi.restoreAllMocks();
   restoreEnv();
 });
 
@@ -204,6 +206,59 @@ describe('creator submissions API route authorization', () => {
     expect(response.status).toBe(201);
     expect(body.ok).toBe(true);
     expect(body.submission).toMatchObject({ id: 'submission-1', creatorId: 'creator-1', status: 'submitted' });
+  });
+
+  it('labels a memory-preview write as non-durable without accepting a caller storage claim', async () => {
+    setNodeEnvForTests('test');
+    const response = await postCreatorSubmission(makeCreatorPostRequest({ ...validSubmissionBody, stored: true }, { 'x-urai-user-id': 'creator-1', 'x-urai-role': 'creator' }));
+    expect(response.status).toBe(201);
+    expect(await readJson(response)).toMatchObject({ ok: true, stored: false, submission: { creatorId: 'creator-1' } });
+  });
+
+  it('labels memory-preview history as non-durable', async () => {
+    setNodeEnvForTests('test');
+    const response = await getCreatorSubmissions(makeCreatorGetRequest({ 'x-urai-user-id': 'creator-1', 'x-urai-role': 'creator' }));
+    expect(response.status).toBe(200);
+    expect(await readJson(response)).toMatchObject({ ok: true, stored: false, creatorId: 'creator-1', count: 0 });
+  });
+
+  // Loaded handlers with a declared storage boundary fixture; no Firestore request.
+  it('returns the server storage marker only after its Firestore repository write resolves', async () => {
+    setNodeEnvForTests('test');
+    const repository = runtimeContent.createRuntimeContentRepository();
+    let release!: () => void;
+    const write = new Promise<void>((resolve) => { release = resolve; });
+    const persist = vi.spyOn(repository, 'upsertCreatorSubmission').mockReturnValue(write);
+    vi.spyOn(runtimeContent, 'getRuntimePersistenceStatus').mockReturnValue({ mode: 'firestore', firebaseAdminConfigured: true, writable: true, previewMode: false, productionSafe: true, message: 'Declared storage fixture' });
+    const pending = postCreatorSubmission(makeCreatorPostRequest(validSubmissionBody, { 'x-urai-user-id': 'creator-1', 'x-urai-role': 'creator' }));
+    let returned = false; void pending.then(() => { returned = true; });
+    await vi.waitFor(() => expect(persist).toHaveBeenCalledTimes(1));
+    expect(returned).toBe(false); release();
+    const result = await pending;
+    expect(result.status).toBe(201);
+    expect(await readJson(result)).toMatchObject({ ok: true, stored: true, submission: { creatorId: 'creator-1', status: 'submitted' } });
+  });
+
+  it('marks awaited owner history from the declared Firestore repository', async () => {
+    setNodeEnvForTests('test');
+    const repository = runtimeContent.createRuntimeContentRepository();
+    let release!: (items: []) => void;
+    const read = new Promise<[]>((resolve) => { release = resolve; });
+    const list = vi.spyOn(repository, 'listCreatorSubmissions').mockReturnValue(read);
+    vi.spyOn(runtimeContent, 'getRuntimePersistenceStatus').mockReturnValue({ mode: 'firestore', firebaseAdminConfigured: true, writable: true, previewMode: false, productionSafe: true, message: 'Declared storage fixture' });
+    const pending = getCreatorSubmissions(makeCreatorGetRequest({ 'x-urai-user-id': 'creator-1', 'x-urai-role': 'creator' }));
+    let returned = false; void pending.then(() => { returned = true; });
+    await vi.waitFor(() => expect(list).toHaveBeenCalledTimes(1));
+    expect(returned).toBe(false); release([]);
+    expect(await readJson(await pending)).toMatchObject({ ok: true, stored: true, creatorId: 'creator-1', count: 0, submissions: [] });
+  });
+
+  it('cannot return stored success if the repository write fails', async () => {
+    setNodeEnvForTests('test');
+    const repository = runtimeContent.createRuntimeContentRepository();
+    vi.spyOn(runtimeContent, 'getRuntimePersistenceStatus').mockReturnValue({ mode: 'firestore', firebaseAdminConfigured: true, writable: true, previewMode: false, productionSafe: true, message: 'Declared storage fixture' });
+    vi.spyOn(repository, 'upsertCreatorSubmission').mockRejectedValue(new Error('Synthetic persistence failure'));
+    await expect(postCreatorSubmission(makeCreatorPostRequest(validSubmissionBody, { 'x-urai-user-id': 'creator-1', 'x-urai-role': 'creator' }))).rejects.toThrow('Synthetic persistence failure');
   });
 
   it('returns 401 when listing submissions anonymously', async () => {
