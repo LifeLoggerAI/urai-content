@@ -61,7 +61,7 @@ export async function getRequestSession(request: Request): Promise<AuthSession |
     if (!isFirebaseAdminConfigured()) return null;
 
     try {
-      const decodedToken = await getFirebaseAdminAuth().verifyIdToken(token);
+      const decodedToken = await getFirebaseAdminAuth().verifyIdToken(token, true);
       return {
         uid: decodedToken.uid,
         role: getRoleFromToken(decodedToken),
