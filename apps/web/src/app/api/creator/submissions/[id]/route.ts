@@ -23,6 +23,12 @@ export async function GET(request: Request, context: RouteContext) {
   const unavailable = persistenceUnavailableResponse();
   if (unavailable) return unavailable;
 
+  // Authenticate before reading private records or revealing their existence.
+  const session = await getRequestSession(request);
+  if (!session) {
+    return NextResponse.json(getAuthFailureBody('unauthenticated'), { status: getAuthFailureStatus('unauthenticated') });
+  }
+
   const { id } = await context.params;
   const submission = await createRuntimeContentRepository().getCreatorSubmission(id);
 
@@ -30,7 +36,7 @@ export async function GET(request: Request, context: RouteContext) {
     return NextResponse.json({ error: 'not_found', message: 'Creator submission not found.' }, { status: 404 });
   }
 
-  const authorization = canReadOwnedResource(await getRequestSession(request), String(submission.creatorId ?? ''));
+  const authorization = canReadOwnedResource(session, String(submission.creatorId ?? ''));
 
   if (!authorization.ok) {
     return NextResponse.json(getAuthFailureBody(authorization.reason), { status: getAuthFailureStatus(authorization.reason) });

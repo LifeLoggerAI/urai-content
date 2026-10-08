@@ -1,24 +1,44 @@
 rules_version = '2';
-
 service firebase.storage {
   match /b/{bucket}/o {
-    function signedIn() {
-      return request.auth != null;
-    }
-
-    function hasRole(role) {
-      return signedIn() && (
-        request.auth.token.role == role ||
-        (request.auth.token.roles is list && request.auth.token.roles.hasAny([role]))
-      );
+    function privateClientAuthorized() {
+      // UID alone cannot observe live Auth disablement/revocation or canonical
+      // Privacy consent and account tombstones. No private client SDK consumer
+      // is admitted; private delivery requires its protected server lifecycle.
+      return false;
     }
 
     function isAdmin() {
-      return hasRole('admin') || hasRole('internalAdmin');
+      // Private administrative operations use the server, which reads current
+      // Firebase UserRecord claims. Issued client claims are not live authority.
+      return false;
     }
 
-    function owns(userId) {
-      return signedIn() && request.auth.uid == userId;
+    function isCreator() {
+      // Direct uploads/creator mutations remain gated. The admitted creator API
+      // checks the current user before its IAM-authorized server operation.
+      return false;
+    }
+
+    function isAllowedCreatorContentType() {
+      return request.resource.contentType.matches('image/(png|jpe?g|webp|gif)')
+        || request.resource.contentType.matches('audio/(mpeg|wav|ogg|mp4)')
+        || request.resource.contentType.matches('video/(mp4|webm)')
+        || request.resource.contentType in [
+          'text/plain',
+          'application/json',
+          'application/pdf',
+          'model/gltf+json',
+          'model/gltf-binary'
+        ];
+    }
+
+    function validCreatorUpload() {
+      return request.resource != null
+        && request.resource.size > 0
+        && request.resource.size <= 25 * 1024 * 1024
+        && request.resource.contentType is string
+        && isAllowedCreatorContentType();
     }
 
     match /public/{allPaths=**} {
@@ -26,14 +46,26 @@ service firebase.storage {
       allow write: if isAdmin();
     }
 
+    match /creator-submissions/{creatorId}/{allPaths=**} {
+      allow read: if isAdmin() || (privateClientAuthorized() && request.auth.uid == creatorId);
+      allow create, update: if isCreator()
+        && request.auth.uid == creatorId
+        && validCreatorUpload();
+      allow delete: if isCreator() && request.auth.uid == creatorId;
+    }
+
     match /exports/{userId}/{allPaths=**} {
-      allow read: if isAdmin() || owns(userId);
+      allow read: if isAdmin() || (privateClientAuthorized() && request.auth.uid == userId);
       allow write: if isAdmin();
     }
 
-    match /creator-submissions/{userId}/{allPaths=**} {
-      allow read: if isAdmin() || owns(userId);
-      allow write: if owns(userId);
+    match /licenses/{licenseeId}/{allPaths=**} {
+      allow read: if isAdmin() || (privateClientAuthorized() && request.auth.uid == licenseeId);
+      allow write: if isAdmin();
+    }
+
+    match /admin/{allPaths=**} {
+      allow read, write: if isAdmin();
     }
 
     match /{allPaths=**} {
