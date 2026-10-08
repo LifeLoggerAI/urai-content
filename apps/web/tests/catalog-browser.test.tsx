@@ -10,7 +10,9 @@ import { mediaCatalogSurfaces } from '../src/lib/catalogSurfaces';
 const publicItem = { id: 'public', title: 'Published music', summary: 'Reviewed public record.', slug: '/music-record', tags: ['music'], status: 'live', visibility: 'public' };
 
 describe('runtime catalog browsing', () => {
-  beforeEach(() => catalog.list.mockReset());
+  beforeEach(() => {
+    catalog.list.mockReset();
+  });
 
   it('renders published matching records and keeps drafts, private and unlisted records out of public browsing', async () => {
     catalog.list.mockResolvedValue({ items: [
