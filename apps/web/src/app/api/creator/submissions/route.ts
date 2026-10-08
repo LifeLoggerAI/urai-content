@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { canCreateCreatorSubmission, isCreatorSession } from '@/server/auth/authorization';
 import { getAuthFailureBody, getAuthFailureStatus, getRequestSession } from '@/server/auth/requestSession';
+import { recheckRequestSession } from '@/server/auth/currentRequest';
 import { createRuntimeContentRepository, getRuntimePersistenceStatus } from '@/server/content/service';
 import type { CreatorSubmission } from '@/server/content/types';
 
@@ -60,6 +61,11 @@ export async function GET(request: Request) {
   if (unavailable) return unavailable;
 
   const submissions = await createRuntimeContentRepository().listCreatorSubmissions(session.uid);
+  const currentSession = await recheckRequestSession(request, session);
+  if (!currentSession || !isCreatorSession(currentSession)) {
+    const reason = currentSession ? 'forbidden' : 'unauthenticated';
+    return NextResponse.json(getAuthFailureBody(reason), { status: getAuthFailureStatus(reason) });
+  }
 
   return NextResponse.json({ ok: true, creatorId: session.uid, count: submissions.length, submissions });
 }
@@ -71,7 +77,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'invalid_request', message: 'Creator submissions require a valid JSON body.' }, { status: 400 });
   }
 
-  const authorization = canCreateCreatorSubmission(await getRequestSession(request), body.creatorId);
+  const session = await getRequestSession(request);
+  const authorization = canCreateCreatorSubmission(session, body.creatorId);
 
   if (!authorization.ok) {
     return NextResponse.json(getAuthFailureBody(authorization.reason), { status: getAuthFailureStatus(authorization.reason) });
@@ -95,6 +102,10 @@ export async function POST(request: Request) {
   };
 
   await createRuntimeContentRepository().upsertCreatorSubmission(submission);
+  const currentAuthorization = canCreateCreatorSubmission(await recheckRequestSession(request, session!), body.creatorId);
+  if (!currentAuthorization.ok) {
+    return NextResponse.json(getAuthFailureBody(currentAuthorization.reason), { status: getAuthFailureStatus(currentAuthorization.reason) });
+  }
 
   return NextResponse.json({ ok: true, submission }, { status: 201 });
 }

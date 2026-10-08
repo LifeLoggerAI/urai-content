@@ -1,33 +1,23 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    function signedIn() {
-      return request.auth != null;
-    }
-
-    function hasScalarRole(role) {
-      return signedIn()
-        && request.auth.token.keys().hasAny(['role'])
-        && request.auth.token.role == role;
-    }
-
-    function hasRoleList(role) {
-      return signedIn()
-        && request.auth.token.keys().hasAny(['roles'])
-        && request.auth.token.roles is list
-        && request.auth.token.roles.hasAny([role]);
-    }
-
-    function hasRole(role) {
-      return hasScalarRole(role) || hasRoleList(role);
+    function privateClientAuthorized() {
+      // There is no admitted private client SDK consumer. UID alone cannot
+      // observe live Auth disablement/revocation or canonical Privacy consent
+      // and account tombstones. Private operations use authorized server APIs.
+      return false;
     }
 
     function isAdmin() {
-      return hasRole('admin') || hasRole('internalAdmin');
+      // Private administrative operations use the server, which reads current
+      // Firebase UserRecord claims. Issued client claims are not live authority.
+      return false;
     }
 
     function isCreator() {
-      return hasRole('creator') || hasRole('studio') || isAdmin();
+      // Direct uploads/creator mutations remain gated. The admitted creator API
+      // checks the current user before its IAM-authorized server operation.
+      return false;
     }
 
     function isPublicContentItem() {
@@ -50,11 +40,11 @@ service cloud.firestore {
     }
 
     function isOwner(fieldName) {
-      return signedIn() && resource.data[fieldName] == request.auth.uid;
+      return privateClientAuthorized() && resource.data[fieldName] == request.auth.uid;
     }
 
     function isCreateOwner(fieldName) {
-      return signedIn() && request.resource.data[fieldName] == request.auth.uid;
+      return privateClientAuthorized() && request.resource.data[fieldName] == request.auth.uid;
     }
 
     function boundedMetadataString(metadata, fieldName, maximum) {
@@ -75,7 +65,7 @@ service cloud.firestore {
     }
 
     function validAnalyticsCreate() {
-      return signedIn()
+      return privateClientAuthorized()
         && request.resource.data.keys().hasAll([
           'event',
           'userId',
