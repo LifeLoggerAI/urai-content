@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers';
 import { CONTENT_SESSION_COOKIE, getBrowserSession } from '@/server/auth/browserSession';
 import { BrowserSessionLogout } from '@/components/BrowserSessionLogout';
+import { ContentDataExport } from '@/components/ContentDataExport';
 
 export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Account and privacy', robots: { index: false, follow: false } };
@@ -22,7 +23,9 @@ export default async function DashboardSettingsPage() {
       <a className="button" href="/data-ownership">Data ownership</a>{' '}
       <a className="button" href="/contact">Contact privacy support</a>
     </nav>
+    <ContentDataExport expectedUid={session.uid} projectMatches={Boolean(process.env.FIREBASE_PROJECT_ID && process.env.FIREBASE_PROJECT_ID === process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID)} />
     <BrowserSessionLogout />
   </main>;
 }
+
 
