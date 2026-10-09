@@ -2,6 +2,7 @@ import 'server-only';
 import type { AuthRole, AuthSession } from './roles';
 import { isKnownAuthRole } from './roles';
 import { getFirebaseAdminAuth, isFirebaseAdminConfigured } from '../firebase/admin';
+import { contentRequestConsentPurpose, evaluateContentCanonicalConsent } from '../privacy/canonicalConsent';
 
 const USER_ID_HEADER = 'x-urai-user-id';
 const ROLE_HEADER = 'x-urai-role';
@@ -59,7 +60,17 @@ export async function getRequestSession(request: Request): Promise<AuthSession |
       const auth = getFirebaseAdminAuth();
       const decodedToken = await auth.verifyIdToken(token, true);
       if (process.env.NODE_ENV === 'production') {
-        return await getCurrentAccountSession(decodedToken, auth);
+        const admitted = await getCurrentAccountSession(decodedToken, auth);
+        if (!admitted) return null;
+        const purpose = contentRequestConsentPurpose(request);
+        if (!purpose) return admitted;
+        if (!await evaluateContentCanonicalConsent(request, admitted.uid, purpose)) return null;
+        // A canonical service round trip can outlive the caller's Auth grant.
+        // Verify the token again and retain the same actor/role, with only the
+        // currently intersected entitlements, before any private consumer runs.
+        const freshToken = await auth.verifyIdToken(token, true);
+        const current = await getCurrentAccountSession(freshToken, auth);
+        return current?.uid === admitted.uid && current.role === admitted.role ? current : null;
       }
       return {
         uid: decodedToken.uid,
@@ -100,3 +111,4 @@ export async function getCurrentAccountSession(
     entitlements: Array.from(new Set(getEntitlements(currentClaims))).filter((entitlement) => verifiedEntitlements.has(entitlement))
   };
 }
+

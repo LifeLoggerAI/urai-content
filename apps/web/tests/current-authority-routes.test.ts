@@ -24,6 +24,13 @@ vi.mock('../src/server/content/service', () => ({
   })
 }));
 
+// These fixtures exercise Auth/role authority, using explicit synthetic
+// canonical consent. The real consumer protocol/lifecycle has its own suite.
+vi.mock('../src/server/privacy/canonicalConsent', () => ({
+  contentRequestConsentPurpose: () => 'memory.storage',
+  evaluateContentCanonicalConsent: async () => true
+}));
+
 import { GET as adminQueue } from '../src/app/api/admin/creator-submissions/route';
 import { POST as createSubmission } from '../src/app/api/creator/submissions/route';
 import { GET as ownedSubmission } from '../src/app/api/creator/submissions/[id]/route';
@@ -112,3 +119,4 @@ describe('current user authority in real private handlers', () => {
     expect((await ownedSubmission(adminRequest(), { params: Promise.resolve({ id: 'other-1' }) })).status).toBe(403);
   });
 });
+

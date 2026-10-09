@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run tests",
+    "test": "vitest run tests && npm run test:privacy-consumer",
+    "test:privacy-consumer": "node --test scripts/canonical-privacy-consumer.test.mjs",
     "smoke:routes": "tsx scripts/smoke-routes.ts",
     "e2e": "playwright test",
     "e2e:install": "playwright install --with-deps chromium",
@@ -67,3 +68,4 @@
     "source-map-js": "1.2.2"
   }
 }
+
