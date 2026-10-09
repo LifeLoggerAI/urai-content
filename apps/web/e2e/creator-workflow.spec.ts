@@ -1,6 +1,7 @@
 import { expect, test, type Page, type Route } from '@playwright/test';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { captureCreatorSignedOutEvidence } from './creator-capture-evidence';
 
 // Actual mounted compiled UI and installed Firebase SDK. Auth/API responses are
 // intercepted synthetic fixtures, not provider, cloud storage or private E2E proof.
@@ -150,7 +151,7 @@ test('actual SDK sign-in stays neutral until own server history, then accepts on
   await expect(page.getByLabel('Password', { exact: true })).toHaveValue('');
   await settle(page, captured);
   await fs.mkdir(output, { recursive: true });
-  await page.screenshot({ path: path.join(output, info.project.name + '-creator-signed-out.png'), fullPage: true });
+  await captureCreatorSignedOutEvidence(page, info.project.name, output, process.env.EXACT_HEAD ?? null);
   await fs.writeFile(path.join(output, info.project.name + '-creator-source-scope.json'), JSON.stringify({ exactHead: process.env.EXACT_HEAD ?? null, mountedProductionUI: process.env.URAI_CONTENT_VISUAL_PRODUCTION === '1', sdk: 'Firebase12.19.0', transport: 'intercepted synthetic Auth and API', observedTransportCounters: captured.counters, observedAuthResponses: captured.authResponses, observedApiRequests: captured.apiRequests, observedApiResponses: captured.apiResponses, unexpectedEndpoints: captured.unexpected, cloudPersistenceProven: false, privateAcceptanceProven: false }, null, 2));
 });
 
