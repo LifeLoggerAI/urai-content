@@ -13,6 +13,7 @@ const MAX_RESPONSE_BYTES = 16_384;
 
 export function contentRequestConsentPurpose(request: Request): ContentConsentPurpose | null {
   const path = new URL(request.url).pathname;
+  if (path === '/api/privacy/export' || path === '/api/privacy/export/') return 'data.export';
   // These are the actual mounted private creator-source consumers. Public
   // catalog, login, account recovery and administrative queues are not blanket
   // processing consent gates. Other consumers require their own target binding.
@@ -25,6 +26,7 @@ export async function evaluateContentCanonicalConsent(
   purpose: ContentConsentPurpose,
   transport: typeof fetch = fetch
 ): Promise<boolean> {
+  if (request.signal.aborted) return false;
   const project = process.env.URAI_CONTENT_PRIVACY_PROJECT_ID;
   const region = process.env.URAI_CONTENT_PRIVACY_REGION;
   // Bind explicitly only after protected runtime authority is provisioned.
@@ -35,6 +37,8 @@ export async function evaluateContentCanonicalConsent(
   if (!authorization?.startsWith('Bearer ') || !authorization.slice(7).trim() || !uid) return false;
   const correlationId = randomUUID();
   const controller = new AbortController();
+  const cancel = () => controller.abort();
+  request.signal.addEventListener('abort', cancel, { once: true });
   const timeout = setTimeout(() => controller.abort(), 5000);
   try {
     const response = await transport(`https://${region}-${project}.cloudfunctions.net/evaluateCanonicalConsent`, {
@@ -43,12 +47,13 @@ export async function evaluateContentCanonicalConsent(
       body: JSON.stringify({ data: { targetUid: uid, purpose, correlationId } }),
       signal: controller.signal
     });
-    if (!response.ok || !response.body) return false;
+    if (request.signal.aborted || !response.ok || !response.body) return false;
     const reader = response.body.getReader();
     const chunks: Uint8Array[] = [];
     let size = 0;
     while (true) {
       const part = await reader.read();
+      if (request.signal.aborted) { await reader.cancel(); return false; }
       if (part.done) break;
       size += part.value.byteLength;
       if (size > MAX_RESPONSE_BYTES) { await reader.cancel(); return false; }
@@ -69,5 +74,5 @@ export async function evaluateContentCanonicalConsent(
   } catch {
     // Return no provider payload, source detail, endpoint, or Bearer token.
     return false;
-  } finally { clearTimeout(timeout); }
+  } finally { clearTimeout(timeout); request.signal.removeEventListener('abort', cancel); }
 }

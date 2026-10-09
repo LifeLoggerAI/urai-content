@@ -8,6 +8,7 @@ export function BrowserSessionLogout() {
   async function signOut() {
     setPending(true);
     setError('');
+    window.dispatchEvent(new Event('urai-content-session-ending'));
     try {
       const response = await fetch('/api/auth/session', { method: 'DELETE', credentials: 'same-origin' });
       if (!response.ok) throw new Error('Sign out failed');
@@ -24,4 +25,5 @@ export function BrowserSessionLogout() {
     {error ? <p role="alert">{error}</p> : null}
   </div>;
 }
+
 
