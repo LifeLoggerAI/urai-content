@@ -125,6 +125,21 @@ async function proveTransport(page: Page, captured: Awaited<ReturnType<typeof fi
 }
 
 if (process.env.URAI_CONTENT_CREATOR_FIXTURE === '1') {
+test('additional whole-page camera preserves the actual keyboard-focused skip link', async ({ page }, info) => {
+  const captured = await fixture(page);
+  expect((await page.goto('/creator/submit'))?.status()).toBe(200);
+  await page.keyboard.press('Tab');
+  const skipLink = page.getByRole('link', { name: 'Skip to content', exact: true });
+  await expect(skipLink).toBeFocused();
+  await expect(skipLink).toBeVisible();
+  expect(await skipLink.evaluate((element) => element.matches(':focus-visible'))).toBe(true);
+  await settle(page, captured);
+  await captureCreatorSignedOutEvidence(page, info.project.name, path.join(output, 'keyboard-skip-link'), process.env.EXACT_HEAD ?? null);
+  await expect(skipLink).toBeFocused();
+  await expect(skipLink).toBeVisible();
+  expect(await skipLink.evaluate((element) => element.matches(':focus-visible'))).toBe(true);
+});
+
 test('actual SDK sign-in stays neutral until own server history, then accepts only a stored review response', async ({ page }, info) => {
   let historyRelease!: () => void;
   const gate = new Promise<void>((resolve) => { historyRelease = resolve; });

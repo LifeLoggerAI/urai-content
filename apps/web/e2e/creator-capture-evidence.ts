@@ -57,5 +57,83 @@ export async function captureCreatorSignedOutEvidence(page: Page, projectName: s
   };
   // A complete paired receipt is written only after both captures and observations.
   await fs.writeFile(path.join(output, projectName + '-creator-capture-state.json'), JSON.stringify(receipt, null, 2));
+  await captureCreatorTopOfDocumentEvidence(page, projectName, output, exactHead);
   return receipt;
+}
+
+type CaptureState = Awaited<ReturnType<typeof observeCreatorCaptureState>>;
+
+async function positionCaptureCamera(page: Page, scroll: { x: number; y: number }) {
+  await page.evaluate(async ({ x, y }) => {
+    // Explicit evidence camera movement only: no focus, CSS or keyboard changes.
+    window.scrollTo({ left: x, top: y, behavior: 'instant' });
+    await new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
+  }, scroll);
+}
+
+function requireCameraPosition(state: CaptureState, expected: { x: number; y: number }, stage: string) {
+  if (state.scroll.x !== expected.x || state.scroll.y !== expected.y) {
+    throw new Error('Creator capture camera did not reach ' + stage);
+  }
+}
+
+function requireUnchangedFocus(before: CaptureState, after: CaptureState) {
+  if (before.activeElement.tagName !== after.activeElement.tagName
+    || before.activeElement.isSkipLink !== after.activeElement.isSkipLink
+    || before.skipLink.focused !== after.skipLink.focused
+    || before.skipLink.focusVisible !== after.skipLink.focusVisible) {
+    throw new Error('Creator capture camera changed observed focus state');
+  }
+  if (before.activeElement.isSkipLink && (!after.skipLink.focused
+    || !after.skipLink.viewportIntersection || after.skipLink.viewportIntersection.width <= 0
+    || after.skipLink.viewportIntersection.height <= 0)) {
+    throw new Error('Creator capture camera lost the focused skip link visibility');
+  }
+}
+
+async function captureCreatorTopOfDocumentEvidence(page: Page, projectName: string, output: string, exactHead: string | null) {
+  const beforePositioning = await observeCreatorCaptureState(page);
+  const topOfDocument = { x: 0, y: 0 };
+  const fullPageName = projectName + '-creator-signed-out-top-of-document.png';
+  let captured: { image: Buffer; afterPositioning: CaptureState; afterFullPage: CaptureState } | undefined;
+  let afterRestoration: CaptureState | undefined;
+  let captureFailure: unknown;
+  let restorationFailure: unknown;
+  try {
+    await positionCaptureCamera(page, topOfDocument);
+    const afterPositioning = await observeCreatorCaptureState(page);
+    requireCameraPosition(afterPositioning, topOfDocument, 'the top of the document');
+    requireUnchangedFocus(beforePositioning, afterPositioning);
+    const image = await page.screenshot({ path: path.join(output, fullPageName), fullPage: true });
+    const afterFullPage = await observeCreatorCaptureState(page);
+    requireCameraPosition(afterFullPage, topOfDocument, 'the top of the document after capture');
+    requireUnchangedFocus(beforePositioning, afterFullPage);
+    captured = { image, afterPositioning, afterFullPage };
+  } catch (error) { captureFailure = error; }
+  try {
+    await positionCaptureCamera(page, beforePositioning.scroll);
+    afterRestoration = await observeCreatorCaptureState(page);
+    requireCameraPosition(afterRestoration, beforePositioning.scroll, 'the pre-additional camera position');
+    requireUnchangedFocus(beforePositioning, afterRestoration);
+  } catch (error) { restorationFailure = error; }
+  if (captureFailure !== undefined && restorationFailure !== undefined) {
+    throw new AggregateError([captureFailure, restorationFailure], 'Creator additional camera capture and restoration failed');
+  }
+  if (captureFailure !== undefined) throw captureFailure;
+  if (restorationFailure !== undefined) throw restorationFailure;
+  if (!captured || !afterRestoration) throw new Error('Creator additional camera evidence is incomplete');
+  const receipt = {
+    schemaVersion: 'urai-content-creator-top-of-document-camera-1',
+    exactHead, projectName, capturedAtUTC: new Date().toISOString(),
+    stage: 'creator-signed-out-additional-top-of-document-camera',
+    cameraPositioningPerformed: true, requestedCameraPosition: topOfDocument,
+    originalPostActionEvidencePreserved: true, preAdditionalCameraPositionRestored: true,
+    productStateNormalizationPerformed: false, accessibilityBehaviorChanged: false,
+    privateInputValuesRetained: false, visualAcceptance: false,
+    beforePositioning, afterPositioning: captured.afterPositioning,
+    afterFullPage: captured.afterFullPage, afterRestoration,
+    image: { file: fullPageName, fullPage: true, bytes: captured.image.length, sha256: createHash('sha256').update(captured.image).digest('hex') },
+  };
+  // This additional receipt is complete only after capture and verified restoration.
+  await fs.writeFile(path.join(output, projectName + '-creator-top-of-document-camera.json'), JSON.stringify(receipt, null, 2));
 }
