@@ -23,7 +23,8 @@ export function ContentDataExport({ expectedUid, projectMatches }: { expectedUid
   const observer = useRef<ContentExportAccountObserver<User> | null>(null);
   useEffect(() => { if (state.phase === 'signed-out') observer.current?.clearLocal(); }, [state.phase]);
   useEffect(() => {
-    controller.start(); generation.current++; sessionEnded.current = false;
+    const invalidateContinuation = () => { generation.current++; };
+    controller.start(); invalidateContinuation(); sessionEnded.current = false;
     setAuth(null); setAccount(null); setAvailable(false); setPending(false); setEnded(false);
     const endSession = () => { sessionEnded.current = true; generation.current++; observer.current?.endSession(); controller.setActor(null); setAccount(null); setPending(false); setEnded(true); };
     const hide = () => { generation.current++; controller.cancel(); setPending(false); };
@@ -39,7 +40,7 @@ export function ContentDataExport({ expectedUid, projectMatches }: { expectedUid
       observer.current = accountObserver;
       stop = onIdTokenChanged(currentAuth, user => accountObserver.observe(user));
     }
-    return () => { generation.current++; stop(); observer.current = null; controller.dispose(); window.removeEventListener('urai-content-session-ending', endSession); window.removeEventListener('pagehide', hide); };
+    return () => { invalidateContinuation(); stop(); observer.current = null; controller.dispose(); window.removeEventListener('urai-content-session-ending', endSession); window.removeEventListener('pagehide', hide); };
   }, [controller, expectedUid, projectMatches]);
   async function login(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); if (!auth || pending || sessionEnded.current) return;

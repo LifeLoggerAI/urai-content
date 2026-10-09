@@ -87,9 +87,9 @@ test('response bytes above cap never become a truncated saved file',async()=>{co
 test('silent SDK account change is checked after awaited token before source dispatch',async()=>{let current=true,calls=0;const {controller,saved}=await ready(async()=>{calls++;throw Error();});controller.setActor(actor({isCurrent:()=>current,getToken:async()=>{current=false;return 'late-token';}}));controller.setConfirmed(true);assert.equal(await controller.download(),false);assert.equal(saved.length,0);assert.equal(calls,0);assert.equal(controller.snapshot().phase,'signed-out');});
 test('dispose drops stalled work, and StrictMode restart requires a fresh actor and confirmation',async()=>{const {controller,saved}=await ready(async()=>new Promise(()=>{}));const pending=controller.download();controller.dispose();assert.equal(await pending,false);controller.start();assert.equal(await controller.download(),false);assert.equal(saved.length,0);});
 test('default fetch adapter preserves the browser global receiver',async()=>{
-  const prior=globalThis.fetch;let receiver;const saved=[];
-  globalThis.fetch=async function(){receiver=this;return response(await fixtureBody());};
-  try{const controller=new ContentDataExportController(undefined,blob=>saved.push(blob));controller.setActor(actor());controller.setConfirmed(true);assert.equal(await controller.download(),true);assert(receiver==null||receiver===globalThis);assert.equal(saved.length,1);}finally{globalThis.fetch=prior;}
+  const prior=globalThis.fetch;let compatibleReceiver=false;const saved=[];
+  globalThis.fetch=async function(){compatibleReceiver=this==null||this===globalThis;return response(await fixtureBody());};
+  try{const controller=new ContentDataExportController(undefined,blob=>saved.push(blob));controller.setActor(actor());controller.setConfirmed(true);assert.equal(await controller.download(),true);assert(compatibleReceiver);assert.equal(saved.length,1);}finally{globalThis.fetch=prior;}
 });
 test('real browser download adapter creates only an owned Blob URL and always removes/revokes it',async()=>{
   const oldDocument=globalThis.document,oldCreate=URL.createObjectURL,oldRevoke=URL.revokeObjectURL;const events=[];
