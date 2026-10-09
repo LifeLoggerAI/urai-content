@@ -138,6 +138,36 @@ test('additional whole-page camera preserves the actual keyboard-focused skip li
   await expect(skipLink).toBeFocused();
   await expect(skipLink).toBeVisible();
   expect(await skipLink.evaluate((element) => element.matches(':focus-visible'))).toBe(true);
+  const target = await skipLink.boundingBox();
+  expect(target).not.toBeNull();
+  expect(target?.width ?? 0).toBeGreaterThanOrEqual(48);
+  expect(target?.height ?? 0).toBeGreaterThanOrEqual(48);
+
+  const expectMainReached = async () => {
+    await expect(page).toHaveURL(/#main-content$/);
+    const main = page.locator('main#main-content');
+    await expect(main).toBeInViewport();
+    await expect.poll(() => main.evaluate((element) => element.matches(':target'))).toBe(true);
+    await expect.poll(() => page.evaluate(() => {
+      const target = document.querySelector('main#main-content');
+      if (!target) throw new Error('Skip-link destination is missing');
+      const top = target.getBoundingClientRect().top + window.scrollY;
+      const maximum = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      return Math.abs(window.scrollY - Math.min(Math.max(0, top), maximum));
+    })).toBeLessThanOrEqual(1);
+  };
+
+  await page.keyboard.press('Enter');
+  await expectMainReached();
+  if (info.project.use.hasTouch) {
+    expect((await page.goto('/creator/submit'))?.status()).toBe(200);
+    await page.keyboard.press('Tab');
+    await expect(skipLink).toBeFocused();
+    await expect(skipLink).toBeVisible();
+    await skipLink.tap();
+    await expectMainReached();
+  }
+  await settle(page, captured);
 });
 
 test('actual SDK sign-in stays neutral until own server history, then accepts only a stored review response', async ({ page }, info) => {
