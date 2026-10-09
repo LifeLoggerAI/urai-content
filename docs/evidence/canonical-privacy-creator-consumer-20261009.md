@@ -45,6 +45,14 @@ it is not evidence of an operating successful integration.
 - The existing role-handler fixture receives explicit synthetic canonical
   consent to retain its original successful Auth/role tests. No assertion or
   production guard is removed.
+- Initial native Node22.23.3 frozen installation, whole web typecheck and lint
+  passed. Vitest returned344PASS/6FAIL out of350: the existing private-await
+  fixtures lacked synthetic canonical authority and consequently stopped before
+  their intended read/write/log withdrawal points. The successor supplies that
+  explicit fixture and changes its pending-parameters Auth count from1 to2,
+  asserting the added current-Auth check after canonical service admission.
+  Original success,401, private-body suppression, write and audit expectations
+  remain intact. Exact successor native results must be read separately.
 - `npm test` in web runs this harness after the existing Vitest suite. Full
   Vitest/frozen installation/native CI remains required; this environment's
   offline cache did not contain Vitest 4.1.11.

@@ -7,6 +7,14 @@ const state = vi.hoisted(() => ({
 }));
 const privateSubmission = { id: 'owned-1', creatorId: 'actor-1', title: 'Private fixture', body: 'PRIVATE_SOURCE_FIXTURE', status: 'submitted' };
 
+// This suite isolates Auth withdrawal at existing read/write/log boundaries.
+// Canonical service protocol and withdrawal are exercised by the native
+// canonical-privacy-consumer source suite, using its labeled synthetic I/O.
+vi.mock('../src/server/privacy/canonicalConsent', () => ({
+  contentRequestConsentPurpose: () => 'memory.storage',
+  evaluateContentCanonicalConsent: async () => true
+}));
+
 vi.mock('../src/server/firebase/admin', () => ({
   isFirebaseAdminConfigured: () => true,
   getFirebaseAdminAuth: () => ({
@@ -77,7 +85,7 @@ describe('private output and moderation after awaited work', () => {
     let release!: (value: { id: string }) => void;
     const params = new Promise<{ id: string }>((resolve) => { release = resolve; });
     const pending = ownerDetail(request(), { params });
-    await vi.waitFor(() => expect(state.authReads).toHaveBeenCalledTimes(1));
+    await vi.waitFor(() => expect(state.authReads).toHaveBeenCalledTimes(2));
     state.disabled = true;
     release({ id: 'owned-1' });
     expect((await pending).status).toBe(401);
@@ -109,3 +117,4 @@ describe('private output and moderation after awaited work', () => {
     expect(JSON.stringify(await response.json())).not.toContain('PRIVATE_SOURCE_FIXTURE');
   });
 });
+
