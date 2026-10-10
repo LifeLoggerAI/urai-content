@@ -1,0 +1,115 @@
+{
+  "package": "stream-json",
+  "version": "1.9.1",
+  "tarballSha256": "3f8cf5812a4abb69d5a8837944373a0b9e7d3cec3e91a5850c95f211a06ae7c3",
+  "files": {
+    "Assembler.js": {
+      "sha256": "a341b21d86a9c005e5433eadb6c33d4708d611c8bc624ee383463c0fb6d2e32b",
+      "bytes": 3526
+    },
+    "Disassembler.js": {
+      "sha256": "b9c3876be7fc6c8364dcf3a8e72b61708925ded5ce31a49952e709c73a834eda",
+      "bytes": 5426
+    },
+    "Emitter.js": {
+      "sha256": "3aa82ed9e5ca61f60fe8a24f8cd78a9cc0f6510db8ef9e7d3163d7c171342a08",
+      "bytes": 438
+    },
+    "LICENSE": {
+      "sha256": "f0cafa4717146b30d7b5aeb4ff96cd5e9dafb03b97d2038d904d8b1e7a0400f3",
+      "bytes": 1909
+    },
+    "Parser.js": {
+      "sha256": "83866088a1805b0370fbf80a3906377c81d80e6d35521c5716e870212c3ce927",
+      "bytes": 20977
+    },
+    "README.md": {
+      "sha256": "9e31930cc29998566b4abd27de8f9259f25b4b215f43e2c3d94b4a2df42677ba",
+      "bytes": 8034
+    },
+    "Stringer.js": {
+      "sha256": "c9a5b05191fdce3a91855c8f26374cb6eb8cd7c946ee7766ad40f9a6d899a84c",
+      "bytes": 4836
+    },
+    "filters/Filter.js": {
+      "sha256": "46c3a7d9416b534061ac77dd517268fe874abb6c7e23c39e40931e5ae0a89a52",
+      "bytes": 3512
+    },
+    "filters/FilterBase.js": {
+      "sha256": "4c63caeb52939e2c2eb77c593f6e62fe679186836976abda6da39ae810c81312",
+      "bytes": 5586
+    },
+    "filters/Ignore.js": {
+      "sha256": "a9f3146d5983b5a6428e072881dc81e5c90ca40e7f08bf36b135255e49d062ed",
+      "bytes": 513
+    },
+    "filters/Pick.js": {
+      "sha256": "57b201bb7ef95683b69e4616f3227cc8da60a7dd6e843d2d2e8507bf55781477",
+      "bytes": 1394
+    },
+    "filters/Replace.js": {
+      "sha256": "9558273c734deed31c323648c3f144e961d5f45a6058184c03abb9afa2f90511",
+      "bytes": 3355
+    },
+    "index.js": {
+      "sha256": "bd0f83e2df2757810f92de067d7a13406049c115cc02191655ff5058bbfe145a",
+      "bytes": 217
+    },
+    "jsonl/Parser.js": {
+      "sha256": "a94dc7b47cd66e555fa2976856f2988a5a39ad1b0519d55921e7977856c55292",
+      "bytes": 3896
+    },
+    "jsonl/Stringer.js": {
+      "sha256": "8c4ec0ee44f0b955861e45c0346989859d91c8dd7493382cd01fe97fdbdb5d72",
+      "bytes": 747
+    },
+    "package.json": {
+      "sha256": "d83a7ff5f26b3cad3b3fe4a6858a55e7065209674fd4ffc6c7a2524a013e0f33",
+      "bytes": 1241
+    },
+    "streamers/StreamArray.js": {
+      "sha256": "50e7ed6461416ca3bb0f14875c6bc7fc8eb3885584e92febbcbf5f1768bcd3ec",
+      "bytes": 1056
+    },
+    "streamers/StreamBase.js": {
+      "sha256": "e51dcbd6d1c21b241aca546f39189320d0159a01a5a7f7af7676ee904436b62d",
+      "bytes": 2653
+    },
+    "streamers/StreamObject.js": {
+      "sha256": "d799d396729cef777fa6405115f7e2e844285bbe9a8bb9db908eccd4f517177c",
+      "bytes": 1091
+    },
+    "streamers/StreamValues.js": {
+      "sha256": "0a7df488dd8ee52ed777779a72bcf0a0dfae5dbafdb70cf4605bddd020b88a10",
+      "bytes": 784
+    },
+    "utils/Batch.js": {
+      "sha256": "601e2f7f9558450e7a2de2ad29130c2231d5d1cd1f42e8380d7248b04d82c303",
+      "bytes": 1046
+    },
+    "utils/Utf8Stream.js": {
+      "sha256": "56b1c98d9d7be72b86acacea6b76e24edd9ca40b01773f60797999c02a26b0f6",
+      "bytes": 1224
+    },
+    "utils/Verifier.js": {
+      "sha256": "bc97b64fe774869613759dd1354b2883a6c71167465991d37b9f7b75fb5a859b",
+      "bytes": 16448
+    },
+    "utils/emit.js": {
+      "sha256": "e5e6a083e6efc1bafcf2f46545a5546bd9c86ff279123551e9f181202feb0a87",
+      "bytes": 125
+    },
+    "utils/withParser.js": {
+      "sha256": "f749ae0f24cbd4372cee6e5508c7ee548346151b2437e29367bf1638c4fc95b2",
+      "bytes": 289
+    }
+  },
+  "localVersion": "1.9.1-urai.1",
+  "locallyModifiedFiles": [
+    "package.json",
+    "Assembler.js",
+    "Parser.js",
+    "filters/FilterBase.js",
+    "utils/Verifier.js"
+  ]
+}

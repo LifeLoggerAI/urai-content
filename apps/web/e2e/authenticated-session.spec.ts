@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 const authState = process.env.URAI_E2E_AUTH_STATE;
-const authenticatedRoutes = ['/dashboard', '/settings'];
+const authenticatedRoutes = ['/dashboard', '/dashboard/settings'];
 
 test.describe('authenticated session runtime coverage', () => {
   test.skip(!authState, 'URAI_E2E_AUTH_STATE is required for authenticated session E2E. Generate it from the staging/prod auth provider and store it as a CI secret artifact.');
@@ -13,10 +13,10 @@ test.describe('authenticated session runtime coverage', () => {
       const response = await page.goto(route);
 
       expect(response).not.toBeNull();
-      expect(response?.status()).toBeLessThan(500);
+      expect(response?.status()).toBe(200);
 
       const body = (await page.locator('body').textContent()) ?? '';
-      expect(body).not.toMatch(/demo bypass|mock admin|dev only/i);
+      expect(body).not.toMatch(/demo bypass|mock admin|dev only|404|not found/i);
       expect(body).not.toMatch(/unauthorized|forbidden|access denied|sign in/i);
     });
   }

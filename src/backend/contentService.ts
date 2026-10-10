@@ -21,8 +21,7 @@ export class ContentService {
 
   async create(item: unknown): Promise<ContentItem> {
     const parsed = contentItemSchema.parse(item);
-    await this.repo.upsertContent(parsed);
-    await this.repo.addVersion(parsed.id, parsed);
+    await this.repo.saveContentRevision(parsed);
     return parsed;
   }
 
@@ -30,8 +29,7 @@ export class ContentService {
     const existing = await this.repo.getContent(itemId);
     if (!existing) throw new Error('Content item not found');
     const parsed = contentItemSchema.parse({ ...existing, ...patch, id: itemId });
-    await this.repo.upsertContent(parsed);
-    const version = await this.repo.addVersion(itemId, parsed);
+    const version = await this.repo.saveContentRevision(parsed);
     contentVersionSchema.parse({
       id: `${itemId}-v${version}`,
       contentItemId: itemId,

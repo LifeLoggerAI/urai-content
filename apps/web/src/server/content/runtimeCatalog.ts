@@ -3,6 +3,7 @@ import type { ContentItem } from './types';
 import { listCatalogItems, getCatalogItemBySlug, normalizeSlug, summarizeCatalogItem, type CatalogItem } from '@/lib/catalog';
 import { getCatalogSourceDescription, getCatalogSourceMode } from './catalogSource';
 import { createRuntimeContentService, getRuntimeContentMode } from './service';
+import { paginateSorted, type PageRequest } from '../../../../../src/query/pagination.js';
 
 export type RuntimeCatalogSummary = ReturnType<typeof summarizeCatalogItem>;
 
@@ -27,34 +28,28 @@ function contentItemToCatalogItem(item: ContentItem): CatalogItem {
   };
 }
 
-async function listFirestoreCatalogItems(): Promise<CatalogItem[]> {
-  const service = createRuntimeContentService();
-  const publicItems = await service.searchPublishedContent('', 'public');
-  const unlistedItems = await service.searchPublishedContent('', 'unlisted');
-
-  return [...publicItems, ...unlistedItems]
-    .map(contentItemToCatalogItem)
-    .sort((a, b) => a.slug.localeCompare(b.slug));
-}
-
-export async function listRuntimeCatalogSummaries(): Promise<{
+export async function listRuntimeCatalogSummaries(request: PageRequest = {}): Promise<{
   source: ReturnType<typeof getCatalogSourceMode>;
   sourceDescription: string;
   items: RuntimeCatalogSummary[];
+  nextCursor: string | null;
 }> {
   if (getRuntimeContentMode() === 'firestore') {
-    const items = await listFirestoreCatalogItems();
+    const page = await createRuntimeContentService().listPublishedCatalogPage(request);
     return {
       source: getCatalogSourceMode(),
       sourceDescription: getCatalogSourceDescription(),
-      items: items.map(summarizeCatalogItem)
+      items: page.items.map(contentItemToCatalogItem).map(summarizeCatalogItem),
+      nextCursor: page.nextCursor
     };
   }
 
+  const page = paginateSorted(listCatalogItems().sort((a, b) => Buffer.compare(Buffer.from(a.id), Buffer.from(b.id))), { ...request, limit: request.limit ?? 100 }, (item) => ({ sortValue: item.id, id: item.id }));
   return {
     source: getCatalogSourceMode(),
     sourceDescription: getCatalogSourceDescription(),
-    items: listCatalogItems().map(summarizeCatalogItem)
+    items: page.items.map(summarizeCatalogItem),
+    nextCursor: page.nextCursor
   };
 }
 
@@ -64,12 +59,11 @@ export async function getRuntimeCatalogItemBySlug(slug: string): Promise<{
   item: CatalogItem | null;
 }> {
   if (getRuntimeContentMode() === 'firestore') {
-    const normalized = normalizeSlug(slug);
-    const items = await listFirestoreCatalogItems();
+    const item = await createRuntimeContentService().getPublishedContentBySlug(slug);
     return {
       source: getCatalogSourceMode(),
       sourceDescription: getCatalogSourceDescription(),
-      item: items.find((item) => normalizeSlug(item.slug) === normalized) ?? null
+      item: item ? contentItemToCatalogItem(item) : null
     };
   }
 

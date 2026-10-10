@@ -7,7 +7,7 @@ const storageRules = fs.readFileSync(path.join(repoRoot, 'storage.rules'), 'utf8
 const firestoreRules = fs.readFileSync(path.join(repoRoot, 'firestore.rules'), 'utf8');
 
 describe('content security rules source contract', () => {
-  it('bounds creator uploads by owner, content type, and size', () => {
+  it('retains upload validation preparation while direct creator mutation is gated', () => {
     expect(storageRules).toContain('request.resource.size <= 25 * 1024 * 1024');
     expect(storageRules).toContain('isAllowedCreatorContentType()');
     expect(storageRules).toContain('request.auth.uid == creatorId');
@@ -15,12 +15,13 @@ describe('content security rules source contract', () => {
     expect(storageRules).toContain('model/gltf-binary');
   });
 
-  it('accepts both scalar and array role claims', () => {
-    expect(storageRules).toContain('request.auth.token.role == role');
-    expect(storageRules).toContain('request.auth.token.roles is list');
-    expect(storageRules).toContain('request.auth.token.roles.hasAny([role])');
-    expect(firestoreRules).toContain('request.auth.token.role == role');
-    expect(firestoreRules).toContain('request.auth.token.roles is list');
+  it('does not use issued client role claims as live privileged authority', () => {
+    for (const rules of [storageRules, firestoreRules]) {
+      expect(rules).not.toContain('request.auth.token');
+      expect(rules.match(/function isAdmin\(\) \{[\s\S]*?\n    \}/)?.[0]).toContain('return false;');
+      expect(rules.match(/function isCreator\(\) \{[\s\S]*?\n    \}/)?.[0]).toContain('return false;');
+      expect(rules.match(/function privateClientAuthorized\(\) \{[\s\S]*?\n    \}/)?.[0]).toContain('return false;');
+    }
   });
 
   it('aligns public reads to free persisted records', () => {
@@ -31,12 +32,17 @@ describe('content security rules source contract', () => {
     expect(firestoreRules).toContain("resource.data.get('tier', '') == 'free'");
   });
 
-  it('owner-binds and allowlists analytics event writes', () => {
+  it('retains bounded telemetry preparation under the private client gate', () => {
     expect(firestoreRules).toContain('request.resource.data.keys().hasAll');
     expect(firestoreRules).toContain('request.resource.data.keys().hasOnly');
     expect(firestoreRules).toContain('request.resource.data.userId == request.auth.uid');
     expect(firestoreRules).toContain('marketplace_item_unlocked');
     expect(firestoreRules).toContain('request.resource.data.metadata.size() <= 20');
+  });
+
+  it('uses the same rules in the repository and web deployment roots', () => {
+    expect(fs.readFileSync(path.join(repoRoot, 'apps/web/firestore.rules'), 'utf8')).toBe(firestoreRules);
+    expect(fs.readFileSync(path.join(repoRoot, 'apps/web/storage.rules'), 'utf8')).toBe(storageRules);
   });
 
   it('keeps explicit deny-by-default fallbacks', () => {

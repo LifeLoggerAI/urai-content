@@ -153,14 +153,11 @@ describe('server authorization helpers', () => {
     await expect(getRequestSession(makeAuthRequest())).resolves.toBeNull();
   });
 
-  it('allows production header auth only with explicit opt-in', async () => {
+  it('denies caller header auth in production even with explicit opt-in', async () => {
     setNodeEnv('production');
     process.env.URAI_ENABLE_HEADER_AUTH = '1';
 
-    await expect(getRequestSession(makeAuthRequest())).resolves.toEqual({
-      uid: 'admin-1',
-      role: 'admin'
-    });
+    await expect(getRequestSession(makeAuthRequest())).resolves.toBeNull();
   });
 
   it('fails closed for missing user id and unsupported roles', async () => {

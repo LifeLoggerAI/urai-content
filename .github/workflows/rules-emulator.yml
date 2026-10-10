@@ -53,18 +53,25 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          npm install --prefix tests/rules-emulator --ignore-scripts --no-audit --no-fund
+          evidence_dir="$RUNNER_TEMP/content-rules-evidence"
+          mkdir -p -- "$evidence_dir"
+          npm ci --prefix tests/rules-emulator --install-links --ignore-scripts --no-audit --no-fund \
+            2>&1 | tee "$evidence_dir/frozen-install.log"
 
       - name: Capture exact rules and dependency identity
         shell: bash
         run: |
           set -euo pipefail
           evidence_dir="$RUNNER_TEMP/content-rules-evidence"
-          rm -rf -- "$evidence_dir"
           mkdir -p -- "$evidence_dir"
           sha256sum firestore.rules storage.rules > "$evidence_dir/rules-sha256.txt"
-          npm ls --prefix tests/rules-emulator --all --json > "$evidence_dir/dependency-tree.json"
-          cp tests/rules-emulator/package-lock.json "$evidence_dir/rules-test-package-lock.json"
+          npm ls --prefix tests/rules-emulator --install-links --all --json > "$evidence_dir/dependency-tree.json"
+          cp tests/rules-emulator/package.json "$evidence_dir/rules-tool-package.json"
+          cp tests/rules-emulator/package-lock.json "$evidence_dir/rules-tool-package-lock.json"
+          sha256sum tests/rules-emulator/package.json tests/rules-emulator/package-lock.json > "$evidence_dir/tooling-sha256.txt"
+          git ls-files vendor/braces vendor/stream-json | xargs sha256sum > "$evidence_dir/local-security-forks-sha256.txt"
+          cp vendor/braces/UPSTREAM-PROVENANCE.json "$evidence_dir/braces-upstream-provenance.json"
+          cp vendor/stream-json/UPSTREAM-PROVENANCE.json "$evidence_dir/stream-json-upstream-provenance.json"
           {
             echo "repository=$GITHUB_REPOSITORY"
             echo "exact_head=$TARGET_SHA"
@@ -76,6 +83,29 @@ jobs:
             echo "production_data_mutation=false"
           } > "$evidence_dir/authority.env"
 
+      - name: Capture full frozen tooling registry audit
+        shell: bash
+        run: |
+          set -uo pipefail
+          evidence_dir="$RUNNER_TEMP/content-rules-evidence"
+          set +e
+          npm audit --prefix tests/rules-emulator --json > "$evidence_dir/tool-audit.json"
+          audit_status=$?
+          printf '%s\n' "$audit_status" > "$evidence_dir/tool-audit-exit-code.txt"
+          exit 0
+
+      - name: Enforce full tooling audit before executing the CLI
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --test scripts/verify-rules-tool-audit.test.mjs \
+            2>&1 | tee "$RUNNER_TEMP/content-rules-evidence/audit-verifier-tests.log"
+          node scripts/verify-rules-tool-audit.mjs \
+            "$RUNNER_TEMP/content-rules-evidence/tool-audit.json" \
+            "$RUNNER_TEMP/content-rules-evidence/tool-audit-exit-code.txt"
+          node --test scripts/dependency-security.behavior.test.cjs \
+            2>&1 | tee "$RUNNER_TEMP/content-rules-evidence/installed-dependency-security.log"
+
       - name: Execute Firestore and Storage emulator matrix
         id: emulator
         shell: bash
@@ -83,7 +113,7 @@ jobs:
           set +e
           set -o pipefail
           evidence_dir="$RUNNER_TEMP/content-rules-evidence"
-          npx --yes firebase-tools@15.23.0 emulators:exec \
+          tests/rules-emulator/node_modules/.bin/firebase emulators:exec \
             --config firebase.json \
             --project urai-content-rules-test \
             --only firestore,storage \
@@ -117,11 +147,15 @@ jobs:
           const fs = require('node:fs');
           const exitStatus = (value) => /^\d+$/.test(String(value ?? '')) ? Number(value) : -1;
           const receipt = {
-            schemaVersion: 'urai-content-rules-emulator-receipt-1',
+            schemaVersion: 'urai-content-rules-emulator-receipt-2',
             repository: process.env.GITHUB_REPOSITORY,
             exactHeadSha: process.env.TARGET_SHA,
             workflowRunId: process.env.GITHUB_RUN_ID,
             emulatorStatus: exitStatus(process.env.EMULATOR_STATUS),
+            toolingInstall: 'npm ci --install-links --ignore-scripts',
+            firebaseCliVersion: '15.24.0',
+            localSecurityForkAcceptance: false,
+            securityReviewRequired: ['GHSA-vfj7-8cjw-p6xm', 'GHSA-mjw6-4jj6-33hc', 'GHSA-528h-pc64-c93x', 'GHSA-hqr4-qq8f-hg3x'],
             projectId: 'urai-content-rules-test',
             credentialed: false,
             deployment: false,
@@ -147,7 +181,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          rm -rf -- tests/rules-emulator/node_modules tests/rules-emulator/package-lock.json
+          rm -rf -- tests/rules-emulator/node_modules
 
       - name: Prove final clean source
         if: always()

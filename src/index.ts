@@ -4,6 +4,7 @@ export * from './lib/content/validate.js';
 export * from './backend/contentService.js';
 export * from './backend/types.js';
 export * from './backend/inMemoryRepository.js';
+export * from './backend/deletionPersistence.js';
 
 export * from './backend/firebaseRepository.contract.js';
 export * from './seed/demoData.js';

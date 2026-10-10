@@ -101,7 +101,8 @@ export const routeShellContent = {
       description: 'Creator program surface for URAI Content.'
     },
     cards: [
-      { title: 'Submission path', body: 'Creator submission APIs and forms must validate content and scope records to the signed-in creator.' },
+      { title: 'Submit for private review', body: 'Use an existing creator account. Current server access and durable storage must be confirmed before a submission is accepted.', href: '/creator/submit', linkLabel: 'Submit for review' },
+      { title: 'Your submissions', body: 'Review your own saved submission status. Production provider and deployment acceptance remain pending.', href: '/creator/submissions', linkLabel: 'View your submissions' },
       { title: 'Moderation path', body: 'Admin review must approve, reject, or request changes before content can publish.' },
       { title: 'Earnings later', body: 'Payouts and earnings views require payment policy, tax/account setup, and marketplace events.' }
     ]

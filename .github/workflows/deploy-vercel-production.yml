@@ -31,6 +31,7 @@ jobs:
     env:
       EXPECTED_BASE_URL: ${{ github.event.inputs.base_url }}
       DEPLOY_ENVIRONMENT: ${{ github.event.inputs.environment }}
+      URAI_CONTENT_BUILD_SHA: ${{ github.sha }}
     steps:
       - name: Checkout exact requested source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -158,14 +159,28 @@ jobs:
             curl -fsS "$EXPECTED_BASE_URL/api/version"
           } | tee launch-proof/live-deploy/latest-smoke.md
 
-      - name: Runtime route smoke
-        run: npm run web:smoke:routes -- --base-url="$EXPECTED_BASE_URL"
+      - name: Verify prebuilt deployment identity and routes
+        run: |
+          set -euo pipefail
+          mkdir -p launch-proof/live-deploy
+          deployed_url="$(cat deploy-url.txt)"
+          {
+            echo "Commit: $GITHUB_SHA"
+            echo "Vercel deploy URL: $deployed_url"
+            echo "Expected base URL: $EXPECTED_BASE_URL"
+            npm run smoke:routes --prefix apps/web -- --base-url="$deployed_url" --expected-sha="$GITHUB_SHA"
+            if [ "$EXPECTED_BASE_URL" != "$deployed_url" ]; then
+              npm run smoke:routes --prefix apps/web -- --base-url="$EXPECTED_BASE_URL" --expected-sha="$GITHUB_SHA"
+            fi
+          } 2>&1 | tee launch-proof/live-deploy/source-identity-and-routes.log
 
       - name: Upload deploy evidence
+        if: ${{ always() && steps.deploy.outcome == 'success' }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: urai-content-preview-deploy-evidence-${{ github.sha }}
           path: |
             deploy-url.txt
             launch-proof/live-deploy/latest-smoke.md
+            launch-proof/live-deploy/source-identity-and-routes.log
           if-no-files-found: error
