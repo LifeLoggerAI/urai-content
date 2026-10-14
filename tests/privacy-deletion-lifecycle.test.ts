@@ -86,3 +86,18 @@ describe('content deletion lifecycle', () => {
     })).toBe(false);
   });
 });
+
+it('binds every purge receipt field to the verified checksum', () => {
+  const tombstone = fixture();
+  const confirmed = recordProviderDeletionReceipt(tombstone, 'search-index', { receiptId: 'provider-receipt', confirmedAt: '2026-11-02T01:00:00.000Z', receiptChecksum: sha('provider') });
+  const purged = finalizeContentDeletionPurge(confirmed, '2026-11-03T00:00:00.000Z', sha('deleted'));
+  expect(verifyContentPurgeReceipt(purged)).toBe(true);
+  for (const change of [{ receiptId: 'forged' }, { purgedAt: '2026-11-04T00:00:00.000Z' }, { deletionChecksum: sha('other') }]) {
+    expect(verifyContentPurgeReceipt({ ...purged, purgeReceipt: { ...purged.purgeReceipt!, ...change } })).toBe(false);
+  }
+});
+
+it('rejects pre-deletion restore and provider receipt times', () => {
+  expect(() => restoreContentDeletion(fixture(), '2026-10-01T00:00:00.000Z')).toThrow('follow deletion request');
+  expect(() => recordProviderDeletionReceipt(fixture(), 'search-index', { receiptId: 'provider', confirmedAt: '2026-10-01T00:00:00.000Z', receiptChecksum: sha('provider') })).toThrow('follow deletion request');
+});

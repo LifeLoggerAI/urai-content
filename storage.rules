@@ -1,33 +1,23 @@
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
-    function signedIn() {
-      return request.auth != null;
-    }
-
-    function hasScalarRole(role) {
-      return signedIn()
-        && request.auth.token.keys().hasAny(['role'])
-        && request.auth.token.role == role;
-    }
-
-    function hasRoleList(role) {
-      return signedIn()
-        && request.auth.token.keys().hasAny(['roles'])
-        && request.auth.token.roles is list
-        && request.auth.token.roles.hasAny([role]);
-    }
-
-    function hasRole(role) {
-      return hasScalarRole(role) || hasRoleList(role);
+    function privateClientAuthorized() {
+      // UID alone cannot observe live Auth disablement/revocation or canonical
+      // Privacy consent and account tombstones. No private client SDK consumer
+      // is admitted; private delivery requires its protected server lifecycle.
+      return false;
     }
 
     function isAdmin() {
-      return hasRole('admin') || hasRole('internalAdmin');
+      // Private administrative operations use the server, which reads current
+      // Firebase UserRecord claims. Issued client claims are not live authority.
+      return false;
     }
 
     function isCreator() {
-      return hasRole('creator') || hasRole('studio') || isAdmin();
+      // Direct uploads/creator mutations remain gated. The admitted creator API
+      // checks the current user before its IAM-authorized server operation.
+      return false;
     }
 
     function isAllowedCreatorContentType() {
@@ -57,7 +47,7 @@ service firebase.storage {
     }
 
     match /creator-submissions/{creatorId}/{allPaths=**} {
-      allow read: if isAdmin() || (signedIn() && request.auth.uid == creatorId);
+      allow read: if isAdmin() || (privateClientAuthorized() && request.auth.uid == creatorId);
       allow create, update: if isCreator()
         && request.auth.uid == creatorId
         && validCreatorUpload();
@@ -65,12 +55,12 @@ service firebase.storage {
     }
 
     match /exports/{userId}/{allPaths=**} {
-      allow read: if isAdmin() || (signedIn() && request.auth.uid == userId);
+      allow read: if isAdmin() || (privateClientAuthorized() && request.auth.uid == userId);
       allow write: if isAdmin();
     }
 
     match /licenses/{licenseeId}/{allPaths=**} {
-      allow read: if isAdmin() || (signedIn() && request.auth.uid == licenseeId);
+      allow read: if isAdmin() || (privateClientAuthorized() && request.auth.uid == licenseeId);
       allow write: if isAdmin();
     }
 

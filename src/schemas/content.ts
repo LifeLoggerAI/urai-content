@@ -23,7 +23,7 @@ export const contentItemSchema = z.object({
 });
 
 export const narratorPromptSchema = z.object({
-  id: z.string(),
+  id: z.string().min(1),
   tone: z.enum(['cinematic', 'calm', 'reflective', 'grounded']),
   prompt: z.string(),
   quietHoursSafe: z.boolean(),
@@ -32,7 +32,7 @@ export const narratorPromptSchema = z.object({
 });
 
 export const storyTemplateSchema = z.object({
-  id: z.string(),
+  id: z.string().min(1),
   era: z.string(),
   beats: z.array(z.object({
     title: z.string(),
@@ -45,7 +45,7 @@ export const storyTemplateSchema = z.object({
 });
 
 export const ritualTemplateSchema = z.object({
-  id: z.string(),
+  id: z.string().min(1),
   name: z.string(),
   instructions: z.array(z.string()),
   safetyClass: z.enum(['gentle', 'standard', 'sensitive']),
@@ -54,13 +54,13 @@ export const ritualTemplateSchema = z.object({
 });
 
 export const marketplaceItemSchema = z.object({
-  id: z.string(),
+  id: z.string().min(1),
   title: z.string(),
   creatorId: z.string(),
   moderationStatus: z.enum(['pending', 'approved', 'rejected']),
   tier: accessTierSchema,
   priceUsd: z.number().nonnegative(),
-  entitlementKey: z.string()
+  entitlementKey: z.string().min(1)
 });
 
 export const creatorSubmissionSchema = z.object({
@@ -82,8 +82,8 @@ export const creatorSubmissionSchema = z.object({
 });
 
 export const moderationQueueSchema = z.object({
-  id: z.string(),
-  entityId: z.string(),
+  id: z.string().min(1),
+  entityId: z.string().min(1),
   entityType: z.enum(['contentItem', 'marketplaceItem', 'creatorSubmission']),
   status: z.enum(['pending', 'approved', 'rejected', 'changes_requested']).default('pending'),
   reviewerId: z.string().nullable().optional(),
@@ -95,16 +95,16 @@ export const moderationQueueSchema = z.object({
 });
 
 export const publishingReleaseSchema = z.object({
-  id: z.string(),
-  contentItemIds: z.array(z.string()),
+  id: z.string().min(1),
+  contentItemIds: z.array(z.string().min(1)),
   releasedAt: z.string().datetime(),
-  releasedBy: z.string(),
+  releasedBy: z.string().min(1),
   changelog: z.string()
 });
 
 export const contentVersionSchema = z.object({
-  id: z.string(),
-  contentItemId: z.string(),
+  id: z.string().min(1),
+  contentItemId: z.string().min(1),
   version: z.number().int().positive(),
   snapshot: contentItemSchema,
   createdAt: z.string().datetime(),
@@ -112,7 +112,7 @@ export const contentVersionSchema = z.object({
 });
 
 export const exportTemplateSchema = z.object({
-  id: z.string(),
+  id: z.string().min(1),
   type: z.enum(['weekly-recap', 'pdf-card', 'png-card', 'srt', 'capcut']),
   title: z.string(),
   sections: z.array(z.string()),
@@ -120,8 +120,8 @@ export const exportTemplateSchema = z.object({
 });
 
 export const userContentEntitlementSchema = z.object({
-  userId: z.string(),
-  entitlementKey: z.string(),
+  userId: z.string().min(1),
+  entitlementKey: z.string().min(1),
   grantedBy: z.enum(['subscription', 'purchase', 'admin']),
   grantedAt: z.string().datetime(),
   expiresAt: z.string().datetime().nullable()
@@ -140,10 +140,74 @@ export const telemetryEventSchema = z.object({
     'moderation_decision_saved'
   ]),
   userId: z.string().nullable(),
-  entityId: z.string(),
+  entityId: z.string().min(1),
   timestamp: z.string().datetime(),
-  metadata: z.record(z.string(), z.unknown()).default({})
+  metadata: z.object({
+    contentVersion: z.string().max(80).optional(),
+    locale: z.string().max(32).optional(),
+    surface: z.string().max(80).optional(),
+    lifecycleStatus: z.enum(['draft','review','approved','published','archived']).optional(),
+    contentType: z.enum(['narrator','story','ritual','export','marketplace']).optional(),
+    sourceSystem: z.string().max(80).optional(),
+    experimentKey: z.string().max(120).optional()
+  }).strict().default({})
 });
+
+export const runtimeContentContractVersion = '2.0.0';
+
+export const CURRENT_RUNTIME_CONTENT_SCHEMA_VERSION = 2 as const;
+
+export const runtimeContentRecordSchema = contentItemSchema.extend({
+  schemaVersion: z.union([z.literal(1), z.literal(CURRENT_RUNTIME_CONTENT_SCHEMA_VERSION)]).optional(),
+  deletion: z.object({
+    tombstoneId: z.string().min(1),
+    state: z.enum(['retained_for_restore', 'restored'])
+  }).strict().optional(),
+}).superRefine((record, context) => {
+  if (record.deletion && record.schemaVersion !== CURRENT_RUNTIME_CONTENT_SCHEMA_VERSION) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['schemaVersion'], message: 'Deletion metadata requires schema version 2' });
+  }
+});
+
+export function parseRuntimeContentRecord(value: unknown) {
+  const parsed = parseRuntimeRecord(runtimeContentRecordSchema, 'contentItems', value);
+  const { schemaVersion, deletion, ...item } = parsed;
+  void schemaVersion;
+  void deletion;
+  return parseRuntimeRecord(contentItemSchema, 'contentItems', item);
+}
+
+export function serializeRuntimeContentRecord(value: unknown) {
+  const item = contentItemSchema.parse(value);
+  return { ...item, schemaVersion: CURRENT_RUNTIME_CONTENT_SCHEMA_VERSION };
+}
+
+export function parseStoredRuntimeContentRecord(value: unknown) {
+  return parseRuntimeRecord(runtimeContentRecordSchema, 'contentItems', value);
+}
+
+export function isRuntimeContentDeleted(value: unknown): boolean {
+  return parseStoredRuntimeContentRecord(value).deletion?.state === 'retained_for_restore';
+}
+
+export const contentVersionRecordSchema = z.object({
+  contentId: z.string().min(1),
+  version: z.number().int().positive().max(Number.MAX_SAFE_INTEGER),
+  snapshot: contentItemSchema
+});
+
+export const contentRevisionCounterSchema = z.object({
+  contentId: z.string().min(1), version: z.number().int().nonnegative().max(Number.MAX_SAFE_INTEGER),
+  updatedAt: z.string().datetime().optional(),
+}).strict();
+
+export function parseRuntimeRecord<S extends z.ZodTypeAny>(schema: S, collection: string, value: unknown): z.output<S> {
+  const result = schema.safeParse(value);
+  if (!result.success) {
+    throw new Error('Invalid ' + collection + ' record: ' + result.error.issues.map((issue) => issue.path.join('.') + ' ' + issue.message).join('; '));
+  }
+  return result.data;
+}
 
 export type ContentItem = z.infer<typeof contentItemSchema>;
 export type NarratorPrompt = z.infer<typeof narratorPromptSchema>;

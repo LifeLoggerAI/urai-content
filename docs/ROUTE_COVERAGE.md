@@ -56,11 +56,13 @@ Current status: public route shells exist in the standalone web runtime. They re
 
 ## Protected user routes
 
+Current source `648c735` includes revocation-checked browser-session `/dashboard` and `/dashboard/settings` routes, with signed-out dashboard HTTP200 and no private account data. The earlier `27220f6` missing-dashboard HTTP404 source observation is **HISTORICAL**. These source routes do not establish provider authentication, Firestore persistence, private E2E or deployment acceptance.
+
 Current status: **BLOCKED**. These routes must remain blocked or dev-only until Firebase Auth/session handling, role claims, entitlement lookup, owner-scoped reads, and protected-route tests are proven against staging/production.
 
 | Route | Current status | Required implementation | Owner | Priority |
 | --- | --- | --- | --- | --- |
-| `/dashboard` | BLOCKED | Authenticated dashboard shell with Firebase/session guard | Frontend/Auth | P2 |
+| `/dashboard` | PARTIAL/GATED; production BLOCKED | Existing guarded dashboard source and signed-out HTTP200 surface; actual provider/private/deployed proof pending | Frontend/Auth | P2 |
 | `/dashboard/content` | BLOCKED | User content library backed by authenticated repository reads | Full stack | P2 |
 | `/dashboard/stories` | BLOCKED | User story templates/history with ownership checks | Full stack | P2 |
 | `/dashboard/rituals` | BLOCKED | User ritual library with ownership checks | Full stack | P2 |
@@ -73,11 +75,13 @@ Current status: **BLOCKED**. These routes must remain blocked or dev-only until 
 
 Current status: public creator route can exist as preview. Server API foundations for submissions exist, but production creator UX remains blocked until provider-backed auth, Firestore persistence, deployed browser tests, and owner-scope proof are attached.
 
+Source now includes the bounded submission and own-history workflow described in [the creator source evidence](evidence/creator-workflow-source-20261008.md). It uses the existing Firebase bearer-authenticated APIs, current server role/UID checks, and a server-derived durable-storage marker. Compiled-UI transport fixtures are synthetic; they do not establish cloud persistence, private E2E acceptance, a live deployment, or completion of the full Content criteria. Production status remains **BLOCKED**.
+
 | Route | Current status | Required implementation | Owner | Priority |
 | --- | --- | --- | --- | --- |
 | `/creator/dashboard` | BLOCKED | Creator dashboard guarded by creator role | Frontend/Auth | P2 |
-| `/creator/submit` | BLOCKED | Creator submission UI with Firebase-backed writes and owner-scope browser proof | Full stack | P2 |
-| `/creator/submissions` | BLOCKED | Submission status/history with owner scope and provider proof | Full stack | P2 |
+| `/creator/submit` | PARTIAL/GATED; production BLOCKED | Source form requires an existing account, current own-history server admission, current confirmation, and awaited `stored:true` review response. Provider/deployed owner-scope proof pending. | Full stack | P2 |
+| `/creator/submissions` | PARTIAL/GATED; production BLOCKED | Source own-history UI rejects foreign, malformed, denied, late and non-durable responses. Actual provider/private/deployed proof pending. | Full stack | P2 |
 | `/creator/earnings` | BLOCKED | Earnings placeholder or payment-connected view; no fake earnings | Payments/Product | P4 |
 | `/creator/licenses` | BLOCKED | Creator licensing view and rights metadata | Full stack | P4 |
 | `/creator/profile` | BLOCKED | Creator profile management and safe public/private fields | Frontend/Auth | P4 |

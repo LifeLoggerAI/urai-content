@@ -20,14 +20,17 @@ export function normalizePageLimit(limit: number | undefined, fallback = 25, max
 }
 
 export function encodePageCursor(cursor: PageCursor): string {
-  if (!cursor.sortValue || !cursor.id) throw new Error('Pagination cursor requires sortValue and id');
+  if (typeof cursor.sortValue !== 'string' || typeof cursor.id !== 'string' || !cursor.sortValue || !cursor.id || cursor.sortValue.length > 1500 || cursor.id.length > 1500) {
+    throw new Error('Pagination cursor requires bounded string sortValue and id');
+  }
   return Buffer.from(JSON.stringify(cursor), 'utf8').toString('base64url');
 }
 
 export function decodePageCursor(value: string): PageCursor {
   try {
+    if (typeof value !== 'string' || value.length > 8192 || !/^[A-Za-z0-9_-]+$/.test(value)) throw new Error('invalid encoding');
     const parsed = JSON.parse(Buffer.from(value, 'base64url').toString('utf8')) as Partial<PageCursor>;
-    if (!parsed.sortValue || !parsed.id) throw new Error('missing fields');
+    if (!parsed || typeof parsed.sortValue !== 'string' || typeof parsed.id !== 'string' || !parsed.sortValue || !parsed.id || parsed.sortValue.length > 1500 || parsed.id.length > 1500) throw new Error('invalid fields');
     return { sortValue: parsed.sortValue, id: parsed.id };
   } catch {
     throw new Error('Malformed pagination cursor');

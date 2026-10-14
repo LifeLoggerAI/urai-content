@@ -24,6 +24,9 @@ html, body {
 a { color: inherit; text-decoration: none; }
 a:hover { color: var(--accent); }
 .skip-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
   position: fixed;
   left: 16px;
   top: 16px;

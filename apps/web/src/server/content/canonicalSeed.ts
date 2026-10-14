@@ -59,8 +59,7 @@ export async function seedCanonicalContent(repository: ContentRepository): Promi
   const items = listCanonicalSeedContentItems();
 
   for (const item of items) {
-    await repository.upsertContent(item);
-    await repository.addVersion(item.id, item);
+    await repository.saveContentRevision(item);
   }
 
   return {

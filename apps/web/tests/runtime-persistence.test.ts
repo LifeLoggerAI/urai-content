@@ -1,4 +1,5 @@
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import * as requestSession from '../src/server/auth/requestSession';
 
 import { POST as postCreatorSubmission } from '../src/app/api/creator/submissions/route';
 import { GET as getHealth } from '../src/app/api/health/route';
@@ -39,6 +40,7 @@ async function readJson(response: Response): Promise<unknown> {
 }
 
 afterEach(() => {
+  vi.restoreAllMocks();
   restoreEnv();
 });
 
@@ -86,6 +88,9 @@ describe('runtime persistence status', () => {
     setNodeEnvForTests('production');
     process.env.URAI_ENABLE_HEADER_AUTH = '1';
     clearFirebaseAdminEnv();
+
+    // Isolate persistence after an authorized session; production credential refusal has separate coverage.
+    vi.spyOn(requestSession, 'getRequestSession').mockResolvedValue({ uid: 'creator-1', role: 'creator' });
 
     const response = await postCreatorSubmission(new Request('http://localhost/api/creator/submissions', {
       method: 'POST',

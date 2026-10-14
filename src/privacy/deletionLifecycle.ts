@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { z } from 'zod';
 
 export type ProviderDeletionState = 'pending' | 'confirmed' | 'not_applicable';
 export type DeletionState = 'retained_for_restore' | 'restored' | 'purged';
@@ -44,9 +45,41 @@ export type ContentDeletionTombstone = {
 
 const checksumPattern = /^sha256:[a-f0-9]{64}$/i;
 
+const timestampSchema = z.string().datetime({ offset: true });
+const checksumSchema = z.string().regex(checksumPattern);
+export const contentDeletionTombstoneSchema = z.object({
+  schemaVersion: z.literal('urai-content-deletion-tombstone-v1'),
+  tombstoneId: z.string().min(1),
+  ownerId: z.string().min(1),
+  entityType: z.string().min(1),
+  entityId: z.string().min(1),
+  requestedAt: timestampSchema,
+  restoreUntil: timestampSchema,
+  purgeAfter: timestampSchema,
+  state: z.enum(['retained_for_restore', 'restored', 'purged']),
+  restoredAt: timestampSchema.nullable(),
+  backup: z.object({
+    backupId: z.string().min(1), checksum: checksumSchema,
+    verifiedAt: timestampSchema, expiresAt: timestampSchema,
+  }).strict(),
+  providerTargets: z.array(z.object({
+    system: z.string().min(1), resourceRef: z.string().min(1),
+    state: z.enum(['pending', 'confirmed', 'not_applicable']),
+    receiptId: z.string().min(1).nullable(),
+    receiptChecksum: checksumSchema.nullable(), confirmedAt: timestampSchema.nullable(),
+  }).strict()).max(100),
+  purgeReceipt: z.object({
+    receiptId: z.string().min(1), purgedAt: timestampSchema,
+    deletionChecksum: checksumSchema, tombstoneChecksum: checksumSchema,
+  }).strict().nullable(),
+}).strict();
+
+export type ContentDeletionRequest = Omit<ContentDeletionTombstone,
+  'schemaVersion' | 'state' | 'restoredAt' | 'purgeReceipt'>;
+
 function instant(value: string, label: string): number {
   const parsed = Date.parse(value);
-  if (!Number.isFinite(parsed)) throw new Error(label + ' must be an ISO timestamp');
+  if (!timestampSchema.safeParse(value).success || !Number.isFinite(parsed)) throw new Error(label + ' must be an ISO timestamp');
   return parsed;
 }
 
@@ -71,11 +104,12 @@ function canonicalForPurge(tombstone: ContentDeletionTombstone) {
   };
 }
 
-function validateBackup(backup: VerifiedBackupReceipt, requestedAt: string, purgeAfter: string) {
+function validateBackup(backup: VerifiedBackupReceipt, requestedAt: string, restoreUntil: string, purgeAfter: string) {
   if (!backup.backupId || !checksumPattern.test(backup.checksum)) throw new Error('Verified backup receipt is invalid');
   const verifiedAt = instant(backup.verifiedAt, 'backup.verifiedAt');
   const expiresAt = instant(backup.expiresAt, 'backup.expiresAt');
   if (verifiedAt > instant(requestedAt, 'requestedAt')) throw new Error('Backup verification must precede deletion request');
+  if (expiresAt < instant(restoreUntil, 'restoreUntil')) throw new Error('Backup retention must cover restore window');
   if (expiresAt > instant(purgeAfter, 'purgeAfter')) throw new Error('Backup retention must not exceed purge deadline');
 }
 
@@ -97,10 +131,7 @@ function normalizeTargets(targets: ProviderDeletionTarget[]): ProviderDeletionTa
   }).sort((a, b) => a.system.localeCompare(b.system));
 }
 
-export function createContentDeletionTombstone(input: Omit<ContentDeletionTombstone,
-  'schemaVersion' | 'state' | 'restoredAt' | 'purgeReceipt' | 'providerTargets'> & {
-    providerTargets: ProviderDeletionTarget[];
-  }): ContentDeletionTombstone {
+export function createContentDeletionTombstone(input: ContentDeletionRequest): ContentDeletionTombstone {
   if (!input.tombstoneId || !input.ownerId || !input.entityType || !input.entityId) {
     throw new Error('Deletion tombstone identity is required');
   }
@@ -109,9 +140,15 @@ export function createContentDeletionTombstone(input: Omit<ContentDeletionTombst
   const purgeAfter = instant(input.purgeAfter, 'purgeAfter');
   if (restoreUntil <= requestedAt) throw new Error('Restore window must follow deletion request');
   if (purgeAfter < restoreUntil) throw new Error('Purge deadline must not precede restore deadline');
-  validateBackup(input.backup, input.requestedAt, input.purgeAfter);
+  validateBackup(input.backup, input.requestedAt, input.restoreUntil, input.purgeAfter);
+  const providerTargets = normalizeTargets(input.providerTargets);
+  for (const target of providerTargets) {
+    if (target.confirmedAt && instant(target.confirmedAt, 'provider confirmedAt') < requestedAt) {
+      throw new Error('Provider deletion receipt must follow deletion request');
+    }
+  }
 
-  return {
+  return contentDeletionTombstoneSchema.parse({
     schemaVersion: 'urai-content-deletion-tombstone-v1',
     tombstoneId: input.tombstoneId,
     ownerId: input.ownerId,
@@ -123,15 +160,37 @@ export function createContentDeletionTombstone(input: Omit<ContentDeletionTombst
     state: 'retained_for_restore',
     restoredAt: null,
     backup: { ...input.backup },
-    providerTargets: normalizeTargets(input.providerTargets),
+    providerTargets,
     purgeReceipt: null,
-  };
+  });
+}
+
+/** Validate provider storage with the same invariants as newly created tombstones. */
+export function parseContentDeletionTombstone(value: unknown): ContentDeletionTombstone {
+  const parsed = contentDeletionTombstoneSchema.parse(value);
+  createContentDeletionTombstone(parsed);
+  if (parsed.state === 'restored') {
+    if (!parsed.restoredAt || parsed.purgeReceipt) throw new Error('Invalid restored tombstone');
+    restoreContentDeletion({ ...parsed, state: 'retained_for_restore', restoredAt: null }, parsed.restoredAt);
+  } else if (parsed.restoredAt) {
+    throw new Error('Only restored tombstones may carry restoredAt');
+  }
+  if (parsed.state === 'purged') {
+    if (!parsed.purgeReceipt || !isContentDeletionPurgeReady({ ...parsed, state: 'retained_for_restore' }, parsed.purgeReceipt.purgedAt) || !verifyContentPurgeReceipt(parsed)) {
+      throw new Error('Invalid content purge receipt');
+    }
+  } else if (parsed.purgeReceipt) {
+    throw new Error('Only purged tombstones may carry purge receipts');
+  }
+  return parsed;
 }
 
 export function restoreContentDeletion(tombstone: ContentDeletionTombstone, restoredAt: string): ContentDeletionTombstone {
   if (tombstone.state !== 'retained_for_restore') throw new Error('Only retained deletion tombstones can be restored');
   const restored = instant(restoredAt, 'restoredAt');
+  if (restored < instant(tombstone.requestedAt, 'requestedAt')) throw new Error('Restore must follow deletion request');
   if (restored > instant(tombstone.restoreUntil, 'restoreUntil')) throw new Error('Restore window expired');
+  if (tombstone.providerTargets.some((target) => target.state === 'confirmed')) throw new Error('Restore requires rematerialization of deleted provider resources');
   return { ...tombstone, state: 'restored', restoredAt, purgeReceipt: null };
 }
 
@@ -142,12 +201,17 @@ export function recordProviderDeletionReceipt(
 ): ContentDeletionTombstone {
   if (tombstone.state !== 'retained_for_restore') throw new Error('Provider deletion receipts require an active tombstone');
   if (!receipt.receiptId || !checksumPattern.test(receipt.receiptChecksum)) throw new Error('Provider deletion receipt is invalid');
-  instant(receipt.confirmedAt, 'provider confirmedAt');
+  if (instant(receipt.confirmedAt, 'provider confirmedAt') < instant(tombstone.requestedAt, 'requestedAt')) {
+    throw new Error('Provider deletion receipt must follow deletion request');
+  }
   let matched = false;
   const providerTargets = tombstone.providerTargets.map((target) => {
     if (target.system !== system) return target;
     matched = true;
     if (target.state === 'not_applicable') throw new Error('Not-applicable provider target cannot receive a deletion receipt');
+    if (target.state === 'confirmed' && (target.receiptId !== receipt.receiptId || target.receiptChecksum !== receipt.receiptChecksum || target.confirmedAt !== receipt.confirmedAt)) {
+      throw new Error('Confirmed provider deletion receipt is immutable');
+    }
     return {
       ...target,
       state: 'confirmed' as const,
@@ -163,7 +227,9 @@ export function recordProviderDeletionReceipt(
 export function isContentDeletionPurgeReady(tombstone: ContentDeletionTombstone, now: string): boolean {
   if (tombstone.state !== 'retained_for_restore') return false;
   if (instant(now, 'now') < instant(tombstone.purgeAfter, 'purgeAfter')) return false;
-  return tombstone.providerTargets.every((target) => target.state === 'confirmed' || target.state === 'not_applicable');
+  const time = instant(now, 'now');
+  return tombstone.providerTargets.every((target) => target.state === 'not_applicable' ||
+    (target.state === 'confirmed' && !!target.confirmedAt && instant(target.confirmedAt, 'provider confirmedAt') <= time));
 }
 
 export function finalizeContentDeletionPurge(
@@ -181,7 +247,7 @@ export function finalizeContentDeletionPurge(
     restoredAt: null,
     purgeReceipt: null,
   };
-  const tombstoneChecksum = digest(canonicalForPurge(purged));
+  const tombstoneChecksum = digest({ tombstone: canonicalForPurge(purged), purgedAt, deletionChecksum });
   purged.purgeReceipt = {
     receiptId: 'purge_' + tombstoneChecksum.slice('sha256:'.length, 'sha256:'.length + 32),
     purgedAt,
@@ -194,5 +260,8 @@ export function finalizeContentDeletionPurge(
 export function verifyContentPurgeReceipt(tombstone: ContentDeletionTombstone): boolean {
   if (tombstone.state !== 'purged' || !tombstone.purgeReceipt) return false;
   if (!checksumPattern.test(tombstone.purgeReceipt.deletionChecksum)) return false;
-  return tombstone.purgeReceipt.tombstoneChecksum === digest(canonicalForPurge(tombstone));
+  const receipt = tombstone.purgeReceipt;
+  if (!timestampSchema.safeParse(receipt.purgedAt).success) return false;
+  const expected = digest({ tombstone: canonicalForPurge(tombstone), purgedAt: receipt.purgedAt, deletionChecksum: receipt.deletionChecksum });
+  return receipt.tombstoneChecksum === expected && receipt.receiptId === 'purge_' + expected.slice('sha256:'.length, 'sha256:'.length + 32);
 }

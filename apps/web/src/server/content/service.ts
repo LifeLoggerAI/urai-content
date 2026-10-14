@@ -3,6 +3,8 @@ import type { ContentItem, ContentRepository } from './types';
 import { InMemoryContentRepository } from './inMemoryRepository';
 import { createFirestoreContentRepository } from '../firebase/contentRepository';
 import { getFirebaseAdminDb, isFirebaseAdminConfigured } from '../firebase/admin';
+import { normalizeSlug } from '@/lib/catalog';
+import type { PageRequest, PageResult } from '../../../../../src/query/pagination.js';
 
 export type RuntimeContentMode = 'firestore' | 'memory';
 
@@ -23,6 +25,21 @@ function isProductionRuntime(): boolean {
 
 export class RuntimeContentService {
   constructor(private readonly repo: ContentRepository) {}
+
+  async listPublishedCatalogPage(request: PageRequest = {}): Promise<PageResult<ContentItem>> {
+    const page = await this.repo.listContentPage({ ...request, limit: request.limit ?? 100 });
+    return { ...page, items: page.items.filter((item) => item.status === 'published' && ['public', 'unlisted'].includes(item.visibility)) };
+  }
+
+  async getPublishedContentBySlug(slug: string): Promise<ContentItem | null> {
+    const normalized = normalizeSlug(slug);
+    const canonical = await this.repo.getContentBySlug(normalized);
+    const legacySlug = normalized.replace(/^\//, '');
+    const legacy = legacySlug && legacySlug !== normalized ? await this.repo.getContentBySlug(legacySlug) : null;
+    if (canonical && legacy && canonical.id !== legacy.id) throw new Error('Ambiguous content slug');
+    const item = canonical ?? legacy;
+    return item?.status === 'published' && ['public', 'unlisted'].includes(item.visibility) ? item : null;
+  }
 
   async searchPublishedContent(query: string, visibility: ContentItem['visibility'] = 'public'): Promise<ContentItem[]> {
     const normalizedQuery = query.toLowerCase().trim();

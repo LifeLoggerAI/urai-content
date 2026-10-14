@@ -8,6 +8,8 @@ export function GET() {
     appVersion: '0.1.0',
     packageName: 'urai-content',
     environment: process.env.NODE_ENV ?? 'unknown',
-    commitSha: process.env.VERCEL_GIT_COMMIT_SHA ?? process.env.GITHUB_SHA ?? null
-  });
+    // Next replaces this value with the source identity captured at build time.
+    // Runtime environment variables do not certify a prebuilt artifact.
+    commitSha: process.env.URAI_CONTENT_BUILD_SHA || null
+  }, { headers: { 'Cache-Control': 'no-store' } });
 }

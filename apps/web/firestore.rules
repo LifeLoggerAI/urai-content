@@ -1,81 +1,195 @@
 rules_version = '2';
-
 service cloud.firestore {
   match /databases/{database}/documents {
-    function signedIn() {
-      return request.auth != null;
-    }
-
-    function hasRole(role) {
-      return signedIn() && (
-        request.auth.token.role == role ||
-        (request.auth.token.roles is list && request.auth.token.roles.hasAny([role]))
-      );
+    function privateClientAuthorized() {
+      // There is no admitted private client SDK consumer. UID alone cannot
+      // observe live Auth disablement/revocation or canonical Privacy consent
+      // and account tombstones. Private operations use authorized server APIs.
+      return false;
     }
 
     function isAdmin() {
-      return hasRole('admin') || hasRole('internalAdmin');
+      // Private administrative operations use the server, which reads current
+      // Firebase UserRecord claims. Issued client claims are not live authority.
+      return false;
     }
 
-    function owns(userId) {
-      return signedIn() && request.auth.uid == userId;
+    function isCreator() {
+      // Direct uploads/creator mutations remain gated. The admitted creator API
+      // checks the current user before its IAM-authorized server operation.
+      return false;
     }
 
-    match /contentItems/{contentId} {
-      allow read: if resource.data.status == 'published' && resource.data.visibility == 'public';
-      allow write: if isAdmin();
+    function isPublicContentItem() {
+      return resource.data.get('status', '') == 'published'
+        && resource.data.get('visibility', '') == 'public'
+        && (!resource.data.keys().hasAny(['schemaVersion']) || resource.data.schemaVersion in [1, 2])
+        && (!resource.data.keys().hasAny(['deletion'])
+          || (resource.data.get('schemaVersion', 0) == 2 && resource.data.deletion is map && resource.data.deletion.get('state', '') == 'restored'));
     }
 
-    match /contentVersions/{versionId} {
-      allow read, write: if isAdmin();
+    function isPublishedFreeContentPack() {
+      return resource.data.get('status', '') == 'published'
+        && resource.data.get('tierVisibility', []) is list
+        && resource.data.get('tierVisibility', []).hasAny(['free']);
     }
 
-    match /moderationQueue/{moderationId} {
-      allow read, write: if isAdmin();
+    function isApprovedFreeMarketplaceItem() {
+      return resource.data.get('moderationStatus', '') == 'approved'
+        && resource.data.get('tier', '') == 'free';
     }
 
-    match /publishingReleases/{releaseId} {
-      allow read, write: if isAdmin();
+    function isOwner(fieldName) {
+      return privateClientAuthorized() && resource.data[fieldName] == request.auth.uid;
     }
 
-    match /telemetryEvents/{eventId} {
-      allow create: if signedIn();
-      allow read, update, delete: if isAdmin();
+    function isCreateOwner(fieldName) {
+      return privateClientAuthorized() && request.resource.data[fieldName] == request.auth.uid;
     }
 
-    match /userContentEntitlements/{entitlementId} {
-      allow read: if isAdmin() || owns(resource.data.userId);
-      allow write: if isAdmin();
+    function boundedMetadataString(metadata, fieldName, maximum) {
+      return !metadata.keys().hasAny([fieldName])
+        || (metadata[fieldName] is string && metadata[fieldName].size() <= maximum);
     }
 
-    match /creatorSubmissions/{submissionId} {
-      allow create: if owns(request.resource.data.creatorId);
-      allow read: if isAdmin() || owns(resource.data.creatorId);
-      allow update, delete: if isAdmin();
+    function validAnalyticsMetadata(metadata) {
+      return metadata is map
+        && metadata.keys().hasOnly(['contentVersion', 'locale', 'surface', 'lifecycleStatus', 'contentType', 'sourceSystem', 'experimentKey'])
+        && boundedMetadataString(metadata, 'contentVersion', 80)
+        && boundedMetadataString(metadata, 'locale', 32)
+        && boundedMetadataString(metadata, 'surface', 80)
+        && boundedMetadataString(metadata, 'sourceSystem', 80)
+        && boundedMetadataString(metadata, 'experimentKey', 120)
+        && (!metadata.keys().hasAny(['lifecycleStatus']) || metadata.lifecycleStatus in ['draft', 'review', 'approved', 'published', 'archived'])
+        && (!metadata.keys().hasAny(['contentType']) || metadata.contentType in ['narrator', 'story', 'ritual', 'export', 'marketplace']);
     }
 
-    match /narratorPrompts/{id} {
-      allow read: if true;
-      allow write: if isAdmin();
+    function validAnalyticsCreate() {
+      return privateClientAuthorized()
+        && request.resource.data.keys().hasAll([
+          'event',
+          'userId',
+          'entityId',
+          'timestamp',
+          'metadata'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'event',
+          'userId',
+          'entityId',
+          'timestamp',
+          'metadata'
+        ])
+        && request.resource.data.event in [
+          'content_viewed',
+          'ritual_previewed',
+          'ritual_added',
+          'story_template_selected',
+          'export_template_used',
+          'marketplace_item_viewed',
+          'marketplace_item_unlocked',
+          'admin_content_published',
+          'moderation_decision_saved'
+        ]
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.entityId is string
+        && request.resource.data.entityId.size() > 0
+        && request.resource.data.entityId.size() <= 160
+        && request.resource.data.timestamp is string
+        && request.resource.data.timestamp.size() <= 64
+        && request.resource.data.metadata is map
+        && request.resource.data.metadata.size() <= 20
+        && validAnalyticsMetadata(request.resource.data.metadata);
     }
 
-    match /storyTemplates/{id} {
-      allow read: if true;
-      allow write: if isAdmin();
+    match /contentItems/{id} {
+      allow read: if isPublicContentItem() || isAdmin();
+      // Lifecycle writes require server transactions and the protected provider gate.
+      allow create: if isAdmin() && !request.resource.data.keys().hasAny(['deletion'])
+        && (!exists(/databases/$(database)/documents/contentDeletionStates/$(id))
+          || get(/databases/$(database)/documents/contentDeletionStates/$(id)).data.state == 'restored');
+      allow update: if isAdmin()
+        && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['deletion'])
+        && (!resource.data.keys().hasAny(['deletion']) || resource.data.deletion.get('state', '') == 'restored');
+      allow delete: if false;
     }
 
-    match /ritualTemplates/{id} {
-      allow read: if true;
-      allow write: if isAdmin();
+    match /contentPacks/{id} {
+      allow read: if isPublishedFreeContentPack() || isAdmin();
+      allow create, update, delete: if isAdmin();
     }
 
     match /marketplaceItems/{id} {
+      allow read: if isApprovedFreeMarketplaceItem() || isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /creatorSubmissions/{id} {
+      allow read: if isAdmin() || isOwner('creatorId');
+      allow create: if isCreator() && isCreateOwner('creatorId');
+      allow update, delete: if isAdmin();
+    }
+
+    match /exportJobs/{id} {
+      allow read: if isAdmin() || isOwner('userId');
+      allow create: if isCreateOwner('userId');
+      allow update, delete: if isAdmin();
+    }
+
+    match /userContentEntitlements/{id} {
+      allow read: if isAdmin() || isOwner('userId');
+      allow write: if isAdmin();
+    }
+
+    match /userEntitlements/{id} {
+      allow read, write: if false;
+    }
+
+    match /contentLicenses/{id} {
+      allow read: if isAdmin() || isOwner('licenseeId');
+      allow write: if isAdmin();
+    }
+
+    match /consentRecords/{id} {
+      allow read: if isAdmin() || isOwner('userId');
+      allow create: if isCreateOwner('userId');
+      allow update: if isAdmin() || isOwner('userId');
+      allow delete: if isAdmin();
+    }
+
+    match /provenanceRecords/{id} {
+      allow read, write: if isAdmin();
+    }
+
+    match /analyticsEvents/{id} {
+      allow create: if validAnalyticsCreate();
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /tierConfigs/{id} {
       allow read: if true;
       allow write: if isAdmin();
     }
 
-    match /exportTemplates/{id} {
-      allow read: if signedIn();
+    match /roadmapPhases/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /expansionModules/{id} {
+      allow read: if resource.data.get('publicVisibility', '') == 'public' || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    match /systemIntegrations/{id} {
+      allow read, write: if isAdmin();
+    }
+
+    match /seoPages/{id} {
+      allow read: if (
+        resource.data.get('status', '') == 'published'
+        && resource.data.get('noIndex', true) == false
+      ) || isAdmin();
       allow write: if isAdmin();
     }
 

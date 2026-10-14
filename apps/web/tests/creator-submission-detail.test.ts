@@ -44,7 +44,9 @@ afterEach(() => {
 
 describe('creator submission detail route', () => {
   it('returns 404 when the submission does not exist', async () => {
-    const response = await getCreatorSubmission(new Request('http://localhost/api/creator/submissions/missing'), context('missing'));
+    const response = await getCreatorSubmission(new Request('http://localhost/api/creator/submissions/missing', {
+        headers: { 'x-urai-user-id': 'creator-1', 'x-urai-role': 'creator' }
+      }), context('missing'));
     const body = await readJson(response);
 
     expect(response.status).toBe(404);

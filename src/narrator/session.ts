@@ -36,7 +36,7 @@ export function narratorOutputContract(session: NarratorSession, text: string) {
   const normalized = text.trim();
   if (!normalized) throw new Error('Narrator output text is required');
 
-  const spoken = session.mode === 'tts_preview';
+  const spoken = session.mode === 'tts_preview' && !shouldNarratorRemainSilent(session);
   return {
     version: '1.0.0',
     sessionId: session.sessionId,
@@ -48,7 +48,7 @@ export function narratorOutputContract(session: NarratorSession, text: string) {
     personalizedVoiceAllowed: false,
     provenance: {
       promptId: session.promptId,
-      sourceRefs: session.sourceRefs,
+      sourceRefs: [...session.sourceRefs],
       synthetic: true,
     },
     accessibility: {

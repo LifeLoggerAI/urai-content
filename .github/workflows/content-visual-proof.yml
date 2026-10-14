@@ -14,6 +14,8 @@ jobs:
     env:
       EXACT_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
       URAI_CONTENT_VISUAL_DIR: artifacts/content-visual
+      URAI_CONTENT_VISUAL_PRODUCTION: '1'
+      URAI_CONTENT_CREATOR_FIXTURE: '1'
     steps:
       - name: Checkout exact head
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -30,20 +32,45 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: apps/web/package-lock.json
+          cache-dependency-path: |
+            package-lock.json
+            apps/web/package-lock.json
+      - name: Install shared root source dependencies
+        run: npm ci
       - name: Install web
         run: npx --yes npm@11.19.1 ci --prefix apps/web
+      - name: Build exact-head web source for retained production proof
+        working-directory: apps/web
+        # Public synthetic configuration for intercepted browser transport only.
+        # No Admin ADC, provider access, production project or deployment is enabled.
+        env:
+          FIREBASE_PROJECT_ID: synthetic-content-fixture
+          NEXT_PUBLIC_FIREBASE_PROJECT_ID: synthetic-content-fixture
+          NEXT_PUBLIC_FIREBASE_API_KEY: synthetic-content-api-key
+          NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: synthetic-content.invalid
+          NEXT_PUBLIC_FIREBASE_APP_ID: 1:000000000000:web:synthetic
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXACT_HEAD"
+          GITHUB_SHA="$EXACT_HEAD" URAI_CONTENT_BUILD_SHA="$EXACT_HEAD" npm run build
       - name: Install Chromium
         run: npm exec --prefix apps/web playwright install --with-deps chromium
       - name: Run exact-head visual proof
         working-directory: apps/web
-        run: npm exec playwright test e2e/visual-proof.spec.ts
+        env:
+          FIREBASE_PROJECT_ID: synthetic-content-fixture
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXACT_HEAD"
+          npm exec playwright test e2e/visual-proof.spec.ts e2e/creator-workflow.spec.ts
       - name: Write exact-head receipt
         if: always()
         shell: bash
         run: |
           mkdir -p apps/web/artifacts/content-visual
-          printf '{"exactHead":"%s","proof":"content-public-and-fail-closed-responsive-pixels"}\n' "$EXACT_HEAD" > apps/web/artifacts/content-visual/receipt.json
+          printf '{"exactHead":"%s","proof":"content-public-and-signed-out-dashboard200-with-anonymous-api-denial","creatorProof":"mounted-production-built-UI-with-installed-Firebase-SDK-and-controlled-synthetic-Auth-API-transport","actualFirestorePersistence":false,"providerAuthenticationAcceptance":false,"privateAcceptance":false,"deploymentAcceptance":false}\n' "$EXACT_HEAD" > apps/web/artifacts/content-visual/receipt.json
       - name: Upload visual proof
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

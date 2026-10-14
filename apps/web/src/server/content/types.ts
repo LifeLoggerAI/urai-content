@@ -30,45 +30,5 @@ export type ExportTemplate = z.output<typeof exportTemplateSchema>;
 export type TelemetryEvent = z.output<typeof telemetryEventSchema>;
 export type UserContentEntitlement = z.output<typeof userContentEntitlementSchema>;
 
-export type CreatorSubmissionQueueOptions = {
-  status?: CreatorSubmission['status'];
-  limit?: number;
-};
-
-export type ContentRepository = {
-  upsertContent(item: ContentItem): Promise<void>;
-  getContent(id: string): Promise<ContentItem | null>;
-  listContent(): Promise<ContentItem[]>;
-  deleteContent(id: string): Promise<void>;
-  addVersion(contentId: string, snapshot: ContentItem): Promise<number>;
-  listVersions(contentId: string): Promise<Array<{ version: number; snapshot: ContentItem }>>;
-  logModeration(item: ModerationQueueItem): Promise<void>;
-  logRelease(release: PublishingRelease): Promise<void>;
-  addTelemetry(event: TelemetryEvent): Promise<void>;
-  listTelemetry(limit?: number): Promise<TelemetryEvent[]>;
-  listEntitlements(userId: string): Promise<UserContentEntitlement[]>;
-  upsertNarratorPrompt(prompt: NarratorPrompt): Promise<void>;
-  upsertStoryTemplate(template: StoryTemplate): Promise<void>;
-  upsertRitualTemplate(template: RitualTemplate): Promise<void>;
-  upsertMarketplaceItem(item: MarketplaceItem): Promise<void>;
-  upsertCreatorSubmission(item: CreatorSubmission): Promise<void>;
-  getCreatorSubmission(id: string): Promise<CreatorSubmission | null>;
-  listCreatorSubmissions(creatorId: string): Promise<CreatorSubmission[]>;
-  listCreatorSubmissionQueue(options?: CreatorSubmissionQueueOptions): Promise<CreatorSubmission[]>;
-  upsertExportTemplate(item: ExportTemplate): Promise<void>;
-};
-
-export const FIRESTORE_COLLECTIONS = {
-  contentItems: 'contentItems',
-  contentVersions: 'contentVersions',
-  moderationQueue: 'moderationQueue',
-  publishingReleases: 'publishingReleases',
-  telemetryEvents: 'telemetryEvents',
-  userContentEntitlements: 'userContentEntitlements',
-  narratorPrompts: 'narratorPrompts',
-  storyTemplates: 'storyTemplates',
-  ritualTemplates: 'ritualTemplates',
-  marketplaceItems: 'marketplaceItems',
-  creatorSubmissions: 'creatorSubmissions',
-  exportTemplates: 'exportTemplates'
-} as const;
+export type { ContentRepository, CreatorSubmissionQueueOptions } from '../../../../../src/backend/types.js';
+export { FIRESTORE_COLLECTIONS } from '../../../../../src/backend/firebaseRepository.contract.js';

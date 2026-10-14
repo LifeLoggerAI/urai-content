@@ -20,6 +20,7 @@ const allowedEvents = new Set([
 ]);
 
 export function trackPublicEvent(eventName: string, properties: Record<string, string | number | boolean | null> = {}) {
+  if (typeof window !== 'undefined' && /^\/(dashboard|admin|settings|login)(\/|$)/.test(window.location.pathname)) return;
   if (!allowedEvents.has(eventName)) return;
 
   void fetch('/api/analytics', {
