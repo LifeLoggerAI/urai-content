@@ -53,30 +53,50 @@ export function createFirestoreContentReleaseAuthority({
     if (!verifiedActor || await identify()!==verifiedActor || !valid(releaseId)) return null;
     const r=await get('publishingReleases',releaseId);
     if (!r || r.releaseId!==releaseId || r.campaignId!=='urai-global-45-plus-45' ||
-        r.state!=='APPROVED' || r.revoked===true || r.hold===true ||
+        r.state!=='APPROVED' || r.revoked!==false || r.revokedAt!==null || r.hold!==true ||
         !SHA.test(r.sourceSha||'') || r.currentSourceSha!==r.sourceSha ||
         (expectedSha!==undefined && r.sourceSha!==expectedSha) || !valid(r.ownerUid) ||
         !r.candidate || !evaluatePublication(r.candidate).allowed ||
         r.candidate.contentRevision!==r.currentRevision || !valid(r.contentVersionId) ||
-        !valid(r.platformAccountId) || !valid(r.media?.storageKey) || !valid(r.media?.assetId) ||
+        !valid(r.platformAccountId) || !valid(r.issuerKeyId) || !valid(r.nativeAccountId) ||
+        r.issuerServiceId!==verifiedActor || !valid(r.rightsVersion) || !valid(r.claimsVersion) ||
+        !valid(r.platformAccountId) || !valid(r.media?.bucket) || !/^[1-9][0-9]{0,19}$/.test(r.media?.generation||'') ||
+        !valid(r.media?.storageKey) || !valid(r.media?.assetId) ||
         !valid(r.media?.version) || !HASH.test(r.media?.sha256||'')) return null;
     const version=await get('contentVersions',r.contentVersionId);
     if (!version || version.contentId!==r.candidate.contentId ||
       version.revision!==r.currentRevision || version.sourceSha!==r.sourceSha || version.state!=='APPROVED') return null;
     const media=await get('approvedMediaObjects',r.media.storageKey);
-    if (!media || media.sha256!==r.media.sha256 || media.state!=='APPROVED' || media.revoked===true ||
+    if (!media || media.sha256!==r.media.sha256 || media.bucket!==r.media.bucket ||
+      media.generation!==r.media.generation || media.state!=='APPROVED' || media.revoked===true ||
       !valid(String(media.generation||'')) || media.storageKey!==r.media.storageKey) return null;
     const now=Number(clock());if(!Number.isFinite(now))return null;
+    const issuerKey=await get('publishingIssuerKeys',r.issuerKeyId);
+    if(!issuerKey||issuerKey.serviceId!==verifiedActor||issuerKey.state!=='ACTIVE'||issuerKey.revokedAt!==null||
+       !cleanDate(issuerKey.expiresAt)||Date.parse(issuerKey.expiresAt)<=now)return null;
+    if(!cleanDate(r.releaseExpiresAt)||Date.parse(r.releaseExpiresAt)<=now)return null;
     const fields: Array<[string,string]>=[['rights','rightsReceiptId'],['claims','claimsReceiptId'],
       ['accessibility','accessibilityReceiptId'],['locale','localeReceiptId'],
       ['owner','ownerApprovalReceiptId'],['technical','technicalAcceptanceReceiptId']];
-    if (r.privacyClass==='consented-subject') fields.push(['consent','consentReceiptId']);
+    if (r.privacyClass==='consented-subject') {
+      const grant=await get('publishingConsentGrants',r.consentGrantId);
+      if(!valid(r.consentVersion)||!grant||grant.version!==r.consentVersion||grant.receiptId!==r.consentReceiptId||
+        grant.state!=='ACTIVE'||grant.revokedAt!==null||grant.ownerUid!==r.ownerUid||
+        !cleanDate(grant.expiresAt)||Date.parse(grant.expiresAt)<=now)return null;
+      fields.push(['consent','consentReceiptId']);
+    }
     if (!['public-original','consented-subject'].includes(r.privacyClass)) return null;
     const checks=await Promise.all(fields.map(([kind,field])=>verifyReceipt(kind,r[field],r,now)));
     if (checks.some(x=>!x)) return null;
     const out:AuthorizedContentRelease={releaseId:r.releaseId,campaignId:r.campaignId,
+      ownerId:r.ownerUid,contentVersionId:r.contentVersionId,releaseState:'APPROVED',publicationHold:true,
+      issuerServiceId:verifiedActor,issuerKeyId:r.issuerKeyId,nativeAccountId:r.nativeAccountId,
+      rightsVersion:r.rightsVersion,claimsVersion:r.claimsVersion,
+      technicalReceiptId:r.technicalAcceptanceReceiptId,consentVersion:r.consentVersion??null,
       candidate:r.candidate,platform:r.platform,platformAccountId:r.platformAccountId,
-      sourceSha:r.sourceSha,destinationUrl:r.destinationUrl,media:r.media,
+      sourceSha:r.sourceSha,destinationUrl:r.destinationUrl,
+      media:{assetId:r.media.assetId,version:r.media.version,bucket:r.media.bucket,
+        storageKey:r.media.storageKey,generation:r.media.generation,sha256:r.media.sha256},
       privacyClass:r.privacyClass,consentReceiptId:r.consentReceiptId??null,
       rightsReceiptId:r.rightsReceiptId,claimsReceiptId:r.claimsReceiptId,
       accessibilityReceiptId:r.accessibilityReceiptId,localeReceiptId:r.localeReceiptId,
