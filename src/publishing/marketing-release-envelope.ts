@@ -8,12 +8,15 @@ const HASH = /^[a-f0-9]{64}$/;
 const SHA = /^[a-f0-9]{40}$/;
 const GENERATION = /^[1-9][0-9]{0,19}$/;
 const valid = (v: unknown): v is string => typeof v === 'string' && ID.test(v);
+const storageKey = (s: unknown): s is string => typeof s === 'string' && s.length < 1024 &&
+  /^[A-Za-z0-9][A-Za-z0-9._/-]*$/.test(s) && !s.split('/').some(k=>!k||k==='.'||k==='..');
 const MEDIA_FIELDS = ['assetId','version','bucket','storageKey','generation','sha256'];
 export type ReleasePlatform = 'Instagram'|'TikTok'|'YouTube'|'Facebook'|'LinkedIn'|'X'|'Threads'|'Bluesky'|'Pinterest';
 export type ReleaseMedia = {assetId: string;version: string;bucket: string;storageKey: string;generation: string;sha256: string};
 export type AuthorizedContentRelease = {
   releaseId: string;campaignId: 'urai-global-45-plus-45';candidate: PublicationCandidate;
   ownerId: string;contentVersionId: string;releaseState: 'APPROVED';publicationHold: true;
+  issuerServiceId: string;issuerKeyId: string;
   platform: ReleasePlatform;platformAccountId: string;nativeAccountId: string;
   sourceSha: string;destinationUrl: string;media: ReleaseMedia;
   privacyClass: 'public-original'|'consented-subject';consentReceiptId: string|null;consentVersion: string|null;
@@ -50,15 +53,18 @@ export async function issueSignedMarketingRelease({releaseId,requestId,authority
   const entry=await authority.readApprovedRelease(releaseId);
   if(!entry||entry.releaseId!==releaseId||entry.campaignId!=='urai-global-45-plus-45'||entry.releaseState!=='APPROVED'||entry.publicationHold!==true)
     throw Error('release missing or outside canonical campaign/hold');
+  if(entry.issuerServiceId!==actor.serviceId||entry.issuerKeyId!==keyId)
+    throw Error('issuer service or signing-key authority mismatch');
   const c=entry.candidate;
   if(!evaluatePublication(c).allowed)throw Error('Content publication gate denied release');
   for(const id of [entry.ownerId,entry.contentVersionId,entry.platformAccountId,entry.nativeAccountId,
-    entry.media?.assetId,entry.media?.version,entry.media?.bucket,entry.media?.storageKey,
+    entry.media?.assetId,entry.media?.version,entry.media?.bucket,
     entry.rightsReceiptId,entry.rightsVersion,entry.claimsReceiptId,entry.claimsVersion,
     entry.accessibilityReceiptId,entry.localeReceiptId,entry.technicalReceiptId,entry.ownerApprovalReceiptId]){
     if(!valid(id))throw Error('missing trusted source identity or approval version');
   }
   if(!SHA.test(entry.sourceSha)||!HASH.test(entry.media.sha256)||!GENERATION.test(entry.media.generation)||
+    !storageKey(entry.media.storageKey)||
     !approvedDestination(entry.destinationUrl)||!/^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$/.test(c.locale))
     throw Error('invalid exact source, media generation, locale or canonical destination');
   if(!Array.isArray(c.assets)||!c.assets.some(a=>a.assetId===entry.media.assetId&&a.version===entry.media.version&&
