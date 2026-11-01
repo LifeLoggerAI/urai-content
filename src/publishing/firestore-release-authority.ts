@@ -8,8 +8,7 @@ import { evaluatePublication } from './release.js';
 
 type Snap = { exists: boolean; data(): Record<string, any> };
 type Firestore = { projectId?: string; collection(path: string): { doc(id: string): { get(): Promise<Snap> } } };
-type VerifiedToken = { uid: string; uraiReleaseIssuer?: boolean; aud?: string };
-type AdminAuth = { verifyIdToken(token: string, checkRevoked: true): Promise<VerifiedToken> };
+type ServiceIdentity = { serviceId: string; email: string };
 const ID = /^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/;
 const SHA = /^[a-f0-9]{40}$/i;
 const HASH = /^[a-f0-9]{64}$/i;
@@ -17,23 +16,24 @@ const valid = (s: unknown): s is string => typeof s === 'string' && ID.test(s);
 const cleanDate = (s: unknown) => typeof s === 'string' && Number.isFinite(Date.parse(s));
 
 export function createFirestoreContentReleaseAuthority({
-  db, auth, bearerToken, projectId, clock=Date.now,
-}: {db: Firestore; auth: AdminAuth; bearerToken: string; projectId: string; clock?: () => number}): ReleaseAuthority {
-  if (!db?.collection || !auth?.verifyIdToken || !valid(projectId) || db.projectId!==projectId || !bearerToken)
-    throw new Error('trusted Firebase Content project, Admin Auth and server bearer token required');
+  db, serviceToken, verifyServiceIdentity, projectId, clock=Date.now,
+}: {db: Firestore; serviceToken: string; verifyServiceIdentity: (token: string) => Promise<ServiceIdentity>; projectId: string; clock?: () => number}): ReleaseAuthority {
+  if (!db?.collection || typeof verifyServiceIdentity !== 'function' || !valid(projectId) || db.projectId!==projectId || !serviceToken)
+    throw new Error('trusted Firebase Content project and service OIDC identity required');
   const get = async (col: string, key: unknown): Promise<Record<string, any>|null> => {
     if (!valid(key)) return null;
     const s=await db.collection(col).doc(key).get();return s.exists?s.data():null;
   };
   let verifiedActor: string|null=null;
   async function identify() {
-    // JWT signature, issuer/audience, expiration and revocation checked by Firebase Admin.
-    const decoded=await auth.verifyIdToken(bearerToken,true);
-    if (!valid(decoded.uid) || decoded.uraiReleaseIssuer!==true || decoded.aud!==projectId) return null;
-    const caller=await get('publishingCallers',decoded.uid);
-    if (!caller || caller.uid!==decoded.uid || caller.active!==true || caller.revoked===true ||
+    // Google-signed service identity, not Firebase user ID tokens.
+    const identity=await verifyServiceIdentity(serviceToken);
+    if (!valid(identity.serviceId) || !identity.email) return null;
+    const caller=await get('publishingCallers',identity.serviceId);
+    if (!caller || caller.serviceId!==identity.serviceId || caller.email!==identity.email ||
+      caller.active!==true || caller.revoked!==false ||
       !Array.isArray(caller.roles) || !caller.roles.includes('content-release-issuer')) return null;
-    return decoded.uid;
+    return identity.serviceId;
   }
   async function verifyReceipt(kind: string, receiptId: unknown, release: any, now: number): Promise<boolean> {
     const receipt=await get('publishingApprovalReceipts',receiptId);
@@ -50,7 +50,7 @@ export function createFirestoreContentReleaseAuthority({
     return true;
   }
   async function readChecked(releaseId: string, expectedSha?: string): Promise<AuthorizedContentRelease|null> {
-    if (!verifiedActor || !valid(releaseId)) return null;
+    if (!verifiedActor || await identify()!==verifiedActor || !valid(releaseId)) return null;
     const r=await get('publishingReleases',releaseId);
     if (!r || r.releaseId!==releaseId || r.campaignId!=='urai-global-45-plus-45' ||
         r.state!=='APPROVED' || r.revoked===true || r.hold===true ||
