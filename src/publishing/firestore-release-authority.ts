@@ -1,0 +1,95 @@
+/** R311 Content authenticated, read-only authority binding for the R310 issuer.
+ * Requires server-verified Firebase ID token captured OUTSIDE request JSON.
+ * Existing contentVersions / publishingReleases collections are preserved;
+ * approval/identity receipts are new REQUIRED schemas, not presumed populated.
+ */
+import type { AuthorizedContentRelease, ReleaseAuthority } from './marketing-release-envelope.js';
+import { evaluatePublication } from './release.js';
+
+type Snap = { exists: boolean; data(): Record<string, any> };
+type Firestore = { projectId?: string; collection(path: string): { doc(id: string): { get(): Promise<Snap> } } };
+type VerifiedToken = { uid: string; uraiReleaseIssuer?: boolean; aud?: string };
+type AdminAuth = { verifyIdToken(token: string, checkRevoked: true): Promise<VerifiedToken> };
+const ID = /^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/;
+const SHA = /^[a-f0-9]{40}$/i;
+const HASH = /^[a-f0-9]{64}$/i;
+const valid = (s: unknown): s is string => typeof s === 'string' && ID.test(s);
+const cleanDate = (s: unknown) => typeof s === 'string' && Number.isFinite(Date.parse(s));
+
+export function createFirestoreContentReleaseAuthority({
+  db, auth, bearerToken, projectId, clock=Date.now,
+}: {db: Firestore; auth: AdminAuth; bearerToken: string; projectId: string; clock?: () => number}): ReleaseAuthority {
+  if (!db?.collection || !auth?.verifyIdToken || !valid(projectId) || db.projectId!==projectId || !bearerToken)
+    throw new Error('trusted Firebase Content project, Admin Auth and server bearer token required');
+  const get = async (col: string, key: unknown): Promise<Record<string, any>|null> => {
+    if (!valid(key)) return null;
+    const s=await db.collection(col).doc(key).get();return s.exists?s.data():null;
+  };
+  let verifiedActor: string|null=null;
+  async function identify() {
+    // JWT signature, issuer/audience, expiration and revocation checked by Firebase Admin.
+    const decoded=await auth.verifyIdToken(bearerToken,true);
+    if (!valid(decoded.uid) || decoded.uraiReleaseIssuer!==true || decoded.aud!==projectId) return null;
+    const caller=await get('publishingCallers',decoded.uid);
+    if (!caller || caller.uid!==decoded.uid || caller.active!==true || caller.revoked===true ||
+      !Array.isArray(caller.roles) || !caller.roles.includes('content-release-issuer')) return null;
+    return decoded.uid;
+  }
+  async function verifyReceipt(kind: string, receiptId: unknown, release: any, now: number): Promise<boolean> {
+    const receipt=await get('publishingApprovalReceipts',receiptId);
+    if (!receipt || receipt.kind!==kind || receipt.state!=='APPROVED' || receipt.releaseId!==release.releaseId ||
+       receipt.contentId!==release.candidate?.contentId || receipt.revision!==release.candidate?.contentRevision ||
+       receipt.sourceSha!==release.sourceSha || receipt.revokedAt!==null ||
+       !valid(receipt.reviewerUid) || !cleanDate(receipt.approvedAt) || Date.parse(receipt.approvedAt)>now ||
+       (receipt.expiresAt!==null && (!cleanDate(receipt.expiresAt) || Date.parse(receipt.expiresAt)<=now))) return false;
+    const reviewer=await get('publishingReviewers',receipt.reviewerUid);
+    if (!reviewer || reviewer.active!==true || reviewer.revoked===true || !Array.isArray(reviewer.roles) ||
+      !reviewer.roles.includes(kind)) return false;
+    if (kind==='technical' && receipt.reviewerUid===release.ownerUid) return false;
+    if (kind==='owner' && receipt.reviewerUid!==release.ownerUid) return false;
+    return true;
+  }
+  async function readChecked(releaseId: string, expectedSha?: string): Promise<AuthorizedContentRelease|null> {
+    if (!verifiedActor || !valid(releaseId)) return null;
+    const r=await get('publishingReleases',releaseId);
+    if (!r || r.releaseId!==releaseId || r.campaignId!=='urai-global-45-plus-45' ||
+        r.state!=='APPROVED' || r.revoked===true || r.hold===true ||
+        !SHA.test(r.sourceSha||'') || r.currentSourceSha!==r.sourceSha ||
+        (expectedSha!==undefined && r.sourceSha!==expectedSha) || !valid(r.ownerUid) ||
+        !r.candidate || !evaluatePublication(r.candidate).allowed ||
+        r.candidate.contentRevision!==r.currentRevision || !valid(r.contentVersionId) ||
+        !valid(r.platformAccountId) || !valid(r.media?.storageKey) || !valid(r.media?.assetId) ||
+        !valid(r.media?.version) || !HASH.test(r.media?.sha256||'')) return null;
+    const version=await get('contentVersions',r.contentVersionId);
+    if (!version || version.contentId!==r.candidate.contentId ||
+      version.revision!==r.currentRevision || version.sourceSha!==r.sourceSha || version.state!=='APPROVED') return null;
+    const media=await get('approvedMediaObjects',r.media.storageKey);
+    if (!media || media.sha256!==r.media.sha256 || media.state!=='APPROVED' || media.revoked===true ||
+      !valid(String(media.generation||'')) || media.storageKey!==r.media.storageKey) return null;
+    const now=Number(clock());if(!Number.isFinite(now))return null;
+    const fields: Array<[string,string]>=[['rights','rightsReceiptId'],['claims','claimsReceiptId'],
+      ['accessibility','accessibilityReceiptId'],['locale','localeReceiptId'],
+      ['owner','ownerApprovalReceiptId'],['technical','technicalAcceptanceReceiptId']];
+    if (r.privacyClass==='consented-subject') fields.push(['consent','consentReceiptId']);
+    if (!['public-original','consented-subject'].includes(r.privacyClass)) return null;
+    const checks=await Promise.all(fields.map(([kind,field])=>verifyReceipt(kind,r[field],r,now)));
+    if (checks.some(x=>!x)) return null;
+    const out:AuthorizedContentRelease={releaseId:r.releaseId,campaignId:r.campaignId,
+      candidate:r.candidate,platform:r.platform,platformAccountId:r.platformAccountId,
+      sourceSha:r.sourceSha,destinationUrl:r.destinationUrl,media:r.media,
+      privacyClass:r.privacyClass,consentReceiptId:r.consentReceiptId??null,
+      rightsReceiptId:r.rightsReceiptId,claimsReceiptId:r.claimsReceiptId,
+      accessibilityReceiptId:r.accessibilityReceiptId,localeReceiptId:r.localeReceiptId,
+      ownerApprovalReceiptId:r.ownerApprovalReceiptId};
+    return out;
+  }
+  return {
+    async authenticateService(_requestId) {
+      // requestId is correlation ONLY. Never interpreted as proof of identity.
+      verifiedActor=await identify();
+      return verifiedActor?{authorized:true,serviceId:verifiedActor}:null;
+    },
+    async readApprovedRelease(releaseId) {return readChecked(releaseId);},
+    async assertCurrent(releaseId,sourceSha) {return (await readChecked(releaseId,sourceSha))!==null;},
+  };
+}
