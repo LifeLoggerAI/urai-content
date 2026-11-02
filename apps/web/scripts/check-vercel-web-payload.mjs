@@ -32,7 +32,11 @@ if (!statSync(join(sourceRoot, 'src', 'app')).isDirectory()) throw Error('INVALI
 if (built) {
   const manifest = join(sourceRoot, '.next', 'routes-manifest.json')
   if (!existsSync(manifest)) throw Error('MISSING_NEXT_ROUTES_MANIFEST:require a Next.js build in the selected web app root')
-  try { JSON.parse(readFileSync(manifest, 'utf8')) }
+  let routesManifest
+  try { routesManifest = JSON.parse(readFileSync(manifest, 'utf8')) }
   catch { throw Error('INVALID_NEXT_ROUTES_MANIFEST') }
+  if (!routesManifest || typeof routesManifest !== 'object' || Array.isArray(routesManifest) || routesManifest.version !== 3) {
+    throw Error('INVALID_NEXT_ROUTES_MANIFEST:expected Next.js routes manifest version 3')
+  }
 }
 console.log(`PASS_WEB_DEPLOY_PAYLOAD root=${sourceRoot} built=${built}`)
