@@ -101,3 +101,21 @@ it('rejects pre-deletion restore and provider receipt times', () => {
   expect(() => restoreContentDeletion(fixture(), '2026-10-01T00:00:00.000Z')).toThrow('follow deletion request');
   expect(() => recordProviderDeletionReceipt(fixture(), 'search-index', { receiptId: 'provider', confirmedAt: '2026-10-01T00:00:00.000Z', receiptChecksum: sha('provider') })).toThrow('follow deletion request');
 });
+
+
+it('purge readiness does not trust a confirmed state without its complete provider proof', () => {
+  const initial = fixture();
+  const forged = { ...initial, providerTargets: initial.providerTargets.map((target) => target.system === 'search-index'
+    ? { ...target, state: 'confirmed' as const, receiptId: 'forged', confirmedAt: '2026-11-02T01:00:00.000Z', receiptChecksum: null }
+    : target) };
+  expect(isContentDeletionPurgeReady(forged, '2026-11-03T00:00:00.000Z')).toBe(false);
+  expect(() => finalizeContentDeletionPurge(forged, '2026-11-03T00:00:00.000Z', sha('deleted'))).toThrow('not ready');
+});
+
+it('purge readiness rechecks receipt time even for a mutated stored target', () => {
+  const initial = fixture();
+  const forged = { ...initial, providerTargets: initial.providerTargets.map((target) => target.system === 'search-index'
+    ? { ...target, state: 'confirmed' as const, receiptId: 'forged', confirmedAt: '2026-10-01T00:00:00.000Z', receiptChecksum: sha('forged-proof') }
+    : target) };
+  expect(isContentDeletionPurgeReady(forged, '2026-11-03T00:00:00.000Z')).toBe(false);
+});

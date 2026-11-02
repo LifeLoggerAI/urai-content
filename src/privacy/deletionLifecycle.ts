@@ -228,8 +228,17 @@ export function isContentDeletionPurgeReady(tombstone: ContentDeletionTombstone,
   if (tombstone.state !== 'retained_for_restore') return false;
   if (instant(now, 'now') < instant(tombstone.purgeAfter, 'purgeAfter')) return false;
   const time = instant(now, 'now');
-  return tombstone.providerTargets.every((target) => target.state === 'not_applicable' ||
-    (target.state === 'confirmed' && !!target.confirmedAt && instant(target.confirmedAt, 'provider confirmedAt') <= time));
+  const requested = instant(tombstone.requestedAt, 'requestedAt');
+  // Persisted or in-memory target labels are not enough to authorize purge.
+  // A complete, unique, time-consistent provider receipt is mandatory.
+  try {
+    return normalizeTargets(tombstone.providerTargets).every((target) => target.state === 'not_applicable' ||
+      (target.state === 'confirmed' && !!target.confirmedAt
+        && instant(target.confirmedAt, 'provider confirmedAt') >= requested
+        && instant(target.confirmedAt, 'provider confirmedAt') <= time));
+  } catch {
+    return false;
+  }
 }
 
 export function finalizeContentDeletionPurge(
