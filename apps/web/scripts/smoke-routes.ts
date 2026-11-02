@@ -1,5 +1,6 @@
 import { spawn, spawnSync, type ChildProcess } from 'node:child_process';
 import { implementedPublicRoutes } from '../src/lib/publicRoutes';
+import { getDeploymentOrigin, verifyAnonymousReadBoundaries, verifyDeploymentIdentity } from './deployment-identity';
 
 function getCliValue(name: string): string | undefined {
   const argPrefix = `--${name}=`;
@@ -21,6 +22,8 @@ const cliBaseUrl = getCliValue('base-url') ?? process.env.npm_config_base_url;
 const port = Number(getCliValue('port') ?? process.env.npm_config_port ?? process.env.WEB_SMOKE_PORT ?? 3000);
 const baseUrl = cliBaseUrl ?? process.env.WEB_SMOKE_BASE_URL ?? `http://127.0.0.1:${port}`;
 const shouldManageServer = !cliBaseUrl && !process.env.WEB_SMOKE_BASE_URL && process.env.WEB_SMOKE_MANAGE_SERVER !== 'false';
+const expectedSha = getCliValue('expected-sha') ?? process.env.WEB_SMOKE_EXPECTED_SHA ?? process.env.GITHUB_SHA ?? process.env.VERCEL_GIT_COMMIT_SHA;
+const deploymentOrigin = getDeploymentOrigin(baseUrl);
 const apiRoutes = ['/api/health', '/api/version', '/api/catalog', '/api/content', '/api/system/firebase'];
 const metadataRoutes = ['/robots.txt', '/sitemap.xml'];
 const routes = [...implementedPublicRoutes, ...metadataRoutes, ...apiRoutes];
@@ -83,6 +86,9 @@ async function checkRoute(route: string): Promise<void> {
 }
 
 async function main() {
+  if (deploymentOrigin.remote && !expectedSha) {
+    throw new Error('Remote route smoke requires --expected-sha or WEB_SMOKE_EXPECTED_SHA.');
+  }
   console.log(`Smoke testing ${routes.length} routes against ${baseUrl}`);
 
   let server: ChildProcess | null = null;
@@ -98,9 +104,15 @@ async function main() {
   }
 
   try {
+    if (expectedSha) {
+      const receipt = await verifyDeploymentIdentity(baseUrl, expectedSha);
+      console.log(`[IDENTITY] ${JSON.stringify(receipt)}`);
+    }
     for (const route of routes) {
       await checkRoute(route);
     }
+    await verifyAnonymousReadBoundaries(baseUrl);
+    console.log('[OK] Anonymous Admin/creator reads denied and unknown route returned 404.');
   } finally {
     if (server) {
       if (process.platform === 'win32' && server.pid) {

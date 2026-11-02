@@ -24,3 +24,11 @@ describe('bounded pagination', () => {
     expect(() => paginateSorted(items, { cursor: encodePageCursor({ sortValue: 'old', id: 'missing' }) }, key)).toThrow('Stale pagination cursor');
   });
 });
+
+it('rejects non-string, oversized and invalidly encoded cursor fields', () => {
+  for (const value of [{ sortValue: 1, id: 'a' }, { sortValue: 'date', id: [] }, { sortValue: 'date', id: 'x'.repeat(1501) }, null]) {
+    const cursor = Buffer.from(JSON.stringify(value)).toString('base64url');
+    expect(() => decodePageCursor(cursor)).toThrow('Malformed pagination cursor');
+  }
+  expect(() => decodePageCursor('a'.repeat(8193))).toThrow('Malformed pagination cursor');
+});

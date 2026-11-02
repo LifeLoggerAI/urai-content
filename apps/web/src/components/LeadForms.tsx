@@ -50,7 +50,7 @@ export function LeadForm({ kind, title, description, defaultLeadType = 'user' }:
       });
       const data = (await response.json()) as { ok?: boolean; message?: string; stored?: boolean };
 
-      if (!response.ok || !data.ok) {
+      if (!response.ok || !data.ok || data.stored !== true) {
         throw new Error(data.message ?? 'Unable to submit right now.');
       }
 
@@ -79,11 +79,11 @@ export function LeadForm({ kind, title, description, defaultLeadType = 'user' }:
       <form onSubmit={submit} className="lead-form">
         <label>
           Name
-          <input name="name" autoComplete="name" placeholder="Your name" />
+          <input name="name" autoComplete="name" maxLength={160} placeholder="Your name" />
         </label>
         <label>
           Email
-          <input name="email" type="email" autoComplete="email" required placeholder="you@example.com" />
+          <input name="email" type="email" autoComplete="email" maxLength={320} required placeholder="you@example.com" />
         </label>
         <label>
           Interest type
@@ -99,20 +99,20 @@ export function LeadForm({ kind, title, description, defaultLeadType = 'user' }:
         </label>
         <label>
           Organization
-          <input name="organization" autoComplete="organization" placeholder="Optional" />
+          <input name="organization" autoComplete="organization" maxLength={200} placeholder="Optional" />
         </label>
         <label className="full-span">
           Note
-          <textarea name="message" rows={4} placeholder="Tell us what you are interested in." />
+          <textarea name="message" rows={4} maxLength={2000} placeholder="Tell us what you are interested in." />
         </label>
         <label className="checkbox full-span">
-          <input name="consentToUpdates" type="checkbox" value="true" required />
-          <span>I agree to receive URAI updates and understand I can opt out later.</span>
+          <input name="consentToUpdates" type="checkbox" value="true" required={kind === 'waitlist'} />
+          <span>{kind === 'waitlist' ? 'I agree' : 'I would like'} to receive URAI updates and understand I can opt out later.</span>
         </label>
         <button className="button" type="submit" disabled={status === 'loading'}>
           {status === 'loading' ? 'Submitting...' : kind === 'waitlist' ? 'Join the Waitlist' : 'Send Inquiry'}
         </button>
-        {message ? <p className={`form-message ${status}`} role="status">{message}</p> : null}
+        {message ? <p className={`form-message ${status}`} role={status === 'error' ? 'alert' : 'status'}>{message}</p> : null}
       </form>
     </section>
   );

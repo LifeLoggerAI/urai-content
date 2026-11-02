@@ -86,3 +86,83 @@ describe('content deletion lifecycle', () => {
     })).toBe(false);
   });
 });
+
+it('binds every purge receipt field to the verified checksum', () => {
+  const tombstone = fixture();
+  const confirmed = recordProviderDeletionReceipt(tombstone, 'search-index', { receiptId: 'provider-receipt', confirmedAt: '2026-11-02T01:00:00.000Z', receiptChecksum: sha('provider') });
+  const purged = finalizeContentDeletionPurge(confirmed, '2026-11-03T00:00:00.000Z', sha('deleted'));
+  expect(verifyContentPurgeReceipt(purged)).toBe(true);
+  for (const change of [{ receiptId: 'forged' }, { purgedAt: '2026-11-04T00:00:00.000Z' }, { deletionChecksum: sha('other') }]) {
+    expect(verifyContentPurgeReceipt({ ...purged, purgeReceipt: { ...purged.purgeReceipt!, ...change } })).toBe(false);
+  }
+});
+
+it('rejects pre-deletion restore and provider receipt times', () => {
+  expect(() => restoreContentDeletion(fixture(), '2026-10-01T00:00:00.000Z')).toThrow('follow deletion request');
+  expect(() => recordProviderDeletionReceipt(fixture(), 'search-index', { receiptId: 'provider', confirmedAt: '2026-10-01T00:00:00.000Z', receiptChecksum: sha('provider') })).toThrow('follow deletion request');
+});
+
+
+it('purge readiness does not trust a confirmed state without its complete provider proof', () => {
+  const initial = fixture();
+  const forged = { ...initial, providerTargets: initial.providerTargets.map((target) => target.system === 'search-index'
+    ? { ...target, state: 'confirmed' as const, receiptId: 'forged', confirmedAt: '2026-11-02T01:00:00.000Z', receiptChecksum: null }
+    : target) };
+  expect(isContentDeletionPurgeReady(forged, '2026-11-03T00:00:00.000Z')).toBe(false);
+  expect(() => finalizeContentDeletionPurge(forged, '2026-11-03T00:00:00.000Z', sha('deleted'))).toThrow('not ready');
+});
+
+it('purge readiness rechecks receipt time even for a mutated stored target', () => {
+  const initial = fixture();
+  const forged = { ...initial, providerTargets: initial.providerTargets.map((target) => target.system === 'search-index'
+    ? { ...target, state: 'confirmed' as const, receiptId: 'forged', confirmedAt: '2026-10-01T00:00:00.000Z', receiptChecksum: sha('forged-proof') }
+    : target) };
+  expect(isContentDeletionPurgeReady(forged, '2026-11-03T00:00:00.000Z')).toBe(false);
+});
+
+// A re-hashed, internally consistent receipt is not evidence of provider
+// deletion, chronological eligibility, or an unbroken confirmation chain.
+function resealPurgeForAdversarialFixture(purged: ReturnType<typeof finalizeContentDeletionPurge>) {
+  const receipt = purged.purgeReceipt!;
+  const canonical = {
+    schemaVersion: purged.schemaVersion, tombstoneId: purged.tombstoneId,
+    ownerId: purged.ownerId, entityType: purged.entityType, entityId: purged.entityId,
+    requestedAt: purged.requestedAt, restoreUntil: purged.restoreUntil,
+    purgeAfter: purged.purgeAfter, state: 'purged', restoredAt: null,
+    backup: purged.backup, providerTargets: purged.providerTargets,
+  };
+  const checksum = sha(JSON.stringify({ tombstone: canonical, purgedAt: receipt.purgedAt,
+    deletionChecksum: receipt.deletionChecksum }));
+  return { ...purged, purgeReceipt: { ...receipt, tombstoneChecksum: checksum,
+    receiptId: 'purge_' + checksum.slice('sha256:'.length, 'sha256:'.length + 32) } };
+}
+function verifiedPurgeForAdversarialFixture() {
+  const confirmed = recordProviderDeletionReceipt(fixture(), 'search-index', {
+    receiptId: 'provider-valid', confirmedAt: '2026-11-02T01:00:00.000Z',
+    receiptChecksum: sha('provider-valid'),
+  });
+  return finalizeContentDeletionPurge(confirmed, '2026-11-03T00:00:00.000Z', sha('records-deleted'));
+}
+
+it('rehashed receipt never proves an early purge before the approved deadline', () => {
+  const valid = verifiedPurgeForAdversarialFixture();
+  const forged = resealPurgeForAdversarialFixture({ ...valid,
+    purgeReceipt: { ...valid.purgeReceipt!, purgedAt: '2026-10-04T00:00:00.000Z' } });
+  expect(verifyContentPurgeReceipt(forged)).toBe(false);
+});
+
+it('rehashed receipt never proves a provider confirmation dated after purge', () => {
+  const valid = verifiedPurgeForAdversarialFixture();
+  const forged = resealPurgeForAdversarialFixture({ ...valid,
+    providerTargets: valid.providerTargets.map(target => target.system === 'search-index'
+      ? { ...target, confirmedAt: '2026-11-05T00:00:00.000Z' } : target) });
+  expect(verifyContentPurgeReceipt(forged)).toBe(false);
+});
+
+it('rehashed receipt never substitutes for a missing provider checksum', () => {
+  const valid = verifiedPurgeForAdversarialFixture();
+  const forged = resealPurgeForAdversarialFixture({ ...valid,
+    providerTargets: valid.providerTargets.map(target => target.system === 'search-index'
+      ? { ...target, receiptChecksum: null } : target) });
+  expect(verifyContentPurgeReceipt(forged)).toBe(false);
+});

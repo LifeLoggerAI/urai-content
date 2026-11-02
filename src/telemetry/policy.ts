@@ -1,4 +1,4 @@
-import type { TelemetryEvent } from '../schemas/content.js';
+import { telemetryEventSchema, type TelemetryEvent } from '../schemas/content.js';
 
 export const ALLOWED_CONTENT_ANALYTICS_METADATA_KEYS = [
   'contentVersion',
@@ -13,8 +13,10 @@ export const ALLOWED_CONTENT_ANALYTICS_METADATA_KEYS = [
 const allowed = new Set<string>(ALLOWED_CONTENT_ANALYTICS_METADATA_KEYS);
 const forbiddenKeyPattern = /(memory|transcript|body|prompt|email|phone|address|location|latitude|longitude|health|medical|diagnos|token|secret|password)/i;
 
-export function validateContentAnalyticsEvent(event: TelemetryEvent): TelemetryEvent {
-  for (const [key, value] of Object.entries(event.metadata)) {
+export function validateContentAnalyticsEvent(input: unknown): TelemetryEvent {
+  const metadata = (input as { metadata?: unknown } | null)?.metadata;
+  if (!metadata || typeof metadata !== 'object' || Array.isArray(metadata)) throw new Error('Analytics metadata must be an object');
+  for (const [key, value] of Object.entries(metadata)) {
     if (!allowed.has(key)) throw new Error('Analytics metadata key is not allowlisted: ' + key);
     if (forbiddenKeyPattern.test(key)) throw new Error('Sensitive analytics metadata key is forbidden: ' + key);
     if (value !== null && !['string', 'number', 'boolean'].includes(typeof value)) {
@@ -24,5 +26,5 @@ export function validateContentAnalyticsEvent(event: TelemetryEvent): TelemetryE
       throw new Error('Analytics metadata string exceeds bounded length');
     }
   }
-  return { ...event, metadata: { ...event.metadata } };
+  return telemetryEventSchema.parse(input);
 }

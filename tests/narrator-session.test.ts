@@ -57,4 +57,51 @@ describe('provider-neutral narrator session', () => {
       consent: 'revoked',
     })).toThrow('requires consent');
   });
+
+  it.each(['denied', 'revoked'] as const)('keeps a prepared preview silent after consent becomes %s', (consent) => {
+    const session = createNarratorSession({
+      sessionId: 'synthetic-preview', subjectId: 'synthetic-user', promptId: 'np-quiet-01',
+      mode: 'tts_preview', synthetic: true, consent: 'granted', quietHours: false,
+      provider: 'mock', sourceRefs: ['synthetic-ref'], memoryContext: [],
+    });
+    session.consent = consent;
+    const output = narratorOutputContract(session, '  Synthetic text equivalent.  ');
+    expect(shouldNarratorRemainSilent(session)).toBe(true);
+    expect(output.spoken).toBe(false);
+    expect(output.accessibility.captionsRequired).toBe(false);
+    expect(output.text).toBe('Synthetic text equivalent.');
+    expect(output.caption).toBe(output.text);
+    expect(output.transcript).toBe(output.text);
+    expect(output.providerDispatchAllowed).toBe(false);
+    expect(output.personalizedVoiceAllowed).toBe(false);
+  });
+
+  it('keeps a prepared preview silent when quiet hours start before output', () => {
+    const session = createNarratorSession({
+      sessionId: 'synthetic-preview', subjectId: 'synthetic-user', promptId: 'np-quiet-01',
+      mode: 'tts_preview', synthetic: true, consent: 'granted', quietHours: false,
+      provider: 'mock', sourceRefs: [], memoryContext: [],
+    });
+    session.quietHours = true;
+    const output = narratorOutputContract(session, 'Synthetic quiet text.');
+    expect(shouldNarratorRemainSilent(session)).toBe(true);
+    expect(output.spoken).toBe(false);
+    expect(output.accessibility.textEquivalentRequired).toBe(true);
+    expect(output.providerDispatchAllowed).toBe(false);
+    expect(output.personalizedVoiceAllowed).toBe(false);
+  });
+
+  it('retains an output provenance snapshot when the session source list later changes', () => {
+    const session = createNarratorSession({
+      sessionId: 'synthetic-text', subjectId: 'synthetic-user', promptId: 'np-quiet-01',
+      mode: 'text', synthetic: true, consent: 'granted', quietHours: false,
+      provider: 'none', sourceRefs: ['synthetic-original'], memoryContext: [],
+    });
+    const output = narratorOutputContract(session, 'Synthetic snapshot.');
+    session.sourceRefs[0] = 'synthetic-replacement';
+    session.sourceRefs.push('synthetic-later');
+    expect(output.provenance.sourceRefs).toEqual(['synthetic-original']);
+    output.provenance.sourceRefs.push('synthetic-output-only');
+    expect(session.sourceRefs).toEqual(['synthetic-replacement', 'synthetic-later']);
+  });
 });

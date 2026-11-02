@@ -9,17 +9,21 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run tests",
+    "test": "vitest run tests && npm run test:privacy-consumer && npm run test:privacy-export && npm run test:privacy-export-client",
+    "test:privacy-consumer": "node --test scripts/canonical-privacy-consumer.test.mjs",
     "smoke:routes": "tsx scripts/smoke-routes.ts",
     "e2e": "playwright test",
     "e2e:install": "playwright install --with-deps chromium",
     "e2e:report": "playwright show-report",
-    "check": "npm run typecheck && npm run lint && npm test && npm run build"
+    "check": "npm run typecheck && npm run lint && npm test && npm run build",
+    "test:privacy-export": "node --test scripts/content-data-rights-export.test.mjs",
+    "test:privacy-export-client": "node --test scripts/content-data-export-client.test.mjs"
   },
   "dependencies": {
-    "@next/env": "15.5.24",
+    "@next/env": "15.5.27",
+    "firebase": "12.19.0",
     "firebase-admin": "14.4.0",
-    "next": "15.5.24",
+    "next": "15.5.27",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "server-only": "^0.0.1",
@@ -32,7 +36,7 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "eslint": "9.39.3",
-    "eslint-config-next": "15.5.25",
+    "eslint-config-next": "15.5.27",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
     "vitest": "4.1.11"
@@ -40,7 +44,7 @@
   "overrides": {
     "next": {
       "postcss": "8.5.23",
-      "sharp": "0.35.4"
+      "sharp": "0.35.5"
     },
     "gaxios@6.7.1": {
       "uuid": "11.1.1"
@@ -62,6 +66,7 @@
     },
     "@next/eslint-plugin-next": {
       "fast-glob": "npm:tinyglobby@0.2.17"
-    }
+    },
+    "source-map-js": "1.2.2"
   }
 }

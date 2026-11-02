@@ -61,6 +61,20 @@ describe('hard-off marketplace lifecycle', () => {
     })).toThrow('hard-off');
   });
 
+  it.each(['publicSaleEnabled', 'payoutEnabled', 'openUploadEnabled'] as const)(
+    'rejects runtime activation of %s even after moderation approval', (flag) => {
+      const approved = transitionMarketplaceListing(base, 'approved');
+      expect(() => validateMarketplaceListing({ ...approved, [flag]: true } as unknown as MarketplaceListingContract)).toThrow('hard-off');
+    }
+  );
+
+  it('rejects nonsynthetic listings and cannot treat a revoked listing as a paid grant', () => {
+    expect(() => validateMarketplaceListing({ ...base, synthetic: false } as unknown as MarketplaceListingContract)).toThrow('must be synthetic');
+    const approved = transitionMarketplaceListing(base, 'approved');
+    const revoked = transitionMarketplaceListing(approved, 'revoked');
+    expect(() => issueSyntheticEntitlement(revoked, { userId: 'synthetic-user', issuedAt: '2026-10-08T00:00:00.000Z' })).toThrow('requires an approved listing');
+  });
+
   it('makes revoked and withdrawn listings terminal', () => {
     const revoked = transitionMarketplaceListing(base, 'revoked');
     expect(() => transitionMarketplaceListing(revoked, 'submitted')).toThrow('Illegal marketplace transition');

@@ -1,0 +1,9 @@
+# Production session authority — 2026-10-08
+
+A caller could supply x-urai-user-id and an elevated x-urai-role in production when URAI_ENABLE_HEADER_AUTH=1. Production now refuses those headers regardless of that flag. The existing explicit non-production fixture fallback remains available and can still be disabled.
+
+Production verifies the Bearer token with Firebase Admin's revocation check, then reads the same account with Auth.getUser. The account must still exist, match the verified UID, be explicitly enabled, and contain a recognized non-anonymous current role that matches the verified token role. Removed membership and changed roles fail closed until the client refreshes its token. Entitlements are the intersection of current account claims and verified token grants; withdrawn grants cannot persist through an old token.
+
+The existing server role authority is Firebase Auth customClaims. This repair creates no tenant collection, consent grant, provider enforcement record, or legal authority. The eight current signed-in roles remain unchanged. Existing Bearer-revocation checks and negative tests remain intact; the prior production-header opt-in test is strengthened to require refusal. New source regression cases cover all eight forged and valid roles, revocation, current account identity/state, removed or malformed membership, demotion, refreshed elevation, entitlement changes, service failures and explicit test fallback.
+
+Controlled unit fixtures execute the actual compiled session function at the Auth API boundary. They do not prove a real Firebase authentication service, deployed IAM, provider/account readiness, complete request-lifetime atomicity, independent approval or production acceptance. The declared Firebase Admin/Vitest graph and native source gates require separate exact-head verification.
