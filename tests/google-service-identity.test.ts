@@ -53,6 +53,8 @@ describe('trusted Google service OIDC guard',()=>{
         certificateRequests += 1;
         expect(url).toBe('https://www.googleapis.com/oauth2/v3/certs');
         expect(init?.signal).toBeDefined();
+        expect(init?.redirect).toBe('error');
+        expect(init?.cache).toBe('no-store');
         return { ok: true, json: async () => ({ keys: [jwk] }) };
       },
     });
@@ -78,6 +80,35 @@ describe('trusted Google service OIDC guard',()=>{
     const untrusted = generateKeyPairSync('rsa', { modulusLength: 2048 });
     await expect(verifier(makeToken(claims, untrusted.privateKey))).rejects.toThrow('signature');
     expect(certificateRequests).toBe(2);
+  });
+  it('rejects redirected and off-origin Google certificate responses', async () => {
+    const { generateKeyPairSync, sign } = await import('node:crypto');
+    const { privateKey, publicKey } = generateKeyPairSync('rsa', { modulusLength: 2048 });
+    const jwk = { ...publicKey.export({ format: 'jwk' }), kid: 'redirect-check', alg: 'RS256', use: 'sig' };
+    const epoch = 1_800_000_000;
+    const encode = (x: unknown) => Buffer.from(JSON.stringify(x)).toString('base64url');
+    const input = encode({ alg: 'RS256', kid: 'redirect-check' }) + '.' + encode({
+      iss: 'https://accounts.google.com', aud: 'https://staging.example.test/issue',
+      sub: '12345678901', email: 'issuer@urai-staging.iam.gserviceaccount.com',
+      email_verified: true, iat: epoch - 120, exp: epoch + 2400,
+    });
+    const token = input + '.' + sign('RSA-SHA256', Buffer.from(input), privateKey).toString('base64url');
+    const mk = (redirected: boolean, url: string) => createGoogleServiceIdentityVerifier({
+      audience: 'https://staging.example.test/issue',
+      serviceAccountEmails: ['issuer@urai-staging.iam.gserviceaccount.com'],
+      clock: () => epoch * 1000,
+      fetchImpl: async (requested, init) => {
+        expect(requested).toBe('https://www.googleapis.com/oauth2/v3/certs');
+        expect(init?.redirect).toBe('error');
+        expect(init?.cache).toBe('no-store');
+        return { ok: true, redirected, url, json: async () => ({ keys: [jwk] }) };
+      },
+    });
+    await expect(mk(true, 'https://attacker.example.test/certs')(token)).rejects.toThrow('certificates');
+    await expect(mk(false, 'https://attacker.example.test/certs')(token)).rejects.toThrow('certificates');
+    await expect(mk(false, 'https://www.googleapis.com/oauth2/v3/certs')(token)).resolves.toEqual({
+      serviceId: '12345678901', email: 'issuer@urai-staging.iam.gserviceaccount.com',
+    });
   });
   it('refuses configuration without pinned accounts',()=>{
     expect(()=>createGoogleServiceIdentityVerifier({audience:'http://wrong',serviceAccountEmails:[]})).toThrow('pinned');
