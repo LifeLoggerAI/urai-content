@@ -46,13 +46,16 @@
     "web:build": "npm run build --prefix apps/web",
     "web:check": "npm run check --prefix apps/web",
     "web:e2e": "npm run e2e --prefix apps/web",
-    "web:smoke:routes": "npm run web:build && npm run smoke:routes --prefix apps/web",
-    "check:all": "npm run check && npm run web:check && npm run web:smoke:routes",
+    "web:smoke:routes": "npm run web:build && npm run web:deploy:artifact && npm run smoke:routes --prefix apps/web",
+    "check:all": "npm run check && npm run web:deploy:preflight:test && npm run web:check && npm run web:smoke:routes",
     "deploy": "node -e \"console.error('Deployment is intentionally blocked in urai-content until provider evidence, deployed smoke, E2E, observability, and rollback evidence are GREEN.'); process.exit(1)\"",
     "check:prompts": "tsx scripts/checkPromptLibrary.ts",
     "test:prompt-evals": "tsx scripts/runPromptEvals.ts --fixtures",
     "test:prompt-release-authority": "tsx scripts/runPromptReleaseCandidate.ts --self-test",
-    "eval:prompts": "tsx scripts/runPromptReleaseCandidate.ts"
+    "eval:prompts": "tsx scripts/runPromptReleaseCandidate.ts",
+    "web:deploy:preflight": "node scripts/check-vercel-web-payload.mjs",
+    "web:deploy:artifact": "node scripts/check-vercel-web-payload.mjs --built",
+    "web:deploy:preflight:test": "node --test scripts/check-vercel-web-payload.test.mjs"
   },
   "dependencies": {
     "zod": "^3.24.1"
