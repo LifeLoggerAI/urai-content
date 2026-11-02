@@ -29,6 +29,56 @@ describe('trusted Google service OIDC guard',()=>{
     await expect(guarded(jwt(now,now))).rejects.toThrow('untrusted');
     expect(calls).toBe(0);
   });
+  it('verifies a real RSA-2048 signature from a pinned mock Google key', async () => {
+    const { generateKeyPairSync, sign } = await import('node:crypto');
+    const { publicKey, privateKey } = generateKeyPairSync('rsa', { modulusLength: 2048 });
+    const jwk = { ...publicKey.export({ format: 'jwk' }), kid: 'verified-test-key', alg: 'RS256', use: 'sig' };
+    const epoch = 1_800_000_000;
+    const encode = (value: unknown) => Buffer.from(JSON.stringify(value)).toString('base64url');
+    const claims = {
+      iss: 'https://accounts.google.com', aud: 'https://staging.example.test/issue',
+      sub: '12345678901', email: 'issuer@urai-staging.iam.gserviceaccount.com',
+      email_verified: true, iat: epoch - 120, exp: epoch + 2400,
+    };
+    const makeToken = (body: Record<string, unknown>, signingKey = privateKey) => {
+      const input = encode({ alg: 'RS256', kid: 'verified-test-key', typ: 'JWT' }) + '.' + encode(body);
+      return input + '.' + sign('RSA-SHA256', Buffer.from(input), signingKey).toString('base64url');
+    };
+    let certificateRequests = 0;
+    const verifier = createGoogleServiceIdentityVerifier({
+      audience: 'https://staging.example.test/issue',
+      serviceAccountEmails: ['issuer@urai-staging.iam.gserviceaccount.com'],
+      clock: () => epoch * 1000,
+      fetchImpl: async (url, init) => {
+        certificateRequests += 1;
+        expect(url).toBe('https://www.googleapis.com/oauth2/v3/certs');
+        expect(init?.signal).toBeDefined();
+        return { ok: true, json: async () => ({ keys: [jwk] }) };
+      },
+    });
+    await expect(verifier(makeToken(claims))).resolves.toEqual({
+      serviceId: claims.sub, email: claims.email,
+    });
+    // These negative paths carry genuine RSA signatures, rather than malformed
+    // token text that never reaches cryptographic verification.
+    for (const mutated of [
+      { ...claims, aud: 'https://wrong.example.test/issue' },
+      { ...claims, email: 'other@urai-staging.iam.gserviceaccount.com' },
+      { ...claims, email_verified: false },
+      { ...claims, iss: 'https://wrong-issuer.example.test' },
+      { ...claims, iat: epoch - 7200 },
+      { ...claims, iat: epoch + 61 },
+      { ...claims, exp: epoch - 1 },
+      { ...claims, exp: epoch + 7200 },
+      { ...claims, nbf: epoch + 61 },
+      { ...claims, exp: claims.iat },
+    ]) {
+      await expect(verifier(makeToken(mutated))).rejects.toThrow();
+    }
+    const untrusted = generateKeyPairSync('rsa', { modulusLength: 2048 });
+    await expect(verifier(makeToken(claims, untrusted.privateKey))).rejects.toThrow('signature');
+    expect(certificateRequests).toBe(2);
+  });
   it('refuses configuration without pinned accounts',()=>{
     expect(()=>createGoogleServiceIdentityVerifier({audience:'http://wrong',serviceAccountEmails:[]})).toThrow('pinned');
   });
