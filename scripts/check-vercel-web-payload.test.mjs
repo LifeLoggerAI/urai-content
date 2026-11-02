@@ -7,6 +7,7 @@ import test from 'node:test'
 import { fileURLToPath } from 'node:url'
 
 const script = fileURLToPath(new URL('./check-vercel-web-payload.mjs', import.meta.url))
+const standaloneScript = fileURLToPath(new URL('../apps/web/scripts/check-vercel-web-payload.mjs', import.meta.url))
 function fixture(fn) {
   const root = mkdtempSync(join(tmpdir(), 'urai-content-vercel-'))
   try { return fn(root) } finally { rmSync(root, { recursive: true, force: true }) }
@@ -58,4 +59,26 @@ test('denies invalid route manifest payload', () => fixture(root => {
   const result = run(root, '--built')
   assert.notEqual(result.status, 0)
   assert.match(result.stderr, /INVALID_NEXT_ROUTES_MANIFEST/)
+}))
+
+test('standalone web payload guard works without the repository root scripts', () => fixture(root => {
+  makeWeb(root)
+  const result = spawnSync(process.execPath, [standaloneScript, '--source-root', root], { encoding: 'utf8' })
+  assert.equal(result.status, 0, result.stderr)
+}))
+test('standalone web payload guard rejects a wrapped source tree', () => fixture(root => {
+  makeWeb(join(root, 'src'))
+  const result = spawnSync(process.execPath, [standaloneScript, '--source-root', root], { encoding: 'utf8' })
+  assert.notEqual(result.status, 0)
+  assert.match(result.stderr, /WRAPPED_SOURCE_ROOT/)
+}))
+test('standalone web payload guard requires valid built Next manifest', () => fixture(root => {
+  makeWeb(root)
+  const missing = spawnSync(process.execPath, [standaloneScript, '--source-root', root, '--built'], { encoding: 'utf8' })
+  assert.notEqual(missing.status, 0)
+  assert.match(missing.stderr, /MISSING_NEXT_ROUTES_MANIFEST/)
+  mkdirSync(join(root, '.next'), { recursive: true })
+  writeFileSync(join(root, '.next', 'routes-manifest.json'), JSON.stringify({ version: 3 }))
+  const result = spawnSync(process.execPath, [standaloneScript, '--source-root', root, '--built'], { encoding: 'utf8' })
+  assert.equal(result.status, 0, result.stderr)
 }))
