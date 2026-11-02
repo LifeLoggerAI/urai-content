@@ -271,6 +271,10 @@ export function verifyContentPurgeReceipt(tombstone: ContentDeletionTombstone): 
   if (!checksumPattern.test(tombstone.purgeReceipt.deletionChecksum)) return false;
   const receipt = tombstone.purgeReceipt;
   if (!timestampSchema.safeParse(receipt.purgedAt).success) return false;
+  // A deterministic checksum is only an integrity receipt, not independent
+  // evidence of when providers deleted data. Verify chronological and provider
+  // proof preconditions again at the exported receipt-verification boundary.
+  if (!isContentDeletionPurgeReady({ ...tombstone, state: 'retained_for_restore' }, receipt.purgedAt)) return false;
   const expected = digest({ tombstone: canonicalForPurge(tombstone), purgedAt: receipt.purgedAt, deletionChecksum: receipt.deletionChecksum });
   return receipt.tombstoneChecksum === expected && receipt.receiptId === 'purge_' + expected.slice('sha256:'.length, 'sha256:'.length + 32);
 }
