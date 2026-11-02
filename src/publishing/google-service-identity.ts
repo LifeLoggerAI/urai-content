@@ -11,8 +11,10 @@ const ISSUERS = new Set(['https://accounts.google.com', 'accounts.google.com']);
 const B64 = /^[A-Za-z0-9_-]+$/;
 type Claims = { iss?: string; aud?: string; exp?: number; iat?: number; nbf?: number;
   sub?: string; email?: string; email_verified?: boolean | string };
-type WebFetch = (input: string, init?: { signal?: AbortSignal }) => Promise<{
-  ok: boolean; json(): Promise<unknown>;
+type WebFetch = (input: string, init?: {
+  signal?: AbortSignal; redirect?: 'error'; cache?: 'no-store';
+}) => Promise<{
+  ok: boolean; redirected?: boolean; url?: string; json(): Promise<unknown>;
 }>;
 
 function decode(segment: string): Record<string, unknown> {
@@ -63,8 +65,15 @@ export function createGoogleServiceIdentityVerifier({
         (claims.email_verified !== true && claims.email_verified !== 'true')) {
       throw new Error('untrusted, expired, or out-of-scope service identity');
     }
-    const response = await fetchImpl(JWKS, { signal: AbortSignal.timeout(5000) });
-    if (!response.ok) throw new Error('Google issuer certificates unavailable');
+    // A default fetch follows HTTP redirects. Never accept a signing-key set
+    // fetched from a different origin, even if a redirected response is 200.
+    const response = await fetchImpl(JWKS, {
+      signal: AbortSignal.timeout(5000), redirect: 'error', cache: 'no-store',
+    });
+    if (!response.ok || response.redirected === true ||
+        (typeof response.url === 'string' && response.url !== JWKS)) {
+      throw new Error('Google issuer certificates unavailable');
+    }
     const keySet = await response.json() as { keys?: unknown };
     if (!Array.isArray(keySet?.keys) || keySet.keys.length > 32) throw new Error('invalid issuer key set');
     const jwk = keySet.keys.find((key: any) =>
