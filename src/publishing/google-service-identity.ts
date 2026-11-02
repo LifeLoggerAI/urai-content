@@ -43,10 +43,21 @@ export function createGoogleServiceIdentityVerifier({
       throw new Error('unsupported service token signing algorithm');
     }
     const now = Number(clock()) / 1000;
-    if (!Number.isFinite(now) || !ISSUERS.has(String(claims.iss)) || claims.aud !== audience ||
-        !Number.isFinite(claims.exp) || !Number.isFinite(claims.iat) ||
-        (claims.exp as number) <= now || (claims.iat as number) > now + 60 ||
-        (claims.nbf !== undefined && (!Number.isFinite(claims.nbf) || claims.nbf > now + 60)) ||
+    // Google service ID tokens are short lived. A valid signature with a
+    // stale iat or an implausibly long exp is not fresh issuer authority.
+    // Permit a bounded clock skew but never an unbounded token lifetime.
+    const allowedSkewSeconds = 60;
+    const maxLifetimeSeconds = 3600;
+    if (!Number.isFinite(now) || now <= 0 ||
+        !ISSUERS.has(String(claims.iss)) || claims.aud !== audience ||
+        !Number.isSafeInteger(claims.exp) || !Number.isSafeInteger(claims.iat) ||
+        (claims.exp as number) <= now ||
+        (claims.iat as number) > now + allowedSkewSeconds ||
+        (claims.iat as number) < now - maxLifetimeSeconds - allowedSkewSeconds ||
+        (claims.exp as number) <= (claims.iat as number) ||
+        (claims.exp as number) - (claims.iat as number) > maxLifetimeSeconds + allowedSkewSeconds ||
+        (claims.nbf !== undefined &&
+          (!Number.isSafeInteger(claims.nbf) || claims.nbf > now + allowedSkewSeconds)) ||
         typeof claims.email !== 'string' || !allowed.has(claims.email) ||
         !/^[0-9]{5,32}$/.test(String(claims.sub || '')) ||
         (claims.email_verified !== true && claims.email_verified !== 'true')) {
