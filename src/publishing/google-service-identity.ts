@@ -37,7 +37,7 @@ export function createGoogleServiceIdentityVerifier({
   }
   const allowed = new Set(serviceAccountEmails);
   return async function verifyServiceIdentity(jwt: string): Promise<{ serviceId: string; email: string }> {
-    if (typeof jwt !== 'string' || jwt.length > 16384) throw new Error('service OIDC token missing');
+    if (typeof jwt !== 'string' || jwt.length === 0 || jwt.length > 16384) throw new Error('service OIDC token missing');
     const pieces = jwt.split('.');
     if (pieces.length !== 3 || !B64.test(pieces[2])) throw new Error('malformed service OIDC token');
     const h = decode(pieces[0]), claims = decode(pieces[1]) as Claims;
