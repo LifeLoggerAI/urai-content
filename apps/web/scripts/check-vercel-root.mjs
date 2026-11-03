@@ -29,12 +29,14 @@ const project = load('.vercel/project.json');
 if (project.projectId !== APPROVED_PROJECT || project.orgId !== APPROVED_TEAM ||
     (process.env.VERCEL_PROJECT_ID && process.env.VERCEL_PROJECT_ID !== APPROVED_PROJECT) ||
     (process.env.VERCEL_ORG_ID && process.env.VERCEL_ORG_ID !== APPROVED_TEAM)) fail('PROJECT_MISMATCH');
-// Some Vercel CLI versions include project settings in the local project link.
-// If present, forbid absolute or nested roots. An absent setting is NOT proof
-// of provider rootDirectory; independently inspect provider configuration.
+// The deploy workflow runs from apps/web already. If a linked project repeats
+// apps/web as its root, the Vercel adapter can apply that path twice, as seen
+// in the original /vercel/path0/vercel/path0 packaging failure. Fail closed.
+// Missing project.settings is NOT proof of the provider's remote root setting;
+// still verify the actual provider configuration before accepting a deploy.
 const configuredRoot = project.settings?.rootDirectory;
 if (configuredRoot !== undefined && configuredRoot !== null &&
-    !['', '.', 'apps/web'].includes(configuredRoot)) fail('PROVIDER_ROOT_MISMATCH');
+    !['', '.'].includes(configuredRoot)) fail('PROVIDER_ROOT_MISMATCH');
 if (phase === 'prebuilt') {
   if (!existsSync(join(root, '.next', 'routes-manifest.json'))) fail('NEXT_MANIFEST_MISSING');
   const manifest = load('.next/routes-manifest.json');
