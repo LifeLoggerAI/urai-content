@@ -14,7 +14,9 @@
     "e2e": "playwright test",
     "e2e:install": "playwright install --with-deps chromium",
     "e2e:report": "playwright show-report",
-    "check": "npm run typecheck && npm run lint && npm test && npm run build"
+    "check": "npm run typecheck && npm run lint && npm test && npm run build",
+    "prebuild": "node scripts/check-vercel-web-payload.mjs",
+    "postbuild": "node scripts/check-vercel-web-payload.mjs --built"
   },
   "dependencies": {
     "@next/env": "15.5.24",

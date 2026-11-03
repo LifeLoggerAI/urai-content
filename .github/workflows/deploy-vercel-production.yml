@@ -101,7 +101,17 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: |
           set -euo pipefail
-          vercel pull --yes --environment=preview --token "$VERCEL_TOKEN"
+          vercel pull --yes --environment=preview
+
+      - name: Verify exact linked Content Vercel project and source root
+        working-directory: apps/web
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: node scripts/check-vercel-root.mjs linked
+
+      - name: Verify Content build identity contract
+        run: npm run web:deploy:preflight:test
 
       - name: Build with Vercel
         working-directory: apps/web
@@ -109,7 +119,15 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: vercel build --token "$VERCEL_TOKEN"
+          URAI_CONTENT_RELEASE_SHA: ${{ github.sha }}
+        run: vercel build
+
+      - name: Validate Content Vercel prebuilt artifact root
+        working-directory: apps/web
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: node scripts/check-vercel-root.mjs prebuilt
 
       - name: Deploy prebuilt preview artifact
         id: deploy
@@ -120,7 +138,7 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: |
           set -euo pipefail
-          url=$(vercel deploy --prebuilt --token "$VERCEL_TOKEN")
+          url=$(vercel deploy --prebuilt)
           echo "deployed_url=$url" >> "$GITHUB_OUTPUT"
           echo "$url" > ../../deploy-url.txt
           echo "Deployed URL: $url"
@@ -137,6 +155,11 @@ jobs:
             https://*) ;;
             *) echo "::error::Vercel deployment URL must use https://"; exit 1 ;;
           esac
+
+      - name: Verify deployed artifact AND expected domain at exact commit
+        env:
+          DEPLOYED_URL: ${{ steps.deploy.outputs.deployed_url }}
+        run: node scripts/verify-content-vercel-source.mjs
 
       - name: Live HTTP smoke
         run: |
