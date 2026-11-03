@@ -56,6 +56,17 @@ test('nested or absolute provider root setting is denied when available',()=>fix
     denies(check(dir,web),'PROVIDER_ROOT_MISMATCH');
   }
 }));
+test('double-applied apps/web provider root is denied from apps/web cwd',()=>fixture(({dir,web,write})=>{
+  write('.vercel/project.json',JSON.stringify({projectId,orgId:teamId,settings:{rootDirectory:'apps/web'}}));
+  denies(check(dir,web),'PROVIDER_ROOT_MISMATCH');
+  denies(check(dir,web,'prebuilt'),'PROVIDER_ROOT_MISMATCH');
+}));
+test('canonical local root is accepted when explicitly available',()=>fixture(({dir,web,write})=>{
+  for (const rootDirectory of ['', '.']) {
+    write('.vercel/project.json',JSON.stringify({projectId,orgId:teamId,settings:{rootDirectory}}));
+    assert.equal(check(dir,web).status,0);
+  }
+}));
 test('missing or malformed prebuilt config is denied',()=>fixture(({dir,web,write})=>{
   write('.vercel/output/config.json','{broken');
   denies(check(dir,web,'prebuilt'),'JSON_INVALID');
