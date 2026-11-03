@@ -101,7 +101,7 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: |
           set -euo pipefail
-          vercel pull --yes --environment=preview --token "$VERCEL_TOKEN"
+          vercel pull --yes --environment=preview
 
       - name: Build with Vercel
         working-directory: apps/web
@@ -109,7 +109,7 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: vercel build --token "$VERCEL_TOKEN"
+        run: vercel build
 
       - name: Deploy prebuilt preview artifact
         id: deploy
@@ -120,7 +120,7 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: |
           set -euo pipefail
-          url=$(vercel deploy --prebuilt --token "$VERCEL_TOKEN")
+          url=$(vercel deploy --prebuilt)
           echo "deployed_url=$url" >> "$GITHUB_OUTPUT"
           echo "$url" > ../../deploy-url.txt
           echo "Deployed URL: $url"
@@ -137,6 +137,11 @@ jobs:
             https://*) ;;
             *) echo "::error::Vercel deployment URL must use https://"; exit 1 ;;
           esac
+
+      - name: Verify deployed artifact AND expected domain at exact commit
+        env:
+          DEPLOYED_URL: ${{ steps.deploy.outputs.deployed_url }}
+        run: node scripts/verify-content-vercel-source.mjs
 
       - name: Live HTTP smoke
         run: |
