@@ -103,12 +103,16 @@ jobs:
           set -euo pipefail
           vercel pull --yes --environment=preview
 
+      - name: Verify Content build identity contract
+        run: npm run web:deploy:preflight:test
+
       - name: Build with Vercel
         working-directory: apps/web
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          URAI_CONTENT_RELEASE_SHA: ${{ github.sha }}
         run: vercel build
 
       - name: Deploy prebuilt preview artifact
