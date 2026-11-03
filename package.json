@@ -55,7 +55,7 @@
     "eval:prompts": "tsx scripts/runPromptReleaseCandidate.ts",
     "web:deploy:preflight": "node scripts/check-vercel-web-payload.mjs",
     "web:deploy:artifact": "node scripts/check-vercel-web-payload.mjs --built",
-    "web:deploy:preflight:test": "node --test scripts/check-vercel-web-payload.test.mjs scripts/check-vercel-web-lifecycle.test.mjs scripts/check-content-build-source.test.mjs scripts/verify-content-vercel-source.test.mjs"
+    "web:deploy:preflight:test": "node --test scripts/check-vercel-web-payload.test.mjs scripts/check-vercel-web-lifecycle.test.mjs scripts/check-content-build-source.test.mjs scripts/verify-content-vercel-source.test.mjs scripts/verify-content-stream-limits.test.mjs"
   },
   "dependencies": {
     "zod": "^3.24.1"

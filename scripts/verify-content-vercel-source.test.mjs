@@ -6,10 +6,13 @@ const sha='a'.repeat(40);
 const deploymentUrl='https://urai-content-example.vercel.app';
 const baseUrl='https://content.urai.app';
 const request=(extras={})=>({deploymentUrl,baseUrl,expectedSha:sha,...extras});
+const stream=(text)=>new ReadableStream({start(controller){
+  controller.enqueue(new TextEncoder().encode(text));controller.close();
+}});
 const reply=(commitSha=sha,extras={})=>({
   status:200, redirected:false,
   headers:{get:(k)=>k==='content-type'?'application/json':null},
-  text:async()=>JSON.stringify({service:'urai-content-web',commitSha}),
+  body:stream(JSON.stringify({service:'urai-content-web',commitSha})),
   ...extras
 });
 
@@ -38,7 +41,7 @@ test('deny invalid authority and unsafe destinations',async()=>{
   }
 });
 test('deny malformed response, redirects and network failures',async()=>{
-  for(const bad of [reply(sha,{status:302}),reply(sha,{redirected:true}),reply(sha,{headers:{get:()=> 'text/html'}}),reply(sha,{text:async()=>'.'.repeat(16385)})]){
+  for(const bad of [reply(sha,{status:302}),reply(sha,{redirected:true}),reply(sha,{headers:{get:()=> 'text/html'}}),reply(sha,{body:stream('.'.repeat(16385))})]){
     await assert.rejects(verifyContentReleaseSources(request({fetchImpl:async()=>bad})),/CONTENT_RELEASE_VERSION_RESPONSE_INVALID/);
   }
   await assert.rejects(verifyContentReleaseSources(request({fetchImpl:async()=>{throw Error('offline')}})),/CONTENT_RELEASE_VERSION_UNREACHABLE/);

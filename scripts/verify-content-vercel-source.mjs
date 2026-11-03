@@ -41,11 +41,37 @@ export async function verifyContentReleaseSources({ deploymentUrl, baseUrl, expe
       throw Error('CONTENT_RELEASE_VERSION_RESPONSE_INVALID');
     }
     let version;
+    let reader;
     try {
-      const text = await response.text();
-      if (Buffer.byteLength(text, 'utf8') > VERSION_BYTES) throw Error('oversize');
-      version = JSON.parse(text);
+      // An untrusted server can stream more than Content-Length or omit it.
+      // Never call response.text(): it buffers the entire body before we can
+      // enforce VERSION_BYTES, making an oversized response a memory hazard.
+      const advertised = response.headers.get('content-length');
+      if (advertised !== null &&
+          (!/^[0-9]{1,6}$/.test(advertised) || Number(advertised) > VERSION_BYTES)) {
+        throw Error('invalid_length');
+      }
+      if (!response.body || typeof response.body.getReader !== 'function') throw Error('missing_body');
+      reader = response.body.getReader();
+      const chunks = [];
+      let total = 0;
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        if (!(value instanceof Uint8Array)) throw Error('invalid_chunk');
+        total += value.byteLength;
+        if (total > VERSION_BYTES) throw Error('oversize');
+        chunks.push(Buffer.from(value));
+      }
+      if (total === 0) throw Error('empty_body');
+      version = JSON.parse(Buffer.concat(chunks, total).toString('utf8'));
     } catch { throw Error('CONTENT_RELEASE_VERSION_RESPONSE_INVALID'); }
+    finally {
+      if (reader) {
+        await reader.cancel().catch(() => undefined);
+        reader.releaseLock();
+      }
+    }
     if (!version || typeof version !== 'object' || Array.isArray(version) ||
         version.service !== 'urai-content-web' || version.commitSha !== expectedSha) {
       throw Error('CONTENT_RELEASE_SOURCE_MISMATCH');
