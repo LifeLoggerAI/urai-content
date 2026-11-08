@@ -1,0 +1,115 @@
+{
+  "schema": "one-urai-content-verified-byte-slice-v1",
+  "source_commit": "988ca4f7f38b1ce86e4d3f426361b5866fd23e0d",
+  "group": "scripts",
+  "offset": 0,
+  "group_file_count": 15,
+  "verification": "base64 original raw bytes; matched original tree byte length and Git object ID; independent SHA256; known ABC vector passed",
+  "rows": [
+    {
+      "path": "scripts/checkAlertWebhook.ts",
+      "bytes": 1424,
+      "git_blob_sha": "070627d2f8590f5d1e78e0d206d2a7a7078fa13a",
+      "sha256": "ece85821efd991210cfa000b69afdc2ad3c6590cdb17f9fefec682fdf8213a01",
+      "verified": true
+    },
+    {
+      "path": "scripts/checkBranchSync.ts",
+      "bytes": 1220,
+      "git_blob_sha": "3b71620ff9291afcbb8daf8884cbd1e75325aa53",
+      "sha256": "c0a531c664056c5832f3bc8bf81c44f2113d36b37a21c3d252fd63f90d10b2c5",
+      "verified": true
+    },
+    {
+      "path": "scripts/checkEcosystemContracts.ts",
+      "bytes": 6025,
+      "git_blob_sha": "2e07dc2fb69fc999649c93c2f21e4e1f032b50ed",
+      "sha256": "9e2498a537c8e29fa973b79412a413d2f5bc5140ac35f5b585cfc3828470f956",
+      "verified": true
+    },
+    {
+      "path": "scripts/checkGovernanceDocs.ts",
+      "bytes": 6873,
+      "git_blob_sha": "a00a8e6e4a53707e32e68cb3821a814193c24518",
+      "sha256": "ba02cba85edeeb84559715cb4c48fff04979496d93223de9a228fe408591c508",
+      "verified": true
+    },
+    {
+      "path": "scripts/checkNoSecrets.ts",
+      "bytes": 2839,
+      "git_blob_sha": "ff4feffd28719d70d6531b0a3459955b8179d0ce",
+      "sha256": "798ad8d740907a8db18d43281f2a19c29f9905adcee9e2de6ae97537c326bdd5",
+      "verified": true
+    },
+    {
+      "path": "scripts/checkObservabilityEnv.ts",
+      "bytes": 1033,
+      "git_blob_sha": "bfd5d570213a47011f5d7994de692fec274907ac",
+      "sha256": "d772b309a45e4f63d13c5cabcbf2ecf6f4d00443507ee923013728751e05eacc",
+      "verified": true
+    },
+    {
+      "path": "scripts/checkPromptLibrary.ts",
+      "bytes": 11178,
+      "git_blob_sha": "33be632fb778260dcc4fcf45dd89ef63f7ddc19a",
+      "sha256": "9dbacb4201cd7747df01a09994476d5a1b617ea707a0f2dbb100900ae89eac3c",
+      "verified": true
+    },
+    {
+      "path": "scripts/checkProviderEvidence.ts",
+      "bytes": 1157,
+      "git_blob_sha": "15cf98c142141bbef0c3a11f1732ea94d8a94245",
+      "sha256": "8d219881eda5221e13271d867d863722984710684f40b76b2eb2649718cf7f74",
+      "verified": true
+    },
+    {
+      "path": "scripts/contentIndex.ts",
+      "bytes": 706,
+      "git_blob_sha": "97ebdfded730e291b1c8a790c641a2adc1977931",
+      "sha256": "fe0a866b9d7290bb52c0542ca4608d2a254e76162b7976751c23c6747b7047fa",
+      "verified": true
+    },
+    {
+      "path": "scripts/productionSmoke.ts",
+      "bytes": 1454,
+      "git_blob_sha": "43237cc3986613c9e75107cc270ab48b8773362d",
+      "sha256": "51acfc4c27342d561c662d62b1e3daeb600196145bf1545250ad20f07014629e",
+      "verified": true
+    },
+    {
+      "path": "scripts/rollbackSmoke.ts",
+      "bytes": 1738,
+      "git_blob_sha": "6d8969eba6e375d4b3a65a180f5fa2acbd052bfb",
+      "sha256": "1714cccbbc12f675455cdfc412386bbfc72c8a8a87573a96e750260549b7feb6",
+      "verified": true
+    },
+    {
+      "path": "scripts/runPromptEvals.ts",
+      "bytes": 19388,
+      "git_blob_sha": "cdd84ee7e757f68eebc2e51abcebe686d334bcab",
+      "sha256": "b2d8d0210808f813da637dac840d74df70f57c59adf7972bf330eb23246946c2",
+      "verified": true
+    },
+    {
+      "path": "scripts/runPromptReleaseCandidate.ts",
+      "bytes": 5392,
+      "git_blob_sha": "8e4fff1ddfd099be08546db3c77598420b3cd222",
+      "sha256": "967f64eb336ec32fdb8f22c5c4fd29580e9611e5bd8243ca4ca4cb245fcb2110",
+      "verified": true
+    },
+    {
+      "path": "scripts/urai-production-verify.mjs",
+      "bytes": 864,
+      "git_blob_sha": "3c1255c1fe9095d1a25c7bf9141b6fc8fd61366c",
+      "sha256": "fc84a88a18beb6c4157b99e3db2942f9cd9b2d36a3a68dee388ff08d93954319",
+      "verified": true
+    },
+    {
+      "path": "scripts/verifyPromptWorkflowPins.mjs",
+      "bytes": 7703,
+      "git_blob_sha": "05677a131173ef7c666b02a7ef345f348cd6b1a3",
+      "sha256": "a4046b77c8a97a573bf040b72877e95c4b0a7153ac9407fd9f50ba31f103e6b8",
+      "verified": true
+    }
+  ]
+}
