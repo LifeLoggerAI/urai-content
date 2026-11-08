@@ -14,7 +14,7 @@
 | `content/` | 19 | 5,989 | brand, demo, legal, page, SEO and sprite JSON |
 | `scripts/` | 15 | 68,994 | static validation, smoke and release guard utilities |
 | `public/` | 2 | **0** | zero-length placeholder PNGs |
-| Other root files | 16 | 170,278 | readmes, configs, dependency lockfile, rules and audit text |
+| Other root files | 16 | 170,344 | readmes, configs, dependency lockfile, rules and audit text |
 
 The root-group table is an explanatory regrouping and should be reconciled to the machine manifest rather than used as a new source-of-truth counter.
 
