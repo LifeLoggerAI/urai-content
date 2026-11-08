@@ -1,0 +1,83 @@
+{
+  "schema": "one-urai-content-verified-byte-slice-v1",
+  "repo": "LifeLoggerAI/urai-content",
+  "source_commit": "988ca4f7f38b1ce86e4d3f426361b5866fd23e0d",
+  "source_manifest_sha": "7c90860067aa5dd0a842bb98a3402836db0871b4",
+  "group": "content",
+  "start": 0,
+  "group_files": 19,
+  "sha256_vector_pass": true,
+  "method": "GitHub contents base64 decode, length match, Git tree SHA match, independently computed raw byte SHA-256",
+  "rows": [
+    {
+      "path": "content/brand/systems.json",
+      "git_blob_sha": "de4009165ab8e977b4e4eaf86b535220b3bae0cb",
+      "bytes": 147,
+      "sha256": "b3e7ff569a957f098d751123f380b8c1a370cd39518d6fa6c6c2b117010f887e",
+      "verified": true
+    },
+    {
+      "path": "content/brand/urai-studio.json",
+      "git_blob_sha": "cf936772a681840e0c09a2bc4aef4da26732968e",
+      "bytes": 421,
+      "sha256": "994e31a99d7a69a96b2cbfc678dd447f83c0545b298c9839204ff3f7c8223724",
+      "verified": true
+    },
+    {
+      "path": "content/brand/urai.json",
+      "git_blob_sha": "e8258ae3f58861cb68931f1adc93097b1532d408",
+      "bytes": 381,
+      "sha256": "cd8242b14ee4b70b19836f62f0c334205b1dfafe6e7aa947d32e6ba857f1b76e",
+      "verified": true
+    },
+    {
+      "path": "content/brand/voice.json",
+      "git_blob_sha": "6983ea29e4b437388ce778269ba6efd4d8ab048d",
+      "bytes": 139,
+      "sha256": "522e737dc02a00e6311b91f293f5c63d8dc44f7ef135a302cd33e8c93b28a0d1",
+      "verified": true
+    },
+    {
+      "path": "content/demo/council-reflections.json",
+      "git_blob_sha": "f287f78fa710442406fb7de2a9b73891da5dccca",
+      "bytes": 492,
+      "sha256": "40f45b21a815b1e112f66b691a040ea80584f02b8e877f6777b9be1cee553fb9",
+      "verified": true
+    },
+    {
+      "path": "content/demo/life-map-events.json",
+      "git_blob_sha": "168a9f421c574295845fdea26caf4e5312926900",
+      "bytes": 367,
+      "sha256": "33bc57cc0dd5d413cc496a624a968794c265d0067305314dbf3bee7eb76ddcd4",
+      "verified": true
+    },
+    {
+      "path": "content/demo/memory-blooms.json",
+      "git_blob_sha": "91347f56b62fb0d4f009b01cae898019f67f723d",
+      "bytes": 371,
+      "sha256": "89fda0c43a43d84d3dd8c54d8668612c53df7944501d2faa46fb1d39c8dd2ef8",
+      "verified": true
+    },
+    {
+      "path": "content/demo/narrator-scripts.json",
+      "git_blob_sha": "43c2f1c646bc0963ad5ad105cbfc3d160ebc4710",
+      "bytes": 368,
+      "sha256": "5d3500de918c38a053a3cb3df380482dc5a840d3b6008cacf53bc37f30bdfd7d",
+      "verified": true
+    },
+    {
+      "path": "content/demo/weekly-scrolls.json",
+      "git_blob_sha": "e1adc8c348e5201a380bc45f6b28002617355ef5",
+      "bytes": 478,
+      "sha256": "aede878baabba829fee88cd14e060ba536861d317cb5c03f423cab88eddb9c6b",
+      "verified": true
+    },
+    {
+      "path": "content/generated-index.json",
+      "git_blob_sha": "33ee316ee346a3b18b88a505ec648fe9495c6caf",
+      "bytes": 219,
+      "sha256": "c027e12e55478b4a2eb2b99599e3aeaecd869b49f3b48780cb37b5a6b59d178c",
+      "verified": true
+    }
+  ]
+}
