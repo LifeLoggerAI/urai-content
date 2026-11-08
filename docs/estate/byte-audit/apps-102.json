@@ -1,0 +1,101 @@
+{
+  "schema": "one-urai-content-verified-byte-slice-v1",
+  "source_commit": "988ca4f7f38b1ce86e4d3f426361b5866fd23e0d",
+  "group": "apps",
+  "offset": 102,
+  "group_file_count": 115,
+  "verification": "base64 original raw bytes; matched original tree byte length and Git object ID; independent SHA256; known ABC vector passed",
+  "rows": [
+    {
+      "path": "apps/web/tests/public-seo.test.ts",
+      "bytes": 1257,
+      "git_blob_sha": "d747393d2b1836d0435268e8b02d08ee4e7b679e",
+      "sha256": "fa65dfbc40a0d0e07a354e1067243ee2e5fcd18115969fb27ffd0ec4d69e46af",
+      "verified": true
+    },
+    {
+      "path": "apps/web/tests/public-target-size.test.ts",
+      "bytes": 522,
+      "git_blob_sha": "bf30638acc3adc35aff63f17389ab503742c2a23",
+      "sha256": "ffdb4a2f9f5dec61af55ae1cc736ae8c56e984f4c5bf15098293253f7743f623",
+      "verified": true
+    },
+    {
+      "path": "apps/web/tests/rbac.test.ts",
+      "bytes": 2820,
+      "git_blob_sha": "4b50280c1c05c11c634160171019bb9d409b3a1d",
+      "sha256": "6f27957784cc29b586985686095eaf9c234448b012bf48be7790b0a6430b86f5",
+      "verified": true
+    },
+    {
+      "path": "apps/web/tests/runtime-catalog-firestore.test.ts",
+      "bytes": 2674,
+      "git_blob_sha": "5cb8a1c6cdd3c7750f185e79db9299cb6e0a6806",
+      "sha256": "bca488b9666c515b00b00fccfd931619dde6f26295f2cf42d62f19d8ae6b4b05",
+      "verified": true
+    },
+    {
+      "path": "apps/web/tests/runtime-catalog.test.ts",
+      "bytes": 1475,
+      "git_blob_sha": "1a2af5f6004b95242dfd6d9350f8efdc195af884",
+      "sha256": "661425c83ffb539884c75c7a0568637305d24732be6c49a5ec3a8d689db501f3",
+      "verified": true
+    },
+    {
+      "path": "apps/web/tests/runtime-content-service.test.ts",
+      "bytes": 4174,
+      "git_blob_sha": "d37252f0d4b47738e078cce3dc0118301470dafd",
+      "sha256": "2f84e1e9d64be4410b84ddbfccb0caed8efc2629f7ea366aab18cdd915860764",
+      "verified": true
+    },
+    {
+      "path": "apps/web/tests/runtime-memory.test.ts",
+      "bytes": 1314,
+      "git_blob_sha": "cbfb63d1ae70e6478d0442a2bc731dc2372f758c",
+      "sha256": "9e44c1818829a4bbc28168594fd07f781f6080c1054b5ca1fe8308337fc9b997",
+      "verified": true
+    },
+    {
+      "path": "apps/web/tests/runtime-persistence.test.ts",
+      "bytes": 4155,
+      "git_blob_sha": "26ba043e6dfead2170b71c3525cd88b4490398fe",
+      "sha256": "55ad3f86e1c0bfc38790bb3a4433c7dbe56a1c0b12ed02e7c3209c6e331a0bdf",
+      "verified": true
+    },
+    {
+      "path": "apps/web/tests/server-only-stub.ts",
+      "bytes": 238,
+      "git_blob_sha": "6ddddab4973025274ea8ed6714fb46e7e8cc3903",
+      "sha256": "34f48b4605a8be1257100066c7982eaa365f1acfda509c0f69e650c062d78da0",
+      "verified": true
+    },
+    {
+      "path": "apps/web/tests/setup.ts",
+      "bytes": 187,
+      "git_blob_sha": "bdb64ab0212ed654a9bfb19700807e33d20dc888",
+      "sha256": "b56896e8111bd8c0e79b0dbe50e7721864f016705eba1daf18e45c5f838d634a",
+      "verified": true
+    },
+    {
+      "path": "apps/web/tests/testEnv.ts",
+      "bytes": 218,
+      "git_blob_sha": "5d0ef0f00ea3beae5fc1124d6d903edd1f0c477b",
+      "sha256": "9647051f99ba9e0197836af43eed33fc63a5ddb9b5d62de24a510788036ebbcb",
+      "verified": true
+    },
+    {
+      "path": "apps/web/tsconfig.json",
+      "bytes": 577,
+      "git_blob_sha": "e7267b78f75ae84f955c26f1ea890891056aa6ab",
+      "sha256": "61ad61325ac819dae8e5f922dc31513dac94a6c6a03f7cb51d0dd698e708d5da",
+      "verified": true
+    },
+    {
+      "path": "apps/web/vitest.config.ts",
+      "bytes": 337,
+      "git_blob_sha": "97affeddf7d9942c9216a6f0bdc35eb03f18b4af",
+      "sha256": "0667ef09ba0b9ede5ada0412fbbd35175fea4cb658a22114175514882a26679e",
+      "verified": true
+    }
+  ]
+}
