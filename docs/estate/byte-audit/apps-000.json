@@ -1,0 +1,97 @@
+{
+  "schema": "one-urai-content-verified-byte-slice-v1",
+  "repo": "LifeLoggerAI/urai-content",
+  "source_commit": "988ca4f7f38b1ce86e4d3f426361b5866fd23e0d",
+  "source_manifest_sha": "7c90860067aa5dd0a842bb98a3402836db0871b4",
+  "group": "apps",
+  "start": 0,
+  "group_files": 115,
+  "sha256_vector_pass": true,
+  "method": "GitHub contents base64 decode, length match, Git tree SHA match, independently computed raw byte SHA-256",
+  "rows": [
+    {
+      "path": "apps/web/.gitignore",
+      "git_blob_sha": "a92f801698a763a411796e1b5b1e788404e9cff1",
+      "bytes": 78,
+      "sha256": "aed089b59709bb448be9340e478ea6e408236821a2e037e9ecc6f138616a39dc",
+      "verified": true
+    },
+    {
+      "path": "apps/web/e2e/auth-rbac.spec.ts",
+      "git_blob_sha": "caf5864b34b07c1b70d5edd6a42e660be084888a",
+      "bytes": 819,
+      "sha256": "26d4c3e3388f5449d2b5ee45bf6c726b298f92574a246ee512a1d327d75e181f",
+      "verified": true
+    },
+    {
+      "path": "apps/web/e2e/authenticated-session.spec.ts",
+      "git_blob_sha": "9a4864aae8f49a7a733e2ee4e7305947c6ed5046",
+      "bytes": 959,
+      "sha256": "0dd8d905a381bebc352cb86ec1f295585e7cc11842a59ff490becd129d756851",
+      "verified": true
+    },
+    {
+      "path": "apps/web/e2e/public-routes.spec.ts",
+      "git_blob_sha": "3085a5054f2d063416612d6e3d57a1f4b45e7382",
+      "bytes": 817,
+      "sha256": "1008d60286ccd247994db5b5aa624dd73382d2df4ee8035c725849f1d357898a",
+      "verified": true
+    },
+    {
+      "path": "apps/web/e2e/visual-proof.spec.ts",
+      "git_blob_sha": "f471d5a362231abc85db3f98e6d1939889112f3d",
+      "bytes": 1441,
+      "sha256": "90e8596126c1cf7f6c6bf6840f3a1726f66b89e52b698b81a466deec984e79d9",
+      "verified": true
+    },
+    {
+      "path": "apps/web/eslint.config.mjs",
+      "git_blob_sha": "ec1059189d1944b8cd00bdad6733a95971b3c4c1",
+      "bytes": 512,
+      "sha256": "d4c7537bae0c4b3cc898f5e72f9630cb3bd2ee97e34c2b66d1f41a30504e8c12",
+      "verified": true
+    },
+    {
+      "path": "apps/web/firebase.json",
+      "git_blob_sha": "f336ce039eb9937fad508e840e4c27203aff5baf",
+      "bytes": 651,
+      "sha256": "2b45c355b978844b43e2e7924bb87a43173074fbcbaf5144cfd3bec4d5f6b95d",
+      "verified": true
+    },
+    {
+      "path": "apps/web/firestore.indexes.json",
+      "git_blob_sha": "26b8da89546f48093907071f2b6cba2e4b9b974b",
+      "bytes": 638,
+      "sha256": "7b06acfe5ec9485e8473839171d2ee23c6dcaca2837f9052157df8b7d1374988",
+      "verified": true
+    },
+    {
+      "path": "apps/web/firestore.rules",
+      "git_blob_sha": "3b3319764871720d43f4a361c3ec17f561aa3e7e",
+      "bytes": 2077,
+      "sha256": "d1b4d30c10cde19d212eee474c32078cc74785fd989fa448cffb785ea5d437bb",
+      "verified": true
+    },
+    {
+      "path": "apps/web/next-env.d.ts",
+      "git_blob_sha": "830fb594ca2970a827555c28a253b097367e08d8",
+      "bytes": 262,
+      "sha256": "85ae5aee75f011967cf2d25cbc342f62d69314e9d925f7f4aa3456fc2cffcca6",
+      "verified": true
+    },
+    {
+      "path": "apps/web/next.config.mjs",
+      "git_blob_sha": "56580088e0cee89d9a0251ae72b9aece863f5c56",
+      "bytes": 399,
+      "sha256": "587610ed55857e43c07d5736fcf4fe9a8fd7d5a1ab61112b430dbd5d878ab341",
+      "verified": true
+    },
+    {
+      "path": "apps/web/package-lock.json",
+      "git_blob_sha": "de3fa64b0b0a2b090a103ddcbbd83be56583a351",
+      "bytes": 323778,
+      "sha256": "7904cf0feedb54715f3ba58797ce8f6a1cc3990862e16e5490d1444542ef535d",
+      "verified": true
+    }
+  ]
+}
