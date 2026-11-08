@@ -1,0 +1,115 @@
+{
+  "schema": "one-urai-content-verified-byte-slice-v1",
+  "source_commit": "988ca4f7f38b1ce86e4d3f426361b5866fd23e0d",
+  "group": "apps",
+  "offset": 87,
+  "group_file_count": 115,
+  "verification": "base64 original raw bytes; matched original tree byte length and Git object ID; independent SHA256; known ABC vector passed",
+  "rows": [
+    {
+      "path": "apps/web/src/server/firebase/admin.ts",
+      "bytes": 936,
+      "git_blob_sha": "a9fee5529ccead40306384abbff8c29e1df6fbca",
+      "sha256": "8521c1554047c9f0a70ac1ccaa39e355bdd72feaf3a0645116696e23cb82d9e2",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/server/firebase/adminEnv.ts",
+      "bytes": 7904,
+      "git_blob_sha": "cdbe78fd9009294fe0a9160cf1a3115f5f39be4c",
+      "sha256": "b61dba69f88b63a07786b9e341579caac29883d0f288bada24e49538871e5491",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/server/firebase/contentRepository.ts",
+      "bytes": 9639,
+      "git_blob_sha": "3303c19983c7b655c57db18429f4efe1c8c23ef6",
+      "sha256": "1b7fb90313f561fbcffb670cab973a1c86171312ebd0f711ce48194a46736713",
+      "verified": true
+    },
+    {
+      "path": "apps/web/storage.rules",
+      "bytes": 979,
+      "git_blob_sha": "e1f02ab899a79db1c09dc48757a9ace607dfd872",
+      "sha256": "3396559a014d44141faf352db007c3dae07e967bcabafa3a92ee79fb1bd2fe50",
+      "verified": true
+    },
+    {
+      "path": "apps/web/tests/admin-creator-submission-detail.test.ts",
+      "bytes": 3495,
+      "git_blob_sha": "bc4c2262afa4a03c454376aad4c6640a53281c05",
+      "sha256": "8aebfc08dc50ada80054980ffc747053c1b654f6a278950170baf4c2f947d6f7",
+      "verified": true
+    },
+    {
+      "path": "apps/web/tests/admin-creator-submission-queue.test.ts",
+      "bytes": 5235,
+      "git_blob_sha": "2b90c0abadbe3d420107703902ecec1a551116c6",
+      "sha256": "720e4705e5411bf2dfc4ed7b4ad6c4d6e24e8f588bd4fca0b0f16729547ebd81",
+      "verified": true
+    },
+    {
+      "path": "apps/web/tests/api-routes.test.ts",
+      "bytes": 15128,
+      "git_blob_sha": "35961742cd867d3f564b3c4486235e22ddfaeacb",
+      "sha256": "65cfe391f571358d1082d4a1833726d97cfb8c2261c2e66826b008a362c9170b",
+      "verified": true
+    },
+    {
+      "path": "apps/web/tests/authorization.test.ts",
+      "bytes": 7891,
+      "git_blob_sha": "a5fc34dd32bbc993f8b3149651637f458b9bde9d",
+      "sha256": "7bcd492c8955cb59b4626059b60f9aa9ba67ac62609c48f65705804a0bf0cdfc",
+      "verified": true
+    },
+    {
+      "path": "apps/web/tests/canonical-seed.test.ts",
+      "bytes": 3016,
+      "git_blob_sha": "cda2b0f5222f7d5b14a7b045cd6955de3b46b9f1",
+      "sha256": "08dd4eea99d36bfaf98a2e7fc694060290ad5ef94865761d6581f913a3212a35",
+      "verified": true
+    },
+    {
+      "path": "apps/web/tests/catalog-source.test.ts",
+      "bytes": 1085,
+      "git_blob_sha": "9d23507e9aacbc207d1ae68b9175891f49aa00c2",
+      "sha256": "9187090c0e2fabdc8efcc13ad9d2aec6843e0bf2f7342ff96f89024ac9040e55",
+      "verified": true
+    },
+    {
+      "path": "apps/web/tests/catalog.test.ts",
+      "bytes": 2436,
+      "git_blob_sha": "ecf03b327239fb75d71d6a777551c75603d5388d",
+      "sha256": "c0fb8a60c85fa901bcfc08c2d9f907b9343d214505eb4c83eaa7e3dce0e777c1",
+      "verified": true
+    },
+    {
+      "path": "apps/web/tests/creator-submission-detail.test.ts",
+      "bytes": 4086,
+      "git_blob_sha": "78408f94be586233c6cdefc7ee4dc0b8ba86939d",
+      "sha256": "82002d65ade89e924ee0efaebb3dcd4230cc110c51cab82085d18b84526293f1",
+      "verified": true
+    },
+    {
+      "path": "apps/web/tests/firebase-admin-env.test.ts",
+      "bytes": 7184,
+      "git_blob_sha": "edaee26c3b884793fd9e35ebe085ec94d8bdc7e7",
+      "sha256": "4922f8370a276baab21d7040ce8645e593e76e48d2ff421ca9a853db75f19361",
+      "verified": true
+    },
+    {
+      "path": "apps/web/tests/firestore-content-repository.test.ts",
+      "bytes": 10026,
+      "git_blob_sha": "e64363b26627b91b1e335861b3d9d5840cf6304a",
+      "sha256": "6e52a608c9124f6a9056120a7ac71809e65d59463c784a3ffcccd6c567687eae",
+      "verified": true
+    },
+    {
+      "path": "apps/web/tests/public-routes.test.ts",
+      "bytes": 925,
+      "git_blob_sha": "90d738f49d29d1a37ef9b0e0b16d79844dd9195b",
+      "sha256": "57247d72998e1fe271ae936dacac7c9b58b8b2b356cfe135794767729ba58bed",
+      "verified": true
+    }
+  ]
+}
