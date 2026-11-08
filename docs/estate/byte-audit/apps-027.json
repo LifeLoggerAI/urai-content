@@ -1,0 +1,115 @@
+{
+  "schema": "one-urai-content-verified-byte-slice-v1",
+  "source_commit": "988ca4f7f38b1ce86e4d3f426361b5866fd23e0d",
+  "group": "apps",
+  "offset": 27,
+  "group_file_count": 115,
+  "verification": "base64 original raw bytes; matched original tree byte length and Git object ID; independent SHA256; known ABC vector passed",
+  "rows": [
+    {
+      "path": "apps/web/src/app/api/leads/route.ts",
+      "bytes": 2841,
+      "git_blob_sha": "07b544604da3470f42d17dace934935574f0f954",
+      "sha256": "d986edc0df3e0da6648b4d092e080fb21e3aefcad689afce6057c468b459b1b1",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/api/system/firebase/route.ts",
+      "bytes": 936,
+      "git_blob_sha": "0f00e78d6b5ed6c25ec0f2a89fe03b8351087d20",
+      "sha256": "f1f2741a8bdb0d208e8143d1def357a6d7e1118300259d5dc31a7680f77c0464",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/api/version/route.ts",
+      "bytes": 373,
+      "git_blob_sha": "b03d098736ba47b9e573d409e84bf2fe01f7ee62",
+      "sha256": "1ac70c996f40c4d6bcaefca4ea44459492ce4987bcec5881bdcbb01e4815be4c",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/contact/page.tsx",
+      "bytes": 598,
+      "git_blob_sha": "d85b74a8fa69b9123e150ba7e4fa51a2246f89d8",
+      "sha256": "f06d22d5d7f01af5b3a6941b4d7e85959be9e2da6ab5baa1ac42fb56f3d14de8",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/content/page.tsx",
+      "bytes": 1332,
+      "git_blob_sha": "9da10e8f68527a21a16e86b605a6d4473d6d3860",
+      "sha256": "e86f6de232bf943ddfb4e5bb988405f161898207b1b1b799d20b5dd56c840ee9",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/creator/page.tsx",
+      "bytes": 298,
+      "git_blob_sha": "faaa6c0f70b044f81f7aaf8ffaa3adab7af2d855",
+      "sha256": "1360582e1e1bcb8f284570a13aae9126ef8fb226dacee36a234b7ac1c7a20ac3",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/data-ownership/page.tsx",
+      "bytes": 302,
+      "git_blob_sha": "3cf6e5ecfdfdacbd6f6085797fe93444bbc29f1b",
+      "sha256": "7c87a2d461bf89ae0dfca50f13f842f5eacc09a2ff095c936f8c6bf926b10a20",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/demo/page.tsx",
+      "bytes": 604,
+      "git_blob_sha": "e15e7537f257710f5b192a456ccad73d036c37a7",
+      "sha256": "cd9dd0e794cb683717f32d067a9b8a4767b89dd67707c60daff6b6efb7799909",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/exports/page.tsx",
+      "bytes": 298,
+      "git_blob_sha": "11501133b43db8661e75dfcd3dd20c7544ddfc82",
+      "sha256": "2d6eba94b9d10be788241737d185ad5740314886e09c7d741fe530b8acb329bf",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/faq/page.tsx",
+      "bytes": 272,
+      "git_blob_sha": "47f3fccddeedfe3f4526c3488e4bb5b630f2eb02",
+      "sha256": "f2a235665f7a956f21b30053aef439e5d1d3da5c2c103c450f023be1ae2aef9c",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/globals.css",
+      "bytes": 5704,
+      "git_blob_sha": "ec15306f41014e73a9ee70029dcdad0488d0477e",
+      "sha256": "46fb0e407ff5c1625d5525aba213fa9287418e7d6496d1ef4260d08d70ee6310",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/how-it-works/page.tsx",
+      "bytes": 293,
+      "git_blob_sha": "d1d8dd04fc9dee3be7137d7a14f968ed6da7e737",
+      "sha256": "66799a1dfc4a5ae79145281577acd1bd13aa882fbff7c4ffc720f7ca33ece2cd",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/investors/page.tsx",
+      "bytes": 614,
+      "git_blob_sha": "1d6c6b94cdf045a0216923071af1286120034c35",
+      "sha256": "e3bf373afdfb913c05ae45bd8e4bc7475104f2bee8c0911bbc9c2f2a6ec43eb1",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/layout.tsx",
+      "bytes": 964,
+      "git_blob_sha": "52f19fd42c86bd3f9b50c240f4a9858aee8e8f61",
+      "sha256": "0563f0a54a35376be2e27b09b80a7a9d19d9c59bb4fdec3b69adb3321d10e00d",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/licensing/page.tsx",
+      "bytes": 304,
+      "git_blob_sha": "8574f931b2472ed799215433c40c96a2238341b7",
+      "sha256": "2eeff543cf35bd1d3c021eda2909ab3771de161799eff87740fa40c5f5521e72",
+      "verified": true
+    }
+  ]
+}
