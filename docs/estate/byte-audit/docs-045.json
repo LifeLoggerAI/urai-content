@@ -1,0 +1,115 @@
+{
+  "schema": "one-urai-content-verified-byte-slice-v1",
+  "source_commit": "988ca4f7f38b1ce86e4d3f426361b5866fd23e0d",
+  "group": "docs",
+  "offset": 45,
+  "group_file_count": 69,
+  "verification": "base64 original raw bytes; matched original tree byte length and Git object ID; independent SHA256; known ABC vector passed",
+  "rows": [
+    {
+      "path": "docs/ROADMAP_WIRING.md",
+      "bytes": 362,
+      "git_blob_sha": "4e4cd0640f9e5ac8798379643560c2acee219c4d",
+      "sha256": "6b5cff682fe1cf27ae52ff2c695baa41a05765b222212719ac6a11d92e5fa5d4",
+      "verified": true
+    },
+    {
+      "path": "docs/ROLLBACK_PLAN.md",
+      "bytes": 2258,
+      "git_blob_sha": "cec1259e240661175a23dab3e259903b21417ed7",
+      "sha256": "a4931c16b54c245ff89d906f9b685ab3058648362db515899b138075b3c6544f",
+      "verified": true
+    },
+    {
+      "path": "docs/ROUTE_AUDIT.md",
+      "bytes": 5497,
+      "git_blob_sha": "daa655d71bf8152c5d76c2da687b3629e6d0a6b2",
+      "sha256": "ae8f161e8b69261c0f6db79b8c86bdaf582df42bcab4c20d77b328822165c09b",
+      "verified": true
+    },
+    {
+      "path": "docs/ROUTE_COVERAGE.md",
+      "bytes": 12321,
+      "git_blob_sha": "e9d006c90943764d78ace48a8bed82574f423959",
+      "sha256": "feb9fa9539e8d8d74d5c1fdcb66b6a52358358e3db41c4ce4a6f9f07cecd4429",
+      "verified": true
+    },
+    {
+      "path": "docs/SECURITY_PRIVACY.md",
+      "bytes": 5068,
+      "git_blob_sha": "14b63a2db70f7ef4f6b21309788774a2a750fef6",
+      "sha256": "b41213b1504dbbb23ea142e9ab0fb672611901e3a69d14bc8e385364fab42ad1",
+      "verified": true
+    },
+    {
+      "path": "docs/STANDALONE_SYSTEM_PLAN.md",
+      "bytes": 8361,
+      "git_blob_sha": "86ac0dd3af656b1b6f84bf090ea07fecd96a4358",
+      "sha256": "f94cb92fba63be83398496294f7f868d53155a2f61429539ce1fc64f117134bf",
+      "verified": true
+    },
+    {
+      "path": "docs/TESTING.md",
+      "bytes": 781,
+      "git_blob_sha": "88fc034f751a2c526b0a10088f8723b88f6b8c03",
+      "sha256": "36cf39586a1fb0e80331fe8bd11eb749afef26f62d86efe8b1105f642d5df604",
+      "verified": true
+    },
+    {
+      "path": "docs/URAI_SEARCH_SNIPPETS.md",
+      "bytes": 513,
+      "git_blob_sha": "dc06de3f126115971b1422bc8f866996a85123fb",
+      "sha256": "bb1491a8d58c76a78258910856010141db4a1829522ddbad112bab64f45a34c7",
+      "verified": true
+    },
+    {
+      "path": "docs/VISUAL_ASSET_MANIFEST.md",
+      "bytes": 984,
+      "git_blob_sha": "02067565226f1a7a2484db261c3a38b2710ad66f",
+      "sha256": "229279b51770abf221a94b92241150fb563e2b7d84446b13e42e848f85044275",
+      "verified": true
+    },
+    {
+      "path": "docs/WEB_VALIDATION.md",
+      "bytes": 3233,
+      "git_blob_sha": "6626bd5f4e4fdabd42553f21e8dc4c027deeb4d2",
+      "sha256": "b200fb3f8b2e96cb9163f88352d7bd75e545bcc9da4baadf97cf316ed5d40200",
+      "verified": true
+    },
+    {
+      "path": "docs/XR_CONTENT_PACK_CONTRACT.md",
+      "bytes": 625,
+      "git_blob_sha": "a63b9a1556d9fe14b91b8215f87cf0ebf0e479fb",
+      "sha256": "4f51a0644f861579698571c33a96ba5b1128895f2ebbd7b485d587af26da7896",
+      "verified": true
+    },
+    {
+      "path": "docs/architecture/0001-monorepo-runtime.md",
+      "bytes": 4648,
+      "git_blob_sha": "2ef9c008371bee582646333eff8090be9e537a6f",
+      "sha256": "41322fb41255d52d3f241f9f5b01256b248c64d7aa7f327755ae92c9761e10a9",
+      "verified": true
+    },
+    {
+      "path": "docs/audits/2026-09-23-urai-content-full-reconciliation.md",
+      "bytes": 11596,
+      "git_blob_sha": "54e353546bbdf81600e1a7d3bead48bde7cbf00d",
+      "sha256": "6a5075f583c6a7605fb90ac25b6d1727ff12e1e6ef71415672eabbb0d3f9edef",
+      "verified": true
+    },
+    {
+      "path": "docs/contracts/URAI_CONTENT_ECOSYSTEM_EXTENSION_V1.json",
+      "bytes": 2492,
+      "git_blob_sha": "b884208ef05f081ac84f7c336e5f8396be28685b",
+      "sha256": "15b25b1f5b6a0d600da39abef8e8d41f7c2f1ec28e95f15a1f6b6355d2d55b61",
+      "verified": true
+    },
+    {
+      "path": "docs/contracts/URAI_ECOSYSTEM_INTEGRATION_V1.md",
+      "bytes": 3081,
+      "git_blob_sha": "da288190ce218fccd122902163aadca3391fdbe6",
+      "sha256": "fa6604ff094e7c0b7eaaf359786627a48ab4a25eca425036a916b80fd75fa0ba",
+      "verified": true
+    }
+  ]
+}
