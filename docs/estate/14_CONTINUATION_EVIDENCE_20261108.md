@@ -23,3 +23,12 @@ The exact-source July 14, 2026 [Content Rules receipt](https://docs.google.com/d
 A local credential-free clone attempt failed DNS resolution for github.com. Original byte reads used GitHub connector. Native install/test/build, Firebase emulator, GCP Firebase Admin IAM, real user permissions, live private user content, production deployment, external AI/audio/media calls and device/browser QA are not rerun. Existing developer work on #96 and #110–#112 was preserved; source-only noncertifying documentation additions reside on #114.
 
 **Next:** independently finish 310 main raw SHA-256 hashes, audit 148 branch-only paths and 2026 intermediate trees, then source-safe merge planning and exact-head CI/emulator/integrated provider denial tests. **HOLD**.
+
+
+## FINAL EXACT-MAIN RAW BYTE SHA-256 COVERAGE — SUPERSEDES EARLIER 78-FILE PARTIAL TOTAL (2026-11-08 UTC)
+
+Full main-source coverage is now **388/388 tracked Git blobs**, **1,514,321/1,514,321 bytes** (100%), with **zero mismatches**. Each GitHub original-file base64 response was decoded to bytes and independently SHA-256 hashed; exact byte lengths and returned Git blob SHA-1s matched the immutable Git main tree `988ca4f7f38b1ce86e4d3f426361b5866fd23e0d`. Independently calculating Git blob SHA-1 was not performed; server-reported object identity was cross-checked against the frozen tree. SHA-256 function passed the standard `abc` vector. All 30 per-slice ledgers were recombined and checked against 388 unique manifest paths and exact byte total. Machine-readable permanent result: `docs/estate/byte-audit/MAIN_SHA256_FULL_COVERAGE.json`.
+
+**Two legitimate zero-length tracked images:** `public/sprites/celestial.png` and `public/sprites/previews/celestial-preview.png`; zero-byte hash is the standard SHA-256 empty-file value. They remain placeholders, not usable artwork.
+
+Do not confuse **100% raw byte coverage for ONE merged main snapshot** with 100% historical source recovery or launch readiness. The 936 Git blob objects across 99 visible branch heads were inventoried by Git object metadata only and their original contents are not collectively SHA-256 checked. Intermediate branch commit histories, inaccessible or deleted objects, external LFS/media, provider IAM and Cloud Storage objects, Google Drive entire corpus, CI ZIPs, build/test runtime and private user data remain not exhaustively verified. No native build or physical device integration certification was performed; release **HOLD**.
