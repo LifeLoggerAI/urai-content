@@ -1,0 +1,504 @@
+{
+  "schema": "one-urai-content-all-visible-branch-heads-v1",
+  "repo": "LifeLoggerAI/urai-content",
+  "source": "GitHub REST git/refs/heads at observation, only accessible current refs; not all branch commit graphs and all byte trees",
+  "count": 99,
+  "complete_git_refs_response": true,
+  "entries": [
+    {
+      "name": "agent/content-dependency-materialize-20260913",
+      "head_sha": "ba33b1126bbcb307bc03fa542c48675db15ea65a",
+      "object_type": "commit"
+    },
+    {
+      "name": "agent/content-reproducible-web-lockfile-20260801",
+      "head_sha": "3c076eff9b61954913467f6dcdeb7ffec757db39",
+      "object_type": "commit"
+    },
+    {
+      "name": "agent/research-prompt-v1-hardening",
+      "head_sha": "e2b2ae5481a22514e005cfc79d6b0dcbf7c049b2",
+      "object_type": "commit"
+    },
+    {
+      "name": "architecture/monorepo-runtime-decision",
+      "head_sha": "9338dfc5d09fb65d7dc1acbbc4fefd5673ab91aa",
+      "object_type": "commit"
+    },
+    {
+      "name": "audit-fix-hardening-pass",
+      "head_sha": "d0477a246c00615ab8d3acd5da5604de8c682964",
+      "object_type": "commit"
+    },
+    {
+      "name": "audit/content-web-dependencies-20260801",
+      "head_sha": "421ef2dbc895e128d5cdffa2ac6776fa3021de28",
+      "object_type": "commit"
+    },
+    {
+      "name": "audit/final-completion-2026-05-16",
+      "head_sha": "3b0de7879c92fa685e2ad3f2c1c04585b2fe94f2",
+      "object_type": "commit"
+    },
+    {
+      "name": "audit/genesis-content-forensic-20261107",
+      "head_sha": "050af0c15a7b53e49c0b8382c2936fa98c7fd11b",
+      "object_type": "commit"
+    },
+    {
+      "name": "audit/phase-0-implementation",
+      "head_sha": "9bd544c9ec0d38b6cd08f6f7ab5c294f7eeba4c8",
+      "object_type": "commit"
+    },
+    {
+      "name": "audit/secret-scan-tightening-2026-06-28",
+      "head_sha": "db3ae222cbabf5b708674d968776006954d58323",
+      "object_type": "commit"
+    },
+    {
+      "name": "audit/urai-content-system-record-2026-05-19",
+      "head_sha": "86432f9d1c72ca3d87be5fc640598ce6c5b697fd",
+      "object_type": "commit"
+    },
+    {
+      "name": "browser-smoke-ci",
+      "head_sha": "de3ae09b06856301afb183456224af06db875d8f",
+      "object_type": "commit"
+    },
+    {
+      "name": "browser-smoke-isolated-ci",
+      "head_sha": "2e6f3224eba5d300d54afbf9db5034cf8b73c4ba",
+      "object_type": "commit"
+    },
+    {
+      "name": "canon/upstream-authority-20260924",
+      "head_sha": "70c15b08651d3e645d82011bc3eecda39d25a65b",
+      "object_type": "commit"
+    },
+    {
+      "name": "chatgpt/urai-content-public-copy-cleanup-20260812",
+      "head_sha": "8c4ab481d2fc7f0c9eef9fff81119a855125175a",
+      "object_type": "commit"
+    },
+    {
+      "name": "chatgpt/urai-product-polish-20260812",
+      "head_sha": "e1eb3adbcd0cff06518b26635de818088bce0b59",
+      "object_type": "commit"
+    },
+    {
+      "name": "chore/align-status-and-ci-with-web-runtime",
+      "head_sha": "24eb5f60d1e7cf6442eafe09fdc9662810e07c8b",
+      "object_type": "commit"
+    },
+    {
+      "name": "chore/post-merge-web-generated-artifacts",
+      "head_sha": "ab7b0bd31d11257aa64e9f23e6d2a8aa789ff5eb",
+      "object_type": "commit"
+    },
+    {
+      "name": "chore/root-web-validation-scripts",
+      "head_sha": "e6f7fac00dc3c153dd60688814f44019a22f9a6a",
+      "object_type": "commit"
+    },
+    {
+      "name": "ci-release-gate",
+      "head_sha": "7ad8d2cc26ca7b82d4a9ce8d553d56819741c3b5",
+      "object_type": "commit"
+    },
+    {
+      "name": "ci-repair/urai-content-export-test",
+      "head_sha": "37ebc5ba2cf65d74af02aa3fdaa5080eca052c35",
+      "object_type": "commit"
+    },
+    {
+      "name": "codex/auth-route-guards",
+      "head_sha": "1148b50eb7828d3b7ba4f4b14bbd4b42e01108f3",
+      "object_type": "commit"
+    },
+    {
+      "name": "codex/complete-and-connect-urai-content-system",
+      "head_sha": "8a437ae7e2f4f330a8183b20637a2623352f3603",
+      "object_type": "commit"
+    },
+    {
+      "name": "codex/complete-and-connect-urai-content-system-9qg2oq",
+      "head_sha": "a80e1d14ed0e6af71013b153c989b8e930e8268f",
+      "object_type": "commit"
+    },
+    {
+      "name": "codex/complete-and-connect-urai-content-system-dybe6e",
+      "head_sha": "996123ab58f771651f5396034b83b87c4dcb7892",
+      "object_type": "commit"
+    },
+    {
+      "name": "codex/content-stabilization-phase-0-1",
+      "head_sha": "cb4b6863146831bb5bd9fdf132bd7e22a953e0e4",
+      "object_type": "commit"
+    },
+    {
+      "name": "codex/demo-asset-availability",
+      "head_sha": "4e4b7d3153b068df87c4cc50b2fd172d3ed010a3",
+      "object_type": "commit"
+    },
+    {
+      "name": "codex/ecosystem-integration-hardening",
+      "head_sha": "373f9f72fed0d0b62d8dbe1118233aa65615e3e5",
+      "object_type": "commit"
+    },
+    {
+      "name": "codex/production-completion-plan",
+      "head_sha": "884780a90326371e6691812fcdef12159e33aa95",
+      "object_type": "commit"
+    },
+    {
+      "name": "codex/publication-evidence-validation-20261101",
+      "head_sha": "34d41bf3de267e2fed488f82c6dd24ecd21ad663",
+      "object_type": "commit"
+    },
+    {
+      "name": "cold-vault-2026-08-16",
+      "head_sha": "ae1ccca83efc657e1d264fbc7c6c92566a55f760",
+      "object_type": "commit"
+    },
+    {
+      "name": "converge/content-terminal-assets-20261003",
+      "head_sha": "f1ac49c4cf64c1490232fd6bccbe63d305ebb481",
+      "object_type": "commit"
+    },
+    {
+      "name": "converge/content-terminal-authority-security-20260914",
+      "head_sha": "75e2343c9cdf34f4a67b3806e67307400b580e1c",
+      "object_type": "commit"
+    },
+    {
+      "name": "converge/content-terminal-runtime-future-20260923",
+      "head_sha": "8dd4eb8d19ccd2600d8d4c5f19fac35b65ece748",
+      "object_type": "commit"
+    },
+    {
+      "name": "design/content-editorial-archive-reconcile-20260921",
+      "head_sha": "dbb6df12dd43369be70542ba74d69c3c1fdd1ba7",
+      "object_type": "commit"
+    },
+    {
+      "name": "docs/browser-smoke-evidence",
+      "head_sha": "33ba3062feed3bf5a128a1093ed68e66ba3c0575",
+      "object_type": "commit"
+    },
+    {
+      "name": "docs/canonical-audit",
+      "head_sha": "af43a57cd70ac6b894e572da735def83dc692fab",
+      "object_type": "commit"
+    },
+    {
+      "name": "docs/ci-evidence-pr45",
+      "head_sha": "8b3e6b5e27f05d67a3d0aa2afb2e379cb9b31009",
+      "object_type": "commit"
+    },
+    {
+      "name": "docs/deploy-status",
+      "head_sha": "63a29e8ebb4a5fe5e72cbbd35b6136e9847f26e0",
+      "object_type": "commit"
+    },
+    {
+      "name": "docs/deployment-evidence-wording",
+      "head_sha": "22f656b80b799d773356120d13ed3805635a5799",
+      "object_type": "commit"
+    },
+    {
+      "name": "docs/genesis-estate-handoff-20261106",
+      "head_sha": "3edd6239328fc2c09130c7660cc825d04bcb582c",
+      "object_type": "commit"
+    },
+    {
+      "name": "docs/implementation-status-ci-backed",
+      "head_sha": "18258d9033dae3dd83a18ce1faa1f9aabe005aa4",
+      "object_type": "commit"
+    },
+    {
+      "name": "docs/readiness-dashboard-ci-status",
+      "head_sha": "021cedddda658208e48d7bc6dc54d5ddf79d8efc",
+      "object_type": "commit"
+    },
+    {
+      "name": "docs/readiness-status-wording",
+      "head_sha": "96a7018b57b3a4762b6a883ba0ff265689f52742",
+      "object_type": "commit"
+    },
+    {
+      "name": "docs/refresh-deployment-and-standalone-plan",
+      "head_sha": "b8ce0a834a41d9904323ea42b491a4b0bb0ca274",
+      "object_type": "commit"
+    },
+    {
+      "name": "expansion/prelaunch-export-determinism-20260923",
+      "head_sha": "5c9d946ddc0932a03beb448fcf699da9e8ca99e2",
+      "object_type": "commit"
+    },
+    {
+      "name": "feat/authenticated-route-scaffolds",
+      "head_sha": "bd891cd3b56ad70f4e1cd05ab068e8081efa77f4",
+      "object_type": "commit"
+    },
+    {
+      "name": "feat/canonical-content-seeding",
+      "head_sha": "00f58e112edfb214a9504214c540f9de8cc0ab50",
+      "object_type": "commit"
+    },
+    {
+      "name": "feat/catalog-source-mode",
+      "head_sha": "92612228b6f445f7dd461f7383659d19be1c1660",
+      "object_type": "commit"
+    },
+    {
+      "name": "feat/complete-public-route-shells",
+      "head_sha": "f710ab825c2a93a9bd4ece4be6e16fd153371990",
+      "object_type": "commit"
+    },
+    {
+      "name": "feat/core-content-apis",
+      "head_sha": "5c200d25db4ccb319375c4386b493469e02da8bc",
+      "object_type": "commit"
+    },
+    {
+      "name": "feat/firebase-admin-boundary",
+      "head_sha": "222e670c60467e4200370d151b7bf6f987fdc3d6",
+      "object_type": "commit"
+    },
+    {
+      "name": "feat/firebase-runtime-config",
+      "head_sha": "ba62a55d30b844fe3e217513f79964c3641400b6",
+      "object_type": "commit"
+    },
+    {
+      "name": "feat/firestore-backed-catalog-reads",
+      "head_sha": "cb2aa42e5f08dbc3fe44cf7d5023afc10eca50dc",
+      "object_type": "commit"
+    },
+    {
+      "name": "feat/firestore-content-repository",
+      "head_sha": "78f38d942753ea0b1c7b929fb6b447b701444356",
+      "object_type": "commit"
+    },
+    {
+      "name": "feat/public-route-foundation",
+      "head_sha": "9dcaae6896812eea604b6b5afd9b028fda37fc5d",
+      "object_type": "commit"
+    },
+    {
+      "name": "feat/rbac-policy-contracts",
+      "head_sha": "8a10fbf68229ffcc3a316419ba3e12b214bb0851",
+      "object_type": "commit"
+    },
+    {
+      "name": "feat/web-runtime-scaffold",
+      "head_sha": "13ca86b69f1b7e14efdc19a255d677d3632cce19",
+      "object_type": "commit"
+    },
+    {
+      "name": "fix/compact-public-target-48px-20261005",
+      "head_sha": "649b53c5a0552cf2587de95b846e20364a7d0d4e",
+      "object_type": "commit"
+    },
+    {
+      "name": "fix/content-public-canon-20261005",
+      "head_sha": "815a27b30a3ab1c4db56d883367a189eb8314866",
+      "object_type": "commit"
+    },
+    {
+      "name": "fix/content-revision-integrity-20261007",
+      "head_sha": "6321c38a939d26557a1c12cce3126ff6fd97dd6c",
+      "object_type": "commit"
+    },
+    {
+      "name": "fix/creator-workflow-f8da-20261008",
+      "head_sha": "12baf0ce9bf6fe5b7cf3c10b33648b6d2e9acba5",
+      "object_type": "commit"
+    },
+    {
+      "name": "fix/labs-tax-standing-public-truth-20261005",
+      "head_sha": "1f2d09d52c31f6b9e23cdced56714294e76a456e",
+      "object_type": "commit"
+    },
+    {
+      "name": "fix/public-canon-copy-20261005",
+      "head_sha": "3865baad106cd86659be855b993233496423d76a",
+      "object_type": "commit"
+    },
+    {
+      "name": "fix/public-trust-a11y-seo-20261005",
+      "head_sha": "da2353b43fb74aaf63e4d154ac9d628b61f311e3",
+      "object_type": "commit"
+    },
+    {
+      "name": "fix/storage-upload-boundaries-20260706",
+      "head_sha": "7818f6bd1c181efe60c9fc4da5626a44df3cedaf",
+      "object_type": "commit"
+    },
+    {
+      "name": "fix/vercel-double-path-20261005",
+      "head_sha": "51343e90adaaf175faedf4acbc600503200b0677",
+      "object_type": "commit"
+    },
+    {
+      "name": "hardening/content-review-supply-chain-20261005",
+      "head_sha": "2de252bd1924aa13491802f575983ef9b7a4f277",
+      "object_type": "commit"
+    },
+    {
+      "name": "hardening/pin-vercel-cli-20261005",
+      "head_sha": "18f9d694465217c382566347e058b9bdbbe000b3",
+      "object_type": "commit"
+    },
+    {
+      "name": "launch/press-technical-brief-20260913",
+      "head_sha": "0d433d21931e504bfda016369f259f037f4eaa27",
+      "object_type": "commit"
+    },
+    {
+      "name": "main",
+      "head_sha": "988ca4f7f38b1ce86e4d3f426361b5866fd23e0d",
+      "object_type": "commit"
+    },
+    {
+      "name": "maintenance-20260913",
+      "head_sha": "40ab238b5fd27f99bcf1b580fabaa5dbc9dfb394",
+      "object_type": "commit"
+    },
+    {
+      "name": "maintenance-deps-20260913-v2",
+      "head_sha": "8b26ecdc68c04dec8c8cf9b43680508879d3d6f9",
+      "object_type": "commit"
+    },
+    {
+      "name": "privacy/content-deletion-receipts-20261003",
+      "head_sha": "0f60c19540f035ede32850857e2c152dfff41c1c",
+      "object_type": "commit"
+    },
+    {
+      "name": "production-lock-content-2026-06-30",
+      "head_sha": "457a2a3d4b9bb621eef13b488c1a3b5826f6c71f",
+      "object_type": "commit"
+    },
+    {
+      "name": "production-lock/urai-content-done-done",
+      "head_sha": "84cadcbe6bce25e3c58f80f9bc52bba358e2df6d",
+      "object_type": "commit"
+    },
+    {
+      "name": "public-authority-consolidation-20260905",
+      "head_sha": "8b26ecdc68c04dec8c8cf9b43680508879d3d6f9",
+      "object_type": "commit"
+    },
+    {
+      "name": "r311/content-authority-20261101",
+      "head_sha": "18fe4de11568e632cfc902e2a2cab526fd3554d3",
+      "object_type": "commit"
+    },
+    {
+      "name": "repair/canon-provenance-reconciliation-20261007",
+      "head_sha": "2355617aa914751a42837fe262748b7f80eb2941",
+      "object_type": "commit"
+    },
+    {
+      "name": "repair/canonical-privacy-creator-consumer-20261009",
+      "head_sha": "501f58f300460142f5ce2e4de66068c8c2af4af1",
+      "object_type": "commit"
+    },
+    {
+      "name": "repair/content-deployed-source-parity-20261008",
+      "head_sha": "86ed68ad22f7dd986b3f3d66e005692589526883",
+      "object_type": "commit"
+    },
+    {
+      "name": "repair/content-frozen-rules-tooling-20261007",
+      "head_sha": "006eef62cbb2c33b28f27187ff398612826c3cd8",
+      "object_type": "commit"
+    },
+    {
+      "name": "repair/content-narrator-current-policy-20261010",
+      "head_sha": "a47ffbf38666f7048954ab75ea4cf4e465dd9d42",
+      "object_type": "commit"
+    },
+    {
+      "name": "repair/content-subject-export-20261009",
+      "head_sha": "41a53ee7baec318b56ff6c18bc8a52380a4f6873",
+      "object_type": "commit"
+    },
+    {
+      "name": "repair/content-tooling-token-depth-20261007",
+      "head_sha": "c82576ef526bad78a1d56e81009050580ff6d9d3",
+      "object_type": "commit"
+    },
+    {
+      "name": "repair/exec-estate-web-20261007-2328",
+      "head_sha": "6fb186aa6d5c7537fffdba2b15837bce160ccae7",
+      "object_type": "commit"
+    },
+    {
+      "name": "repair/full-completion-web-20261008",
+      "head_sha": "9f6c6135362a911d84628606480e9c3e0c7a8f5a",
+      "object_type": "commit"
+    },
+    {
+      "name": "repair/vercel-pulled-layout-preflight-20261010",
+      "head_sha": "6367d1163c34e38e3abbcb07413fdf73ff0a3b3c",
+      "object_type": "commit"
+    },
+    {
+      "name": "security/adc-only-content-2026-08-11",
+      "head_sha": "3ac2f7ffabd51fb3995236133f23fcfbeb041768",
+      "object_type": "commit"
+    },
+    {
+      "name": "security/content-dependencies-20260913",
+      "head_sha": "fe69669b5d16d903b6d3a3ffdd7e53b94cb0b465",
+      "object_type": "commit"
+    },
+    {
+      "name": "security/vitest-toolchain-20260801",
+      "head_sha": "1ed8cd07cd8c3fa9790e6b2d2e3f3b3a14f41780",
+      "object_type": "commit"
+    },
+    {
+      "name": "test/api-route-handler-contracts",
+      "head_sha": "8e9342a89abd197f28ee98bc7c426f438435a03e",
+      "object_type": "commit"
+    },
+    {
+      "name": "test/public-route-smoke",
+      "head_sha": "a928ee0112e4fe350a6fd2f6eb6818831cc01afc",
+      "object_type": "commit"
+    },
+    {
+      "name": "test/public-seo-contracts",
+      "head_sha": "c4e7daaeab8ad92989c42692ad6685e7108f559f",
+      "object_type": "commit"
+    },
+    {
+      "name": "test/r361-content-vercel-package-root-20261102",
+      "head_sha": "295e4ab4d1b2c886a2c0801306d071e280288891",
+      "object_type": "commit"
+    },
+    {
+      "name": "test/run-web-route-smoke-in-ci",
+      "head_sha": "082be5251b15d59e689e45c0d1cf358d20479941",
+      "object_type": "commit"
+    },
+    {
+      "name": "test/web-catalog-apis",
+      "head_sha": "90e21d65903cc5d7a8f0a816753d57435478e2f2",
+      "object_type": "commit"
+    },
+    {
+      "name": "ws-b/assurance-content-prompt-gates-20260711",
+      "head_sha": "887d53acdb426e9b5232409d081b60a9af10e38f",
+      "object_type": "commit"
+    },
+    {
+      "name": "ws-b/content-release-evidence-trust-20260711",
+      "head_sha": "e5f65a92e37d0882b7bec01e77b3ad3e8c4abcf3",
+      "object_type": "commit"
+    }
+  ]
+}
