@@ -1,0 +1,115 @@
+{
+  "schema": "one-urai-content-verified-byte-slice-v1",
+  "source_commit": "988ca4f7f38b1ce86e4d3f426361b5866fd23e0d",
+  "group": "apps",
+  "offset": 42,
+  "group_file_count": 115,
+  "verification": "base64 original raw bytes; matched original tree byte length and Git object ID; independent SHA256; known ABC vector passed",
+  "rows": [
+    {
+      "path": "apps/web/src/app/marketplace/page.tsx",
+      "bytes": 310,
+      "git_blob_sha": "d623d45cca52b909f016b3c9f26f83d0d8264ddb",
+      "sha256": "44f37f1952f650d6bed7c6de569bd65128f4c0c78357e96fc9e8c16e4a355dd5",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/narrator/page.tsx",
+      "bytes": 301,
+      "git_blob_sha": "2ddcdca9f676a53ecf4eeba5a5789bf06ff82f33",
+      "sha256": "86ea12886c3d03df1884b87b1ff209c0a430e16e1a7c662d040108e3742c1a72",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/page.tsx",
+      "bytes": 275,
+      "git_blob_sha": "214e8690a05a9d96b58a3907b4d35b61c4b6151f",
+      "sha256": "e7b5cb897b3518eb763890e44182e80aac50c7090da537141cb9efe797b38ed7",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/partners/page.tsx",
+      "bytes": 622,
+      "git_blob_sha": "b729e33586d7806c3d65c7106c8d8ee06c16177a",
+      "sha256": "978bd1c6b4839ea6d065d38fc8da30d89aa6e05d7cacc056117c70cb14d9814f",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/pricing/page.tsx",
+      "bytes": 1203,
+      "git_blob_sha": "44cc97f69ca0a98d019926c9733696e85bf347e2",
+      "sha256": "7d737f440264df04c275e499c29070667f09210c2996954e69251912b9403eb0",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/privacy/page.tsx",
+      "bytes": 284,
+      "git_blob_sha": "6ac5d8f78a2e2a8d4e93185189f3dfab813f6b90",
+      "sha256": "6f885e52f227d32d2187206f032d842d435aa8701e538f1c97b5796c64309940",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/product/page.tsx",
+      "bytes": 284,
+      "git_blob_sha": "bdf9ccd1fa498305d67a18bb827baab539e71f34",
+      "sha256": "32dc3d4a3e9b4d5b2dbf6674bbd6014dd61af98196b34a8bd7186378b6bf7596",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/researchers/page.tsx",
+      "bytes": 621,
+      "git_blob_sha": "cabd9d0719af32f1812de3a63f802b9e8862e7ff",
+      "sha256": "909a508199af83326fe0ecdb518d0d01f70a8b500346a2bcccc79391bc6f35d7",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/rituals/page.tsx",
+      "bytes": 298,
+      "git_blob_sha": "d3fea55d829fb81b1f01ef332125af320f6be687",
+      "sha256": "b0dd02833b5fafc46600484224fa882d0b71fabad74d5f2c43eaca0d86abcad6",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/roadmap/page.tsx",
+      "bytes": 1697,
+      "git_blob_sha": "b25741b5f99758b13d061d858ab6148d7ea94d09",
+      "sha256": "62f40555ee74ea00ea19fce72a799a41c61c61cd5c06fa4233168c6bcf36a523",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/robots.ts",
+      "bytes": 617,
+      "git_blob_sha": "a189e9c65d5a8495319f72f07674100da9f13c2c",
+      "sha256": "dd0a16911a70e2e544b2515e85aed2587600efddbfa7bcaf0edafdc698f19c6e",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/security/page.tsx",
+      "bytes": 1490,
+      "git_blob_sha": "df9277caf1b820140855fa1ec25fb004c550ca5b",
+      "sha256": "74ff52341df0f7aaeb911da3916656abc7aa44cab63182410ad77e723ae261b6",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/sitemap.ts",
+      "bytes": 570,
+      "git_blob_sha": "21af4c77e650377bae904769af63a30fad7e1245",
+      "sha256": "2300773d1976927949c136f295685d166df270798ae69f824a4d2d669a9f76b1",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/stories/page.tsx",
+      "bytes": 298,
+      "git_blob_sha": "5d7a9d6aa5c54f28428f1bc85ede5ba0f1749ebe",
+      "sha256": "39744b9d2f0029b34bf4cd2d2a9c05680f243e3dd5d306f5bb2f236f181e5756",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/terms/page.tsx",
+      "bytes": 278,
+      "git_blob_sha": "0c631d1ba49a1222871a1f89f2dbf27a1f2435d1",
+      "sha256": "550b5aaf03b2b24cd3bfde43f0f02724ce9515fdc632c204200e60e0adeff520",
+      "verified": true
+    }
+  ]
+}
