@@ -1,0 +1,115 @@
+{
+  "schema": "one-urai-content-verified-byte-slice-v1",
+  "source_commit": "988ca4f7f38b1ce86e4d3f426361b5866fd23e0d",
+  "group": "prompts",
+  "offset": 0,
+  "group_file_count": 26,
+  "verification": "base64 original raw bytes; matched original tree byte length and Git object ID; independent SHA256; known ABC vector passed",
+  "rows": [
+    {
+      "path": "prompts/CHANGELOG.md",
+      "bytes": 1670,
+      "git_blob_sha": "f7b6376b0b9830ca562a3ea8468fde8b54b72dc4",
+      "sha256": "3fb5af9fa4561f1b49259a78b4ce63207337dbee512b8c346cd78911d9019db8",
+      "verified": true
+    },
+    {
+      "path": "prompts/GOVERNANCE.md",
+      "bytes": 3828,
+      "git_blob_sha": "e311e1f565c5c69fc049edaaa59c3ee78ec192a8",
+      "sha256": "14a8539753dc3f329081a5d11a20a009c7af1ef4ddd05b9eb275295ad8d67fa9",
+      "verified": true
+    },
+    {
+      "path": "prompts/PARITY.md",
+      "bytes": 3357,
+      "git_blob_sha": "ac386ac87f5e9038554e1d2caf46d4c4b5f0b759",
+      "sha256": "c9aea568285b1aa72c0892a63124870a987f131822928536b265476421bad8ca",
+      "verified": true
+    },
+    {
+      "path": "prompts/README.md",
+      "bytes": 1776,
+      "git_blob_sha": "0a12a41fbcea28ddd6b84a5649549078ca0a3e7d",
+      "sha256": "8e5441692caa0531d32ddfd6518df361a717bc9394561f2df600cf549e7a1604",
+      "verified": true
+    },
+    {
+      "path": "prompts/SYNC.md",
+      "bytes": 3301,
+      "git_blob_sha": "6874501a617ca5c484278f5ff6e9964e377546ea",
+      "sha256": "bb16d98a1c2fd4114cfdb323893725a6ca255f6821b5bc5047963fc0c1d45a3a",
+      "verified": true
+    },
+    {
+      "path": "prompts/USAGE.md",
+      "bytes": 2114,
+      "git_blob_sha": "ea6401f9363f9c645169ed412b88e901ede60478",
+      "sha256": "44528b9daf3bfd1aa8f136e0667df8c99884e6c7081727e9d77665eaab545986",
+      "verified": true
+    },
+    {
+      "path": "prompts/VERSION",
+      "bytes": 6,
+      "git_blob_sha": "3eefcb9dd5b38e2c1dc061052455dd97bcd51e6c",
+      "sha256": "59854984853104df5c353e2f681a15fc7924742f9a2e468c29af248dce45ce03",
+      "verified": true
+    },
+    {
+      "path": "prompts/autonomous-research-agent-master-prompt.md",
+      "bytes": 26511,
+      "git_blob_sha": "42b7e1d5b4695435c86730d0201994e63b35061f",
+      "sha256": "8ed256bc9f29a8ae01125efa965c71d885875f86a64bbf4c6978d44b20a3a458",
+      "verified": true
+    },
+    {
+      "path": "prompts/evals/README.md",
+      "bytes": 5831,
+      "git_blob_sha": "318d5a3109acef5e58aaf16ab8f94613220e35eb",
+      "sha256": "b72b453d45b7c5e02c7209eed2173baa5cd7d42bddc2f9b870f0e8234e8e7384",
+      "verified": true
+    },
+    {
+      "path": "prompts/evals/cases.json",
+      "bytes": 8822,
+      "git_blob_sha": "744c18b9595225f05c0295602d5e0de98a769c38",
+      "sha256": "4bd94e7e7b70a9075acf59ea6d187ddf866239e6bd7c9f6e25b61548765fe974",
+      "verified": true
+    },
+    {
+      "path": "prompts/evals/fixtures/critical-fail.md",
+      "bytes": 68,
+      "git_blob_sha": "2460cd5bb17eab0c44990c8977dccac5d6caa526",
+      "sha256": "1dfd10ce3a735f57e398bddb36d7d378c0a5f44f7d386d2d35de5cbb5514c28c",
+      "verified": true
+    },
+    {
+      "path": "prompts/evals/fixtures/deep-review-pass.md",
+      "bytes": 785,
+      "git_blob_sha": "7f1b740c57cb0379994113a8174755aded012871",
+      "sha256": "ac77f0502d7ed66808ec4878f02b434855bf94d2d480d406e6c4044f18343c3f",
+      "verified": true
+    },
+    {
+      "path": "prompts/evals/fixtures/market-analysis-pass.md",
+      "bytes": 738,
+      "git_blob_sha": "b145ac0925eb8f46c0c8e1b3fd7ea62ba0592931",
+      "sha256": "c25663be0cdc6f9cedaf1c2e9a5c76984577ef5a6c1222b30af692161e27be45",
+      "verified": true
+    },
+    {
+      "path": "prompts/evals/fixtures/quick-scan-pass.md",
+      "bytes": 691,
+      "git_blob_sha": "732c1aeda4465ed28c7776b4045db74b50dbfa3c",
+      "sha256": "46f5a295acd9bfa9b29870a6f447b11e244e053e258173f3f4102834e601be42",
+      "verified": true
+    },
+    {
+      "path": "prompts/evals/fixtures/safety-critical-fail.md",
+      "bytes": 286,
+      "git_blob_sha": "4cca4c9d91b77d17c196ae8e7c3a1acd9978c33b",
+      "sha256": "7fae6dd7bd7d5c478f3d31ea4558f7defe1188b7627a31005e10460d024e0b46",
+      "verified": true
+    }
+  ]
+}
