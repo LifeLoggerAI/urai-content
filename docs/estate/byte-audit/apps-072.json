@@ -1,0 +1,115 @@
+{
+  "schema": "one-urai-content-verified-byte-slice-v1",
+  "source_commit": "988ca4f7f38b1ce86e4d3f426361b5866fd23e0d",
+  "group": "apps",
+  "offset": 72,
+  "group_file_count": 115,
+  "verification": "base64 original raw bytes; matched original tree byte length and Git object ID; independent SHA256; known ABC vector passed",
+  "rows": [
+    {
+      "path": "apps/web/src/lib/publicSiteContent.ts",
+      "bytes": 23231,
+      "git_blob_sha": "0a2fbd17b73fcc491e4105da64b8893474e9c52b",
+      "sha256": "bf7a59b57f6e2a17817b3766d481a091967f857654f9d8a1fe3357e3871eb862",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/server/auth/authorization.ts",
+      "bytes": 348,
+      "git_blob_sha": "61432b693bc269b466c067627a5fe211332fda66",
+      "sha256": "c6633ed40aab1a159782374f6dcd46acf92fb2ee6ea051d723e6f9180d73eecc",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/server/auth/errors.ts",
+      "bytes": 539,
+      "git_blob_sha": "f68eec3d71d6c4d0b4214327b8c43a99d294c448",
+      "sha256": "412f468aa8fa55c9740f5cd754199c3ea7a6a3ed5a7ca0b18448f5a4236818ed",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/server/auth/guards.ts",
+      "bytes": 1982,
+      "git_blob_sha": "5e654981a08eda8c1f461dd7b2be6cbf43127bbc",
+      "sha256": "4f88f4fed70b15989b0f8cf401345bb76efbd00bc08882184d5a0691043156cf",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/server/auth/rbac.ts",
+      "bytes": 7073,
+      "git_blob_sha": "854f3c7ab65beebefb389fb1d4b9bdbaf46c9eb9",
+      "sha256": "f14da0f797c9eed7c3c17b886fc43f4342a32ce4bb67740741c048c9b4752e14",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/server/auth/requestSession.ts",
+      "bytes": 142,
+      "git_blob_sha": "84bf348b2f09965697d18214c5a0a9d074c6599e",
+      "sha256": "c96fde6af90e4a7ce5fcc0eab3d8f186fe113db7191f0784f4f05ab0521269b4",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/server/auth/roles.ts",
+      "bytes": 1347,
+      "git_blob_sha": "1bf0c73979c1a339246a145f75be544dfe73d8c2",
+      "sha256": "0eba054ab30b7a3ff39de5dd9b64c14e516a6908c229836c9640859974a78a3f",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/server/auth/session.ts",
+      "bytes": 2506,
+      "git_blob_sha": "a823c8402825bfac311d6a00e468c2b4b98c48ed",
+      "sha256": "8556a706e2f286996878bc829fd8fc85f9b5f65e15bc5da48324f0da282b9524",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/server/content/canonicalSeed.ts",
+      "bytes": 2595,
+      "git_blob_sha": "5438a9d81fabdc635072935ba593194830103f26",
+      "sha256": "dbcf3201f9eebf777d2bde6e3e66074e2abe1098ee76f09445da98c90fc632ab",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/server/content/catalogSource.ts",
+      "bytes": 665,
+      "git_blob_sha": "f6c0bd8048096d9e8a01a8df6b8c1368822976f5",
+      "sha256": "8debc8d8fbaec4104fb5f91e73c34b38f81c34fd0633c56e84502dbb4a4bad8a",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/server/content/inMemoryRepository.ts",
+      "bytes": 4313,
+      "git_blob_sha": "a1d8b4f6f5bec795f0f1c00045dbb3100d4778c4",
+      "sha256": "74566d77338c815cbc4046d3dea557ced21f6c4e8a88c9f48299b054195f3945",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/server/content/runtimeCatalog.ts",
+      "bytes": 3007,
+      "git_blob_sha": "979dcb9908da59a147f050de56bdde0e605c158e",
+      "sha256": "26d948f10a658c6901d431758cc4329f3ad66fc82185829cc77bd1af14dcd521",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/server/content/schemas.ts",
+      "bytes": 6200,
+      "git_blob_sha": "8e55d44f21e798c8d5d73826e82ccc624bfd5abf",
+      "sha256": "141114b743f0ab7d091380ebc5addac92a181d3018ba704c341890b3231d10ee",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/server/content/service.ts",
+      "bytes": 3360,
+      "git_blob_sha": "92b9c63591488b30fb2932896b10e2f2c18a60a3",
+      "sha256": "00a81a5577445ce3f7769d3415c4f2c23f73a2648ab198b7e6b391d40a5f7b1d",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/server/content/types.ts",
+      "bytes": 3270,
+      "git_blob_sha": "2ef6c839f42a2081f1bdd2e9f696ca4b31641df1",
+      "sha256": "a1d68a3b3510498f609e46259cc4f9f7ed9af14d64a9fbaf7253e6edd9748d45",
+      "verified": true
+    }
+  ]
+}
