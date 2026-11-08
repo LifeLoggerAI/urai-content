@@ -1,0 +1,45 @@
+{
+  "schema": "one-urai-content-verified-byte-slice-v1",
+  "source_commit": "988ca4f7f38b1ce86e4d3f426361b5866fd23e0d",
+  "group": ".github",
+  "offset": 15,
+  "group_file_count": 20,
+  "verification": "base64 original raw bytes; matched original tree byte length and Git object ID; independent SHA256; known ABC vector passed",
+  "rows": [
+    {
+      "path": ".github/workflows/release-evidence.yml",
+      "bytes": 1845,
+      "git_blob_sha": "f6db074d81c8b37e13d2a30be8024a03318e307a",
+      "sha256": "695e59c4e3557c96a6fc351daa487b9a52080426cc18120469f6471ef309f5d0",
+      "verified": true
+    },
+    {
+      "path": ".github/workflows/release-promotion.yml",
+      "bytes": 3702,
+      "git_blob_sha": "ec719ecd03829beb6ceb4e4f93c2a93838d7cd3f",
+      "sha256": "babc57a6a3175c44d0fb45cc5a37b97366fcb81ed41bc0aecc8429e7ea6c52c5",
+      "verified": true
+    },
+    {
+      "path": ".github/workflows/rules-emulator.yml",
+      "bytes": 6093,
+      "git_blob_sha": "85a7a527cf169ac69b82e9009369e969a2da102b",
+      "sha256": "22ada36758d686a70c17c860f6a2238da99ded518895a7a2038feb723efdf2d8",
+      "verified": true
+    },
+    {
+      "path": ".github/workflows/urai-production-verify.yml",
+      "bytes": 5877,
+      "git_blob_sha": "a611d046d4cac34d5ded8ab32da39ab9718d1749",
+      "sha256": "200e5b1902a674c7d486e3945af729bcee84be23dd894de9f1a19e80f90577e8",
+      "verified": true
+    },
+    {
+      "path": ".github/workflows/web-e2e.yml",
+      "bytes": 1966,
+      "git_blob_sha": "9a18cef8ffefa1cb67d8a17d163826937df29cb4",
+      "sha256": "dfc66513e4487fd573e961de84ef4e7b9d431d237c93c3498eb8f0142addf66d",
+      "verified": true
+    }
+  ]
+}
