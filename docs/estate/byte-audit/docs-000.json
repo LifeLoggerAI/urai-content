@@ -1,0 +1,115 @@
+{
+  "schema": "one-urai-content-verified-byte-slice-v1",
+  "source_commit": "988ca4f7f38b1ce86e4d3f426361b5866fd23e0d",
+  "group": "docs",
+  "offset": 0,
+  "group_file_count": 69,
+  "verification": "base64 original raw bytes; matched original tree byte length and Git object ID; independent SHA256; known ABC vector passed",
+  "rows": [
+    {
+      "path": "docs/ADAM_CLAMP_PUBLIC_FOOTPRINT.md",
+      "bytes": 8157,
+      "git_blob_sha": "850f7c100ed9402df90369299762b010d2611e86",
+      "sha256": "eb4b0d3e7ce2b33d1555022720bb77cca9277513690baf0780cb5a55582f35b4",
+      "verified": true
+    },
+    {
+      "path": "docs/AI_SEARCH_ENTITY_REGRESSION_2026-09-05.md",
+      "bytes": 9407,
+      "git_blob_sha": "9d0d0f8db607e1a129d164d6e48342baabeec36e",
+      "sha256": "2adfe64f046e1a09fcb464e435dbd0a2957a95c71464b90bc19911aaa4a6c557",
+      "verified": true
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "bytes": 3513,
+      "git_blob_sha": "bc9e4502476771b01b7675cffc96f79289c610fa",
+      "sha256": "f83d3dfd20ab822975fb23af4828b330027fd4722d18bd099d77ae60a78e714c",
+      "verified": true
+    },
+    {
+      "path": "docs/AUDIT.md",
+      "bytes": 7932,
+      "git_blob_sha": "b2db095ab0ffb4a56253cae9e354a83e22031da6",
+      "sha256": "95a7fa2d6565346b43625d0838c00b02dd49cb648708bb7520af66051603fa58",
+      "verified": true
+    },
+    {
+      "path": "docs/BLOCKERS.md",
+      "bytes": 2472,
+      "git_blob_sha": "567f402f7923e937e8bebe8b4410a9241ab8e575",
+      "sha256": "7ebe6cdd24521ea29bc3b81bb8ac02360d42ba76ed3f20082e755dcddbe1f541",
+      "verified": true
+    },
+    {
+      "path": "docs/BRANCH_AND_GOVERNANCE_STATUS.md",
+      "bytes": 3674,
+      "git_blob_sha": "fd1ec227a4a1c3f701f4c27c9a219fa4121e5a56",
+      "sha256": "f19d634255e38b0823af73fa20bd352321eedec36bc4a87875edcd2dad4d199b",
+      "verified": true
+    },
+    {
+      "path": "docs/CLAIM_SAFETY.md",
+      "bytes": 297,
+      "git_blob_sha": "ad27f0b3860a29ffae1a386da61e40428c7214b4",
+      "sha256": "4b05dba7ed3361935da07557e4946122c6172b7bea012c4346385608158aad10",
+      "verified": true
+    },
+    {
+      "path": "docs/COMPLETION_AUDIT.md",
+      "bytes": 6063,
+      "git_blob_sha": "2869040d14a23015107554acdbc801644716f51a",
+      "sha256": "9c5992818cb382503fb8aa2f8e6887868f7785941bb4add442a89f3e6ea4b2b8",
+      "verified": true
+    },
+    {
+      "path": "docs/COMPLETION_REPORT.md",
+      "bytes": 2232,
+      "git_blob_sha": "6f454f0fd19ecf357b29b2303450be5aaaed7222",
+      "sha256": "713ff34a357faaccb95267616470e4e1e4cb6d0849aaac396032cd3b5d92cf91",
+      "verified": true
+    },
+    {
+      "path": "docs/CONTENT_GUIDE.md",
+      "bytes": 286,
+      "git_blob_sha": "30d5a95300d183ad64f228afca198ba6fda278e6",
+      "sha256": "e02d4640c5b3abd8253b6bf552af88c9d8893d9c67e3b2d89441081c90d59236",
+      "verified": true
+    },
+    {
+      "path": "docs/CONTENT_SYSTEM.md",
+      "bytes": 462,
+      "git_blob_sha": "147adfefb6eb23aab9ec8e4a3233b6b0ed4dcec7",
+      "sha256": "ee37a52f586af37299597dce4ec5c014a0f3fa1717b509e5f58e7bcc4c0a0b35",
+      "verified": true
+    },
+    {
+      "path": "docs/CONTENT_TYPE_MATRIX.md",
+      "bytes": 5264,
+      "git_blob_sha": "d7314f241d76fcb97d1c45d1a29cce794c1765f2",
+      "sha256": "11ee9e499546189d4c10d543a635deb16f944b6d662a2e8cd1cbacd642959ff0",
+      "verified": true
+    },
+    {
+      "path": "docs/CONTRIBUTING.md",
+      "bytes": 206,
+      "git_blob_sha": "7724b5f03e911fc19a00e28b89b66742bf1b91dc",
+      "sha256": "48a60cb9a47f3daf3a2f5a99213a9faa0bad76557e8cc2a11a860a28354a4dd3",
+      "verified": true
+    },
+    {
+      "path": "docs/CROSS_REPO_RUNTIME_CONTRACT.md",
+      "bytes": 2798,
+      "git_blob_sha": "e0b768e45fc0db7e7164ba195601ced75170ecea",
+      "sha256": "5816aef5b58ebaa002a5c22fe254d03a1ffb6cfa689089449c7c362b48c16811",
+      "verified": true
+    },
+    {
+      "path": "docs/CROSS_SYSTEM_CANON_AUTHORITY.md",
+      "bytes": 1563,
+      "git_blob_sha": "5f0fc6774bdfc90b57e35821c14f8cae23b7cc21",
+      "sha256": "c281887662c6d685603d523328e06ced5e53ff47f3f4615167f03851526fe05a",
+      "verified": true
+    }
+  ]
+}
