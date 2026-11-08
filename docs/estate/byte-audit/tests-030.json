@@ -1,0 +1,73 @@
+{
+  "schema": "one-urai-content-verified-byte-slice-v1",
+  "source_commit": "988ca4f7f38b1ce86e4d3f426361b5866fd23e0d",
+  "group": "tests",
+  "offset": 30,
+  "group_file_count": 39,
+  "verification": "base64 original raw bytes; matched original tree byte length and Git object ID; independent SHA256; known ABC vector passed",
+  "rows": [
+    {
+      "path": "tests/search-contracts.test.ts",
+      "bytes": 1104,
+      "git_blob_sha": "2ed57218bdda1bbe15f5d6ce4495e3ba022f5eb7",
+      "sha256": "be7a6010683532a0e0e5d58dbc32b0d30c827e3377c518ee7cd099205ece9b9b",
+      "verified": true
+    },
+    {
+      "path": "tests/search-document.test.ts",
+      "bytes": 1267,
+      "git_blob_sha": "12be0315eb3788182fcbb4ab5f83be68a9d01723",
+      "sha256": "1be9f38bf2ac34b9e96336e0419855171113fb62c20e7623ddad1e0314c286ee",
+      "verified": true
+    },
+    {
+      "path": "tests/security-rules-contract.test.ts",
+      "bytes": 2404,
+      "git_blob_sha": "5ad89270af034dc943bf44fa136e96a9da4d85eb",
+      "sha256": "42a913102be65f13c6596abe4c0c807e18c1af6e1fd5d73aeada34daded51823",
+      "verified": true
+    },
+    {
+      "path": "tests/syndication-contracts.test.ts",
+      "bytes": 1069,
+      "git_blob_sha": "05f4de699d818be0cd2c224542463d19dc4e93cf",
+      "sha256": "1d9f566e18b6287d102cb1e752d838a221806dc581444e3d302f7867673cd048",
+      "verified": true
+    },
+    {
+      "path": "tests/system.test.ts",
+      "bytes": 2838,
+      "git_blob_sha": "71156dc5ae853c30a0b3c1c60d70170eb95067f1",
+      "sha256": "a78bfaff4001aa001f4586a8a9363e7392309e424fd5f9d801b63594bb9894a9",
+      "verified": true
+    },
+    {
+      "path": "tests/taxonomy-contracts.test.ts",
+      "bytes": 1883,
+      "git_blob_sha": "e68a441207dfb30db9ee6d8420ffee3b736c0d8f",
+      "sha256": "241416264c61f4efddbafe02c4173885bdc4675cda92e4ed16d1d89ac70bb198",
+      "verified": true
+    },
+    {
+      "path": "tests/telemetry-policy.test.ts",
+      "bytes": 904,
+      "git_blob_sha": "d378f36b55f8ebed002c6b22cd4596d1b84bc4d6",
+      "sha256": "30b3f5fa2a0123fb1d4bc13f42133c80cee38a833f2439c30128acc9017c5126",
+      "verified": true
+    },
+    {
+      "path": "tests/urai-locales.test.ts",
+      "bytes": 1350,
+      "git_blob_sha": "f6802090b2c02cf0f3c23b13793adda16a450ecf",
+      "sha256": "8a0f7e14b59b2cdeece09ce2b34ccfaee764e23672a898dd9a1369d15e98ea5a",
+      "verified": true
+    },
+    {
+      "path": "tests/validator-failures.test.ts",
+      "bytes": 1990,
+      "git_blob_sha": "e032c352e92b093473b55ed0c49521cdad580b3b",
+      "sha256": "02b0760426cbe664038053c0944024ecc0c81d98732310004147eee421e55b86",
+      "verified": true
+    }
+  ]
+}
