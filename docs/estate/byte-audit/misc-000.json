@@ -1,0 +1,94 @@
+{
+  "schema": "one-urai-content-verified-byte-slice-v1",
+  "source_commit": "988ca4f7f38b1ce86e4d3f426361b5866fd23e0d",
+  "group": "misc",
+  "offset": 0,
+  "group_file_count": 18,
+  "verification": "base64 original raw bytes; matched original tree byte length and Git object ID; independent SHA256; known ABC vector passed",
+  "rows": [
+    {
+      "path": ".env.example",
+      "bytes": 2845,
+      "git_blob_sha": "c5b07b4705607d61a9995a2b255ff5e03f895ddf",
+      "sha256": "d1ae5ac6cf5e8794000fb4df15c67defcb60931a07b0755ffddf2d18ade9214f",
+      "verified": true
+    },
+    {
+      "path": ".gitignore",
+      "bytes": 2152,
+      "git_blob_sha": "9a5acedff56aee2e6731a444d283bf6071c49bcc",
+      "sha256": "ac80a6e11ddd192eb092b45b09045246d3ebfdc5b8aee4cbe7473cf89bd5609c",
+      "verified": true
+    },
+    {
+      "path": "AUDIT_REPORT.md",
+      "bytes": 12865,
+      "git_blob_sha": "6d480aaca996e89a23d37f5caaa68508d99d1d15",
+      "sha256": "f38d0b0daee161eda04f54bb97b2ad4ae9e61ac1f9e37c4ed7d00a49ac83230a",
+      "verified": true
+    },
+    {
+      "path": "DEPLOYMENT_BLOCKERS.md",
+      "bytes": 6309,
+      "git_blob_sha": "1ee0d8f75d63dfca8b9ecb73473d62b5c6720eb9",
+      "sha256": "eb658fce2dfb60a7abde9933e14261f6823edcfdfda8c56d41123df6f4308283",
+      "verified": true
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 11357,
+      "git_blob_sha": "261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64",
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "verified": true
+    },
+    {
+      "path": "README.md",
+      "bytes": 7304,
+      "git_blob_sha": "494e817263b5e9c1081dc3b3506145dd1be7bd33",
+      "sha256": "1b4a2564f5cc53d4b0502ff6c3b74e3b04f3e9f6ebfdb4632cf3830e120c9005",
+      "verified": true
+    },
+    {
+      "path": "URAI_FINAL_COMPLETION_AUDIT.md",
+      "bytes": 12417,
+      "git_blob_sha": "87c57d78057d7782a090a5c6899daae882667322",
+      "sha256": "0270264a16a723a88793a71c271b1ae918be75c7867b0b5df477346a512e3628",
+      "verified": true
+    },
+    {
+      "path": "eslint.config.js",
+      "bytes": 619,
+      "git_blob_sha": "e34654a626bdb44cea61be6666c479f710020ebb",
+      "sha256": "0452bf5122a15dbba7a8762ccbba0002581788bc0506596959cce6cc07c32d04",
+      "verified": true
+    },
+    {
+      "path": "firebase.json",
+      "bytes": 1044,
+      "git_blob_sha": "eff957a445dff0ea8453cfb3acbf9d6838353e49",
+      "sha256": "eb49d3adf71851be94cdbbe39f92ab7021bfc4bf68cd365cf6ca2534018c9211",
+      "verified": true
+    },
+    {
+      "path": "firestore.indexes.json",
+      "bytes": 1462,
+      "git_blob_sha": "688d48c8940a529b833c94b8d4752477e26c4ad2",
+      "sha256": "69a328be4dfcc14501b2e2ea5467a34b387ab9ca26ef757c760edff6699567d2",
+      "verified": true
+    },
+    {
+      "path": "firestore.rules",
+      "bytes": 5207,
+      "git_blob_sha": "b2a465b7d39c8777f1a2c6c7e42a3f39b19654ff",
+      "sha256": "46c3c28bf35dd58328ad33abb25819f85b12344abce77b05fe399350e026cc55",
+      "verified": true
+    },
+    {
+      "path": "package-lock.json",
+      "bytes": 99691,
+      "git_blob_sha": "3fac70ad976e7c7a3105f4c06fed00937abf7ead",
+      "sha256": "06714a43e04f643074ebf00b20527ce48a18b4b332e4fba31c01461e317f274b",
+      "verified": true
+    }
+  ]
+}
