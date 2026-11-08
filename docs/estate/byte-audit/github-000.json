@@ -1,0 +1,115 @@
+{
+  "schema": "one-urai-content-verified-byte-slice-v1",
+  "source_commit": "988ca4f7f38b1ce86e4d3f426361b5866fd23e0d",
+  "group": ".github",
+  "offset": 0,
+  "group_file_count": 20,
+  "verification": "base64 original raw bytes; matched original tree byte length and Git object ID; independent SHA256; known ABC vector passed",
+  "rows": [
+    {
+      "path": ".github/CODEOWNERS",
+      "bytes": 2479,
+      "git_blob_sha": "6577c8a7debaf1a9b8a12455fecc758c11af655f",
+      "sha256": "1ae823ebae5b6627018b3ef47020df76f3a1c5f7947fea0806aa794116588cb6",
+      "verified": true
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/bug_report.md",
+      "bytes": 568,
+      "git_blob_sha": "3cea0183a7be443a1a91d11cc7d2e3874e68a376",
+      "sha256": "d008916d3723bd767b4893cd9610e3834818ac284c5533713c5c94a8ac0ed3c7",
+      "verified": true
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/content_feature.md",
+      "bytes": 662,
+      "git_blob_sha": "b41631ca32d09b22bc36fa83435ae1fc0b52b42d",
+      "sha256": "0211ea95c3ba5161397b7c2746c0f107a6325d4f608ecc6442b4d85e7942e901",
+      "verified": true
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/launch_task.md",
+      "bytes": 1353,
+      "git_blob_sha": "1bc7b8c6016d51e2bd00a54735472762339fbe38",
+      "sha256": "434765854a936693f42fe295903a973f0b7bfdecedfa690b3604eebec61311cb",
+      "verified": true
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/runtime_bug.md",
+      "bytes": 1124,
+      "git_blob_sha": "965678ba409887243f9706d2041622672eb46e18",
+      "sha256": "40f1c0327abc33ac7fd6730450b0e64e53ad130f87c8e75100a238d172ad4218",
+      "verified": true
+    },
+    {
+      "path": ".github/pull_request_template.md",
+      "bytes": 5540,
+      "git_blob_sha": "6859a181106e5d9946f4013a3f244b4bc0481dcc",
+      "sha256": "ad77f4742c89b4178f6b159651902d10069cd283511f1d62fa1d04e0b3010f50",
+      "verified": true
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "bytes": 1703,
+      "git_blob_sha": "776c02d4d22115c92faecb7736e1e0b000025009",
+      "sha256": "5e00cad05ad34ea701fa3a344749e911d5f0c519dcccc9482f0a0455c6b9fe65",
+      "verified": true
+    },
+    {
+      "path": ".github/workflows/content-dependency-audit-evidence.yml",
+      "bytes": 6787,
+      "git_blob_sha": "3d02f996154ddff2080e10de6340d05d43fadd54",
+      "sha256": "e0d2979f8a9fc5d010c6e6f0b782c04c3ddbbc69fdc1c21fd8eda0c40d69948f",
+      "verified": true
+    },
+    {
+      "path": ".github/workflows/content-visual-proof.yml",
+      "bytes": 1894,
+      "git_blob_sha": "8c1ece5327aea78004e9da545922388fb36460cb",
+      "sha256": "1d442535a056a1eba5197c37c613e5d110c9a52524ba3ef1525d07c0ede1278e",
+      "verified": true
+    },
+    {
+      "path": ".github/workflows/content-web-lockfile-bootstrap.yml",
+      "bytes": 3852,
+      "git_blob_sha": "b47546910efc3bb06362ecccc30e1a324b83d33c",
+      "sha256": "5c7a9933023fa45a040e33c6336d1d77b982edeb8a02c416682e49c8ccf98701",
+      "verified": true
+    },
+    {
+      "path": ".github/workflows/deploy-vercel-production.yml",
+      "bytes": 5815,
+      "git_blob_sha": "647d9774485a929ceed58ee2cfe60dd0c276c0a5",
+      "sha256": "a09ac3b3337879e9524038dd80d404ab4136589bb0920d90782ef33084f9c8f1",
+      "verified": true
+    },
+    {
+      "path": ".github/workflows/governance.yml",
+      "bytes": 2207,
+      "git_blob_sha": "1169b57df294b8ddc4253de6550f30cf94550f30",
+      "sha256": "9365724387bb9d1bd79c4014129fde3ea6ede5a35b47d5d6dc7e07e634b0583f",
+      "verified": true
+    },
+    {
+      "path": ".github/workflows/prompt-library.yml",
+      "bytes": 3395,
+      "git_blob_sha": "c0b4a36979ee30dadb3e26ee6519e1ed1bec6c29",
+      "sha256": "1e3cfb3e14e017a4c51621f267161ab0ec2e1ffbca5f794fd26f648dc22c8b0f",
+      "verified": true
+    },
+    {
+      "path": ".github/workflows/prompt-release-source-receipt.yml",
+      "bytes": 5794,
+      "git_blob_sha": "f6a13ffb52e54626ccf64a7c69985ea74abb27e9",
+      "sha256": "b7cf5f2de093f2493b159c96156b924c4502cb6cf0cafe9328a8f17d138be567",
+      "verified": true
+    },
+    {
+      "path": ".github/workflows/prompt-review-gate.yml",
+      "bytes": 3693,
+      "git_blob_sha": "3df6609bbe36c68f9ff31a0624977e2361461ed1",
+      "sha256": "2019b6b43d693bab3b90f8c0be2744cbf1f43dfd0caef3b2f6c92ba013d6e1b3",
+      "verified": true
+    }
+  ]
+}
