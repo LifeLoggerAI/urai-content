@@ -1,0 +1,15 @@
+# Test evidence ledger — exact runner/source separation
+| Source or system | Evidence | Result | What it does NOT certify |
+|---|---|---|---|
+| main `988ca4f7f38b1ce86e4d3f426361b5866fd23e0d` | nontruncated Git API tree | **388** blobs, **1,514,321** Git bytes | all blobs read, SHA256, test execution |
+| older #96 controller (different head and synthetic merged checkout) | GitHub [run 38010261903](https://github.com/LifeLoggerAI/urai-content/actions/runs/38010261903), web/validate/browser-smoke jobs | Steps executed and passed: npm ci, lint, typecheck, validation, index, smoke, test, build, web install/check | today's #96 head or production |
+| latest #96 `6321c38a939d26557a1c12cce3126ff6fd97dd6c` | [run 41530090935](https://github.com/LifeLoggerAI/urai-content/actions/runs/41530090935) | failure conclusion; job-step specifics not investigated for this run | cannot claim assertion failure or pass |
+| #111 `18fe4de11568e632cfc902e2a2cab526fd3554d3` | PR #111 describes sandbox Node 24/22 exact-source evidence | historical reported 132 root +104 web tests, clean builds, 40 browser passes and 8 skips; isolated RSA negatives | no current independent issuer/hosted CI/deployed identity |
+| #112 `295e4ab4d1b2c886a2c0801306d071e280288891` | [run 41577744114](https://github.com/LifeLoggerAI/urai-content/actions/runs/41577744114) | failed; all three queried jobs show **zero steps** | actual source tests did not run |
+| Genesis #113 `3edd6239328fc2c09130c7660cc825d04bcb582c` | [run 42339913629](https://github.com/LifeLoggerAI/urai-content/actions/runs/42339913629) | failed; `validate` steps **zero** | docs-only source mutation test |
+| Vercel `urai-content` | actual project and deployment readback | `live:false`; three ERROR deployments | no READY external runtime |
+| latest Vercel `dpl_7Zw5D4kaB7f4bNg4oFd6YGzVJ8PJ` | provider build events | Next compiled successfully, then doubled `/vercel/path0/vercel/path0/.next/routes-manifest.json` ENOENT | deployment READY or current compiled SHA |
+| protected Firebase/real media | no GCP IAM + effective Rules + signed user+owner readback | **UNVERIFIED** | user privacy, content publication, delete or export |
+| production deployment/rollback/monitoring | issue #61 remains open | **HOLD** | production GO |
+
+**Present in repo as test infrastructure:** 39 root tests/rules sources; app Vitest and Playwright specs, CI/Governance/Rules workflows and validation/route smoke/release scripts. These are path evidence, not a fresh run. **Commands run in this review:** GitHub metadata/raw selected file readback, Vercel read-only provider calls, a JS consistency assertion for nontruncated tree counts and creation of docs. No native npm/TS/Vitest/Playwright/Firebase emulator was executed. Provider and user-level operations were deliberately not attempted.
