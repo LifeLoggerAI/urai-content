@@ -1,0 +1,115 @@
+{
+  "schema": "one-urai-content-verified-byte-slice-v1",
+  "source_commit": "988ca4f7f38b1ce86e4d3f426361b5866fd23e0d",
+  "group": "apps",
+  "offset": 57,
+  "group_file_count": 115,
+  "verification": "base64 original raw bytes; matched original tree byte length and Git object ID; independent SHA256; known ABC vector passed",
+  "rows": [
+    {
+      "path": "apps/web/src/app/updates/page.tsx",
+      "bytes": 284,
+      "git_blob_sha": "7086d79b7222b46e104296fe8a2e297e0491f2f3",
+      "sha256": "82ccfaaeeee20953963c707d431f75d46ddb6306a7e7f0da043dc5eb8042c73a",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/users/page.tsx",
+      "bytes": 278,
+      "git_blob_sha": "50d4b77ae24c0b3fc152f837e52166771569a7ff",
+      "sha256": "a60715c15335a54b82ab405d52e3a8a00c843849b6397fabd8054389a2100424",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/versions/page.tsx",
+      "bytes": 301,
+      "git_blob_sha": "b7461d2f57f3cf44233b6ddfcbff964bdd573b91",
+      "sha256": "9dbfdb728913c4661378e1b9bbc16059f82c098704ab9356a02c6c734d8f58ea",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/voice-packs/page.tsx",
+      "bytes": 307,
+      "git_blob_sha": "6105086316140af227abbef56c5e4940c5783f98",
+      "sha256": "061789623232419ba43c727648b117aa74dbce52a3c89fc564fe11dfbd1b6b40",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/waitlist/page.tsx",
+      "bytes": 575,
+      "git_blob_sha": "aabb8ee9f69b718e1e56d3d33c2a43a8dbaf52bb",
+      "sha256": "cb395393207592a1c4bc13faee092d1fb48f20858f50f9afc8809e9cedb5df59",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/components/AnalyticsTracker.tsx",
+      "bytes": 948,
+      "git_blob_sha": "22056b452d80706b24747dabbb8c46a2e1cba09e",
+      "sha256": "be670f44537226abf69e769cbe8787edce6672b306b17e9adf0adc41d1f3d775",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/components/LeadForms.tsx",
+      "bytes": 4295,
+      "git_blob_sha": "9c4a62708015ee8e8ceb67b0700128e2d3d2757e",
+      "sha256": "a9f6ff2e15bb1a8fc4770257ce18b082a3d706f1dbb35ebbd5a4a9476e36385d",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/components/PublicPage.tsx",
+      "bytes": 5697,
+      "git_blob_sha": "ba6bb0492c322c936604bded359f65a45b2057df",
+      "sha256": "9599b9f69d296013baaa8fd2ce225fc4a186a3f413e2ae90fb177551bc5d33ab",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/components/PublicRouteShell.tsx",
+      "bytes": 523,
+      "git_blob_sha": "263a7245b94cebaeaaee76ff1392c026a9f99ad5",
+      "sha256": "1e0ca1985466b0cd6f0f9444f8d3c832c2fc2ad63288ecc6a5910cb00157158c",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/components/TrackedLink.tsx",
+      "bytes": 680,
+      "git_blob_sha": "c23b325f459cd28e1671d98e925be8e3589bdc32",
+      "sha256": "30e3b7aca80c5c36fb461247a91cdf517d567a92d9b8dfbd8af70dce81be83bf",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/lib/catalog.ts",
+      "bytes": 6351,
+      "git_blob_sha": "c4ba5b07df06b3823176b5a589fb08b923ae0fbb",
+      "sha256": "b92691f809d6cedbe7bcbe65ef8b5464b45e78bd03ecbf16767fcd182a125e25",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/lib/env.ts",
+      "bytes": 629,
+      "git_blob_sha": "a7c33974785a71ffe84f8c98bec346bfe3a4c296",
+      "sha256": "f3369b30d706b7ae8663d6c71f0ec2b9bfcf67c4b50305e627fa75573ca639e0",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/lib/publicPageContent.ts",
+      "bytes": 9434,
+      "git_blob_sha": "c7f0d5ce4f12d4fbee1e1c1b00963574d3e1f32b",
+      "sha256": "885dca580195aa7e59793d307c026fd62b6669750ad60046aff261acd855addf",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/lib/publicRoutes.ts",
+      "bytes": 571,
+      "git_blob_sha": "3b9c5ea7e9f7fee97aac88a6734a49fc4e8bff91",
+      "sha256": "18533a1fcee6437f35b732f1da4c7067a1b05da7a0573d388bca930c5044b484",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/lib/publicSeo.ts",
+      "bytes": 3620,
+      "git_blob_sha": "3a347ae623a779923dd90446cf40bfa60400048a",
+      "sha256": "3161d7f3e2ef880a8eb81ccc7904e7994eb30ae749b51d0eba08efc17d4b9b04",
+      "verified": true
+    }
+  ]
+}
