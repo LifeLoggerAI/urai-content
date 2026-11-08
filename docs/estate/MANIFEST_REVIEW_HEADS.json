@@ -1,0 +1,1321 @@
+{
+  "schema": "urai-content-genesis-active-review-delta-v2",
+  "source": "GitHub immutable recursive trees compared against main Git blob IDs; no full byte read",
+  "repo": "LifeLoggerAI/urai-content",
+  "main_sha": "988ca4f7f38b1ce86e4d3f426361b5866fd23e0d",
+  "review_heads": [
+    {
+      "label": "pr96_content_convergence",
+      "sha": "6321c38a939d26557a1c12cce3126ff6fd97dd6c",
+      "tree_sha": "6321c38a939d26557a1c12cce3126ff6fd97dd6c",
+      "files": 487,
+      "dirs": 140,
+      "git_reported_bytes": 2412736,
+      "recursive_api_truncated": false,
+      "added": [
+        {
+          "path": "apps/web/e2e/creator-capture-evidence.ts",
+          "git_blob_sha": "cdaa0a45851a23c9dc9d43e8d8292a19d868cb47",
+          "git_mode": "100644",
+          "reported_bytes": 8272
+        },
+        {
+          "path": "apps/web/e2e/creator-workflow.spec.ts",
+          "git_blob_sha": "727ea2dd810f7e90b476cb79c6c4805fdfbc25d2",
+          "git_mode": "100644",
+          "reported_bytes": 23508
+        },
+        {
+          "path": "apps/web/scripts/canonical-privacy-consumer.test.mjs",
+          "git_blob_sha": "37833c3464bd47a82e70d917c6282f0538dbb8bf",
+          "git_mode": "100644",
+          "reported_bytes": 8759
+        },
+        {
+          "path": "apps/web/scripts/content-data-export-client.test.mjs",
+          "git_blob_sha": "ef0867ebb48bca7671169323bc09f91c3c7e4b15",
+          "git_mode": "100644",
+          "reported_bytes": 26089
+        },
+        {
+          "path": "apps/web/scripts/content-data-rights-export.test.mjs",
+          "git_blob_sha": "bcaf1fb7fbe13dfe1ae6bf24f2177e41777ef4ea",
+          "git_mode": "100644",
+          "reported_bytes": 17391
+        },
+        {
+          "path": "apps/web/scripts/deployment-identity.ts",
+          "git_blob_sha": "9c0ca75d8e48ab13e5455263bf7fba7f79780e71",
+          "git_mode": "100644",
+          "reported_bytes": 3369
+        },
+        {
+          "path": "apps/web/src/app/api/auth/session/route.ts",
+          "git_blob_sha": "2fb58c8f51468fabc2bfe55d5650d39f74fd863f",
+          "git_mode": "100644",
+          "reported_bytes": 250
+        },
+        {
+          "path": "apps/web/src/app/api/privacy/export/route.ts",
+          "git_blob_sha": "58dd039ed8b79c37cdd6870a2a4c832e6b1ad624",
+          "git_mode": "100644",
+          "reported_bytes": 3554
+        },
+        {
+          "path": "apps/web/src/app/cinema/page.tsx",
+          "git_blob_sha": "ef9497d649b28d2e7d9683cead3d3ad06b38ee7a",
+          "git_mode": "100644",
+          "reported_bytes": 481
+        },
+        {
+          "path": "apps/web/src/app/creator/submissions/page.tsx",
+          "git_blob_sha": "01e9c1b365b9834b0235f39769b54b055ab7ab2e",
+          "git_mode": "100644",
+          "reported_bytes": 656
+        },
+        {
+          "path": "apps/web/src/app/creator/submit/page.tsx",
+          "git_blob_sha": "33338ef520284cb46f1a6c8260fb4b09701824af",
+          "git_mode": "100644",
+          "reported_bytes": 673
+        },
+        {
+          "path": "apps/web/src/app/dashboard/page.tsx",
+          "git_blob_sha": "aa8c3838e899893f8e8f449d45bc082cae845b1a",
+          "git_mode": "100644",
+          "reported_bytes": 1740
+        },
+        {
+          "path": "apps/web/src/app/dashboard/settings/page.tsx",
+          "git_blob_sha": "88d637dafe1d394b1004553e23a2f907192283e6",
+          "git_mode": "100644",
+          "reported_bytes": 1655
+        },
+        {
+          "path": "apps/web/src/app/drops/page.tsx",
+          "git_blob_sha": "e2f5410d0fc23cf8235d9ca53490af7f7df6309d",
+          "git_mode": "100644",
+          "reported_bytes": 478
+        },
+        {
+          "path": "apps/web/src/app/motion/page.tsx",
+          "git_blob_sha": "ab756a6eed7519befa8b35036e265c24731f2cc2",
+          "git_mode": "100644",
+          "reported_bytes": 481
+        },
+        {
+          "path": "apps/web/src/app/music/page.tsx",
+          "git_blob_sha": "6b2585e73aae615f456975fd8cd400586fcb69cf",
+          "git_mode": "100644",
+          "reported_bytes": 478
+        },
+        {
+          "path": "apps/web/src/app/series/page.tsx",
+          "git_blob_sha": "8c46a2416980a51a6cda8585279ab8f55cad6a23",
+          "git_mode": "100644",
+          "reported_bytes": 481
+        },
+        {
+          "path": "apps/web/src/app/visuals/page.tsx",
+          "git_blob_sha": "7e0a194a0bdc97a39314a192321a39dade76746b",
+          "git_mode": "100644",
+          "reported_bytes": 484
+        },
+        {
+          "path": "apps/web/src/components/BrowserSessionLogout.tsx",
+          "git_blob_sha": "58cd8eff9bb55af7ef39fb01bc1f95929924a6c5",
+          "git_mode": "100644",
+          "reported_bytes": 909
+        },
+        {
+          "path": "apps/web/src/components/CatalogBrowser.tsx",
+          "git_blob_sha": "cad395a40ac65b31f6581bad5cfd78738ee357ba",
+          "git_mode": "100644",
+          "reported_bytes": 2870
+        },
+        {
+          "path": "apps/web/src/components/ContentDataExport.tsx",
+          "git_blob_sha": "a8b5a875ead4131854155c2bfa9c124cbbe18e68",
+          "git_mode": "100644",
+          "reported_bytes": 7803
+        },
+        {
+          "path": "apps/web/src/components/CreatorWorkflow.tsx",
+          "git_blob_sha": "097878f220fc26289c4d4c6d034a46aed9c61ec9",
+          "git_mode": "100644",
+          "reported_bytes": 6502
+        },
+        {
+          "path": "apps/web/src/lib/catalogSurfaces.ts",
+          "git_blob_sha": "f4df63bdc2fb104deda061eeb7cb0da862f564a2",
+          "git_mode": "100644",
+          "reported_bytes": 787
+        },
+        {
+          "path": "apps/web/src/lib/contentDataExport.ts",
+          "git_blob_sha": "dad17392ffea4e62b4282596dd64d3afafb78561",
+          "git_mode": "100644",
+          "reported_bytes": 13954
+        },
+        {
+          "path": "apps/web/src/lib/creatorWorkflow.ts",
+          "git_blob_sha": "b83bbb9d8e541de33867ec4ababa64b9efb8d5ad",
+          "git_mode": "100644",
+          "reported_bytes": 6642
+        },
+        {
+          "path": "apps/web/src/lib/firebaseClient.ts",
+          "git_blob_sha": "3172dae88134dd589dd2285e36416f9521fa242a",
+          "git_mode": "100644",
+          "reported_bytes": 987
+        },
+        {
+          "path": "apps/web/src/server/auth/browserSession.ts",
+          "git_blob_sha": "974d9d3bb3640e3c6414a5db0c96081893d50195",
+          "git_mode": "100644",
+          "reported_bytes": 4670
+        },
+        {
+          "path": "apps/web/src/server/auth/currentRequest.ts",
+          "git_blob_sha": "b6584dd576b758b5b3166da32dc8266d230fda73",
+          "git_mode": "100644",
+          "reported_bytes": 494
+        },
+        {
+          "path": "apps/web/src/server/content/dashboard.ts",
+          "git_blob_sha": "ad5aaf4dc6a8a08f13089b843689f719793b7cc0",
+          "git_mode": "100644",
+          "reported_bytes": 1140
+        },
+        {
+          "path": "apps/web/src/server/privacy/canonicalConsent.ts",
+          "git_blob_sha": "40c13be14fdb59509666875830ed1152b3a67bce",
+          "git_mode": "100644",
+          "reported_bytes": 4152
+        },
+        {
+          "path": "apps/web/src/server/privacy/contentExport.ts",
+          "git_blob_sha": "a9031acab738a459cf52135199b1e81a13df3213",
+          "git_mode": "100644",
+          "reported_bytes": 9958
+        },
+        {
+          "path": "apps/web/tests/browser-session-dashboard.test.ts",
+          "git_blob_sha": "ddb93013e1aeaab825fa3e5be04877a6b0310f3f",
+          "git_mode": "100644",
+          "reported_bytes": 8579
+        },
+        {
+          "path": "apps/web/tests/catalog-browser.test.tsx",
+          "git_blob_sha": "1ae604f7d51f17e956d24dcc3886c787f298814c",
+          "git_mode": "100644",
+          "reported_bytes": 2659
+        },
+        {
+          "path": "apps/web/tests/catalog-surfaces.test.ts",
+          "git_blob_sha": "cf2ab96069dcc15e0270387058cdbe8f7690caa3",
+          "git_mode": "100644",
+          "reported_bytes": 1285
+        },
+        {
+          "path": "apps/web/tests/creator-capture-evidence.test.ts",
+          "git_blob_sha": "7de68845aaa1313c42f3e92ab476b78ed91eb4a9",
+          "git_mode": "100644",
+          "reported_bytes": 14009
+        },
+        {
+          "path": "apps/web/tests/creator-workflow.test.ts",
+          "git_blob_sha": "8407a23b584f9e378f59333b4fe4d4f841cd6c13",
+          "git_mode": "100644",
+          "reported_bytes": 14225
+        },
+        {
+          "path": "apps/web/tests/current-authority-routes.test.ts",
+          "git_blob_sha": "471d44477544c3a0e3bc18b3480e69ecaf186740",
+          "git_mode": "100644",
+          "reported_bytes": 5795
+        },
+        {
+          "path": "apps/web/tests/dashboard-surfaces.test.tsx",
+          "git_blob_sha": "1e7d0aa72ef678d8c52fab0b1dbad339fb650efa",
+          "git_mode": "100644",
+          "reported_bytes": 3306
+        },
+        {
+          "path": "apps/web/tests/deployment-identity.test.ts",
+          "git_blob_sha": "1d3aca4e48261fad3149c86ef2e77532ddc3d195",
+          "git_mode": "100644",
+          "reported_bytes": 6662
+        },
+        {
+          "path": "apps/web/tests/lead-intake.test.ts",
+          "git_blob_sha": "56af41771c76b895da4888d39f684b14b5886489",
+          "git_mode": "100644",
+          "reported_bytes": 4748
+        },
+        {
+          "path": "apps/web/tests/private-await-authority.test.ts",
+          "git_blob_sha": "6ed04ebc9532580275ae2346270ac03853cb3155",
+          "git_mode": "100644",
+          "reported_bytes": 6584
+        },
+        {
+          "path": "apps/web/tests/production-session-authority.test.ts",
+          "git_blob_sha": "ba7ca1d11c921cf56aeb5f7a06279ad59f666040",
+          "git_mode": "100644",
+          "reported_bytes": 8041
+        },
+        {
+          "path": "apps/web/tests/session-revocation.test.ts",
+          "git_blob_sha": "36109ea4042168b562eabef3de00b2c2291f3c70",
+          "git_mode": "100644",
+          "reported_bytes": 1951
+        },
+        {
+          "path": "apps/web/tests/version-identity.test.ts",
+          "git_blob_sha": "e48de05945c218e141007feea4f5a013e4c1c54c",
+          "git_mode": "100644",
+          "reported_bytes": 1018
+        },
+        {
+          "path": "docs/CONTENT_COMMERCE_AND_CURRENT_AUTHORITY_GATE_20261008.md",
+          "git_blob_sha": "b6849bd36982a77070ca313a66a10353e749b95c",
+          "git_mode": "100644",
+          "reported_bytes": 8798
+        },
+        {
+          "path": "docs/CONTENT_PERSISTENCE_SOURCE_BOUNDARY.md",
+          "git_blob_sha": "5f6ea982aa0fdd4e70afe7d57f9b68540d90585c",
+          "git_mode": "100644",
+          "reported_bytes": 4507
+        },
+        {
+          "path": "docs/CONTENT_RULES_TOOL_AUDIT_20261007.md",
+          "git_blob_sha": "f8fd968cb06121ed5c58387eb795ca79d55f585b",
+          "git_mode": "100644",
+          "reported_bytes": 3543
+        },
+        {
+          "path": "docs/evidence/canonical-privacy-creator-consumer-20261009.md",
+          "git_blob_sha": "7b3b8bd92c9663919dec57c71b36a8904bf8f192",
+          "git_mode": "100644",
+          "reported_bytes": 4833
+        },
+        {
+          "path": "docs/evidence/content-subject-export-20261009.md",
+          "git_blob_sha": "e15b0f1e00290208e827da06976c25aa8b647946",
+          "git_mode": "100644",
+          "reported_bytes": 10471
+        },
+        {
+          "path": "docs/evidence/creator-workflow-source-20261008.md",
+          "git_blob_sha": "2a5170a93ecabb76df0818f98bc9fd4773ad126b",
+          "git_mode": "100644",
+          "reported_bytes": 12277
+        },
+        {
+          "path": "docs/evidence/deployed-source-identity-boundary-20261008.md",
+          "git_blob_sha": "2ffcdb8c363505719727cbbdd967ad4d830f4f6f",
+          "git_mode": "100644",
+          "reported_bytes": 2744
+        },
+        {
+          "path": "docs/evidence/narrator-current-output-policy-20261010.md",
+          "git_blob_sha": "fb67cb171b4267c899a393272c24f93769a20a41",
+          "git_mode": "100644",
+          "reported_bytes": 3132
+        },
+        {
+          "path": "docs/evidence/production-session-authority-20261008.md",
+          "git_blob_sha": "08c08df173ed7a4650316e23b6937857cd641da7",
+          "git_mode": "100644",
+          "reported_bytes": 1838
+        },
+        {
+          "path": "scripts/check-vercel-build-layout.mjs",
+          "git_blob_sha": "2270696efe89ef370ed718df0256d03a28cc07e7",
+          "git_mode": "100644",
+          "reported_bytes": 5271
+        },
+        {
+          "path": "scripts/check-vercel-build-layout.test.mjs",
+          "git_blob_sha": "38ad3f156860e4d655f9f688c71a9ba9ca6ee9e0",
+          "git_mode": "100644",
+          "reported_bytes": 7322
+        },
+        {
+          "path": "scripts/dependency-security.behavior.test.cjs",
+          "git_blob_sha": "9b61b9a3ed834bcdfbcf878f0f8d054cb154f3d5",
+          "git_mode": "100644",
+          "reported_bytes": 6300
+        },
+        {
+          "path": "scripts/verify-rules-tool-audit.mjs",
+          "git_blob_sha": "d37903a61e3580605547ab5a21abb8edce2879e6",
+          "git_mode": "100644",
+          "reported_bytes": 1750
+        },
+        {
+          "path": "scripts/verify-rules-tool-audit.test.mjs",
+          "git_blob_sha": "8994127c32a42190c07187653d3135e3c9fb553f",
+          "git_mode": "100644",
+          "reported_bytes": 2154
+        },
+        {
+          "path": "src/backend/deletionPersistence.ts",
+          "git_blob_sha": "762caa6d25af74ad31390a4e0547d6ba23b856ff",
+          "git_mode": "100644",
+          "reported_bytes": 4312
+        },
+        {
+          "path": "tests/rules-emulator/package-lock.json",
+          "git_blob_sha": "648dc62bcd053c749e784f3d31f4e8aa1eaa2087",
+          "git_mode": "100644",
+          "reported_bytes": 321858
+        },
+        {
+          "path": "vendor/braces/LICENSE",
+          "git_blob_sha": "9af4a67d206f24ecdbb5fdff2839041ca0bbd346",
+          "git_mode": "100644",
+          "reported_bytes": 1091
+        },
+        {
+          "path": "vendor/braces/README.md",
+          "git_blob_sha": "e684b7dc9102a4bd8a9d3e760f0ea78ce65b5f7c",
+          "git_mode": "100644",
+          "reported_bytes": 21610
+        },
+        {
+          "path": "vendor/braces/SECURITY-FORK.md",
+          "git_blob_sha": "61c3451b7a8b627db1fceec95e2f09f1e1c5646f",
+          "git_mode": "100644",
+          "reported_bytes": 2215
+        },
+        {
+          "path": "vendor/braces/UPSTREAM-PROVENANCE.json",
+          "git_blob_sha": "2fe51e44858dcac89591c1387916a0fa5ee07474",
+          "git_mode": "100644",
+          "reported_bytes": 1695
+        },
+        {
+          "path": "vendor/braces/index.js",
+          "git_blob_sha": "d222c13b579d2d476dc26d692219dbaee1665b88",
+          "git_mode": "100644",
+          "reported_bytes": 4380
+        },
+        {
+          "path": "vendor/braces/lib/compile.js",
+          "git_blob_sha": "70aced2464d1a6029d2c29ca1fda88b6830d1705",
+          "git_mode": "100644",
+          "reported_bytes": 1691
+        },
+        {
+          "path": "vendor/braces/lib/constants.js",
+          "git_blob_sha": "e83f5f5bf20b1b5a3483caf946b81fa0d01c2b85",
+          "git_mode": "100644",
+          "reported_bytes": 1666
+        },
+        {
+          "path": "vendor/braces/lib/expand.js",
+          "git_blob_sha": "fa96594a750d58210babb44402d9d5f67640e8ee",
+          "git_mode": "100644",
+          "reported_bytes": 2987
+        },
+        {
+          "path": "vendor/braces/lib/parse.js",
+          "git_blob_sha": "91fb5ee0b35b156d0416c7ee3140c880cbd9e44c",
+          "git_mode": "100644",
+          "reported_bytes": 7174
+        },
+        {
+          "path": "vendor/braces/lib/stringify.js",
+          "git_blob_sha": "f5498e39cd44037e4c2126a5b21f6b0b4c5e083b",
+          "git_mode": "100644",
+          "reported_bytes": 903
+        },
+        {
+          "path": "vendor/braces/lib/utils.js",
+          "git_blob_sha": "d19311fe044ad5157624077670dc297e8b53da49",
+          "git_mode": "100644",
+          "reported_bytes": 2518
+        },
+        {
+          "path": "vendor/braces/package.json",
+          "git_blob_sha": "ea32dd71f224957c09a3d625febf4adddd3e4337",
+          "git_mode": "100644",
+          "reported_bytes": 1384
+        },
+        {
+          "path": "vendor/stream-json/Assembler.js",
+          "git_blob_sha": "4e6ef63ceafaa9bf59cd23d3b07864110b5febee",
+          "git_mode": "100644",
+          "reported_bytes": 3776
+        },
+        {
+          "path": "vendor/stream-json/Disassembler.js",
+          "git_blob_sha": "a329cfb76a62a12a9a32411937295404adcf3384",
+          "git_mode": "100644",
+          "reported_bytes": 5426
+        },
+        {
+          "path": "vendor/stream-json/Emitter.js",
+          "git_blob_sha": "9f8c8d757a74506adbc712d0858191e74ad42422",
+          "git_mode": "100644",
+          "reported_bytes": 438
+        },
+        {
+          "path": "vendor/stream-json/LICENSE",
+          "git_blob_sha": "b333a2bf23f1c2a8c25ee734d5998b8b643b1215",
+          "git_mode": "100644",
+          "reported_bytes": 1909
+        },
+        {
+          "path": "vendor/stream-json/Parser.js",
+          "git_blob_sha": "9eb783898c9a5c4b618f7d5f9fe6d7900fb1ad62",
+          "git_mode": "100644",
+          "reported_bytes": 21223
+        },
+        {
+          "path": "vendor/stream-json/README.md",
+          "git_blob_sha": "455a609dd92bba5453146a2892dc9392c82a4f03",
+          "git_mode": "100644",
+          "reported_bytes": 8034
+        },
+        {
+          "path": "vendor/stream-json/SECURITY-FORK.md",
+          "git_blob_sha": "5ce3ac457620ec5a42e8a6aa5f386076b7442937",
+          "git_mode": "100644",
+          "reported_bytes": 2524
+        },
+        {
+          "path": "vendor/stream-json/Stringer.js",
+          "git_blob_sha": "d54e330e57142e810bbb2f7c13280a27a38fd8c7",
+          "git_mode": "100644",
+          "reported_bytes": 4836
+        },
+        {
+          "path": "vendor/stream-json/UPSTREAM-PROVENANCE.json",
+          "git_blob_sha": "8b8566c804444293de106d50109e398594bde67b",
+          "git_mode": "100644",
+          "reported_bytes": 3746
+        },
+        {
+          "path": "vendor/stream-json/filters/Filter.js",
+          "git_blob_sha": "ba4e84b8ef281ed50aa458488b73aaef84b45de7",
+          "git_mode": "100644",
+          "reported_bytes": 3512
+        },
+        {
+          "path": "vendor/stream-json/filters/FilterBase.js",
+          "git_blob_sha": "a111b69ce1fafaafc75f004adf1761e995f36982",
+          "git_mode": "100644",
+          "reported_bytes": 6172
+        },
+        {
+          "path": "vendor/stream-json/filters/Ignore.js",
+          "git_blob_sha": "f469e2002eaff5c93c836c53ad2ff17b7a2a5046",
+          "git_mode": "100644",
+          "reported_bytes": 513
+        },
+        {
+          "path": "vendor/stream-json/filters/Pick.js",
+          "git_blob_sha": "4765569c5c4626537751fe2b7ef9de905c986244",
+          "git_mode": "100644",
+          "reported_bytes": 1394
+        },
+        {
+          "path": "vendor/stream-json/filters/Replace.js",
+          "git_blob_sha": "eb5ecf0f2a2058c48168cf7f713c448da011090f",
+          "git_mode": "100644",
+          "reported_bytes": 3355
+        },
+        {
+          "path": "vendor/stream-json/index.js",
+          "git_blob_sha": "bc2f5249583ce60b89b1b9169dfa8f8c8b33f51e",
+          "git_mode": "100644",
+          "reported_bytes": 217
+        },
+        {
+          "path": "vendor/stream-json/jsonl/Parser.js",
+          "git_blob_sha": "9b0e403861b6597a380ce282f9dc465cc13e5ba5",
+          "git_mode": "100644",
+          "reported_bytes": 3896
+        },
+        {
+          "path": "vendor/stream-json/jsonl/Stringer.js",
+          "git_blob_sha": "7f13018f360490fffb97ea7ac2df9802683a232d",
+          "git_mode": "100644",
+          "reported_bytes": 747
+        },
+        {
+          "path": "vendor/stream-json/package.json",
+          "git_blob_sha": "8f07dce04c098008a9f5fa8bf52b6d830ac2b618",
+          "git_mode": "100644",
+          "reported_bytes": 1098
+        },
+        {
+          "path": "vendor/stream-json/streamers/StreamArray.js",
+          "git_blob_sha": "e57609bf16db1f220d970f02db58c5c54bebe4a9",
+          "git_mode": "100644",
+          "reported_bytes": 1056
+        },
+        {
+          "path": "vendor/stream-json/streamers/StreamBase.js",
+          "git_blob_sha": "a0d2ecbf839e192a24638c582ad6bca70b0d1c19",
+          "git_mode": "100644",
+          "reported_bytes": 2653
+        },
+        {
+          "path": "vendor/stream-json/streamers/StreamObject.js",
+          "git_blob_sha": "1c174e5c28c7e6b9ec3eb2479cd0ff18d645ca7b",
+          "git_mode": "100644",
+          "reported_bytes": 1091
+        },
+        {
+          "path": "vendor/stream-json/streamers/StreamValues.js",
+          "git_blob_sha": "76e9377677f7dccad4a7e3e8303273b222e822c6",
+          "git_mode": "100644",
+          "reported_bytes": 784
+        },
+        {
+          "path": "vendor/stream-json/utils/Batch.js",
+          "git_blob_sha": "b2fb81386ec9ee9dc45e266f97500a426c5aa582",
+          "git_mode": "100644",
+          "reported_bytes": 1046
+        },
+        {
+          "path": "vendor/stream-json/utils/Utf8Stream.js",
+          "git_blob_sha": "29cbfdd9f7078568809af7955c9ef59cbfda9940",
+          "git_mode": "100644",
+          "reported_bytes": 1224
+        },
+        {
+          "path": "vendor/stream-json/utils/Verifier.js",
+          "git_blob_sha": "a112c71e062334e85b953903730a6891b215ea70",
+          "git_mode": "100644",
+          "reported_bytes": 16694
+        },
+        {
+          "path": "vendor/stream-json/utils/emit.js",
+          "git_blob_sha": "23fe2251edda92cc5c7baab7934f747ab73ba728",
+          "git_mode": "100644",
+          "reported_bytes": 125
+        },
+        {
+          "path": "vendor/stream-json/utils/withParser.js",
+          "git_blob_sha": "47fa6a8a70426fb6a09e7407bab550f86408260e",
+          "git_mode": "100644",
+          "reported_bytes": 289
+        }
+      ],
+      "modified": [
+        {
+          "path": ".env.example",
+          "git_blob_sha": "6d6188c94f0917f9132c32abeeb49b44408d0b18",
+          "git_mode": "100644",
+          "reported_bytes": 2904
+        },
+        {
+          "path": ".github/workflows/ci.yml",
+          "git_blob_sha": "88e87c28b2541ec5c1450715a82b621faa56e0e6",
+          "git_mode": "100644",
+          "reported_bytes": 1817
+        },
+        {
+          "path": ".github/workflows/content-visual-proof.yml",
+          "git_blob_sha": "f45b44b05c85b8d8d8c55c5a36ee6b8627dc2d08",
+          "git_mode": "100644",
+          "reported_bytes": 3398
+        },
+        {
+          "path": ".github/workflows/deploy-vercel-production.yml",
+          "git_blob_sha": "939b0dfd05245c4248a3d3d532a472a8044416b9",
+          "git_mode": "100644",
+          "reported_bytes": 6836
+        },
+        {
+          "path": ".github/workflows/rules-emulator.yml",
+          "git_blob_sha": "17c4dec756f6204fd17bb5e8c0843dc01c772863",
+          "git_mode": "100644",
+          "reported_bytes": 8119
+        },
+        {
+          "path": "apps/web/e2e/authenticated-session.spec.ts",
+          "git_blob_sha": "b3da005b628c682a51c2857d6883b53c324f9519",
+          "git_mode": "100644",
+          "reported_bytes": 975
+        },
+        {
+          "path": "apps/web/e2e/visual-proof.spec.ts",
+          "git_blob_sha": "554b9e83c5857ecf497bb16c42d99fb961173376",
+          "git_mode": "100644",
+          "reported_bytes": 2807
+        },
+        {
+          "path": "apps/web/firestore.rules",
+          "git_blob_sha": "579d76d783b2ba02334677768890b3dd6f767e90",
+          "git_mode": "100644",
+          "reported_bytes": 7230
+        },
+        {
+          "path": "apps/web/next.config.mjs",
+          "git_blob_sha": "c1a04db70bc0bb33a2ae7a02aef0b9754ff89399",
+          "git_mode": "100644",
+          "reported_bytes": 912
+        },
+        {
+          "path": "apps/web/package-lock.json",
+          "git_blob_sha": "c44f47aef5f71ab8c807f43d2f80e9844b900b04",
+          "git_mode": "100644",
+          "reported_bytes": 344104
+        },
+        {
+          "path": "apps/web/package.json",
+          "git_blob_sha": "d4a64b0a06d0bd365ccdda4b5f69445f9a941e5f",
+          "git_mode": "100644",
+          "reported_bytes": 2079
+        },
+        {
+          "path": "apps/web/playwright.config.ts",
+          "git_blob_sha": "ba00ed5b374fbaad586aac486c30665f01a34876",
+          "git_mode": "100644",
+          "reported_bytes": 2206
+        },
+        {
+          "path": "apps/web/scripts/smoke-routes.ts",
+          "git_blob_sha": "d96af5b68ffcf37b6aa00d6ce37767aaea81020f",
+          "git_mode": "100644",
+          "reported_bytes": 4818
+        },
+        {
+          "path": "apps/web/src/app/api/admin/creator-submissions/[id]/moderate/route.ts",
+          "git_blob_sha": "a2547b90c255acf732e072fe7acb02cd282154cb",
+          "git_mode": "100644",
+          "reported_bytes": 3752
+        },
+        {
+          "path": "apps/web/src/app/api/admin/creator-submissions/[id]/route.ts",
+          "git_blob_sha": "bb6222ab674cbf077ff8033d5f6c0ef31164fc0d",
+          "git_mode": "100644",
+          "reported_bytes": 1641
+        },
+        {
+          "path": "apps/web/src/app/api/admin/creator-submissions/route.ts",
+          "git_blob_sha": "c674759f921a510defa7297dd5808a87a52dd1fa",
+          "git_mode": "100644",
+          "reported_bytes": 2472
+        },
+        {
+          "path": "apps/web/src/app/api/catalog/route.ts",
+          "git_blob_sha": "bf886986f2ed910082b2b37bed09534c650511d3",
+          "git_mode": "100644",
+          "reported_bytes": 892
+        },
+        {
+          "path": "apps/web/src/app/api/creator/submissions/[id]/route.ts",
+          "git_blob_sha": "96fdbb6a9d40514a8466066e6672282aa5e0e6a2",
+          "git_mode": "100644",
+          "reported_bytes": 2220
+        },
+        {
+          "path": "apps/web/src/app/api/creator/submissions/route.ts",
+          "git_blob_sha": "689a95dd8b26e27c6140d386a88a1b6815840090",
+          "git_mode": "100644",
+          "reported_bytes": 4574
+        },
+        {
+          "path": "apps/web/src/app/api/leads/route.ts",
+          "git_blob_sha": "c5afdf631f9258967f6771aad7d60364082f5ad0",
+          "git_mode": "100644",
+          "reported_bytes": 5546
+        },
+        {
+          "path": "apps/web/src/app/api/version/route.ts",
+          "git_blob_sha": "aae649d32435ca6764695408201b1da42569809f",
+          "git_mode": "100644",
+          "reported_bytes": 548
+        },
+        {
+          "path": "apps/web/src/app/content/page.tsx",
+          "git_blob_sha": "fea584e793130823eb43bd8c0e9ef5d3bed76510",
+          "git_mode": "100644",
+          "reported_bytes": 403
+        },
+        {
+          "path": "apps/web/src/app/globals.css",
+          "git_blob_sha": "eac4346a80db91e6eab7c140d4bac9564b5ba293",
+          "git_mode": "100644",
+          "reported_bytes": 5771
+        },
+        {
+          "path": "apps/web/src/app/licensing/page.tsx",
+          "git_blob_sha": "1700fc00c69094645a84be1a2c567d863ea8102b",
+          "git_mode": "100644",
+          "reported_bytes": 651
+        },
+        {
+          "path": "apps/web/src/components/AnalyticsTracker.tsx",
+          "git_blob_sha": "3f3f22cfdf6a78e12ff466d8af8485485f03f4e8",
+          "git_mode": "100644",
+          "reported_bytes": 1071
+        },
+        {
+          "path": "apps/web/src/components/LeadForms.tsx",
+          "git_blob_sha": "e17856d2332f47d8f0bf791a7120ad8fdcf8049a",
+          "git_mode": "100644",
+          "reported_bytes": 4482
+        },
+        {
+          "path": "apps/web/src/lib/publicPageContent.ts",
+          "git_blob_sha": "191902a5d09617a9ed600d43464ba97a25290b0d",
+          "git_mode": "100644",
+          "reported_bytes": 9742
+        },
+        {
+          "path": "apps/web/src/lib/publicRoutes.ts",
+          "git_blob_sha": "afec389af6c71e33b4e37a27d3e730853c512865",
+          "git_mode": "100644",
+          "reported_bytes": 648
+        },
+        {
+          "path": "apps/web/src/server/auth/session.ts",
+          "git_blob_sha": "553fc2786fa088c507ab0a01959a5ca71f9535b4",
+          "git_mode": "100644",
+          "reported_bytes": 4454
+        },
+        {
+          "path": "apps/web/src/server/content/canonicalSeed.ts",
+          "git_blob_sha": "a8bf24f89f33da40674ead3e1febff55dc702b06",
+          "git_mode": "100644",
+          "reported_bytes": 2553
+        },
+        {
+          "path": "apps/web/src/server/content/inMemoryRepository.ts",
+          "git_blob_sha": "fc36dbebdc7a7eaae8ddf666e640a3ea824b69de",
+          "git_mode": "100644",
+          "reported_bytes": 117
+        },
+        {
+          "path": "apps/web/src/server/content/runtimeCatalog.ts",
+          "git_blob_sha": "8e42a7b2acea36414277d12268e7f67f459fae22",
+          "git_mode": "100644",
+          "reported_bytes": 3056
+        },
+        {
+          "path": "apps/web/src/server/content/schemas.ts",
+          "git_blob_sha": "756da46eab1e1797ac47c819641b7543c01d0153",
+          "git_mode": "100644",
+          "reported_bytes": 160
+        },
+        {
+          "path": "apps/web/src/server/content/service.ts",
+          "git_blob_sha": "285fbb187e6ff9313a1d98de434cd1f55338bc00",
+          "git_mode": "100644",
+          "reported_bytes": 4442
+        },
+        {
+          "path": "apps/web/src/server/content/types.ts",
+          "git_blob_sha": "356b8fa28cfa887783f0e8ccda04956b57d8cc27",
+          "git_mode": "100644",
+          "reported_bytes": 1515
+        },
+        {
+          "path": "apps/web/src/server/firebase/contentRepository.ts",
+          "git_blob_sha": "5ab8ed16631bc93c89cd3d0a4fa1a438d551d092",
+          "git_mode": "100644",
+          "reported_bytes": 22832
+        },
+        {
+          "path": "apps/web/storage.rules",
+          "git_blob_sha": "aab0ea531212f6a9817d387bd0b59502550f7b50",
+          "git_mode": "100644",
+          "reported_bytes": 2507
+        },
+        {
+          "path": "apps/web/tests/api-routes.test.ts",
+          "git_blob_sha": "0ed4875114b47ece6876daf155e5912be1cf102e",
+          "git_mode": "100644",
+          "reported_bytes": 19964
+        },
+        {
+          "path": "apps/web/tests/authorization.test.ts",
+          "git_blob_sha": "9ae907e5754d54757a38b12a515d5e0db6bd66c9",
+          "git_mode": "100644",
+          "reported_bytes": 7853
+        },
+        {
+          "path": "apps/web/tests/creator-submission-detail.test.ts",
+          "git_blob_sha": "b76cef68c3685febfaeb85205cdc520ac2372c63",
+          "git_mode": "100644",
+          "reported_bytes": 4174
+        },
+        {
+          "path": "apps/web/tests/firestore-content-repository.test.ts",
+          "git_blob_sha": "24c67f3497ce586852e3b5cd58b44569f1c556c5",
+          "git_mode": "100644",
+          "reported_bytes": 31448
+        },
+        {
+          "path": "apps/web/tests/public-routes.test.ts",
+          "git_blob_sha": "0ce6a48d7a478b4131aae9feda2201f6c034265b",
+          "git_mode": "100644",
+          "reported_bytes": 1002
+        },
+        {
+          "path": "apps/web/tests/runtime-catalog-firestore.test.ts",
+          "git_blob_sha": "0a0ade86180dd0e8acc9ea1f00f1bfe10f7a1445",
+          "git_mode": "100644",
+          "reported_bytes": 2811
+        },
+        {
+          "path": "apps/web/tests/runtime-persistence.test.ts",
+          "git_blob_sha": "e6612611c05ce071a7fb8f57d9c628141399c672",
+          "git_mode": "100644",
+          "reported_bytes": 4470
+        },
+        {
+          "path": "apps/web/vitest.config.ts",
+          "git_blob_sha": "b246bcc360f67b2da1c7de8beb70bca0bcd773ec",
+          "git_mode": "100644",
+          "reported_bytes": 379
+        },
+        {
+          "path": "docs/CROSS_SYSTEM_CANON_AUTHORITY.md",
+          "git_blob_sha": "6eea86a6d45cf4f8057e3652134f7876b09a54d9",
+          "git_mode": "100644",
+          "reported_bytes": 3024
+        },
+        {
+          "path": "docs/ROUTE_COVERAGE.md",
+          "git_blob_sha": "a17d499eb0afc579e91b2ce3ee974a14172ad3a6",
+          "git_mode": "100644",
+          "reported_bytes": 13535
+        },
+        {
+          "path": "firestore.indexes.json",
+          "git_blob_sha": "df065e98a829eb439ad9ad9d7817d5f6469e5034",
+          "git_mode": "100644",
+          "reported_bytes": 1701
+        },
+        {
+          "path": "firestore.rules",
+          "git_blob_sha": "579d76d783b2ba02334677768890b3dd6f767e90",
+          "git_mode": "100644",
+          "reported_bytes": 7230
+        },
+        {
+          "path": "package-lock.json",
+          "git_blob_sha": "fe77829fc429baba9804eeb65bc494d8e33c2aa8",
+          "git_mode": "100644",
+          "reported_bytes": 99691
+        },
+        {
+          "path": "package.json",
+          "git_blob_sha": "cd69c097a3b65fc3361cc94de308ae4182d396d9",
+          "git_mode": "100644",
+          "reported_bytes": 3910
+        },
+        {
+          "path": "src/backend/contentService.ts",
+          "git_blob_sha": "df14070df951622b9beba75242f578776e4fd5f3",
+          "git_mode": "100644",
+          "reported_bytes": 4735
+        },
+        {
+          "path": "src/backend/firebaseRepository.contract.ts",
+          "git_blob_sha": "7aac77fbec4ab8997de698fdfcd9de60cf5c4509",
+          "git_mode": "100644",
+          "reported_bytes": 1116
+        },
+        {
+          "path": "src/backend/inMemoryRepository.ts",
+          "git_blob_sha": "ef2bd3e25168a50ad70a8c340123694c85fd1d97",
+          "git_mode": "100644",
+          "reported_bytes": 11715
+        },
+        {
+          "path": "src/backend/types.ts",
+          "git_blob_sha": "7309f157c84c347c6b9870fbec8e46d190fd62b3",
+          "git_mode": "100644",
+          "reported_bytes": 2530
+        },
+        {
+          "path": "src/index.ts",
+          "git_blob_sha": "7c33ea6c1a57ccf3450f645bfd7313be15cc34c7",
+          "git_mode": "100644",
+          "reported_bytes": 1855
+        },
+        {
+          "path": "src/narrator/session.ts",
+          "git_blob_sha": "a2134637e949523b67d39c7d38d42d5086f4a479",
+          "git_mode": "100644",
+          "reported_bytes": 2160
+        },
+        {
+          "path": "src/privacy/deletionLifecycle.ts",
+          "git_blob_sha": "ca5ce50c9fc2e2ca00d7799831741a0da7931d8d",
+          "git_mode": "100644",
+          "reported_bytes": 12824
+        },
+        {
+          "path": "src/query/pagination.ts",
+          "git_blob_sha": "b5eee0601a5dc43432e4120d5807d1199e6a08cd",
+          "git_mode": "100644",
+          "reported_bytes": 2319
+        },
+        {
+          "path": "src/schemas/content.ts",
+          "git_blob_sha": "412d9496da83224023c8d2413c23e68a9a486e5e",
+          "git_mode": "100644",
+          "reported_bytes": 8438
+        },
+        {
+          "path": "src/telemetry/policy.ts",
+          "git_blob_sha": "05295c94948b1385e1b62dbddac9133055b5ceed",
+          "git_mode": "100644",
+          "reported_bytes": 1404
+        },
+        {
+          "path": "storage.rules",
+          "git_blob_sha": "aab0ea531212f6a9817d387bd0b59502550f7b50",
+          "git_mode": "100644",
+          "reported_bytes": 2507
+        },
+        {
+          "path": "tests/marketplace-contracts.test.ts",
+          "git_blob_sha": "bfeabd34011dad7878cfc3127ca12f005d96eab1",
+          "git_mode": "100644",
+          "reported_bytes": 3560
+        },
+        {
+          "path": "tests/narrator-session.test.ts",
+          "git_blob_sha": "a3450835af278bf79997896366707942529a5575",
+          "git_mode": "100644",
+          "reported_bytes": 4436
+        },
+        {
+          "path": "tests/pagination.test.ts",
+          "git_blob_sha": "611551e6d8d11f3895325dc0859d797995cb80e8",
+          "git_mode": "100644",
+          "reported_bytes": 1756
+        },
+        {
+          "path": "tests/privacy-deletion-lifecycle.test.ts",
+          "git_blob_sha": "9bd87b262753fc754db9be1119a1e01e93af81d5",
+          "git_mode": "100644",
+          "reported_bytes": 8331
+        },
+        {
+          "path": "tests/rules-emulator/content-rules.test.mjs",
+          "git_blob_sha": "c739127ad151d717561bddcb40ba57fd87d1ee48",
+          "git_mode": "100644",
+          "reported_bytes": 16355
+        },
+        {
+          "path": "tests/rules-emulator/package.json",
+          "git_blob_sha": "4589aadbd5c15a43745031373b02061453bfaadd",
+          "git_mode": "100644",
+          "reported_bytes": 630
+        },
+        {
+          "path": "tests/security-rules-contract.test.ts",
+          "git_blob_sha": "085652a0bbf008bc07ebce04163d8eb3d18d1d95",
+          "git_mode": "100644",
+          "reported_bytes": 2841
+        }
+      ],
+      "deleted": []
+    },
+    {
+      "label": "pr110_publication",
+      "sha": "34d41bf3de267e2fed488f82c6dd24ecd21ad663",
+      "tree_sha": "34d41bf3de267e2fed488f82c6dd24ecd21ad663",
+      "files": 390,
+      "dirs": 117,
+      "git_reported_bytes": 1530369,
+      "recursive_api_truncated": false,
+      "added": [
+        {
+          "path": "src/publishing/marketing-release-envelope.ts",
+          "git_blob_sha": "ee1fb86ed38d56b762d43d9e7a9482ab309ba6b4",
+          "git_mode": "100644",
+          "reported_bytes": 6911
+        },
+        {
+          "path": "tests/marketing-release-envelope.test.ts",
+          "git_blob_sha": "3fab9af58916691a3c5b9373eafb854226f6cf32",
+          "git_mode": "100644",
+          "reported_bytes": 4108
+        }
+      ],
+      "modified": [
+        {
+          "path": "docs/INTEGRATIONS.md",
+          "git_blob_sha": "08d3e9c4c28f8891d51554a38b7b907dce781dec",
+          "git_mode": "100644",
+          "reported_bytes": 4916
+        },
+        {
+          "path": "src/publishing/release.ts",
+          "git_blob_sha": "304a6a7612cffb7d0cdaca7bf74cffcb35e52f6f",
+          "git_mode": "100644",
+          "reported_bytes": 4370
+        },
+        {
+          "path": "tests/publication-release.test.ts",
+          "git_blob_sha": "70ec1d3ca2a827925f9b4ca95cfd0be1a6a66182",
+          "git_mode": "100644",
+          "reported_bytes": 2851
+        }
+      ],
+      "deleted": []
+    },
+    {
+      "label": "pr111_issuer",
+      "sha": "18fe4de11568e632cfc902e2a2cab526fd3554d3",
+      "tree_sha": "18fe4de11568e632cfc902e2a2cab526fd3554d3",
+      "files": 394,
+      "dirs": 117,
+      "git_reported_bytes": 1555024,
+      "recursive_api_truncated": false,
+      "added": [
+        {
+          "path": "src/publishing/canonical-release-v2.ts",
+          "git_blob_sha": "c7d70022070ca9c988266fb7f75ecf2cb6b43cb0",
+          "git_mode": "100644",
+          "reported_bytes": 1218
+        },
+        {
+          "path": "src/publishing/firestore-release-authority.ts",
+          "git_blob_sha": "e768cd62090603ecbca312ff51d09b26d15f7aa8",
+          "git_mode": "100644",
+          "reported_bytes": 10016
+        },
+        {
+          "path": "src/publishing/google-service-identity.ts",
+          "git_blob_sha": "6d696e05faa7858bb4b43117fff21619da512e68",
+          "git_mode": "100644",
+          "reported_bytes": 5146
+        },
+        {
+          "path": "src/publishing/marketing-release-envelope.ts",
+          "git_blob_sha": "d40e08c5bb2960ef0c66e8798cde9c75f491c56b",
+          "git_mode": "100644",
+          "reported_bytes": 8061
+        },
+        {
+          "path": "tests/google-service-identity.test.ts",
+          "git_blob_sha": "c00c0e7cac605ae589c21210a7738253f6a09b23",
+          "git_mode": "100644",
+          "reported_bytes": 6545
+        },
+        {
+          "path": "tests/marketing-release-envelope.test.ts",
+          "git_blob_sha": "cf81196bcc2dd4d11e30768e33479b78c1eb55a9",
+          "git_mode": "100644",
+          "reported_bytes": 4688
+        }
+      ],
+      "modified": [
+        {
+          "path": "docs/INTEGRATIONS.md",
+          "git_blob_sha": "08d3e9c4c28f8891d51554a38b7b907dce781dec",
+          "git_mode": "100644",
+          "reported_bytes": 4916
+        },
+        {
+          "path": "src/publishing/release.ts",
+          "git_blob_sha": "304a6a7612cffb7d0cdaca7bf74cffcb35e52f6f",
+          "git_mode": "100644",
+          "reported_bytes": 4370
+        },
+        {
+          "path": "tests/publication-release.test.ts",
+          "git_blob_sha": "70ec1d3ca2a827925f9b4ca95cfd0be1a6a66182",
+          "git_mode": "100644",
+          "reported_bytes": 2851
+        }
+      ],
+      "deleted": []
+    },
+    {
+      "label": "pr112_vercel_guard",
+      "sha": "295e4ab4d1b2c886a2c0801306d071e280288891",
+      "tree_sha": "295e4ab4d1b2c886a2c0801306d071e280288891",
+      "files": 404,
+      "dirs": 117,
+      "git_reported_bytes": 1589279,
+      "recursive_api_truncated": false,
+      "added": [
+        {
+          "path": "apps/web/scripts/check-vercel-root.mjs",
+          "git_blob_sha": "4251e3a468d14f411d3316258ea13c324d613a9c",
+          "git_mode": "100644",
+          "reported_bytes": 3222
+        },
+        {
+          "path": "apps/web/scripts/check-vercel-web-payload.mjs",
+          "git_blob_sha": "d294849d5067296200a13dd2d795e30c26cf709c",
+          "git_mode": "100644",
+          "reported_bytes": 2211
+        },
+        {
+          "path": "scripts/check-content-build-source.test.mjs",
+          "git_blob_sha": "2752fea7cbb101269d6fcb714e2beb39ebad2c6b",
+          "git_mode": "100644",
+          "reported_bytes": 3068
+        },
+        {
+          "path": "scripts/check-vercel-root.test.mjs",
+          "git_blob_sha": "5fb07211059527ba22679bad693b1bb3af262e52",
+          "git_mode": "100644",
+          "reported_bytes": 4804
+        },
+        {
+          "path": "scripts/check-vercel-web-lifecycle.test.mjs",
+          "git_blob_sha": "6f023e59905f8f6ca674669f09ea174f118f1454",
+          "git_mode": "100644",
+          "reported_bytes": 3602
+        },
+        {
+          "path": "scripts/check-vercel-web-payload.mjs",
+          "git_blob_sha": "4e45b0d9ff0e996e3e7d012bd365244b0d80aebb",
+          "git_mode": "100644",
+          "reported_bytes": 159
+        },
+        {
+          "path": "scripts/check-vercel-web-payload.test.mjs",
+          "git_blob_sha": "e928f9728d53ebc8a82d00540d612eaa9930f58a",
+          "git_mode": "100644",
+          "reported_bytes": 4093
+        },
+        {
+          "path": "scripts/verify-content-stream-limits.test.mjs",
+          "git_blob_sha": "7c0bcf1366d6f1747400bd17c2fb3ba62db8c81a",
+          "git_mode": "100644",
+          "reported_bytes": 2991
+        },
+        {
+          "path": "scripts/verify-content-vercel-source.mjs",
+          "git_blob_sha": "59667db433d54c4a02ac485eb1dad409e79c5754",
+          "git_mode": "100644",
+          "reported_bytes": 4313
+        },
+        {
+          "path": "scripts/verify-content-vercel-source.test.mjs",
+          "git_blob_sha": "d449de6b7b6901ea79d0c569da517e46d7c673d6",
+          "git_mode": "100644",
+          "reported_bytes": 2772
+        },
+        {
+          "path": "src/publishing/canonical-release-v2.ts",
+          "git_blob_sha": "c7d70022070ca9c988266fb7f75ecf2cb6b43cb0",
+          "git_mode": "100644",
+          "reported_bytes": 1218
+        },
+        {
+          "path": "src/publishing/firestore-release-authority.ts",
+          "git_blob_sha": "e768cd62090603ecbca312ff51d09b26d15f7aa8",
+          "git_mode": "100644",
+          "reported_bytes": 10016
+        },
+        {
+          "path": "src/publishing/google-service-identity.ts",
+          "git_blob_sha": "6d696e05faa7858bb4b43117fff21619da512e68",
+          "git_mode": "100644",
+          "reported_bytes": 5146
+        },
+        {
+          "path": "src/publishing/marketing-release-envelope.ts",
+          "git_blob_sha": "d40e08c5bb2960ef0c66e8798cde9c75f491c56b",
+          "git_mode": "100644",
+          "reported_bytes": 8061
+        },
+        {
+          "path": "tests/google-service-identity.test.ts",
+          "git_blob_sha": "c00c0e7cac605ae589c21210a7738253f6a09b23",
+          "git_mode": "100644",
+          "reported_bytes": 6545
+        },
+        {
+          "path": "tests/marketing-release-envelope.test.ts",
+          "git_blob_sha": "cf81196bcc2dd4d11e30768e33479b78c1eb55a9",
+          "git_mode": "100644",
+          "reported_bytes": 4688
+        }
+      ],
+      "modified": [
+        {
+          "path": ".github/workflows/deploy-vercel-production.yml",
+          "git_blob_sha": "05fd495b3f0b3edd2d543eba3df3de53a2a406ee",
+          "git_mode": "100644",
+          "reported_bytes": 6689
+        },
+        {
+          "path": "apps/web/next.config.mjs",
+          "git_blob_sha": "b4c3be929b8e99bd213f2f57433358e916a9870d",
+          "git_mode": "100644",
+          "reported_bytes": 1350
+        },
+        {
+          "path": "apps/web/package.json",
+          "git_blob_sha": "8ae996559d2595e2fd0d141bdb2be997981254c9",
+          "git_mode": "100644",
+          "reported_bytes": 1784
+        },
+        {
+          "path": "apps/web/src/app/api/version/route.ts",
+          "git_blob_sha": "d9fc1af4e5b1616eed7f6b8beca1461c96e8db56",
+          "git_mode": "100644",
+          "reported_bytes": 911
+        },
+        {
+          "path": "docs/INTEGRATIONS.md",
+          "git_blob_sha": "08d3e9c4c28f8891d51554a38b7b907dce781dec",
+          "git_mode": "100644",
+          "reported_bytes": 4916
+        },
+        {
+          "path": "package.json",
+          "git_blob_sha": "83061070f789172956d0e4745b3f73b5ad507b6d",
+          "git_mode": "100644",
+          "reported_bytes": 4406
+        },
+        {
+          "path": "src/publishing/release.ts",
+          "git_blob_sha": "304a6a7612cffb7d0cdaca7bf74cffcb35e52f6f",
+          "git_mode": "100644",
+          "reported_bytes": 4370
+        },
+        {
+          "path": "tests/publication-release.test.ts",
+          "git_blob_sha": "70ec1d3ca2a827925f9b4ca95cfd0be1a6a66182",
+          "git_mode": "100644",
+          "reported_bytes": 2851
+        }
+      ],
+      "deleted": []
+    },
+    {
+      "label": "pr113_genesis_starter",
+      "sha": "3edd6239328fc2c09130c7660cc825d04bcb582c",
+      "tree_sha": "3edd6239328fc2c09130c7660cc825d04bcb582c",
+      "files": 389,
+      "dirs": 118,
+      "git_reported_bytes": 1516636,
+      "recursive_api_truncated": false,
+      "added": [
+        {
+          "path": "docs/estate/00_START_HERE.md",
+          "git_blob_sha": "f75027092d5e7fc4289644ddd351d7a5eed47ab5",
+          "git_mode": "100644",
+          "reported_bytes": 2315
+        }
+      ],
+      "modified": [],
+      "deleted": []
+    }
+  ],
+  "sha256_verified": false,
+  "all_history_inspected": false
+}

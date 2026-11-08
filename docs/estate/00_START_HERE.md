@@ -1,24 +1,17 @@
-# One UrAi Genesis — repository continuity entrypoint
+# One UrAi Genesis — Content forensic review continuity
 
-**Repository:** `LifeLoggerAI/urai-content`  
-**Registry bootstrap date:** 2026-11-06 (America/Chicago)  
-**Status:** STARTER ONLY — no exhaustive file/byte/history audit or release certification is claimed.
+**HOLD. Documentation and Git object evidence only; production not certified.**
 
-This repository is in scope for the One UrAi 2024–present shared evidence and history reconciliation initiative. The provisional private central registry is maintained in `LifeLoggerAI/urai-labs-llc`, `docs/estate/`, proposed in draft PR [#262](https://github.com/LifeLoggerAI/urai-labs-llc/pull/262). Only authorized workers can access that private registry.
+This independent successor extends Content Genesis starter PR #113 (source 3edd6239328fc2c09130c7660cc825d04bcb582c). It does not overwrite controller PR #96 or publisher PRs #110/#111/#112, and does not deploy or call billable providers.
 
-## Required continuation
+Main exact source: 988ca4f7f38b1ce86e4d3f426361b5866fd23e0d; 388 blob paths, 117 trees, 1514321 Git-reported bytes; truncated=false.
+Review heads: pr96_content_convergence (6321c38a939d26557a1c12cce3126ff6fd97dd6c, 487 blobs); pr110_publication (34d41bf3de267e2fed488f82c6dd24ecd21ad663, 390 blobs); pr111_issuer (18fe4de11568e632cfc902e2a2cab526fd3554d3, 394 blobs); pr112_vercel_guard (295e4ab4d1b2c886a2c0801306d071e280288891, 404 blobs); pr113_genesis_starter (3edd6239328fc2c09130c7660cc825d04bcb582c, 389 blobs).
+The main manifest inventories **every tracked main-tree file** by path, Git blob object SHA-1, mode and Git-reported size. The review manifest records every added, modified or missing path against main for five unmerged review tree heads. Git object SHAs are not independently computed raw byte SHA256.
 
-1. Read the central `docs/estate/README.md`, `WORKER_PROTOCOL.md`, `EVIDENCE_STANDARD.md`, and `WORKER_HANDOFF_TEMPLATE.md` and review existing repository documentation and all other active workers' changes.
-2. Compare the current default branch and open PRs against the latest master snapshot. Establish exact immutable commit SHAs and scope.
-3. Inventory every accessible ref/path/file/asset; hash actual bytes where accessible, including separately accounting for binary objects, LFS, historical commits, workflow evidence and missing/inaccessible data.
-4. Reconstruct original LifeLogger/LifeOS/UrAi/RuAi history, architecture, cross-system interfaces, verification evidence and release constraints as relevant to **this** repo.
-5. Produce the complete nine-document `docs/estate/` knowledge pack and a machine-readable manifest per the central protocol. Mark omissions explicitly.
-6. Submit reviewed changes, conflicts, dependencies, exact test provenance and next-worker handoff to the central registry through a separate review PR.
+Root/app Firestore and Storage rules differ. The main session path has configurable header auth and does not call the #96 canonical Privacy C1/C7 consumer. A proposed stronger issuer exists only in #111, a separate stack. See forthcoming detailed analysis documents in this review branch.
 
-## Safety / authority boundaries
+Vercel urai-content project prj_tcHThuSZ0Zpm4fXp5jHif2EbOdpv reports live=false and all three returned production-target deployments ERROR; latest dpl_7Zw5D4kaB7f4bNg4oFd6YGzVJ8PJ fails on doubled /vercel/path0/vercel/path0/.next/routes-manifest.json. This is an authentic read-only provider finding, not a claimed fix.
 
-This entrypoint is **documentation only**. It does not modify runtime code, lift any release HOLD, create a deployment, authorize paid compute, inspect protected user media, or change production access.
+No native build or test was executed in this audit. Historical green CI pertains to a different SHA; recent GH checks failed with jobs executing zero steps. Existing production readiness issue #61 is open.
 
-Previously verified functionality remains real; historical “LOCKED” or “DONE” claims are not automatically current integrated production proof. Preserve all source history and earlier worker contributions.
-
-**Next worker:** Start with the current repository README and active PRs, then update this entrypoint with actual source-pinned findings, not guessed certification.
+Do not copy content from the private central registry in urai-labs-llc PR #262 to this public repository. No raw personal information, credentials or private memories were inspected or recorded.
