@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { isPublicCatalogEligible } from '../query/publicCatalogEligibility.js';
 
 export const workflowStatusSchema = z.enum(['draft', 'review', 'approved', 'published', 'archived']);
 export const accessTierSchema = z.enum(['free', 'pro', 'paid']);
@@ -159,11 +160,15 @@ export const CURRENT_RUNTIME_CONTENT_SCHEMA_VERSION = 2 as const;
 
 export const runtimeContentRecordSchema = contentItemSchema.extend({
   schemaVersion: z.union([z.literal(1), z.literal(CURRENT_RUNTIME_CONTENT_SCHEMA_VERSION)]).optional(),
+  publicCatalogEligible: z.boolean().optional(),
   deletion: z.object({
     tombstoneId: z.string().min(1),
     state: z.enum(['retained_for_restore', 'restored'])
   }).strict().optional(),
 }).superRefine((record, context) => {
+  if (record.publicCatalogEligible === true && (!isPublicCatalogEligible(record) || record.deletion?.state === 'retained_for_restore')) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['publicCatalogEligible'], message: 'Public catalog index requires active published/public content' });
+  }
   if (record.deletion && record.schemaVersion !== CURRENT_RUNTIME_CONTENT_SCHEMA_VERSION) {
     context.addIssue({ code: z.ZodIssueCode.custom, path: ['schemaVersion'], message: 'Deletion metadata requires schema version 2' });
   }
@@ -171,15 +176,16 @@ export const runtimeContentRecordSchema = contentItemSchema.extend({
 
 export function parseRuntimeContentRecord(value: unknown) {
   const parsed = parseRuntimeRecord(runtimeContentRecordSchema, 'contentItems', value);
-  const { schemaVersion, deletion, ...item } = parsed;
+  const { schemaVersion, deletion, publicCatalogEligible, ...item } = parsed;
   void schemaVersion;
   void deletion;
+  void publicCatalogEligible;
   return parseRuntimeRecord(contentItemSchema, 'contentItems', item);
 }
 
 export function serializeRuntimeContentRecord(value: unknown) {
   const item = contentItemSchema.parse(value);
-  return { ...item, schemaVersion: CURRENT_RUNTIME_CONTENT_SCHEMA_VERSION };
+  return { ...item, schemaVersion: CURRENT_RUNTIME_CONTENT_SCHEMA_VERSION, publicCatalogEligible: isPublicCatalogEligible(item) };
 }
 
 export function parseStoredRuntimeContentRecord(value: unknown) {
