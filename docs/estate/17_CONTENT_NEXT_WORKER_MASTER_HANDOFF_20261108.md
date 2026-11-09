@@ -1,5 +1,8 @@
 # ONE URAI GENESIS — CONTENT MASTER CONTINUITY / NEXT CHALK HANDOFF
 
+> **NEW R117 CONTINUATION:** Content convergence is now an isolated [draft PR #115](https://github.com/LifeLoggerAI/urai-content/pull/115), with five shared conflicts resolved and 73/73 native isolated source tests passed. Begin with [18_CONTENT_R117_CONVERGENCE_STATUS_20261108.md](18_CONTENT_R117_CONVERGENCE_STATUS_20261108.md) for the current execution checkpoint. Production remains HOLD; the earlier items below remain historic source context.
+
+
 **Checkpoint:** 2026-11-08 (Central / UTC evidence recorded separately in source ledgers)  
 **Status:** DOCUMENTED FORENSIC SOURCE SNAPSHOT; **PRODUCTION NO-GO / HOLD**  
 **Scope:** LifeLoggerAI/urai-content, its review PRs, declared dependencies, evidence and accessible Git branch heads.  
