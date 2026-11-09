@@ -1,5 +1,8 @@
 # ONE URAI GENESIS — CONTENT MASTER CONTINUITY / NEXT CHALK HANDOFF
 
+> **R125 CONTINUATION:** New [draft Content PR #118](https://github.com/LifeLoggerAI/urai-content/pull/118) excludes published **unlisted** items from anonymous catalog enumeration while keeping published direct-unlisted URLs accessible. Exact Git-blob-matched service **8/8 isolated Node tests PASS**, but full Vitest/emulator not executed. Cross-read of Privacy canonical consent exposes the unresolved **cross-service commit-time C1/Auth revocation fence**. See [21_CONTENT_R125_PUBLIC_CATALOG_AND_CONSENT_FENCE_20261108.md](21_CONTENT_R125_PUBLIC_CATALOG_AND_CONSENT_FENCE_20261108.md). **Production HOLD.**
+
+
 > **NEW R122 CONTINUATION:** Isolated draft [Content PR #117](https://github.com/LifeLoggerAI/urai-content/pull/117) (stacked on #116) adds create-only creator submission transactions and a fresh prewrite canonical Auth/C1 check, preventing silent overwrite from caller-supplied ID collisions. The actual Git-blob-matched POST route passed 7/7 synthetic native flow checks and conflict helper 2/2, but an explicit test confirms post-write 401 **does not undo persisted data**. See [20_CONTENT_R122_CREATE_ONLY_CONSENT_RACE_20261108.md](20_CONTENT_R122_CREATE_ONLY_CONSENT_RACE_20261108.md). CI remains five zero-step jobs. **Commit-time C1/Auth revocation fence remains P0; no GO.**
 
 
