@@ -34,6 +34,7 @@ vi.mock('../src/server/content/service', () => {
       listCreatorSubmissions: async () => { state.reads(); end('read'); return [privateSubmission]; },
       getCreatorSubmission: async () => { state.reads(); end('read'); return privateSubmission; },
       upsertCreatorSubmission: async () => { state.writes(); end('write'); },
+      createCreatorSubmission: async () => { state.writes(); end('write'); },
       // One mocked durable operation now commits both the status and audit.
       // Real transactional interruption acceptance remains an emulator gate.
       moderateCreatorSubmission: async () => { state.writes(); state.logs(); end('write'); },
