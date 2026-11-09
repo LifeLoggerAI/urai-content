@@ -37,6 +37,7 @@ import {
 } from '../content/schemas';
 
 import { decodePageCursor, encodePageCursor, normalizePageLimit, type PageRequest, type PageResult } from '../../../../../src/query/pagination.js';
+import { assertCreatorModerationIntegrity } from '../../../../../src/backend/creatorModerationIntegrity.js';
 import { finalizeContentDeletionPurge, recordProviderDeletionReceipt, restoreContentDeletion } from '../../../../../src/privacy/deletionLifecycle.js';
 import {
   assertContentDeletionBinding, assertDeletionOperationsEnabled, assertDocumentId, checksumContentRecords,
@@ -315,6 +316,27 @@ export function createFirestoreContentRepository(db: FirestoreLike, options: Con
     async upsertRitualTemplate(template: RitualTemplate): Promise<void> { const parsed = parseRuntimeRecord(ritualTemplateSchema, FIRESTORE_COLLECTIONS.ritualTemplates, template); await collection(db, FIRESTORE_COLLECTIONS.ritualTemplates).doc(parsed.id).set(asRecord(parsed), { merge: true }); },
     async upsertMarketplaceItem(item: MarketplaceItem): Promise<void> { const parsed = parseRuntimeRecord(marketplaceItemSchema, FIRESTORE_COLLECTIONS.marketplaceItems, item); await collection(db, FIRESTORE_COLLECTIONS.marketplaceItems).doc(parsed.id).set(asRecord(parsed), { merge: true }); },
     async upsertCreatorSubmission(item: CreatorSubmission): Promise<void> { const parsed = parseRuntimeRecord(creatorSubmissionSchema, FIRESTORE_COLLECTIONS.creatorSubmissions, item); await collection(db, FIRESTORE_COLLECTIONS.creatorSubmissions).doc(parsed.id).set(asRecord(parsed), { merge: true }); },
+    async moderateCreatorSubmission(item: CreatorSubmission, audit: ModerationQueueItem, expectedUpdatedAt: string): Promise<void> {
+      // A committed decision and its audit must share one transaction. A stale
+      // submission or duplicate audit ID denies the whole write.
+      const next = parseRuntimeRecord(creatorSubmissionSchema, FIRESTORE_COLLECTIONS.creatorSubmissions, item);
+      const receipt = parseRuntimeRecord(moderationQueueSchema, FIRESTORE_COLLECTIONS.moderationQueue, audit);
+      const submissionRef = collection(db, FIRESTORE_COLLECTIONS.creatorSubmissions).doc(next.id);
+      const auditRef = collection(db, FIRESTORE_COLLECTIONS.moderationQueue).doc(receipt.id);
+      await db.runTransaction(async (transaction) => {
+        const stored = await transaction.get(submissionRef);
+        const existingAudit = await transaction.get(auditRef);
+        if (!stored.exists) throw new Error('Creator moderation identity mismatch');
+        const previous = parseRuntimeRecord(creatorSubmissionSchema, FIRESTORE_COLLECTIONS.creatorSubmissions, stored.data());
+        if (previous.id !== next.id) throw new Error('Stored creator submission identity mismatch');
+        assertCreatorModerationIntegrity(previous, next, receipt, expectedUpdatedAt);
+        if (existingAudit.exists) throw new Error('Creator moderation audit already exists');
+        // Preserve existing recognized/migration fields as the prior upsert did.
+        transaction.set(submissionRef, asRecord(next), { merge: true });
+        transaction.set(auditRef, asRecord(receipt));
+      });
+    },
+
     async getCreatorSubmission(id: string): Promise<CreatorSubmission | null> {
       const snap = await collection(db, FIRESTORE_COLLECTIONS.creatorSubmissions).doc(id).get();
       if (!snap.exists) return null;

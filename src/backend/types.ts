@@ -40,6 +40,8 @@ export interface ContentRepository {
   upsertRitualTemplate(template: RitualTemplate): Promise<void>;
   upsertMarketplaceItem(item: MarketplaceItem): Promise<void>;
   upsertCreatorSubmission(item: CreatorSubmission): Promise<void>;
+  /** Atomically update an existing creator submission and record its matching moderation audit. */
+  moderateCreatorSubmission(item: CreatorSubmission, audit: ModerationQueueItem, expectedUpdatedAt: string): Promise<void>;
   getCreatorSubmission(id: string): Promise<CreatorSubmission | null>;
   listCreatorSubmissions(creatorId: string): Promise<CreatorSubmission[]>;
   listCreatorSubmissionQueue(options?: CreatorSubmissionQueueOptions): Promise<CreatorSubmission[]>;
