@@ -66,3 +66,46 @@ Expanded negative cases include disagreeing legacy/new Git SHA values, invalid/a
 - The latest observed PR #115 commit before appending this receipt was `e93b0a7773e53a9bcd3f6f2b5d8c20cef33cb248`. This documentation update advances the review HEAD; always fetch fresh SHA before tests.
 - At immediate first query after creating the PR, commit-linked GitHub Actions runs returned an empty list, **not** an executing or passing suite. Recheck later rather than claiming new CI admission.
 - Protected Firebase/Privacy owner consent, in-flight persistence revocation, atomic moderation, actual Content → Jobs/Studio/Storytime/Spatial delivery and deletion, trusted publisher IAM, and authenticated prebuilt preview remain outstanding. **NO-GO/HOLD**.
+
+## R117 — combined authenticated-envelope *simulation* and native five-suite rerun (2026-11-08)
+
+All five independently scoped native test harnesses were executed in **one Node 22.16.0 test invocation** using `--experimental-strip-types` and a local relative-import resolver for TypeScript `.js` specifiers. No npm dependencies, network calls, provider credentials, live send, deployment or user data were required.
+
+**Combined exact-source result: 73/73 PASS, 0 FAIL, 0 SKIP, 0 CANCEL.**
+
+Command executed in the temporary test workspace:
+```sh
+node --experimental-strip-types --experimental-loader ./scripts/ts-loader.mjs --test \
+  ./scripts/integration-source.test.mjs \
+  ./scripts/vercel-guard-integration.test.mjs \
+  ./scripts/dual-origin-integration.test.mjs \
+  ./scripts/publication-integration.test.mjs \
+  ./scripts/issuer-integration.test.mjs
+```
+**Aggregated full TAP log SHA-256:** `3a92df547165b64dde2b55b7b1a6ef06cf09b9666c59f548e66eaed17de57af2`.
+
+### Executed suite breakdown
+
+| Native harness | Tests | Scope |
+|---|---:|---|
+| `integration-source.test.mjs` | **11** | Merged controller/publisher source SHA aliases, mismatch/error denial, compiled `/api/version` JSON |
+| `vercel-guard-integration.test.mjs` | **12** | Vercel linked project/root and prebuilt artifact guards; malformed/nested/doubled `path0` denial |
+| `dual-origin-integration.test.mjs` | **13** | Exact SHA required at both deployment and public domain; stale/unsafe URL, redirects, malformed and oversized response denial |
+| `publication-integration.test.mjs` | **20** | Original `evaluatePublication` and receipt: provenance, rights, accessible/translated approval, human timestamp, assets, revision, deterministic checksum |
+| `issuer-integration.test.mjs` | **17** | Original canonical v2 and Ed25519 publisher: positive signature verification, tamper denial, synthetic issuer/role/current-state denial, rights/asset/consent/destination failures |
+
+### Exact source identity assertions
+
+Seven original content modules were independently verified with `git hash-object` immediately before the combined run:
+
+- `apps/web/next.config.mjs`: `2d7d6c3f4360ff7cb192e3d5cbcc4f614af33cd6`
+- `apps/web/src/app/api/version/route.ts`: `d9fc1af4e5b1616eed7f6b8beca1461c96e8db56`
+- `apps/web/scripts/check-vercel-root.mjs`: `4251e3a468d14f411d3316258ea13c324d613a9c`
+- `scripts/verify-content-vercel-source.mjs`: `59667db433d54c4a02ac485eb1dad409e79c5754`
+- `src/publishing/release.ts`: `304a6a7612cffb7d0cdaca7bf74cffcb35e52f6f`
+- `src/publishing/canonical-release-v2.ts`: `c7d70022070ca9c988266fb7f75ecf2cb6b43cb0`
+- `src/publishing/marketing-release-envelope.ts`: `d40e08c5bb2960ef0c66e8798cde9c75f491c56b`
+
+**Evidence classification:** actual local Node/native isolated multi-module source verification, with synthetic mocked account/release authority and pure in-memory signed Ed25519 examples. The local resolver redirects `.js` module references to their `.ts` originals under the publishing directory solely for the isolated test runtime; original file bytes were not modified. The `NextResponse` route is executed with an isolated mocked interface; no actual Next framework request or Firebase provider is present.
+
+**The 73/73 result is not full PR acceptance.** Complete 26-file branch checkout, TypeScript/lint/full Vitest/Playwright, Java21 Rules emulators, external Google-signed OIDC checks, real C1/C7 current consent and withdrawal, transactional creator/moderation persistence, real signed service dispatch, provider deployment, protected device Replay, deletion/acknowledgment and reviewer release GO remain outstanding. Any source evolution requires retesting.
