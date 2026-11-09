@@ -676,3 +676,33 @@ describe('atomic creator moderation receipt', () => {
     expect((await db.collection('moderationQueue').doc(audit.id).get()).exists).toBe(false);
   });
 });
+
+describe('create-only creator submission under Admin Firestore', () => {
+  const item = {
+    id: 'collision-1', creatorId: 'owner-1', title: 'Synthetic', body: 'not user content',
+    contentType: 'story' as const, tags: [], locale: 'en-US', status: 'submitted' as const,
+    submittedAt: '2026-11-08T12:00:00.000Z', updatedAt: '2026-11-08T12:00:00.000Z'
+  };
+  it('creates a new submission and rejects the same owner ID on retry', async () => {
+    const db = new FakeFirestore(); const repo = createFirestoreContentRepository(db);
+    await repo.createCreatorSubmission(item);
+    await expect(repo.createCreatorSubmission({...item, body:'changed'})).rejects.toThrow('ID is not available');
+    expect(await repo.getCreatorSubmission(item.id)).toMatchObject({creatorId:'owner-1',body:'not user content'});
+  });
+  it('does not overwrite another owner via chosen submission ID', async () => {
+    const db = new FakeFirestore(); const repo = createFirestoreContentRepository(db);
+    await repo.upsertCreatorSubmission(item);
+    await expect(repo.createCreatorSubmission({...item,creatorId:'attacker',body:'replacement'})).rejects.toThrow('ID is not available');
+    expect(await repo.getCreatorSubmission(item.id)).toMatchObject({creatorId:'owner-1',body:'not user content'});
+  });
+  it('serializes concurrent same-ID creates; exactly one succeeds', async () => {
+    const db = new FakeFirestore(); const repo = createFirestoreContentRepository(db);
+    const outcomes = await Promise.allSettled([
+      repo.createCreatorSubmission(item),
+      repo.createCreatorSubmission({...item,creatorId:'owner-2'})
+    ]);
+    expect(outcomes.filter(x=>x.status==='fulfilled')).toHaveLength(1);
+    expect(outcomes.filter(x=>x.status==='rejected')).toHaveLength(1);
+    expect((await repo.getCreatorSubmission(item.id))?.creatorId).toMatch(/^owner-[12]$/);
+  });
+});
