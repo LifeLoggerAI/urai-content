@@ -1,5 +1,8 @@
 # ONE URAI GENESIS — CONTENT MASTER CONTINUITY / NEXT CHALK HANDOFF
 
+> **NEW R120 CONTINUATION:** Draft [Content PR #116](https://github.com/LifeLoggerAI/urai-content/pull/116) adds a separate atomic creator moderation state+audit transaction candidate on top of draft PR #115. The exact source helper passed 8/8 native tests and a standalone strict TypeScript check; repository/Firestore emulator tests are committed but **not executed**. Five new PR Actions jobs failed before any steps. Read [19_CONTENT_R120_ATOMIC_MODERATION_CONTINUATION_20261108.md](19_CONTENT_R120_ATOMIC_MODERATION_CONTINUATION_20261108.md) before working. Crucially, in-flight Auth/C1/C7 withdrawal during creator persistence is **still unresolved**. Production remains HOLD.
+
+
 > **NEW R117 CONTINUATION:** Content convergence is now an isolated [draft PR #115](https://github.com/LifeLoggerAI/urai-content/pull/115), with five shared conflicts resolved and 73/73 native isolated source tests passed. Begin with [18_CONTENT_R117_CONVERGENCE_STATUS_20261108.md](18_CONTENT_R117_CONVERGENCE_STATUS_20261108.md) for the current execution checkpoint. Production remains HOLD; the earlier items below remain historic source context.
 
 
