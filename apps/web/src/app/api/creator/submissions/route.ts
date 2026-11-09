@@ -5,6 +5,7 @@ import { getAuthFailureBody, getAuthFailureStatus, getRequestSession } from '@/s
 import { recheckRequestSession } from '@/server/auth/currentRequest';
 import { createRuntimeContentRepository, getRuntimePersistenceStatus } from '@/server/content/service';
 import type { CreatorSubmission } from '@/server/content/types';
+import { CreatorSubmissionConflictError } from '../../../../../../../src/backend/creatorSubmissionConflict.js';
 
 export const dynamic = 'force-dynamic';
 
@@ -103,7 +104,22 @@ export async function POST(request: Request) {
     updatedAt: now
   };
 
-  await createRuntimeContentRepository().upsertCreatorSubmission(submission);
+  // Revalidate current Auth and canonical C1 after parsing and preparing the
+  // body, before any persistence work. This narrows but does not remove the
+  // withdrawal race between the check and the transaction commit.
+  const preWriteAuthorization = canCreateCreatorSubmission(await recheckRequestSession(request, session!), body.creatorId);
+  if (!preWriteAuthorization.ok) {
+    return NextResponse.json(getAuthFailureBody(preWriteAuthorization.reason), { status: getAuthFailureStatus(preWriteAuthorization.reason) });
+  }
+  try {
+    await createRuntimeContentRepository().createCreatorSubmission(submission);
+  } catch (error) {
+    if (error instanceof CreatorSubmissionConflictError) {
+      // Do not reveal whether the conflicting ID belongs to another creator.
+      return NextResponse.json({ error: 'submission_id_unavailable' }, { status: 409 });
+    }
+    throw error;
+  }
   const currentAuthorization = canCreateCreatorSubmission(await recheckRequestSession(request, session!), body.creatorId);
   if (!currentAuthorization.ok) {
     return NextResponse.json(getAuthFailureBody(currentAuthorization.reason), { status: getAuthFailureStatus(currentAuthorization.reason) });
