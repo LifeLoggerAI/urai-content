@@ -1,4 +1,7 @@
 # Next Content worker handoff
+
+> **CURRENT MASTER HANDOFF — 2026-11-08:** Read [17_CONTENT_NEXT_WORKER_MASTER_HANDOFF_20261108.md](17_CONTENT_NEXT_WORKER_MASTER_HANDOFF_20261108.md) first. It reconciles the completed 388/388 main raw-byte hashes, all 99 branch-head trees, the five #96/#112 conflicts, and current CI/deployment HOLD. Earlier incomplete-hash instructions below are historical and superseded only for the frozen main snapshot; other historical/provider gaps remain open.
+
 **Date:** 2026-11-07 CT. **Status:** HOLD, documentation-only. **Baseline:** main `988ca4f7f38b1ce86e4d3f426361b5866fd23e0d`; Content controller #96 `6321c38a939d26557a1c12cce3126ff6fd97dd6c`; issuer #111 `18fe4de11568e632cfc902e2a2cab526fd3554d3`; Vercel guard #112 `295e4ab4d1b2c886a2c0801306d071e280288891`; this pack on a new isolated branch stacked on #113.
 
 1. Read [MANIFEST.json](MANIFEST.json) and [MANIFEST_REVIEW_HEADS.json](MANIFEST_REVIEW_HEADS.json). They enumerate 388 main tracked file paths, plus review-head added/changed paths and exact object SHA/size; no need to redo same Git metadata before its source changes.
