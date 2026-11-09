@@ -331,7 +331,8 @@ export function createFirestoreContentRepository(db: FirestoreLike, options: Con
         if (previous.id !== next.id) throw new Error('Stored creator submission identity mismatch');
         assertCreatorModerationIntegrity(previous, next, receipt, expectedUpdatedAt);
         if (existingAudit.exists) throw new Error('Creator moderation audit already exists');
-        transaction.set(submissionRef, asRecord(next));
+        // Preserve existing recognized/migration fields as the prior upsert did.
+        transaction.set(submissionRef, asRecord(next), { merge: true });
         transaction.set(auditRef, asRecord(receipt));
       });
     },
