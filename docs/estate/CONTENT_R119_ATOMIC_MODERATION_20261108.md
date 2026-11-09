@@ -39,3 +39,14 @@
 5. Do not change production or mark GO until the integrated authority/security tests and protected deployment evidence exist.
 
 **HOLD — partial code repair is not proof the entire end-to-end Content pipeline operates.**
+
+## R120 — hosted PR #116 CI admission evidence (2026-11-09 UTC)
+Source head at run start: `18eaed84dcca91c3d73a24e09e63f7f0b85e7743` (the first draft PR #116 source/evidence commit).
+
+| Exact workflow | Run ID | Step count |
+|---|---|---:|
+| Content Visual Proof | [42543301738](https://github.com/LifeLoggerAI/urai-content/actions/runs/42543301738) | visual-proof FAILED with **0 recorded steps** |
+| ci | [42543301535](https://github.com/LifeLoggerAI/urai-content/actions/runs/42543301535) | validate/web/browser-smoke each FAILED with **0 recorded steps** |
+| URAI Production Verify | [42543301660](https://github.com/LifeLoggerAI/urai-content/actions/runs/42543301660) | Build, test, and QA FAILED with **0 recorded steps** |
+
+All three workflows completed with a failure conclusion, **five failed jobs, zero recorded job steps**. This is a **runner admission / pre-step infrastructure blocker**, NOT a failing TypeScript, Firebase emulator, application security test or acceptance result. No test transcript or application assertions were recorded for these jobs. A future worker should recheck current HEAD after this documentation commit, restore an executing runner, then run the exact PR code and provider-negative matrix. DO NOT bypass protected acceptance to turn this red CI green.
