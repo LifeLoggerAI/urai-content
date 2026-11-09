@@ -32,6 +32,7 @@ jobs:
       EXPECTED_BASE_URL: ${{ github.event.inputs.base_url }}
       DEPLOY_ENVIRONMENT: ${{ github.event.inputs.environment }}
       URAI_CONTENT_BUILD_SHA: ${{ github.sha }}
+      URAI_CONTENT_RELEASE_SHA: ${{ github.sha }}
     steps:
       - name: Checkout exact requested source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -111,6 +112,16 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: node ../../scripts/check-vercel-build-layout.mjs
 
+      - name: Verify linked Content Vercel project and source root
+        working-directory: apps/web
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: node scripts/check-vercel-root.mjs linked
+
+      - name: Test combined Content source and packaging guards
+        run: npm run web:deploy:preflight:test
+
       - name: Build with Vercel
         working-directory: apps/web
         env:
@@ -118,6 +129,13 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: vercel build
+
+      - name: Verify Vercel prebuilt artifact root
+        working-directory: apps/web
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: node scripts/check-vercel-root.mjs prebuilt
 
       - name: Deploy prebuilt preview artifact
         id: deploy
@@ -145,6 +163,11 @@ jobs:
             https://*) ;;
             *) echo "::error::Vercel deployment URL must use https://"; exit 1 ;;
           esac
+
+      - name: Verify deployed artifact and target domain serve exact compiled commit
+        env:
+          DEPLOYED_URL: ${{ steps.deploy.outputs.deployed_url }}
+        run: node scripts/verify-content-vercel-source.mjs
 
       - name: Live HTTP smoke
         run: |
