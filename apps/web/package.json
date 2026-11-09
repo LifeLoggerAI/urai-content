@@ -17,7 +17,9 @@
     "e2e:report": "playwright show-report",
     "check": "npm run typecheck && npm run lint && npm test && npm run build",
     "test:privacy-export": "node --test scripts/content-data-rights-export.test.mjs",
-    "test:privacy-export-client": "node --test scripts/content-data-export-client.test.mjs"
+    "test:privacy-export-client": "node --test scripts/content-data-export-client.test.mjs",
+    "prebuild": "node scripts/check-vercel-web-payload.mjs",
+    "postbuild": "node scripts/check-vercel-web-payload.mjs --built"
   },
   "dependencies": {
     "@next/env": "15.5.27",
