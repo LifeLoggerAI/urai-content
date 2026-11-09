@@ -97,8 +97,8 @@ describe('current user authority in real private handlers', () => {
     expect(authority.queue).toHaveBeenCalled();
     authority.current.customClaims.role = 'creator';
     authority.decoded.role = 'creator';
-    expect((await createSubmission(creatorRequest())).status).toBe(201);
-    expect(authority.write).toHaveBeenCalled();
+    expect((await createSubmission(creatorRequest())).status).toBe(503);
+    expect(authority.write).not.toHaveBeenCalled();
   });
 
   it('denies a disabled owner before reading or revealing a private submission', async () => {
