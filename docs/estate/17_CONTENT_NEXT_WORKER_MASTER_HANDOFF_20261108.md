@@ -1,5 +1,8 @@
 # ONE URAI GENESIS — CONTENT MASTER CONTINUITY / NEXT CHALK HANDOFF
 
+> **NEW R122 CONTINUATION:** Isolated draft [Content PR #117](https://github.com/LifeLoggerAI/urai-content/pull/117) (stacked on #116) adds create-only creator submission transactions and a fresh prewrite canonical Auth/C1 check, preventing silent overwrite from caller-supplied ID collisions. The actual Git-blob-matched POST route passed 7/7 synthetic native flow checks and conflict helper 2/2, but an explicit test confirms post-write 401 **does not undo persisted data**. See [20_CONTENT_R122_CREATE_ONLY_CONSENT_RACE_20261108.md](20_CONTENT_R122_CREATE_ONLY_CONSENT_RACE_20261108.md). CI remains five zero-step jobs. **Commit-time C1/Auth revocation fence remains P0; no GO.**
+
+
 > **NEW R120 CONTINUATION:** Draft [Content PR #116](https://github.com/LifeLoggerAI/urai-content/pull/116) adds a separate atomic creator moderation state+audit transaction candidate on top of draft PR #115. The exact source helper passed 8/8 native tests and a standalone strict TypeScript check; repository/Firestore emulator tests are committed but **not executed**. Five new PR Actions jobs failed before any steps. Read [19_CONTENT_R120_ATOMIC_MODERATION_CONTINUATION_20261108.md](19_CONTENT_R120_ATOMIC_MODERATION_CONTINUATION_20261108.md) before working. Crucially, in-flight Auth/C1/C7 withdrawal during creator persistence is **still unresolved**. Production remains HOLD.
 
 
