@@ -109,7 +109,7 @@ export async function POST(request: Request) {
   if (!preWriteAuthorization.ok) {
     return NextResponse.json(getAuthFailureBody(preWriteAuthorization.reason), { status: getAuthFailureStatus(preWriteAuthorization.reason) });
   }
-  if (isPrivateContentMutationHeld()) {
+  if (isPrivateContentMutationHeld(process.env.NODE_ENV, getRuntimePersistenceStatus().mode)) {
     return NextResponse.json({ error: PRIVATE_MUTATION_HOLD_ERROR }, { status: 503 });
   }
   try {
