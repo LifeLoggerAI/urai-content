@@ -20,6 +20,7 @@ vi.mock('../src/server/content/service', () => ({
   createRuntimeContentRepository: () => ({
     listCreatorSubmissionQueue: authority.queue,
     upsertCreatorSubmission: authority.write,
+    createCreatorSubmission: authority.write,
     getCreatorSubmission: authority.read
   })
 }));
