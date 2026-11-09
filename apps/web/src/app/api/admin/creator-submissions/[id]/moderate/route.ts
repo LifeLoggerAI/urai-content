@@ -80,7 +80,7 @@ export async function POST(request: Request, context: RouteContext) {
     updatedAt: now
   };
 
-  if (isPrivateContentMutationHeld()) {
+  if (isPrivateContentMutationHeld(process.env.NODE_ENV, getRuntimePersistenceStatus().mode)) {
     return NextResponse.json({ error: PRIVATE_MUTATION_HOLD_ERROR }, { status: 503 });
   }
   await repository.moderateCreatorSubmission(moderatedSubmission, {
