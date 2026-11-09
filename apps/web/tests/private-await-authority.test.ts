@@ -107,12 +107,13 @@ describe('private output and moderation after awaited work', () => {
     expect((await moderate(request({ decision: 'approved' }), context())).status).toBe(401);
     expect(state.writes).not.toHaveBeenCalled(); expect(state.logs).not.toHaveBeenCalled();
   });
-  it('retains the audit of an already-started mutation but denies withdrawn private output', async () => {
+  it('blocks moderator persistence in production even when current admin has authority', async () => {
     state.withdrawalPoint = 'write';
     const response = await moderate(request({ decision: 'approved' }), context());
-    expect(response.status).toBe(401);
-    expect(state.writes).toHaveBeenCalledTimes(1); expect(state.logs).toHaveBeenCalledTimes(1);
-    expect(JSON.stringify(await response.json())).not.toContain('PRIVATE_SOURCE_FIXTURE');
+    expect(response.status).toBe(503);
+    expect(state.writes).not.toHaveBeenCalled();
+    expect(state.logs).not.toHaveBeenCalled();
+    expect(await response.json()).toEqual({ error: 'private_mutation_fence_unavailable' });
   });
   it('denies role withdrawal at the added pre-write Auth/C1 boundary without persisting', async () => {
     state.role = 'creator';
@@ -124,12 +125,12 @@ describe('private output and moderation after awaited work', () => {
     expect(state.writes).not.toHaveBeenCalled();
     expect(JSON.stringify(await response.json())).not.toContain('PRIVATE_SOURCE_FIXTURE');
   });
-  it('does not return a creator body if authority is withdrawn while its write is pending', async () => {
+  it('blocks private creator persistence in production without revealing the submitted body', async () => {
     state.role = 'creator'; state.withdrawalPoint = 'write';
     const response = await creatorCreate(request({ creatorId: 'actor-1', title: 'Private fixture', body: 'PRIVATE_SOURCE_FIXTURE' }));
-    expect(response.status).toBe(401);
-    expect(state.writes).toHaveBeenCalledTimes(1);
-    expect(JSON.stringify(await response.json())).not.toContain('PRIVATE_SOURCE_FIXTURE');
+    expect(response.status).toBe(503);
+    expect(state.writes).not.toHaveBeenCalled();
+    expect(await response.json()).toEqual({ error: 'private_mutation_fence_unavailable' });
   });
 });
 
