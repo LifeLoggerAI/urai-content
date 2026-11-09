@@ -1,5 +1,8 @@
 # ONE URAI GENESIS — CONTENT MASTER CONTINUITY / NEXT CHALK HANDOFF
 
+> **R129 CONTINUATION:** New [Content draft PR #120](https://github.com/LifeLoggerAI/urai-content/pull/120) stacked on #119 tightens the private-mutation safety stop: only explicit in-memory development/test fixtures can write; **all Firestore-backed private creator and moderator mutations are denied regardless of NODE_ENV**, including mislabeled test/dev deployments. Exact original Git-blob-verified creator/hold/moderator modules **33/33 isolated native Node tests PASS**, but real Firebase/Next CI remains blocked (five zero-step GitHub jobs). See [23_CONTENT_R129_RUNTIME_PERSISTENCE_HOLD_20261109.md](23_CONTENT_R129_RUNTIME_PERSISTENCE_HOLD_20261109.md). Cross-Privacy commit-time revocation sequencing is still P0; NO-GO/HOLD.
+
+
 > **R127 CONTINUATION:** New [Content draft PR #119](https://github.com/LifeLoggerAI/urai-content/pull/119) stacked on #118 adds a production hard-off for the reviewed private creator POST and moderation POST until canonical Privacy C1/role revocation can be fenced *at commit time*. Exact creator route + hold module Git-blob-matched, **17/17 isolated native source tests PASS**; **6/6 additional architectural model-only checks** demonstrate why an asynchronous revocation outbox is inadequate. Moderation route only source-readback verified; full Firebase/Next tests still unrun and CI has zero-step runner failures. Read [22_CONTENT_R127_PRIVATE_MUTATION_HARD_OFF_20261108.md](22_CONTENT_R127_PRIVATE_MUTATION_HARD_OFF_20261108.md). **Production HOLD.**
 
 
