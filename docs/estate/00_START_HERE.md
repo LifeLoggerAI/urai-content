@@ -1,5 +1,8 @@
 # One UrAi Genesis — Content forensic review continuity
 
+> **CURRENT MASTER HANDOFF — 2026-11-08:** Read [17_CONTENT_NEXT_WORKER_MASTER_HANDOFF_20261108.md](17_CONTENT_NEXT_WORKER_MASTER_HANDOFF_20261108.md) first. It reconciles the completed 388/388 main raw-byte hashes, all 99 branch-head trees, the five #96/#112 conflicts, and current CI/deployment HOLD. Earlier incomplete-hash instructions below are historical and superseded only for the frozen main snapshot; other historical/provider gaps remain open.
+
+
 **HOLD. Documentation and Git object evidence only; production not certified.**
 
 This independent successor extends Content Genesis starter PR #113 (source 3edd6239328fc2c09130c7660cc825d04bcb582c). It does not overwrite controller PR #96 or publisher PRs #110/#111/#112, and does not deploy or call billable providers.
