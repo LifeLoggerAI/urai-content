@@ -43,3 +43,26 @@
 5. Prove a protected READY preview compiled source SHA with both deployed artifact URL and approved domain. Require independent review and rollback receipts before any release decision.
 
 **HOLD.** This PR is a test candidate, not a production authorization or final integration certification.
+
+## NATIVE EXTENDED RECONCILIATION RECEIPT — same 2026-11-08 continuation
+
+This receipt extends, but does not invalidate, the earlier 11/11 entry.
+
+| Isolated suite | Exact original source verified by `git hash-object` | Native Node result | Original log SHA-256 |
+|---|---|---:|---|
+| Build identity / version source | `apps/web/next.config.mjs` Git blob `2d7d6c3f4360ff7cb192e3d5cbcc4f614af33cd6` and `apps/web/src/app/api/version/route.ts` `d9fc1af4e5b1616eed7f6b8beca1461c96e8db56` | **11/11 PASS** | `a3698016f19ebadcb78543b643afcdc49bd148e5f9e7076bdc361ee42fce7104` |
+| Vercel linked/prebuilt root and packaging guard | `apps/web/scripts/check-vercel-root.mjs` Git blob `4251e3a468d14f411d3316258ea13c324d613a9c` | **12/12 PASS** | `dd9e90734aeed606fde785f2417d447821ce3d6be662f0e77047e143d57c8a12` |
+| Dual-origin exact-source verification | `scripts/verify-content-vercel-source.mjs` Git blob `59667db433d54c4a02ac485eb1dad409e79c5754` | **13/13 PASS** | `5a9c3d5540a1316a24669594ceb045cc25a8dd5ef2fef94231ee4a881ad1466f` |
+
+**Combined native result: 36 passed, zero failed/skipped** on Node v22.16.0. Each executable module's local file matched the exact Git object ID from the candidate. Harnesses were separately authored, generated only synthetic inputs/fixtures and were run locally; these are **isolated executed source contract tests**, not a full repository or a true Vercel/Firebase provider acceptance test. The harness/logs resided under `/mnt/data/content-reconcile-test/` in the active execution container at the time of testing; only scoped results and immutable log hashes are preserved in this committed report.
+
+Expanded negative cases include disagreeing legacy/new Git SHA values, invalid/absent compiled identities, runtime-source divergence, malformed or duplicated provider roots, incorrect provider project ID, missing/invalid Next and Vercel output manifests, URL protocol/hostname rejection, stale artifact versus stale target domain, response redirects, unsafe response content types, oversized streamed JSON and declared content length, and network unavailability.
+
+**Important caveat:** the full 26-file converged PR tree has not been checked out locally, so these three module-specific runs do not certify the candidate's complete dependency graph, generated Next artifact, type checking, CI workflows, current Firebase account/Roles, consent, revocation, moderation transaction semantics, marketing publisher issue chain, or real private downstream consumers.
+
+## Draft review and current continuation point
+
+- New isolated [Content convergence PR #115](https://github.com/LifeLoggerAI/urai-content/pull/115) targets the #96 branch as a **draft**; it changes 26 files against #96: 19 exact donor-only paths, five resolved overlapping files, one enhanced source identity test and this additional convergence contract/evidence. Source and authoring remains unmerged.
+- The latest observed PR #115 commit before appending this receipt was `e93b0a7773e53a9bcd3f6f2b5d8c20cef33cb248`. This documentation update advances the review HEAD; always fetch fresh SHA before tests.
+- At immediate first query after creating the PR, commit-linked GitHub Actions runs returned an empty list, **not** an executing or passing suite. Recheck later rather than claiming new CI admission.
+- Protected Firebase/Privacy owner consent, in-flight persistence revocation, atomic moderation, actual Content → Jobs/Studio/Storytime/Spatial delivery and deletion, trusted publisher IAM, and authenticated prebuilt preview remain outstanding. **NO-GO/HOLD**.
