@@ -22,6 +22,8 @@ export interface ContentRepository {
   getContent(id: string): Promise<ContentItem | null>;
   listContent(): Promise<ContentItem[]>;
   listContentPage(request?: PageRequest): Promise<PageResult<ContentItem>>;
+  /** Anonymous read: query only published/public/nondeleted candidates before cursor formation. */
+  listPublishedPublicContentPage(request?: PageRequest): Promise<PageResult<ContentItem>>;
   getContentBySlug(slug: string): Promise<ContentItem | null>;
   deleteContent(id: string): Promise<void>;
   softDeleteContent(request: SoftDeleteContentRequest): Promise<StoredContentDeletion>;
