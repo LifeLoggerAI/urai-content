@@ -65,6 +65,28 @@ describe('RuntimeContentService', () => {
     expect(privateResults.map((item) => item.id)).toEqual(['published-private']);
   });
 
+  it('paginates only published/public records without hidden cursor IDs or sparse pages', async () => {
+    const repo = new InMemoryContentRepository();
+    const service = new RuntimeContentService(repo);
+    for (const [id, status, visibility] of [
+      ['a-private', 'published', 'private'],
+      ['b-public', 'published', 'public'],
+      ['c-draft', 'draft', 'public'],
+      ['d-public', 'published', 'public'],
+      ['e-unlisted', 'published', 'unlisted'],
+      ['f-public', 'published', 'public'],
+    ] as const) {
+      await repo.upsertContent(makeContentItem({ id, slug: id, status, visibility }));
+    }
+    const first = await service.listPublishedCatalogPage({ limit: 1 });
+    const second = await service.listPublishedCatalogPage({ limit: 1, cursor: first.nextCursor });
+    const third = await service.listPublishedCatalogPage({ limit: 1, cursor: second.nextCursor });
+    expect([first, second, third].flatMap((page) => page.items.map((item) => item.id)))
+      .toEqual(['b-public', 'd-public', 'f-public']);
+    expect(third.nextCursor).toBeNull();
+    expect(JSON.stringify({ first, second, third })).not.toMatch(/a-private|c-draft|e-unlisted/);
+  });
+
   it('keeps published unlisted content out of anonymous catalog pages but permits direct lookup', async () => {
     const repo = new InMemoryContentRepository();
     const service = new RuntimeContentService(repo);
