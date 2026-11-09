@@ -35,3 +35,18 @@ describe('in-memory moderation transaction parity for nonproduction fixture', ()
     expect(await repo.getCreatorSubmission(source.id)).toMatchObject({ status: 'submitted' });
   });
 });
+
+describe('in-memory create-only creator source parity', () => {
+  it('does not replace previously saved content on duplicate owner ID', async () => {
+    const repo = new InMemoryContentRepository();
+    await repo.createCreatorSubmission(source);
+    await expect(repo.createCreatorSubmission({...source,body:'updated'})).rejects.toThrow('ID is not available');
+    expect(await repo.getCreatorSubmission(source.id)).toMatchObject({creatorId:'owner-1',body:'Fixture, not user data'});
+  });
+  it('does not replace another creator under a caller-supplied ID', async () => {
+    const repo = new InMemoryContentRepository();
+    await repo.createCreatorSubmission(source);
+    await expect(repo.createCreatorSubmission({...source,creatorId:'other-owner'})).rejects.toThrow('ID is not available');
+    expect(await repo.getCreatorSubmission(source.id)).toMatchObject({creatorId:'owner-1'});
+  });
+});
