@@ -53,3 +53,15 @@ Additional source-link verification: the creator route's relative `../../../../.
 Execution-grade local artifacts: `/mnt/data/content-r121-native-evidence.zip`, containing original exact-Git-blob-matched creator POST and collision helper, redirection stubs, test harnesses and full TAP logs. The local ZIP is not a hosted CI artifact and does not independently authorize deploy.
 
 **Critical**: the earlier `73/73` and `8/8` source tests belong to separate ancestor scopes. This R121 work adds `7/7` actual route isolated tests plus `2/2` helper tests, not a new merged full-repository `82/82` certification.
+
+## R123 — Firestore path isolation and UUID source IDs (separate scoped native rerun)
+
+Additional hardening on this same draft PR:
+- Public optional `id` now requires 1–128 characters and strict `^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$`, refusing path separators, `.`, `..` and arbitrary path text before repository work.
+- If no ID is supplied, the server now generates `submission-${randomUUID()}`, replacing the timestamp/title concatenation with an opaque collision-resistant ID.
+- Both `createCreatorSubmission` repository implementations invoke the existing `assertDocumentId` as defense-in-depth; the Firestore contract additionally checks document absence in one transaction.
+- Added real API fixture cases rejecting path-unsafe IDs and requiring distinct UUIDs, plus a Firestore-fake direct-adapter nested-path denial test. **These committed whole-repo tests remain UNEXECUTED.**
+
+**Executed exact original route bytes:** `apps/web/src/app/api/creator/submissions/route.ts` Git blob `c524757ad5e8fa045a17b096119f5977989a628a`, independently `git hash-object` verified in the isolated harness. Node 22.16.0 with synthetic Next, Zod, Auth/C1 and repository stubs: **9/9 PASS**, TAP log SHA-256 `719b8d4bc215bf3378c2de4d5d7f97064a29fa3d87e828d9bcd79e75745035f0`. Seven earlier route tests plus two new cases (unsafe ID rejection, UUID issuance). `creatorSubmissionConflict.ts` pure helper 2/2 separate PASS and strict TS check unchanged. Reproducible local evidence: `/mnt/data/content-r123-native-evidence.zip`, ZIP SHA-256 `60fef40485682aebdd50d081a93c07eb0c30deb0cd33ffe22e16add9838a6978`.
+
+The 9/9 route results supersede the earlier **7/7 route** count on the newer exact route SHA. All original scope caveats remain: mocks are synthetic, a postwrite 401 can leave committed private data, and no Firebase emulator, canonical C1 transaction fence, full project build, CI or production acceptance was performed. **HOLD**.
