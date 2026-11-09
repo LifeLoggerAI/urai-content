@@ -228,7 +228,7 @@ describe('creator submissions API route authorization', () => {
     const repository = runtimeContent.createRuntimeContentRepository();
     let release!: () => void;
     const write = new Promise<void>((resolve) => { release = resolve; });
-    const persist = vi.spyOn(repository, 'upsertCreatorSubmission').mockReturnValue(write);
+    const persist = vi.spyOn(repository, 'createCreatorSubmission').mockReturnValue(write);
     vi.spyOn(runtimeContent, 'getRuntimePersistenceStatus').mockReturnValue({ mode: 'firestore', firebaseAdminConfigured: true, writable: true, previewMode: false, productionSafe: true, message: 'Declared storage fixture' });
     const pending = postCreatorSubmission(makeCreatorPostRequest(validSubmissionBody, { 'x-urai-user-id': 'creator-1', 'x-urai-role': 'creator' }));
     let returned = false; void pending.then(() => { returned = true; });
@@ -257,7 +257,7 @@ describe('creator submissions API route authorization', () => {
     setNodeEnvForTests('test');
     const repository = runtimeContent.createRuntimeContentRepository();
     vi.spyOn(runtimeContent, 'getRuntimePersistenceStatus').mockReturnValue({ mode: 'firestore', firebaseAdminConfigured: true, writable: true, previewMode: false, productionSafe: true, message: 'Declared storage fixture' });
-    vi.spyOn(repository, 'upsertCreatorSubmission').mockRejectedValue(new Error('Synthetic persistence failure'));
+    vi.spyOn(repository, 'createCreatorSubmission').mockRejectedValue(new Error('Synthetic persistence failure'));
     await expect(postCreatorSubmission(makeCreatorPostRequest(validSubmissionBody, { 'x-urai-user-id': 'creator-1', 'x-urai-role': 'creator' }))).rejects.toThrow('Synthetic persistence failure');
   });
 
