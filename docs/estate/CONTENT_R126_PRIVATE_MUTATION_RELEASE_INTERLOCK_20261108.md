@@ -37,3 +37,17 @@ Verified Privacy main `1163d6f32a123ef9a6638e092a3eee5ec4a3b317`, specifically `
 5. Existing stacked PR #96→#115→#116→#117→#118 must remain individually reviewable; do not activate or merge merely because the hard-off suite passes.
 
 **HOLD:** A working safety interlock is not a functioning end-to-end Content pipeline or a deployed canonical Privacy revocation fence.
+
+## R127 — new draft PR #119 exact-head hosted CI admission readback
+
+Initial PR #119 head `d49d611002fc2f90a56f56322932d08ce0eac8bb`:
+
+| Workflow | GitHub run ID | Executed job steps |
+|---|---|---|
+| ci | [42549559444](https://github.com/LifeLoggerAI/urai-content/actions/runs/42549559444) | web, browser-smoke, validate each FAILED, **0 steps each** |
+| URAI Production Verify | [42549559419](https://github.com/LifeLoggerAI/urai-content/actions/runs/42549559419) | Build, test, and QA FAILED, **0 steps** |
+| Content Visual Proof | [42549559455](https://github.com/LifeLoggerAI/urai-content/actions/runs/42549559455) | visual-proof FAILED, **0 steps** |
+
+All three workflows ended in failure with **five zero-step jobs**. These are runner admission / pre-execution failures, **not** application test assertion failures and not passing CI. The exact-head full Vitest files, Next build, live Firebase/Privacy and protected Vercel preview were not executed. This documentation write itself advances the PR head; always recheck new commit runs.
+
+R126 native module tests remain separately scoped (**17/17 native route+hold**, **6/6 architectural model-only**, helper standalone strict typecheck). **HOLD**.
