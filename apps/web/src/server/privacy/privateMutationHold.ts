@@ -14,6 +14,17 @@ import 'server-only';
  */
 export const PRIVATE_MUTATION_HOLD_ERROR = 'private_mutation_fence_unavailable' as const;
 
-export function isPrivateContentMutationHeld(runtime: string | undefined = process.env.NODE_ENV): boolean {
-  return runtime === 'production';
+export type PrivateMutationPersistenceMode = 'memory' | 'firestore';
+
+/**
+ * Allow only clearly identified local fixture persistence. Environment names
+ * are not evidence that Firebase is an emulator or that a live project is safe.
+ * Unknown runtime or persistence mode MUST be held; real Firestore must remain
+ * held even if NODE_ENV is accidentally set to "test" or "development".
+ */
+export function isPrivateContentMutationHeld(
+  runtime: string | undefined = process.env.NODE_ENV,
+  persistenceMode?: PrivateMutationPersistenceMode
+): boolean {
+  return !(runtime === 'test' || runtime === 'development') || persistenceMode !== 'memory';
 }
