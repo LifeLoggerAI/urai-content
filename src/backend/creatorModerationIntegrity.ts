@@ -28,7 +28,11 @@ export function assertCreatorModerationIntegrity(
       audit.entityId !== next.id || audit.status !== next.status || audit.decision !== next.status) {
     throw new Error('Creator moderation audit decision mismatch');
   }
-  if (!next.moderatedAt || !next.moderatedBy || next.updatedAt !== next.moderatedAt ||
+  if (!next.moderatedAt || !next.moderatedBy || !Number.isFinite(Date.parse(next.updatedAt)) ||
+      !Number.isFinite(Date.parse(previous.updatedAt)) || Date.parse(next.updatedAt) <= Date.parse(previous.updatedAt)) {
+    throw new Error('Creator moderation nonmonotonic revision timestamp');
+  }
+  if (next.updatedAt !== next.moderatedAt ||
       audit.moderatedAt !== next.moderatedAt || audit.moderatedBy !== next.moderatedBy) {
     throw new Error('Creator moderation audit actor/time mismatch');
   }
