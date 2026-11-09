@@ -29,7 +29,7 @@ vi.mock('../src/server/firebase/admin', () => ({
 vi.mock('../src/server/content/service', () => {
   const end = (point: 'read' | 'write' | 'log') => { if (state.withdrawalPoint === point) state.withdrawn = true; };
   return {
-    getRuntimePersistenceStatus: () => ({ writable: true }),
+    getRuntimePersistenceStatus: () => ({ writable: true, mode: 'firestore' }),
     createRuntimeContentRepository: () => ({
       listCreatorSubmissionQueue: async () => { state.reads(); end('read'); return [privateSubmission]; },
       listCreatorSubmissions: async () => { state.reads(); end('read'); return [privateSubmission]; },
@@ -124,6 +124,20 @@ describe('private output and moderation after awaited work', () => {
     expect(response.status).toBe(401);
     expect(state.writes).not.toHaveBeenCalled();
     expect(JSON.stringify(await response.json())).not.toContain('PRIVATE_SOURCE_FIXTURE');
+  });
+  it('holds creator mutations when NODE_ENV is misconfigured as test but Firebase is real', async () => {
+    vi.stubEnv('NODE_ENV', 'test');
+    state.role = 'creator';
+    const response = await creatorCreate(request({ creatorId: 'actor-1', title: 'Private fixture', body: 'PRIVATE_SOURCE_FIXTURE' }));
+    expect(response.status).toBe(503);
+    expect(state.writes).not.toHaveBeenCalled();
+  });
+  it('holds moderation when NODE_ENV is misconfigured as development but Firebase is real', async () => {
+    vi.stubEnv('NODE_ENV', 'development');
+    const response = await moderate(request({ decision: 'approved' }), context());
+    expect(response.status).toBe(503);
+    expect(state.writes).not.toHaveBeenCalled();
+    expect(state.logs).not.toHaveBeenCalled();
   });
   it('blocks private creator persistence in production without revealing the submitted body', async () => {
     state.role = 'creator'; state.withdrawalPoint = 'write';
