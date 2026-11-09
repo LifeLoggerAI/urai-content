@@ -47,7 +47,9 @@ describe('runtime catalog Firestore mode', () => {
       makeContentItem({ id: 'published-public', slug: '/published-public', title: 'Published Public' }),
       makeContentItem({ id: 'published-unlisted', slug: '/published-unlisted', title: 'Published Unlisted', visibility: 'unlisted' }),
     ];
-    serviceMocks.listPublishedCatalogPage.mockResolvedValue({ items: rows, nextCursor: null });
+    // Anonymous catalog listing is public-only. Direct slug reads may still
+    // resolve published unlisted demo records when a caller knows the link.
+    serviceMocks.listPublishedCatalogPage.mockResolvedValue({ items: rows.filter(item => item.visibility === 'public'), nextCursor: null });
     serviceMocks.getPublishedContentBySlug.mockImplementation(async (slug: string) => rows.find((item) => item.slug === '/' + slug.replace(/^\//, '')) ?? null);
   });
 
@@ -57,7 +59,8 @@ describe('runtime catalog Firestore mode', () => {
     expect(catalog.source).toBe('firestore-ready');
     expect(serviceMocks.listPublishedCatalogPage).toHaveBeenCalledWith({});
     expect(catalog.nextCursor).toBeNull();
-    expect(catalog.items.map((item) => item.id)).toEqual(['published-public', 'published-unlisted']);
+    expect(catalog.items.map((item) => item.id)).toEqual(['published-public']);
+    expect(JSON.stringify(catalog)).not.toContain('published-unlisted');
   });
 
   it('finds Firestore-backed content detail through the published-content service guard', async () => {
