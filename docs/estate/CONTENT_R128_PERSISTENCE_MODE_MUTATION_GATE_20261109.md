@@ -26,3 +26,24 @@
 - Preserve original worker PRs and central knowledge registry. No forced merge, no test bypass, no production GO.
 
 **HOLD** — production/private pipeline functionality is not certified by a correct hard-off.
+
+## R129 — exact moderation route native executable and combined rerun
+
+The R128 file above originally recorded 22/22 native tests on creator POST + hold only. **New evidence extends to moderation route**; it does not erase the 22/22 prior receipt.
+
+- `apps/web/src/app/api/admin/creator-submissions/[id]/moderate/route.ts` exact GitHub blob `3220edabd13e0292a9ba20f6af8e342bea747302` was locally reconstructed with byte-identical `git hash-object`. No module source was edited for the harness.
+- Native Node 22.16.0, same synthetic Auth, Zod, Firestore mode and in-memory test repository: **11/11 moderation route tests PASS**. Cases: Firestore denies on production, test, development, staging and empty runtime; only explicit in-memory test/development can commit fixture state; production memory still denied; non-admin denied; withdrawn role before mutation denied; invalid decision denied. Native moderation TAP SHA256 `36b33ca5f023667759dae1404be0c35c9b05ff99f60f5e07d199baa181b91959`.
+- **Combined single invocation: 33/33 PASS, 0 fail/skip/cancel** across creator route, runtime-boundary, and moderation route. Exact commands and source copies in local evidence ZIP `/mnt/data/content-r128-private-mutation-boundary-evidence.zip`; combined TAP SHA256 `92dde7b53694030368ab4d9f0d33d067a0d015601f7b6999e13aae81e1d70ec5`; ZIP SHA256 `9d86a175d9b946952eb7da374d9bdd2def837b345b8ee229f583c90731e7d8e9`.
+- The three original source blobs were independently verified: helper `c2ff91b101600bedd8278a93960b180dab776658`, creator route `592cbdabbfeb9aa0d14387083064c626cea8599f`, moderation route `3220edabd13e0292a9ba20f6af8e342bea747302`.
+- **NOT full Firebase/Next/Vitest integration:** all imported authority/provider/persistence modules are synthetic stubs, and the Firestore Admin SDK real transaction was not exercised. Only the complete original route control flow and hard-off behavior were exercised. No real C1 authority was deployed/verified.
+
+## PR #120 CI admission
+
+Initial draft PR #120 source HEAD `846e345973655f9f916bc8a80b9edf3918e1d6d3`:
+- [CI run 42550256804](https://github.com/LifeLoggerAI/urai-content/actions/runs/42550256804): browser-smoke, web, validate, each FAILED, **zero recorded steps**.
+- [Content Visual Proof 42550256752](https://github.com/LifeLoggerAI/urai-content/actions/runs/42550256752): visual-proof FAILED, **zero recorded steps**.
+- [URAI Production Verify 42550256769](https://github.com/LifeLoggerAI/urai-content/actions/runs/42550256769): Build/test/QA FAILED, **zero recorded steps**.
+
+These are pre-step runner/admission BLOCKED results. They do not mean the application tests executed or failed; there is no protected CI success for this branch. Documentation update moves the branch HEAD; re-read before further tests.
+
+**Priority after this improvement:** actual canonical Privacy C1/Auth revocation barrier with durable acknowledgement sequencing, cross-project IAM/project identity, Java21 Firebase emulator and exact-head full Next/Vitest checks. Production remains NO-GO/HOLD.
