@@ -1,0 +1,76 @@
+{
+  "schema": "one-urai-content-verified-byte-slice-v1",
+  "repo": "LifeLoggerAI/urai-content",
+  "source_commit": "988ca4f7f38b1ce86e4d3f426361b5866fd23e0d",
+  "source_manifest_sha": "7c90860067aa5dd0a842bb98a3402836db0871b4",
+  "group": "content",
+  "start": 10,
+  "group_files": 19,
+  "sha256_vector_pass": true,
+  "method": "GitHub contents base64 decode, length match, Git tree SHA match, independently computed raw byte SHA-256",
+  "rows": [
+    {
+      "path": "content/legal/consent-tiers.json",
+      "git_blob_sha": "866f85984d2511c399f64801c39fc462dfe2513e",
+      "bytes": 216,
+      "sha256": "0cbfbea02ae554e474076bf05a97814b35c9ff57dd8410e0d5bb7f3321c8a5d6",
+      "verified": true
+    },
+    {
+      "path": "content/pages/home.json",
+      "git_blob_sha": "f4507bd3fd43aeaca3b316fe933c1d3403959c4c",
+      "bytes": 732,
+      "sha256": "8cd1b847a1dbceb13476b727d33ac0d3b86983112ce68f09759a54e85cf47ce7",
+      "verified": true
+    },
+    {
+      "path": "content/pages/privacy.json",
+      "git_blob_sha": "4f3c064abc08287ea8f00ce070cacce8ea88abc7",
+      "bytes": 457,
+      "sha256": "432a1d1a9e077333540f074db698811e8a04f158c64936f7ca2f90b16ce0e41b",
+      "verified": true
+    },
+    {
+      "path": "content/seo/metadata.json",
+      "git_blob_sha": "b88b4f59000fcc24e21e7019112a3f6fcd8bd6e3",
+      "bytes": 277,
+      "sha256": "5ae87a244b11db0dea67c10f01aacacd992842ec041edd45e4371b36fd29325e",
+      "verified": true
+    },
+    {
+      "path": "content/seo/open-graph.json",
+      "git_blob_sha": "02d5f964c07eddf7568798d0c6060dede7251be3",
+      "bytes": 124,
+      "sha256": "e12505b800a3375bcef14db1644ca2a6e5bf2259c4c26b184307b2703d6917bc",
+      "verified": true
+    },
+    {
+      "path": "content/seo/sitemap-routes.json",
+      "git_blob_sha": "7157fba8e46144a9530673d276a38201a29cafbe",
+      "bytes": 124,
+      "sha256": "8f25f93014bee6fac25bedcd716f47e178a28ff41a924492832270038bf0331d",
+      "verified": true
+    },
+    {
+      "path": "content/sprites/sprite-packs.json",
+      "git_blob_sha": "fb506be01bc480c2ca9b12708a1339927a3064e9",
+      "bytes": 347,
+      "sha256": "4b5bb093d6408b142f8d6fe1d6a488a546b524d6eecea231d017a4487dfc8375",
+      "verified": true
+    },
+    {
+      "path": "content/sprites/sprite-schema.json",
+      "git_blob_sha": "0c2c4b2a53571e0f849665d17c52138a4783e237",
+      "bytes": 238,
+      "sha256": "f31b198ebe4873500ba117b24e3132816ac86f832792f8675ec280746b9fbc2c",
+      "verified": true
+    },
+    {
+      "path": "content/sprites/sprites-previews.json",
+      "git_blob_sha": "a0644a49c6b6b07d4182660812f306571a033c85",
+      "bytes": 91,
+      "sha256": "df3013a19aa1f8b9bcafe4f123ff3e792ab781ce8f291166d6adbc5d7c82bac4",
+      "verified": true
+    }
+  ]
+}

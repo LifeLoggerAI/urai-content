@@ -1,0 +1,34 @@
+# Next Content worker handoff
+
+> **CURRENT MASTER HANDOFF — 2026-11-08:** Read [17_CONTENT_NEXT_WORKER_MASTER_HANDOFF_20261108.md](17_CONTENT_NEXT_WORKER_MASTER_HANDOFF_20261108.md) first. It reconciles the completed 388/388 main raw-byte hashes, all 99 branch-head trees, the five #96/#112 conflicts, and current CI/deployment HOLD. Earlier incomplete-hash instructions below are historical and superseded only for the frozen main snapshot; other historical/provider gaps remain open.
+
+**Date:** 2026-11-07 CT. **Status:** HOLD, documentation-only. **Baseline:** main `988ca4f7f38b1ce86e4d3f426361b5866fd23e0d`; Content controller #96 `6321c38a939d26557a1c12cce3126ff6fd97dd6c`; issuer #111 `18fe4de11568e632cfc902e2a2cab526fd3554d3`; Vercel guard #112 `295e4ab4d1b2c886a2c0801306d071e280288891`; this pack on a new isolated branch stacked on #113.
+
+1. Read [MANIFEST.json](MANIFEST.json) and [MANIFEST_REVIEW_HEADS.json](MANIFEST_REVIEW_HEADS.json). They enumerate 388 main tracked file paths, plus review-head added/changed paths and exact object SHA/size; no need to redo same Git metadata before its source changes.
+2. Re-fetch latest active PR heads, including any other workers' new commits. Compare changes against immutable baseline; do not force-push.
+3. Close raw coverage: independent file-byte hashing, full historical refs/commit graph/LFS/archive and linked Drive assets; explicitly record missing bytes/unknown object ownership.
+4. Most urgent source merge: reconciliation plan for #96 consent/owner/current token and #110/#111 issuer, with one canonical versioned persistence schema. Ensure root/web Rules overlap and component scopes are addressed.
+5. Run all original root/web native checks on the frozen converged SHA: npm ci, npm run check, npm run web:install, npm run web:check, route smoke, browser/Rules emulator, Java21 where needed. Latest hosted jobs executed zero steps; recover runners and capture exact logs.
+6. Protected Firebase current-account identity, C1/C7 consent, owner/private cross-user denials, revocation/deletion races, provider storage and current-role checks must be tested with real independently approved staging identities.
+7. Fix doubled Vercel route-manifest root only in a protected preview with approved project/source; verify compiled SHA equals public endpoint and artifact and no stale READY target misattributed.
+8. Complete rights/provenance/asset/license, story/narrator/share/communications flows and dedicated Privacy/Jobs/Storytime/Studio consumer acceptance. No private media promotion or paid compute without owner authority.
+9. Publish exact test ledger, PR diff, verification identity and old-vs-new decisions to central master steward; review before merge.
+
+**Stop conditions:** no provider authorization, missing current consent, ambiguous IAM/Rules owner, unbounded spend, unexplained signed approval or current source mismatch. Never expose raw personal records or credentials in docs.
+
+
+## CONTINUATION — audited source evidence added 2026-11-08 UTC
+This section supersedes previous "branch trees not enumerated" claims above without deleting historical handoff instructions. The full 99 visible branch HEAD tree snapshots, including Git paths/object SHA/sizes and a deduplicated union, now exist in `history/branch-tree-slice-00.json` through `09.json` and `history/branch-head-union-reconciliation.json`. `history/main-commits-pages-001-010.json` covers 682 main-reachable commits through the February 5, 2026 root. `byte-audit/` records 78 independently SHA-256-checked main blobs (47/47 src, 19/19 content and 12 apps), 475,044 bytes, no mismatch. Still **not all branch history or all raw blobs**.
+
+**Source-level review trigger:** PR #96 creator POST writes `creatorSubmissions` then verifies current account authority before returning; existing `private-await-authority.test.ts` explicitly models a mutation already started when revocation occurs. Separately, admin moderation writes submission and audit as two operations. Classify as *in-flight persistence/rollback and atomicity acceptance unresolved*, not proof of leaked media or a new live exploit. Require real Firebase transaction/revocation/deletion-race tests before production. `listPublishedCatalogPage` includes `unlisted` entries: require unlisted discoverability/privacy policy test.
+
+**Next steps in order:** (1) finish 310 remaining main source byte hashes, especially `apps/web` auth/Privacy/Firestore Rules, root web and test fixtures; (2) inspect the 148 branch-only paths and targeted historical commit trees; (3) reconcile #96+#110–#112 on a single successor SHA; (4) restore native CI runner, run Java21 rules/auth regressions and protected staged provider tests; (5) owner-approved release procedure only after independent consent/rules/deletion, live deployment and rollback receipts. New audit docs `14_CONTINUATION_EVIDENCE_20261108.md` and `15_SOURCE_RISK_AND_PROVENANCE_NOTES_20261108.md` are the latest continuation entrypoints.
+
+
+## FINAL EXACT-MAIN RAW BYTE SHA-256 COVERAGE — SUPERSEDES EARLIER 78-FILE PARTIAL TOTAL (2026-11-08 UTC)
+
+Full main-source coverage is now **388/388 tracked Git blobs**, **1,514,321/1,514,321 bytes** (100%), with **zero mismatches**. Each GitHub original-file base64 response was decoded to bytes and independently SHA-256 hashed; exact byte lengths and returned Git blob SHA-1s matched the immutable Git main tree `988ca4f7f38b1ce86e4d3f426361b5866fd23e0d`. Independently calculating Git blob SHA-1 was not performed; server-reported object identity was cross-checked against the frozen tree. SHA-256 function passed the standard `abc` vector. All 30 per-slice ledgers were recombined and checked against 388 unique manifest paths and exact byte total. Machine-readable permanent result: `docs/estate/byte-audit/MAIN_SHA256_FULL_COVERAGE.json`.
+
+**Two legitimate zero-length tracked images:** `public/sprites/celestial.png` and `public/sprites/previews/celestial-preview.png`; zero-byte hash is the standard SHA-256 empty-file value. They remain placeholders, not usable artwork.
+
+Do not confuse **100% raw byte coverage for ONE merged main snapshot** with 100% historical source recovery or launch readiness. The 936 Git blob objects across 99 visible branch heads were inventoried by Git object metadata only and their original contents are not collectively SHA-256 checked. Intermediate branch commit histories, inaccessible or deleted objects, external LFS/media, provider IAM and Cloud Storage objects, Google Drive entire corpus, CI ZIPs, build/test runtime and private user data remain not exhaustively verified. No native build or physical device integration certification was performed; release **HOLD**.

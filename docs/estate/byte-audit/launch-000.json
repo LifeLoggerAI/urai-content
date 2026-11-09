@@ -1,0 +1,115 @@
+{
+  "schema": "one-urai-content-verified-byte-slice-v1",
+  "source_commit": "988ca4f7f38b1ce86e4d3f426361b5866fd23e0d",
+  "group": "launch-proof",
+  "offset": 0,
+  "group_file_count": 20,
+  "verification": "base64 original raw bytes; matched original tree byte length and Git object ID; independent SHA256; known ABC vector passed",
+  "rows": [
+    {
+      "path": "launch-proof/urai-content-production-lock/2026-06-30T000000-0500/README.md",
+      "bytes": 13565,
+      "git_blob_sha": "fc173d0c415c8a5b51d2961e4be9246f950c9dcd",
+      "sha256": "fe4da6c4458affbdf3e28889d52718f59fdbac806edee37013fe34a78646ba27",
+      "verified": true
+    },
+    {
+      "path": "launch-proof/urai-content-production-lock/2026-06-30T011500-0500/README.md",
+      "bytes": 2142,
+      "git_blob_sha": "8b829cb7cb0b5da043c3bb3c6c23162b362bb52b",
+      "sha256": "8d18b7a4f8f6fcf0204813e3c9c3ffda3e34a9dc6ba64dc29bbbe4ba948c78cd",
+      "verified": true
+    },
+    {
+      "path": "launch-proof/urai-content-production-lock/2026-06-30T011500-0500/api-proof.md",
+      "bytes": 1255,
+      "git_blob_sha": "b9aec66418f0b61ff7acda36cf3bebed1e7a0260",
+      "sha256": "136de5fcb725a31a5a64f269486c8a2c0bfca5fa9216c9f4b5182f41c5650042",
+      "verified": true
+    },
+    {
+      "path": "launch-proof/urai-content-production-lock/2026-06-30T011500-0500/auth-rbac-proof.md",
+      "bytes": 1627,
+      "git_blob_sha": "0a28a34d773fa38039ba177f83e6e9934e973ffd",
+      "sha256": "7ccc029df2d3883da9e77392bfcb1b676caa07c332070ef8f45eea62440ac08f",
+      "verified": true
+    },
+    {
+      "path": "launch-proof/urai-content-production-lock/2026-06-30T011500-0500/blockers.md",
+      "bytes": 1523,
+      "git_blob_sha": "c33761c3f5b4723794265548eda0710ba5179427",
+      "sha256": "888bf25acf54caa32d0353fe7e4f9a39be6952ce8027367b5421720929c7e606",
+      "verified": true
+    },
+    {
+      "path": "launch-proof/urai-content-production-lock/2026-06-30T011500-0500/build-test-logs.md",
+      "bytes": 2320,
+      "git_blob_sha": "0ee4910ff7114cfac2fbc58b6334083fd0c0ea77",
+      "sha256": "f84d087349946970c6aca27920e88a652d17323812038df2249412970ce567c3",
+      "verified": true
+    },
+    {
+      "path": "launch-proof/urai-content-production-lock/2026-06-30T011500-0500/completion-plan.md",
+      "bytes": 1506,
+      "git_blob_sha": "04e4eef54d09f8993b1a9ae283f84d3ce78ce0c7",
+      "sha256": "29c98e8e031850f5ec490e650608ffdd81aacf5d7e0d5607cc6df3205279f346",
+      "verified": true
+    },
+    {
+      "path": "launch-proof/urai-content-production-lock/2026-06-30T011500-0500/creator-admin-proof.md",
+      "bytes": 1471,
+      "git_blob_sha": "88c8790b9e7d2850f8c83467482f6c5603476366",
+      "sha256": "933a8ea23a0ae37b9dbcb39ad8786f827ecbf2e0e568dd0e7c29ded25cfa279c",
+      "verified": true
+    },
+    {
+      "path": "launch-proof/urai-content-production-lock/2026-06-30T011500-0500/data-schema-audit.md",
+      "bytes": 2584,
+      "git_blob_sha": "c3365efa7f34a93be43cfe31277735f5441fde58",
+      "sha256": "90410bab352ee22c98242d6780bb5edfbbf6f19c822b2ce0d5c5369d8a580291",
+      "verified": true
+    },
+    {
+      "path": "launch-proof/urai-content-production-lock/2026-06-30T011500-0500/deployment-proof.md",
+      "bytes": 1260,
+      "git_blob_sha": "cc6d76ba7e725c48a0fc17f761167694750b37a9",
+      "sha256": "1a06f6dd9f20468e9680593e72ffb064ed1b4039aedb513a42cb060494f0077f",
+      "verified": true
+    },
+    {
+      "path": "launch-proof/urai-content-production-lock/2026-06-30T011500-0500/export-media-proof.md",
+      "bytes": 1112,
+      "git_blob_sha": "14daf9a899eef5eb9a96d903b54ab6e6fd2e0602",
+      "sha256": "cdd8d9af90989a952561e897ff489d399a0226eda25c967d826807f525a3138a",
+      "verified": true
+    },
+    {
+      "path": "launch-proof/urai-content-production-lock/2026-06-30T011500-0500/feature-matrix.md",
+      "bytes": 2688,
+      "git_blob_sha": "0539b0c962960127e166889045ee38149e45690e",
+      "sha256": "2bf9c9f1d0a7dfed18422e1a5b58d0bf3e31b3a2695e0142a26f15bc38d836bc",
+      "verified": true
+    },
+    {
+      "path": "launch-proof/urai-content-production-lock/2026-06-30T011500-0500/firestore-storage-rules-proof.md",
+      "bytes": 1634,
+      "git_blob_sha": "4d1a9695872b0563349e573f41fabedaa958d921",
+      "sha256": "1a5566298f767892fc443576a43751be07a5e6ca55c481d736004c9e227f3e17",
+      "verified": true
+    },
+    {
+      "path": "launch-proof/urai-content-production-lock/2026-06-30T011500-0500/observability-rollback-proof.md",
+      "bytes": 998,
+      "git_blob_sha": "4b7cfb921dcd6394a1ecda1bac6e2cba587b992c",
+      "sha256": "02f196cb9b8cffd9e383b4f40a5b4e299b30587227274fcb7a9e61e83a2ad200",
+      "verified": true
+    },
+    {
+      "path": "launch-proof/urai-content-production-lock/2026-06-30T011500-0500/payment-entitlement-proof.md",
+      "bytes": 1169,
+      "git_blob_sha": "658d4204dafea63393ab74bb3f93c2b179ad77e3",
+      "sha256": "a96577e7f552e6c7247a89c2d3bda7597a1222f7a4beb8366e7f4d6e8047e365",
+      "verified": true
+    }
+  ]
+}

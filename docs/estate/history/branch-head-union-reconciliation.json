@@ -1,0 +1,955 @@
+{
+  "schema": "one-urai-content-99-ref-tree-union-v1",
+  "repo": "LifeLoggerAI/urai-content",
+  "observed_branch_snapshot_commit": "8c4698162b7ecddd76d6408e094150d25a41e3bb",
+  "source_slices": [
+    "docs/estate/history/branch-tree-slice-00.json",
+    "docs/estate/history/branch-tree-slice-01.json",
+    "docs/estate/history/branch-tree-slice-02.json",
+    "docs/estate/history/branch-tree-slice-03.json",
+    "docs/estate/history/branch-tree-slice-04.json",
+    "docs/estate/history/branch-tree-slice-05.json",
+    "docs/estate/history/branch-tree-slice-06.json",
+    "docs/estate/history/branch-tree-slice-07.json",
+    "docs/estate/history/branch-tree-slice-08.json",
+    "docs/estate/history/branch-tree-slice-09.json"
+  ],
+  "branch_heads": 99,
+  "nontruncated": 99,
+  "metadata_blob_entries_across_all_branch_head_trees": 26409,
+  "sum_of_git_reported_bytes_including_duplicate_entries": 99704659,
+  "distinct_blob_object_shas": 936,
+  "unique_blob_object_reported_bytes": 6522154,
+  "unique_pathnames": 536,
+  "paths_not_in_main": 148,
+  "branch_specific_paths": [
+    {
+      "path": "docs/CONTENT_PERSISTENCE_SOURCE_BOUNDARY.md",
+      "branch_count": 12,
+      "max_bytes": 4507,
+      "blob_variants": 1
+    },
+    {
+      "path": "src/backend/deletionPersistence.ts",
+      "branch_count": 12,
+      "max_bytes": 4312,
+      "blob_variants": 1
+    },
+    {
+      "path": "docs/CONTENT_RULES_TOOL_AUDIT_20261007.md",
+      "branch_count": 11,
+      "max_bytes": 3543,
+      "blob_variants": 1
+    },
+    {
+      "path": "scripts/dependency-security.behavior.test.cjs",
+      "branch_count": 11,
+      "max_bytes": 6300,
+      "blob_variants": 2
+    },
+    {
+      "path": "scripts/verify-rules-tool-audit.mjs",
+      "branch_count": 11,
+      "max_bytes": 1750,
+      "blob_variants": 1
+    },
+    {
+      "path": "scripts/verify-rules-tool-audit.test.mjs",
+      "branch_count": 11,
+      "max_bytes": 2154,
+      "blob_variants": 1
+    },
+    {
+      "path": "tests/rules-emulator/package-lock.json",
+      "branch_count": 11,
+      "max_bytes": 321858,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/braces/LICENSE",
+      "branch_count": 11,
+      "max_bytes": 1091,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/braces/README.md",
+      "branch_count": 11,
+      "max_bytes": 21610,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/braces/SECURITY-FORK.md",
+      "branch_count": 11,
+      "max_bytes": 2215,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/braces/UPSTREAM-PROVENANCE.json",
+      "branch_count": 11,
+      "max_bytes": 1695,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/braces/index.js",
+      "branch_count": 11,
+      "max_bytes": 4380,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/braces/lib/compile.js",
+      "branch_count": 11,
+      "max_bytes": 1691,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/braces/lib/constants.js",
+      "branch_count": 11,
+      "max_bytes": 1666,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/braces/lib/expand.js",
+      "branch_count": 11,
+      "max_bytes": 2987,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/braces/lib/parse.js",
+      "branch_count": 11,
+      "max_bytes": 7174,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/braces/lib/stringify.js",
+      "branch_count": 11,
+      "max_bytes": 903,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/braces/lib/utils.js",
+      "branch_count": 11,
+      "max_bytes": 2518,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/braces/package.json",
+      "branch_count": 11,
+      "max_bytes": 1384,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/stream-json/Assembler.js",
+      "branch_count": 11,
+      "max_bytes": 3776,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/stream-json/Disassembler.js",
+      "branch_count": 11,
+      "max_bytes": 5426,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/stream-json/Emitter.js",
+      "branch_count": 11,
+      "max_bytes": 438,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/stream-json/LICENSE",
+      "branch_count": 11,
+      "max_bytes": 1909,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/stream-json/Parser.js",
+      "branch_count": 11,
+      "max_bytes": 21223,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/stream-json/README.md",
+      "branch_count": 11,
+      "max_bytes": 8034,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/stream-json/SECURITY-FORK.md",
+      "branch_count": 11,
+      "max_bytes": 2524,
+      "blob_variants": 2
+    },
+    {
+      "path": "vendor/stream-json/Stringer.js",
+      "branch_count": 11,
+      "max_bytes": 4836,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/stream-json/UPSTREAM-PROVENANCE.json",
+      "branch_count": 11,
+      "max_bytes": 3746,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/stream-json/filters/Filter.js",
+      "branch_count": 11,
+      "max_bytes": 3512,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/stream-json/filters/FilterBase.js",
+      "branch_count": 11,
+      "max_bytes": 6172,
+      "blob_variants": 2
+    },
+    {
+      "path": "vendor/stream-json/filters/Ignore.js",
+      "branch_count": 11,
+      "max_bytes": 513,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/stream-json/filters/Pick.js",
+      "branch_count": 11,
+      "max_bytes": 1394,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/stream-json/filters/Replace.js",
+      "branch_count": 11,
+      "max_bytes": 3355,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/stream-json/index.js",
+      "branch_count": 11,
+      "max_bytes": 217,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/stream-json/jsonl/Parser.js",
+      "branch_count": 11,
+      "max_bytes": 3896,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/stream-json/jsonl/Stringer.js",
+      "branch_count": 11,
+      "max_bytes": 747,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/stream-json/package.json",
+      "branch_count": 11,
+      "max_bytes": 1098,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/stream-json/streamers/StreamArray.js",
+      "branch_count": 11,
+      "max_bytes": 1056,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/stream-json/streamers/StreamBase.js",
+      "branch_count": 11,
+      "max_bytes": 2653,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/stream-json/streamers/StreamObject.js",
+      "branch_count": 11,
+      "max_bytes": 1091,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/stream-json/streamers/StreamValues.js",
+      "branch_count": 11,
+      "max_bytes": 784,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/stream-json/utils/Batch.js",
+      "branch_count": 11,
+      "max_bytes": 1046,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/stream-json/utils/Utf8Stream.js",
+      "branch_count": 11,
+      "max_bytes": 1224,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/stream-json/utils/Verifier.js",
+      "branch_count": 11,
+      "max_bytes": 16694,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/stream-json/utils/emit.js",
+      "branch_count": 11,
+      "max_bytes": 125,
+      "blob_variants": 1
+    },
+    {
+      "path": "vendor/stream-json/utils/withParser.js",
+      "branch_count": 11,
+      "max_bytes": 289,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/src/app/cinema/page.tsx",
+      "branch_count": 8,
+      "max_bytes": 481,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/src/app/drops/page.tsx",
+      "branch_count": 8,
+      "max_bytes": 478,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/src/app/motion/page.tsx",
+      "branch_count": 8,
+      "max_bytes": 481,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/src/app/music/page.tsx",
+      "branch_count": 8,
+      "max_bytes": 478,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/src/app/series/page.tsx",
+      "branch_count": 8,
+      "max_bytes": 481,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/src/app/visuals/page.tsx",
+      "branch_count": 8,
+      "max_bytes": 484,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/src/components/CatalogBrowser.tsx",
+      "branch_count": 8,
+      "max_bytes": 2870,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/src/lib/catalogSurfaces.ts",
+      "branch_count": 8,
+      "max_bytes": 787,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/src/server/auth/currentRequest.ts",
+      "branch_count": 8,
+      "max_bytes": 494,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/tests/catalog-browser.test.tsx",
+      "branch_count": 8,
+      "max_bytes": 2659,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/tests/catalog-surfaces.test.ts",
+      "branch_count": 8,
+      "max_bytes": 1285,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/tests/current-authority-routes.test.ts",
+      "branch_count": 8,
+      "max_bytes": 5795,
+      "blob_variants": 2
+    },
+    {
+      "path": "apps/web/tests/lead-intake.test.ts",
+      "branch_count": 8,
+      "max_bytes": 4748,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/tests/private-await-authority.test.ts",
+      "branch_count": 8,
+      "max_bytes": 6584,
+      "blob_variants": 2
+    },
+    {
+      "path": "apps/web/tests/production-session-authority.test.ts",
+      "branch_count": 8,
+      "max_bytes": 8041,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/tests/session-revocation.test.ts",
+      "branch_count": 8,
+      "max_bytes": 1951,
+      "blob_variants": 1
+    },
+    {
+      "path": "docs/CONTENT_COMMERCE_AND_CURRENT_AUTHORITY_GATE_20261008.md",
+      "branch_count": 8,
+      "max_bytes": 8798,
+      "blob_variants": 1
+    },
+    {
+      "path": "docs/evidence/production-session-authority-20261008.md",
+      "branch_count": 8,
+      "max_bytes": 1838,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/src/app/dashboard/page.tsx",
+      "branch_count": 7,
+      "max_bytes": 1740,
+      "blob_variants": 2
+    },
+    {
+      "path": "apps/web/scripts/deployment-identity.ts",
+      "branch_count": 7,
+      "max_bytes": 3369,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/tests/deployment-identity.test.ts",
+      "branch_count": 7,
+      "max_bytes": 6662,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/tests/version-identity.test.ts",
+      "branch_count": 7,
+      "max_bytes": 1018,
+      "blob_variants": 1
+    },
+    {
+      "path": "docs/evidence/deployed-source-identity-boundary-20261008.md",
+      "branch_count": 7,
+      "max_bytes": 2744,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/e2e/creator-workflow.spec.ts",
+      "branch_count": 6,
+      "max_bytes": 23508,
+      "blob_variants": 2
+    },
+    {
+      "path": "apps/web/src/app/api/auth/session/route.ts",
+      "branch_count": 6,
+      "max_bytes": 250,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/src/app/creator/submissions/page.tsx",
+      "branch_count": 6,
+      "max_bytes": 656,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/src/app/creator/submit/page.tsx",
+      "branch_count": 6,
+      "max_bytes": 673,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/src/app/dashboard/settings/page.tsx",
+      "branch_count": 6,
+      "max_bytes": 1655,
+      "blob_variants": 2
+    },
+    {
+      "path": "apps/web/src/components/BrowserSessionLogout.tsx",
+      "branch_count": 6,
+      "max_bytes": 909,
+      "blob_variants": 2
+    },
+    {
+      "path": "apps/web/src/components/CreatorWorkflow.tsx",
+      "branch_count": 6,
+      "max_bytes": 6502,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/src/lib/creatorWorkflow.ts",
+      "branch_count": 6,
+      "max_bytes": 6642,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/src/lib/firebaseClient.ts",
+      "branch_count": 6,
+      "max_bytes": 987,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/src/server/auth/browserSession.ts",
+      "branch_count": 6,
+      "max_bytes": 4670,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/src/server/content/dashboard.ts",
+      "branch_count": 6,
+      "max_bytes": 1140,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/tests/browser-session-dashboard.test.ts",
+      "branch_count": 6,
+      "max_bytes": 8579,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/tests/creator-workflow.test.ts",
+      "branch_count": 6,
+      "max_bytes": 14225,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/tests/dashboard-surfaces.test.tsx",
+      "branch_count": 6,
+      "max_bytes": 3306,
+      "blob_variants": 1
+    },
+    {
+      "path": "docs/evidence/creator-workflow-source-20261008.md",
+      "branch_count": 6,
+      "max_bytes": 12277,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/e2e/creator-capture-evidence.ts",
+      "branch_count": 5,
+      "max_bytes": 8272,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/scripts/canonical-privacy-consumer.test.mjs",
+      "branch_count": 5,
+      "max_bytes": 8759,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/src/server/privacy/canonicalConsent.ts",
+      "branch_count": 5,
+      "max_bytes": 4152,
+      "blob_variants": 2
+    },
+    {
+      "path": "apps/web/tests/creator-capture-evidence.test.ts",
+      "branch_count": 5,
+      "max_bytes": 14009,
+      "blob_variants": 1
+    },
+    {
+      "path": "docs/evidence/canonical-privacy-creator-consumer-20261009.md",
+      "branch_count": 5,
+      "max_bytes": 4833,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/scripts/content-data-export-client.test.mjs",
+      "branch_count": 4,
+      "max_bytes": 26089,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/scripts/content-data-rights-export.test.mjs",
+      "branch_count": 4,
+      "max_bytes": 17391,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/src/app/api/privacy/export/route.ts",
+      "branch_count": 4,
+      "max_bytes": 3554,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/src/components/ContentDataExport.tsx",
+      "branch_count": 4,
+      "max_bytes": 7803,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/src/lib/contentDataExport.ts",
+      "branch_count": 4,
+      "max_bytes": 13954,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/src/server/privacy/contentExport.ts",
+      "branch_count": 4,
+      "max_bytes": 9958,
+      "blob_variants": 1
+    },
+    {
+      "path": "docs/evidence/content-subject-export-20261009.md",
+      "branch_count": 4,
+      "max_bytes": 10471,
+      "blob_variants": 1
+    },
+    {
+      "path": "src/publishing/marketing-release-envelope.ts",
+      "branch_count": 3,
+      "max_bytes": 8061,
+      "blob_variants": 2
+    },
+    {
+      "path": "tests/marketing-release-envelope.test.ts",
+      "branch_count": 3,
+      "max_bytes": 4688,
+      "blob_variants": 2
+    },
+    {
+      "path": "docs/evidence/narrator-current-output-policy-20261010.md",
+      "branch_count": 3,
+      "max_bytes": 3132,
+      "blob_variants": 1
+    },
+    {
+      "path": "docs/estate/00_START_HERE.md",
+      "branch_count": 2,
+      "max_bytes": 2315,
+      "blob_variants": 2
+    },
+    {
+      "path": "scripts/check-vercel-build-layout.mjs",
+      "branch_count": 2,
+      "max_bytes": 5271,
+      "blob_variants": 1
+    },
+    {
+      "path": "scripts/check-vercel-build-layout.test.mjs",
+      "branch_count": 2,
+      "max_bytes": 7322,
+      "blob_variants": 1
+    },
+    {
+      "path": "src/publishing/canonical-release-v2.ts",
+      "branch_count": 2,
+      "max_bytes": 1218,
+      "blob_variants": 1
+    },
+    {
+      "path": "src/publishing/firestore-release-authority.ts",
+      "branch_count": 2,
+      "max_bytes": 10016,
+      "blob_variants": 1
+    },
+    {
+      "path": "src/publishing/google-service-identity.ts",
+      "branch_count": 2,
+      "max_bytes": 5146,
+      "blob_variants": 1
+    },
+    {
+      "path": "tests/google-service-identity.test.ts",
+      "branch_count": 2,
+      "max_bytes": 6545,
+      "blob_variants": 1
+    },
+    {
+      "path": ".github/workflows/content-dependency-materializer.yml",
+      "branch_count": 1,
+      "max_bytes": 4365,
+      "blob_variants": 1
+    },
+    {
+      "path": ".github/workflows/content-web-lockfile-finalize.yml",
+      "branch_count": 1,
+      "max_bytes": 7447,
+      "blob_variants": 1
+    },
+    {
+      "path": ".github/workflows/content-web-lockfile-materialize.yml",
+      "branch_count": 1,
+      "max_bytes": 3438,
+      "blob_variants": 1
+    },
+    {
+      "path": "public/og/urai-content.svg",
+      "branch_count": 1,
+      "max_bytes": 992,
+      "blob_variants": 1
+    },
+    {
+      "path": "public/sprites/celestial.svg",
+      "branch_count": 1,
+      "max_bytes": 821,
+      "blob_variants": 1
+    },
+    {
+      "path": "public/sprites/previews/celestial-preview.svg",
+      "branch_count": 1,
+      "max_bytes": 783,
+      "blob_variants": 1
+    },
+    {
+      "path": "docs/estate/01_COMPLETE_INVENTORY.md",
+      "branch_count": 1,
+      "max_bytes": 3619,
+      "blob_variants": 1
+    },
+    {
+      "path": "docs/estate/02_HISTORY_AND_PROVENANCE.md",
+      "branch_count": 1,
+      "max_bytes": 2728,
+      "blob_variants": 1
+    },
+    {
+      "path": "docs/estate/03_ARCHITECTURE_AND_CONNECTIONS.md",
+      "branch_count": 1,
+      "max_bytes": 3616,
+      "blob_variants": 1
+    },
+    {
+      "path": "docs/estate/04_IMPLEMENTED_CAPABILITIES.md",
+      "branch_count": 1,
+      "max_bytes": 3104,
+      "blob_variants": 1
+    },
+    {
+      "path": "docs/estate/05_VERIFICATION_AND_EVIDENCE.md",
+      "branch_count": 1,
+      "max_bytes": 2822,
+      "blob_variants": 1
+    },
+    {
+      "path": "docs/estate/06_GAPS_CONFLICTS_AND_BLOCKERS.md",
+      "branch_count": 1,
+      "max_bytes": 3276,
+      "blob_variants": 1
+    },
+    {
+      "path": "docs/estate/07_WORKER_RECONCILIATION.md",
+      "branch_count": 1,
+      "max_bytes": 1796,
+      "blob_variants": 1
+    },
+    {
+      "path": "docs/estate/08_NEXT_WORKER_HANDOFF.md",
+      "branch_count": 1,
+      "max_bytes": 2499,
+      "blob_variants": 1
+    },
+    {
+      "path": "docs/estate/09_COVERAGE_AND_LIMITATIONS.md",
+      "branch_count": 1,
+      "max_bytes": 1840,
+      "blob_variants": 1
+    },
+    {
+      "path": "docs/estate/10_DATA_LINEAGE_PROVENANCE_CONSENT_MATRIX.md",
+      "branch_count": 1,
+      "max_bytes": 3026,
+      "blob_variants": 1
+    },
+    {
+      "path": "docs/estate/11_SOURCE_ASSET_AND_TEST_LEDGER.md",
+      "branch_count": 1,
+      "max_bytes": 3089,
+      "blob_variants": 1
+    },
+    {
+      "path": "docs/estate/12_DEPLOYMENT_MAPPING.md",
+      "branch_count": 1,
+      "max_bytes": 2259,
+      "blob_variants": 1
+    },
+    {
+      "path": "docs/estate/13_PRIORITIZED_BACKLOG.md",
+      "branch_count": 1,
+      "max_bytes": 2443,
+      "blob_variants": 1
+    },
+    {
+      "path": "docs/estate/MANIFEST.json",
+      "branch_count": 1,
+      "max_bytes": 78427,
+      "blob_variants": 1
+    },
+    {
+      "path": "docs/estate/MANIFEST_REVIEW_HEADS.json",
+      "branch_count": 1,
+      "max_bytes": 46516,
+      "blob_variants": 1
+    },
+    {
+      "path": "docs/estate/byte-audit/apps-000.json",
+      "branch_count": 1,
+      "max_bytes": 3475,
+      "blob_variants": 1
+    },
+    {
+      "path": "docs/estate/byte-audit/content-000.json",
+      "branch_count": 1,
+      "max_bytes": 2990,
+      "blob_variants": 1
+    },
+    {
+      "path": "docs/estate/byte-audit/content-010.json",
+      "branch_count": 1,
+      "max_bytes": 2736,
+      "blob_variants": 1
+    },
+    {
+      "path": "docs/estate/byte-audit/src-000.json",
+      "branch_count": 1,
+      "max_bytes": 4206,
+      "blob_variants": 1
+    },
+    {
+      "path": "docs/estate/byte-audit/src-015.json",
+      "branch_count": 1,
+      "max_bytes": 4234,
+      "blob_variants": 1
+    },
+    {
+      "path": "docs/estate/byte-audit/src-030.json",
+      "branch_count": 1,
+      "max_bytes": 4675,
+      "blob_variants": 1
+    },
+    {
+      "path": "docs/estate/history/main-commits-pages-001-010.json",
+      "branch_count": 1,
+      "max_bytes": 177639,
+      "blob_variants": 1
+    },
+    {
+      "path": "docs/AUDIT_EXECUTION_RECORD_2026-05-19.md",
+      "branch_count": 1,
+      "max_bytes": 7162,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/src/app/creator/dashboard/page.tsx",
+      "branch_count": 1,
+      "max_bytes": 1171,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/src/components/ProtectedRouteShell.tsx",
+      "branch_count": 1,
+      "max_bytes": 755,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/src/server/auth/authStatus.ts",
+      "branch_count": 1,
+      "max_bytes": 834,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/scripts/check-vercel-root.mjs",
+      "branch_count": 1,
+      "max_bytes": 3222,
+      "blob_variants": 1
+    },
+    {
+      "path": "apps/web/scripts/check-vercel-web-payload.mjs",
+      "branch_count": 1,
+      "max_bytes": 2211,
+      "blob_variants": 1
+    },
+    {
+      "path": "scripts/check-content-build-source.test.mjs",
+      "branch_count": 1,
+      "max_bytes": 3068,
+      "blob_variants": 1
+    },
+    {
+      "path": "scripts/check-vercel-root.test.mjs",
+      "branch_count": 1,
+      "max_bytes": 4804,
+      "blob_variants": 1
+    },
+    {
+      "path": "scripts/check-vercel-web-lifecycle.test.mjs",
+      "branch_count": 1,
+      "max_bytes": 3602,
+      "blob_variants": 1
+    },
+    {
+      "path": "scripts/check-vercel-web-payload.mjs",
+      "branch_count": 1,
+      "max_bytes": 159,
+      "blob_variants": 1
+    },
+    {
+      "path": "scripts/check-vercel-web-payload.test.mjs",
+      "branch_count": 1,
+      "max_bytes": 4093,
+      "blob_variants": 1
+    },
+    {
+      "path": "scripts/verify-content-stream-limits.test.mjs",
+      "branch_count": 1,
+      "max_bytes": 2991,
+      "blob_variants": 1
+    },
+    {
+      "path": "scripts/verify-content-vercel-source.mjs",
+      "branch_count": 1,
+      "max_bytes": 4313,
+      "blob_variants": 1
+    },
+    {
+      "path": "scripts/verify-content-vercel-source.test.mjs",
+      "branch_count": 1,
+      "max_bytes": 2772,
+      "blob_variants": 1
+    }
+  ],
+  "branch_media_candidates": [
+    {
+      "path": "public/og/urai-content.svg",
+      "branches": 1,
+      "first": "audit-fix-hardening-pass",
+      "bytes": 992,
+      "variants": 1
+    },
+    {
+      "path": "public/sprites/celestial.svg",
+      "branches": 1,
+      "first": "audit-fix-hardening-pass",
+      "bytes": 821,
+      "variants": 1
+    },
+    {
+      "path": "public/sprites/previews/celestial-preview.svg",
+      "branches": 1,
+      "first": "audit-fix-hardening-pass",
+      "bytes": 783,
+      "variants": 1
+    }
+  ],
+  "secret_like_pathnames_review_only": [
+    {
+      "path": "src/publishing/marketing-release-envelope.ts",
+      "branches": 3
+    },
+    {
+      "path": "tests/marketing-release-envelope.test.ts",
+      "branches": 3
+    }
+  ],
+  "limitations": [
+    "This union covers only current accessible branch HEAD trees, not all historical commits or unreachable/deleted objects",
+    "Identical Git blob SHAs are deduplicated for object byte counts; different revisions may share paths",
+    "Binary extensions and Git reported sizes are metadata, not evidence that media is valid, licensed, or publicly deliverable",
+    "Source reading and per-object SHA-256 remain incomplete",
+    "Frozen audit branch head included as of initial ref snapshot, subsequent audit additions are not part of this union"
+  ]
+}

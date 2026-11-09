@@ -1,0 +1,115 @@
+{
+  "schema": "one-urai-content-verified-byte-slice-v1",
+  "source_commit": "988ca4f7f38b1ce86e4d3f426361b5866fd23e0d",
+  "group": "tests",
+  "offset": 15,
+  "group_file_count": 39,
+  "verification": "base64 original raw bytes; matched original tree byte length and Git object ID; independent SHA256; known ABC vector passed",
+  "rows": [
+    {
+      "path": "tests/integration-registry.test.ts",
+      "bytes": 850,
+      "git_blob_sha": "8f45048b673dc0c363e0877d1dcc45bc3894e94e",
+      "sha256": "8e033bb148a8bb8c4cfbddde2a5b41ca39feef33f6666e55336b3f7faf4d398b",
+      "verified": true
+    },
+    {
+      "path": "tests/localization-contracts.test.ts",
+      "bytes": 1324,
+      "git_blob_sha": "0181bbe42124d816a68b82208f55cb728579d1b0",
+      "sha256": "ad821f41c6f56863eb3172da4e7db1a53d7630397329c33d07e369ac8e410aea",
+      "verified": true
+    },
+    {
+      "path": "tests/localization-coverage.test.ts",
+      "bytes": 832,
+      "git_blob_sha": "470bc7050a2ec3296b7388967354fe9c53d3e418",
+      "sha256": "fd1ba529238d458fe82b6ec1a061b5fbc185e1be38a0386c8dfa95579655b022",
+      "verified": true
+    },
+    {
+      "path": "tests/marketplace-contracts.test.ts",
+      "bytes": 2620,
+      "git_blob_sha": "24190299c5e2f500f505f1d9e86806e15f218a31",
+      "sha256": "48155af73d834f7895f79e76b17b2af918442ab41b5f916da515ea278032a376",
+      "verified": true
+    },
+    {
+      "path": "tests/narrator-session.test.ts",
+      "bytes": 1898,
+      "git_blob_sha": "de9eb91f997c68130bcfc83e7a2aef3719febdb5",
+      "sha256": "eb9ec362927bec1629109e91857c5e155eba1d5b01d853182e5e4eda2bfca77f",
+      "verified": true
+    },
+    {
+      "path": "tests/pagination.test.ts",
+      "bytes": 1281,
+      "git_blob_sha": "018929353b1e4417a30b8aff067380b9d56c6b45",
+      "sha256": "69b81c07c1940ca26467e394c2265fd568124cc621685b0f47dee74a04c86004",
+      "verified": true
+    },
+    {
+      "path": "tests/portability-package.test.ts",
+      "bytes": 1442,
+      "git_blob_sha": "e3f7c0fe92cc7f3a067e3f567fb8cf2702f3d6a5",
+      "sha256": "e833fa771a5aafb1518e4922a57913d6e4f3632cea7c78b2cf36fd054df5f412",
+      "verified": true
+    },
+    {
+      "path": "tests/privacy-deletion-lifecycle.test.ts",
+      "bytes": 3573,
+      "git_blob_sha": "0f52bd71b43519bbdf9c8641d0ff59d1073b7cbd",
+      "sha256": "472cbd2304e9e696d360f689b36a25726c66654f6c1ef9043868f312d1876792",
+      "verified": true
+    },
+    {
+      "path": "tests/production.test.ts",
+      "bytes": 3074,
+      "git_blob_sha": "59093ba139c43af5176698830e435f090f0dc43e",
+      "sha256": "c9301fc3e0a39f059cd1737d162f81915a9d12e27b24f6ad9a275fa99d09baa0",
+      "verified": true
+    },
+    {
+      "path": "tests/public-canon-copy.test.ts",
+      "bytes": 796,
+      "git_blob_sha": "b0488917bea469757424703b075cff44722e6c7e",
+      "sha256": "99486ce6748ec3a3ec35ff307b05050f6cdfaeeb7176ae3c72e6b84f5ea912a5",
+      "verified": true
+    },
+    {
+      "path": "tests/public-expansion-contract.test.ts",
+      "bytes": 500,
+      "git_blob_sha": "fb5d4c412d7cf1a77478babda290c63e0254e55f",
+      "sha256": "5ee8ddc4c01e1ef683aad816e8564b27b5104334e8c9eef3378db94de11842b0",
+      "verified": true
+    },
+    {
+      "path": "tests/publication-release.test.ts",
+      "bytes": 1388,
+      "git_blob_sha": "c6cb5cf8831c6c7e8ee035598881ab3de0299627",
+      "sha256": "e9e90f3cea2bd8b13e08c0eb1b3e21b8a7fd81975c9bf480bdedc214ce42f9af",
+      "verified": true
+    },
+    {
+      "path": "tests/rights-governance.test.ts",
+      "bytes": 2280,
+      "git_blob_sha": "bd7744aff6876d7aeae2bc423b9807abd1535ea6",
+      "sha256": "d5d1b14af0a7beceb677140becf11fb7768a04fd27f9f1fffe800a01e8f9d6a7",
+      "verified": true
+    },
+    {
+      "path": "tests/rules-emulator/content-rules.test.mjs",
+      "bytes": 10854,
+      "git_blob_sha": "b8948b5cf76f353cbe27b0f09f9c4527ecdb952d",
+      "sha256": "5c08484ff259347c055182b3a84682331ac4b5cf6dc54854911434fa99642464",
+      "verified": true
+    },
+    {
+      "path": "tests/rules-emulator/package.json",
+      "bytes": 185,
+      "git_blob_sha": "9d4cf1b4fa937c8ed2a5a61ccbff7b4bbc7a70db",
+      "sha256": "159b422cae2ba96dc32293f455909c5714670c3aff0e770ba8c13a93e9c7bd0e",
+      "verified": true
+    }
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "schema": "one-urai-content-verified-byte-slice-v1",
+  "repo": "LifeLoggerAI/urai-content",
+  "source_commit": "988ca4f7f38b1ce86e4d3f426361b5866fd23e0d",
+  "source_manifest_sha": "7c90860067aa5dd0a842bb98a3402836db0871b4",
+  "group": "src",
+  "start": 15,
+  "group_files": 47,
+  "sha256_vector_pass": true,
+  "method": "GitHub contents base64 decode, length match, Git tree SHA match, independently computed raw byte SHA-256",
+  "rows": [
+    {
+      "path": "src/integrations/registry.ts",
+      "git_blob_sha": "6382923d45a4106d02d5371a2cbb512e386d8b87",
+      "bytes": 3570,
+      "sha256": "119bea9aea2e9df1b90b4dd696a93178725827a3245aa3c1d620538bbdc5f311",
+      "verified": true
+    },
+    {
+      "path": "src/jobs/contentJobs.ts",
+      "git_blob_sha": "dea03fb1af10e1276ae58e505424033fd8d0e0e1",
+      "bytes": 2806,
+      "sha256": "e09c0c0a779b39f0f10bbf5d2f2612fc3d895ecc183b494373f3d952d6958cf5",
+      "verified": true
+    },
+    {
+      "path": "src/lib/content/loaders.ts",
+      "git_blob_sha": "773e44b10eaba3643bba7380c46108feafec29bd",
+      "bytes": 582,
+      "sha256": "1bb6dc13c97215baa2e225b8ba6975eedd311fdb00f462c54435a8a8c29d92cb",
+      "verified": true
+    },
+    {
+      "path": "src/lib/content/registry.ts",
+      "git_blob_sha": "17f99f33b80f25e74c02c47c2de3748e5a6556c5",
+      "bytes": 714,
+      "sha256": "6877243f01db212fd4752dcdd6e3467d56c3c8cf5708b4e13b61e3752b896591",
+      "verified": true
+    },
+    {
+      "path": "src/lib/content/schema.ts",
+      "git_blob_sha": "1681c901de5584524b3f425542d52ff6088a0cf6",
+      "bytes": 1986,
+      "sha256": "2646d719aa0843faaf0531858b3dd152807a5d835b97c43c2bb25a8ecf93d91b",
+      "verified": true
+    },
+    {
+      "path": "src/lib/content/validate.ts",
+      "git_blob_sha": "dd43d9ed08fbb8f24290edf9bf73cb0225c52b07",
+      "bytes": 3334,
+      "sha256": "f9a7811fb8b94b6a9e8492179aea0c7396015509cd27fccc4ffc7ad85398fcb7",
+      "verified": true
+    },
+    {
+      "path": "src/lifecycle/contentLifecycle.ts",
+      "git_blob_sha": "a9ac339b06d3c88eb55b66d9ad37e6b769bd697b",
+      "bytes": 2038,
+      "sha256": "fa376dc7a558b48233239c160bc804936962e7b2997c3153018992b1caa01774",
+      "verified": true
+    },
+    {
+      "path": "src/localization/bundle.ts",
+      "git_blob_sha": "b40c939ad117eddab108470ba7507facdebdbc4a",
+      "bytes": 1643,
+      "sha256": "01e36f798e3bba1f4cddaf6aa479fe558b319867cd7fab75e6e02d7008d40b8b",
+      "verified": true
+    },
+    {
+      "path": "src/localization/contracts.ts",
+      "git_blob_sha": "704adfc0d5321399326de20c433963ef6e507dd5",
+      "bytes": 2548,
+      "sha256": "44b61326eee9e1879319cb7b7bf199995ea9efd1a1b1bd25638e7e4ec7745aee",
+      "verified": true
+    },
+    {
+      "path": "src/localization/coverage.ts",
+      "git_blob_sha": "9fa4ef610f8559b6f774cc072638e0cb18d04ad3",
+      "bytes": 1744,
+      "sha256": "1311c81d8851ff88bd5c49686ef074b3bdd9354076da14c64766bf4c2de8b1fa",
+      "verified": true
+    },
+    {
+      "path": "src/localization/uraiLocales.ts",
+      "git_blob_sha": "603d6f0735f8fd387b1bbba97a9b56fde99a749c",
+      "bytes": 1414,
+      "sha256": "168fbbc047dbe64a0507efd42fd2eca43d4149551d5073c21cc39ae2ce37b9a9",
+      "verified": true
+    },
+    {
+      "path": "src/marketplace/contracts.ts",
+      "git_blob_sha": "26bda626ddd9275f469be43101bc679e2cb21985",
+      "bytes": 4129,
+      "sha256": "d1b9b367a15af842219bdb0b14796f9e8043e640d8139ab1cc14c7584f9ef4e3",
+      "verified": true
+    },
+    {
+      "path": "src/narrator/session.ts",
+      "git_blob_sha": "e138864a32dde2d68cd6e1d924f42d587d7e425a",
+      "bytes": 2115,
+      "sha256": "845caad7310131139613d08e40909b24ef6d3719f4ed43745605ee51dac8eaff",
+      "verified": true
+    },
+    {
+      "path": "src/portability/package.ts",
+      "git_blob_sha": "6a4351461ac616d6795a36a3db3045c6a1baa1dd",
+      "bytes": 2365,
+      "sha256": "24a9384d0c194394af2f9c791e8b01604a9019b9262c7ac0074f247eb2d8cccd",
+      "verified": true
+    },
+    {
+      "path": "src/privacy/deletionLifecycle.ts",
+      "git_blob_sha": "d64b3fb8c2f2d55bfe085e447e86582976e44e9c",
+      "bytes": 8128,
+      "sha256": "922ec2689fa41adc8de2c11274c5a929ade88fa22cf672ecb0ed538576f65bc0",
+      "verified": true
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "schema": "one-urai-content-verified-byte-slice-v1",
+  "source_commit": "988ca4f7f38b1ce86e4d3f426361b5866fd23e0d",
+  "group": "prompts",
+  "offset": 15,
+  "group_file_count": 26,
+  "verification": "base64 original raw bytes; matched original tree byte length and Git object ID; independent SHA256; known ABC vector passed",
+  "rows": [
+    {
+      "path": "prompts/parity-manifest.json",
+      "bytes": 4033,
+      "git_blob_sha": "7ccf687e43beb30f51c2162d21526ac8296905ea",
+      "sha256": "2418a7ef3c4ed7bdfe0d41c20f6d788e329c6545391a833a47b86f00af5fc567",
+      "verified": true
+    },
+    {
+      "path": "prompts/sources/autonomous-research-agent-google-doc-v1.0.0/part-01.txt",
+      "bytes": 4057,
+      "git_blob_sha": "6f9dd6359d6160e298b4eb556f35f3b6cb640782",
+      "sha256": "bb958ccfc4d4410fe3432bc173c9aa5713d349a51c1ee994872e195f6748ff3c",
+      "verified": true
+    },
+    {
+      "path": "prompts/sources/autonomous-research-agent-google-doc-v1.0.0/part-02.txt",
+      "bytes": 4254,
+      "git_blob_sha": "0a095c356e32ffcccbddc18cd077de2280af13a0",
+      "sha256": "4540a938ecab6d226c8fe69f0f7abc0d25c0218e3fc652767e83bd0631bbefc2",
+      "verified": true
+    },
+    {
+      "path": "prompts/sources/autonomous-research-agent-google-doc-v1.0.0/part-03.txt",
+      "bytes": 4417,
+      "git_blob_sha": "17e6f1be36f26aad6ae37c8abbb0f56562fec92e",
+      "sha256": "4ac6126ec1a06200152219ffee3b4a7f4460f599fe200c8dd68d5a8a1bd1d4ba",
+      "verified": true
+    },
+    {
+      "path": "prompts/sources/autonomous-research-agent-google-doc-v1.0.0/part-04a.txt",
+      "bytes": 2658,
+      "git_blob_sha": "44d33d1ced3ec8f413ba4b1d8a68e468536388ee",
+      "sha256": "7a718995957e0c2b2ed497a54e8eed5f2dd6ee8f89c4b3b1ad4e79f336ec3874",
+      "verified": true
+    },
+    {
+      "path": "prompts/sources/autonomous-research-agent-google-doc-v1.0.0/part-04b.txt",
+      "bytes": 1822,
+      "git_blob_sha": "5b33a7d1660759422c3b811db0aecf57672de75d",
+      "sha256": "436e8515055945bbe1fe5bae9bbdea05573dd2a9b3399d0a4451b40783f6e432",
+      "verified": true
+    },
+    {
+      "path": "prompts/sources/autonomous-research-agent-google-doc-v1.0.0/part-05.txt",
+      "bytes": 4485,
+      "git_blob_sha": "22f9f4e7edebdf7a07c8fdb301c1acd18150c028",
+      "sha256": "4274d421dd968753043b2d7e5cfad8b91512483d3873a09f9911cfe61a763896",
+      "verified": true
+    },
+    {
+      "path": "prompts/sources/autonomous-research-agent-google-doc-v1.0.0/part-06.txt",
+      "bytes": 4488,
+      "git_blob_sha": "5abe9dd56553f1f42874659b5cac0bd721e14e27",
+      "sha256": "ad20497a6beddcc5b7969d79fbafd989368998e3585a997c9db69f59bb016ac5",
+      "verified": true
+    },
+    {
+      "path": "prompts/sources/autonomous-research-agent-google-doc-v1.0.0/part-07.txt",
+      "bytes": 4449,
+      "git_blob_sha": "6452199ea6f14e6e6e5b449b6ba2c19af3ed4883",
+      "sha256": "b5bdc7ea6cf9f1f283eb9c0bba2dd3e636b96d624aaf3145cf3c7f49eccc4e32",
+      "verified": true
+    },
+    {
+      "path": "prompts/sources/autonomous-research-agent-google-doc-v1.0.0/part-08.txt",
+      "bytes": 4467,
+      "git_blob_sha": "435d4fa28fb803ad0ec0ba76174d4c226cd3d93b",
+      "sha256": "3d257b746892daa6e576d2ab74c39e1b05ba1026b2b6108200bc6b818a81b1fc",
+      "verified": true
+    },
+    {
+      "path": "prompts/sources/autonomous-research-agent-google-doc-v1.0.0/part-09.txt",
+      "bytes": 265,
+      "git_blob_sha": "6869fa4cdad484306a3b023fa109db7de3768456",
+      "sha256": "aa09bb78c97fc84b8f7fe6bcc1074c5c0c90caf772e66e4f4cd4679cf648ec0a",
+      "verified": true
+    }
+  ]
+}

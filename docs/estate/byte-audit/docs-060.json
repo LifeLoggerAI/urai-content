@@ -1,0 +1,73 @@
+{
+  "schema": "one-urai-content-verified-byte-slice-v1",
+  "source_commit": "988ca4f7f38b1ce86e4d3f426361b5866fd23e0d",
+  "group": "docs",
+  "offset": 60,
+  "group_file_count": 69,
+  "verification": "base64 original raw bytes; matched original tree byte length and Git object ID; independent SHA256; known ABC vector passed",
+  "rows": [
+    {
+      "path": "docs/contracts/URAI_ECOSYSTEM_SCHEMA_V1.json",
+      "bytes": 6043,
+      "git_blob_sha": "b664508396d0257a5a54179c332dc19898fe556b",
+      "sha256": "382522a4c02bff30ee3166ac492ca8e48a57f995de3d42b2ef6d2e1eacd7232a",
+      "verified": true
+    },
+    {
+      "path": "docs/contracts/URAI_ECOSYSTEM_SCHEMA_V1.source.json",
+      "bytes": 705,
+      "git_blob_sha": "66624acf084c50b0e115ad3e2ff677725ff2ff91",
+      "sha256": "843610a24893b9ce7bd02fa7ac8dac1b0612f4267031a55715176d6fec6c0095",
+      "verified": true
+    },
+    {
+      "path": "docs/contracts/URAI_ECOSYSTEM_SCHEMA_V2.json",
+      "bytes": 7690,
+      "git_blob_sha": "88525d5edb80ded5c44861602398f5548b4d1b44",
+      "sha256": "1e78ddcc0ee229d4d31556b344b7ae86f0204d81ac03b43f094d8238417e2f7c",
+      "verified": true
+    },
+    {
+      "path": "docs/contracts/URAI_ECOSYSTEM_SCHEMA_V2.source.json",
+      "bytes": 526,
+      "git_blob_sha": "b72bd6a19ebbbf0d783b47dbe6fbb6d641881d6e",
+      "sha256": "0781d81a0b17b69a7c49e557acf662f7905fbaf2c67dd2237d8ea932008c1378",
+      "verified": true
+    },
+    {
+      "path": "docs/evidence/urai-spatial-xr-schema-dependency.md",
+      "bytes": 3124,
+      "git_blob_sha": "db0fc1a7c52f5523d0302b6e7ec76647503b073c",
+      "sha256": "68a4c5bbb3dc66ee08e4bb1d3fad86f7b9a1b075679bbe666fff6213d8bb8dc8",
+      "verified": true
+    },
+    {
+      "path": "docs/launch/PRODUCTION_HARDENING_CHECKLIST.md",
+      "bytes": 893,
+      "git_blob_sha": "7883f757e72635dd15c9983bb9c16271f940b8c8",
+      "sha256": "bfd7d299f34a6b9fe58c6e73029147cf1b88a22102db615c541383f68a053894",
+      "verified": true
+    },
+    {
+      "path": "docs/launch/URAI_90_DAY_45_PLUS_45_GLOBAL_MEDIA_PLAN_2026-07-18.md",
+      "bytes": 10029,
+      "git_blob_sha": "bd31cb461841a2d54d62aeadcccb505e572d4666",
+      "sha256": "b2120385616b00fecb724ead83492a8d60f292f04c1f8687dbfb57ba117bf73d",
+      "verified": true
+    },
+    {
+      "path": "docs/launch/URAI_PRESS_TECHNICAL_BRIEF.md",
+      "bytes": 9858,
+      "git_blob_sha": "02356d86ffa8a7e8108ada6904560f2f6b12a20f",
+      "sha256": "859efcb363be3efd38ef512fd3cb69f69a6aa8f715e7acd35ebdb7065cbe950f",
+      "verified": true
+    },
+    {
+      "path": "docs/launch/WAVE2_CONTENT_LAUNCH_LOCK_EVIDENCE.md",
+      "bytes": 1638,
+      "git_blob_sha": "2c1dbf2c4be512962d2d9f1e23c2ce491d0278c0",
+      "sha256": "94edb26ad328d0f782459ebe7ea1a99b873aca836c5636149897968a45b9ef5c",
+      "verified": true
+    }
+  ]
+}

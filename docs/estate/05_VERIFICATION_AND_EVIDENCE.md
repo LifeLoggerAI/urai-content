@@ -1,0 +1,32 @@
+# Test evidence ledger — exact runner/source separation
+| Source or system | Evidence | Result | What it does NOT certify |
+|---|---|---|---|
+| main `988ca4f7f38b1ce86e4d3f426361b5866fd23e0d` | nontruncated Git API tree | **388** blobs, **1,514,321** Git bytes | all blobs read, SHA256, test execution |
+| older #96 controller (different head and synthetic merged checkout) | GitHub [run 38010261903](https://github.com/LifeLoggerAI/urai-content/actions/runs/38010261903), web/validate/browser-smoke jobs | Steps executed and passed: npm ci, lint, typecheck, validation, index, smoke, test, build, web install/check | today's #96 head or production |
+| latest #96 `6321c38a939d26557a1c12cce3126ff6fd97dd6c` | [run 41530090935](https://github.com/LifeLoggerAI/urai-content/actions/runs/41530090935) | failure conclusion; job-step specifics not investigated for this run | cannot claim assertion failure or pass |
+| #111 `18fe4de11568e632cfc902e2a2cab526fd3554d3` | PR #111 describes sandbox Node 24/22 exact-source evidence | historical reported 132 root +104 web tests, clean builds, 40 browser passes and 8 skips; isolated RSA negatives | no current independent issuer/hosted CI/deployed identity |
+| #112 `295e4ab4d1b2c886a2c0801306d071e280288891` | [run 41577744114](https://github.com/LifeLoggerAI/urai-content/actions/runs/41577744114) | failed; all three queried jobs show **zero steps** | actual source tests did not run |
+| Genesis #113 `3edd6239328fc2c09130c7660cc825d04bcb582c` | [run 42339913629](https://github.com/LifeLoggerAI/urai-content/actions/runs/42339913629) | failed; `validate` steps **zero** | docs-only source mutation test |
+| Vercel `urai-content` | actual project and deployment readback | `live:false`; three ERROR deployments | no READY external runtime |
+| latest Vercel `dpl_7Zw5D4kaB7f4bNg4oFd6YGzVJ8PJ` | provider build events | Next compiled successfully, then doubled `/vercel/path0/vercel/path0/.next/routes-manifest.json` ENOENT | deployment READY or current compiled SHA |
+| protected Firebase/real media | no GCP IAM + effective Rules + signed user+owner readback | **UNVERIFIED** | user privacy, content publication, delete or export |
+| production deployment/rollback/monitoring | issue #61 remains open | **HOLD** | production GO |
+
+**Present in repo as test infrastructure:** 39 root tests/rules sources; app Vitest and Playwright specs, CI/Governance/Rules workflows and validation/route smoke/release scripts. These are path evidence, not a fresh run. **Commands run in this review:** GitHub metadata/raw selected file readback, Vercel read-only provider calls, a JS consistency assertion for nontruncated tree counts and creation of docs. No native npm/TS/Vitest/Playwright/Firebase emulator was executed. Provider and user-level operations were deliberately not attempted.
+
+
+## CONTINUATION — audited source evidence added 2026-11-08 UTC
+**New integrity work:** 99/99 Git head trees `truncated:false`; deduplicated head object union 936 Git blob IDs, 536 paths, 26,409 occurrences; main reachable 682 commits. Six source hash receipt files under `byte-audit/` verify 78 main originals (475,044 bytes) with independently calculated raw SHA-256 and exact Git tree size/GitHub-returned object SHA matches, including SHA-256 known-vector self-tests. No failure in completed slices. This is file integrity evidence only, not tests of application behavior.
+
+**Google Drive historical evidence:** [Content Rules receipt July 14, 2026](https://docs.google.com/document/d/1JKKjjlNj1tCoEtkl8zYfJ6uel1BuQQfwsheGmxh9Li0/edit) says PR #66 exact `227df755844fb5c192dd8298f3e130f0e84f29cc`: CI 29348468545, Governance 29348468711, Production Verify 29348468832, Rules emulator 29348468884 all success; 45/45 root tests and 9/9 Firestore+Storage emulator cases. It records digest-addressed artifacts 8317101458 and 8317120204, not fetched here. [Prompt governance receipt July 14, 2026](https://docs.google.com/document/d/1Nd-VmyECIK0_SsClVDsHyc7Fov3X670s_H7GXwNyi2U/edit) says PR #67 exact `1af6da8854b2a9457fe67bd6ee11e5c4855fb199` had 5 green workflows, prompt source parity and three fixture regressions, but live model evidence `false`, approval `false`, release eligible `false`; artifact 8317122984 not fetched. These are historical *documentary receipt claims* until artifact reread, not promotion to deployed production proof.
+
+**Native blocker:** tried credential-free git clone to working container; network DNS resolution to GitHub failed. No current exact-head native build/test or authenticated cloud checks. CI historical executions and Vercel ERROR are reported separately. Issue #61 remains open. Release **HOLD**.
+
+
+## FINAL EXACT-MAIN RAW BYTE SHA-256 COVERAGE — SUPERSEDES EARLIER 78-FILE PARTIAL TOTAL (2026-11-08 UTC)
+
+Full main-source coverage is now **388/388 tracked Git blobs**, **1,514,321/1,514,321 bytes** (100%), with **zero mismatches**. Each GitHub original-file base64 response was decoded to bytes and independently SHA-256 hashed; exact byte lengths and returned Git blob SHA-1s matched the immutable Git main tree `988ca4f7f38b1ce86e4d3f426361b5866fd23e0d`. Independently calculating Git blob SHA-1 was not performed; server-reported object identity was cross-checked against the frozen tree. SHA-256 function passed the standard `abc` vector. All 30 per-slice ledgers were recombined and checked against 388 unique manifest paths and exact byte total. Machine-readable permanent result: `docs/estate/byte-audit/MAIN_SHA256_FULL_COVERAGE.json`.
+
+**Two legitimate zero-length tracked images:** `public/sprites/celestial.png` and `public/sprites/previews/celestial-preview.png`; zero-byte hash is the standard SHA-256 empty-file value. They remain placeholders, not usable artwork.
+
+Do not confuse **100% raw byte coverage for ONE merged main snapshot** with 100% historical source recovery or launch readiness. The 936 Git blob objects across 99 visible branch heads were inventoried by Git object metadata only and their original contents are not collectively SHA-256 checked. Intermediate branch commit histories, inaccessible or deleted objects, external LFS/media, provider IAM and Cloud Storage objects, Google Drive entire corpus, CI ZIPs, build/test runtime and private user data remain not exhaustively verified. No native build or physical device integration certification was performed; release **HOLD**.

@@ -1,0 +1,52 @@
+{
+  "schema": "one-urai-content-verified-byte-slice-v1",
+  "source_commit": "988ca4f7f38b1ce86e4d3f426361b5866fd23e0d",
+  "group": "misc",
+  "offset": 12,
+  "group_file_count": 18,
+  "verification": "base64 original raw bytes; matched original tree byte length and Git object ID; independent SHA256; known ABC vector passed",
+  "rows": [
+    {
+      "path": "package.json",
+      "bytes": 3880,
+      "git_blob_sha": "150ec71ac143ad2fd972a7418991ee3d009afe95",
+      "sha256": "7d73af801f6e5c865b2b6025228f7da251d2dc3d894f1d4abe64813e1a367130",
+      "verified": true
+    },
+    {
+      "path": "public/sprites/celestial.png",
+      "bytes": 0,
+      "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verified": true
+    },
+    {
+      "path": "public/sprites/previews/celestial-preview.png",
+      "bytes": 0,
+      "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verified": true
+    },
+    {
+      "path": "storage.rules",
+      "bytes": 2459,
+      "git_blob_sha": "3a0e0825833802df80394d891c91f4085683ee51",
+      "sha256": "d95e4275526c5e8768f783f1e38286064fa3a98b7c8bcfd20f7dbf1e88d00628",
+      "verified": true
+    },
+    {
+      "path": "tsconfig.json",
+      "bytes": 558,
+      "git_blob_sha": "fee90ec00a1aa5b379eed0e9a5aa6c6a164a51bc",
+      "sha256": "729cc07c4da7f3fd07d4cfa7de80509de952bf91f1c20a0f76f7b9cd1b8a00f5",
+      "verified": true
+    },
+    {
+      "path": "vitest.config.ts",
+      "bytes": 175,
+      "git_blob_sha": "4bee5944fe332e254d3b79db37c5459591c47b1d",
+      "sha256": "290ade604a9000f26924a2aee2ef0d4d7c1292b6344d1c0d7e19163ff7c2fbc6",
+      "verified": true
+    }
+  ]
+}

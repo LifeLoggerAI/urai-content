@@ -1,0 +1,115 @@
+{
+  "schema": "one-urai-content-verified-byte-slice-v1",
+  "source_commit": "988ca4f7f38b1ce86e4d3f426361b5866fd23e0d",
+  "group": "apps",
+  "offset": 12,
+  "group_file_count": 115,
+  "verification": "base64 original raw bytes; matched original tree byte length and Git object ID; independent SHA256; known ABC vector passed",
+  "rows": [
+    {
+      "path": "apps/web/package.json",
+      "bytes": 1653,
+      "git_blob_sha": "3d4d433a6b7057fd71f191c47d392b57bd999997",
+      "sha256": "074d0068bc9af14b6ed49806f83a2115c0fdae9a0c6997049754f993c01d16ed",
+      "verified": true
+    },
+    {
+      "path": "apps/web/playwright.config.ts",
+      "bytes": 1513,
+      "git_blob_sha": "30839d3869b3552cf3b5eedc7c8d3eed8af5aeac",
+      "sha256": "cfb3dbcee4523545499dfeefb7fba097f6a71517b4e8b5a5085ed9c6b43c34b7",
+      "verified": true
+    },
+    {
+      "path": "apps/web/scripts/smoke-routes.ts",
+      "bytes": 4039,
+      "git_blob_sha": "f9db1367cd36e90a2e8003dd997b6cfd89b40049",
+      "sha256": "a8ae2dff1fb683f22544e7ce8acb3f2e317609a3bc4c1f359a94fe2b54c0fa92",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/about/page.tsx",
+      "bytes": 278,
+      "git_blob_sha": "280fbd80e085e5fc274d5288caec1856668dd221",
+      "sha256": "4243d6476deb3c1b3658586aa886f8c41542449ef21258bc4e2e53ebd3d177d2",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/accessibility/page.tsx",
+      "bytes": 1758,
+      "git_blob_sha": "69f2dacb66feb181fcda2be8e43eaddef129d2e0",
+      "sha256": "aaeeee2a00a5d3e12165e55664410cd6f93467eca122afa127cf229e826bd8ad",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/api/admin/creator-submissions/[id]/moderate/route.ts",
+      "bytes": 2812,
+      "git_blob_sha": "a75253173a59b19c39e8720b8fea478148281998",
+      "sha256": "ca52be53e21248e43eb8117ab5b35a643812bbc50c8bb9bf230a87606c56d5ec",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/api/admin/creator-submissions/[id]/route.ts",
+      "bytes": 1010,
+      "git_blob_sha": "0b109123311c37d36d22266fc1eb58182b199a6f",
+      "sha256": "a649e478b8418fe62b33e0c67141e514340df58283e3d92d443d17aa9da3379b",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/api/admin/creator-submissions/route.ts",
+      "bytes": 2102,
+      "git_blob_sha": "69d4a5e128793992b4fd0f418c462f1db5059643",
+      "sha256": "3c1cf89be4b71847024106be30e6d5e291ef3437d342abf8e0c28e127b9c0a27",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/api/admin/seed/canonical-content/route.ts",
+      "bytes": 2415,
+      "git_blob_sha": "682b72f933e8a3168c306f93f1c2aa2cdaa0fcd3",
+      "sha256": "b5638ce2ec5be0619dd879f1f7d0863fc734b424ba71795ebe2cca5ee9a301d0",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/api/analytics/route.ts",
+      "bytes": 1392,
+      "git_blob_sha": "64499baa46f11d879b1d4164d146a1b948d9c543",
+      "sha256": "a69aef1c65920604117183653f105b78dcd8cc9c7e4ab69b3f152c78308afc2a",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/api/catalog/route.ts",
+      "bytes": 424,
+      "git_blob_sha": "ed9ec9e0722812bb5ae7feb9acce1f2b2dce98b4",
+      "sha256": "47d73c848d14f5366d719f9bab318d9c33c64233fd7c31524238c05b48d7eb45",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/api/content/[[...slug]]/route.ts",
+      "bytes": 859,
+      "git_blob_sha": "eafa864cb802c04ff0024cf9b151dd2fe52aa0d0",
+      "sha256": "44d989dd259ce79568ca3f64449cc1b93221b1bafe4811cfbc9e239129d55b52",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/api/creator/submissions/[id]/route.ts",
+      "bytes": 1487,
+      "git_blob_sha": "850d3efb1962e2c884d0d775aba99cfe94354fa1",
+      "sha256": "c7d922afd53afa9cd1b4da1c2648732554cc82220e3da817bf6e4cfdc61b9067",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/api/creator/submissions/route.ts",
+      "bytes": 3713,
+      "git_blob_sha": "468b93d4976761db168c02f01eee66156a8dc3c4",
+      "sha256": "6139a9e6b019278b537b3db50d517fd93b2d977a33884064ebd2cc3be2f0bac2",
+      "verified": true
+    },
+    {
+      "path": "apps/web/src/app/api/health/route.ts",
+      "bytes": 481,
+      "git_blob_sha": "ae0e1f36657c4b16d572156c6f16e1de7a28b9a1",
+      "sha256": "a3d811ea98ecada83593b8cb0577b3099d4b0870f2c35b3faaa5dfb2a5a1a272",
+      "verified": true
+    }
+  ]
+}

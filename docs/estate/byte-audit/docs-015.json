@@ -1,0 +1,115 @@
+{
+  "schema": "one-urai-content-verified-byte-slice-v1",
+  "source_commit": "988ca4f7f38b1ce86e4d3f426361b5866fd23e0d",
+  "group": "docs",
+  "offset": 15,
+  "group_file_count": 69,
+  "verification": "base64 original raw bytes; matched original tree byte length and Git object ID; independent SHA256; known ABC vector passed",
+  "rows": [
+    {
+      "path": "docs/DEPLOYMENT.md",
+      "bytes": 372,
+      "git_blob_sha": "03f8b8ce25c0a64e7bb0b86144d76a08d8cbff09",
+      "sha256": "07334e192c0d7a6a1fad8cf95b7e694551a355b92ae7647f0ba29ac6a1ef9a75",
+      "verified": true
+    },
+    {
+      "path": "docs/DONE_DONE_CHECKLIST.md",
+      "bytes": 269,
+      "git_blob_sha": "5dd560fac171d0c00e2c0b74fff913acdd7c8f8c",
+      "sha256": "295521b53940434c9dad8932017100eb2d7de25bd23b04382ab88452091872fa",
+      "verified": true
+    },
+    {
+      "path": "docs/E2E_VERIFICATION_RUNBOOK.md",
+      "bytes": 3442,
+      "git_blob_sha": "d12075e714f7fb6033e3ea66eac8b84699d91c98",
+      "sha256": "9ce5b535ffe94a5606d5933d3cac9a2eefffd985e7d9110e5a4b8bf378f6662f",
+      "verified": true
+    },
+    {
+      "path": "docs/EVIDENCE_LOG.md",
+      "bytes": 3355,
+      "git_blob_sha": "5964a3ef41c7277157da288fdf7a53afd5e67bd9",
+      "sha256": "3a7abb3306871202898b0dfb080da7970f9b6d782927ba5232ecafe9efbae448",
+      "verified": true
+    },
+    {
+      "path": "docs/EVIDENCE_LOG_TEMPLATE.md",
+      "bytes": 4426,
+      "git_blob_sha": "c2db327a81e1ddcddd104f80b5ca41de8894d5ab",
+      "sha256": "9a2126863f8b362ea256b4b94f82592bc82c50c72e97eb13ba50f8d40aee1fb6",
+      "verified": true
+    },
+    {
+      "path": "docs/EVIDENCE_STATUS.md",
+      "bytes": 272,
+      "git_blob_sha": "c0356b02a327530836346532fcff697ef5d127ff",
+      "sha256": "de0d6f026cf4c13501da7635fab51509b1d15298eda92b6f2249d979d857779f",
+      "verified": true
+    },
+    {
+      "path": "docs/EXTERNAL_ENV_DEPLOYMENT_HANDOFF.md",
+      "bytes": 5125,
+      "git_blob_sha": "f8985df06dd2d20dcebd97c226992b636a790a0b",
+      "sha256": "fe7f69a75a22298668b4936ca2e04449ddf7bdb9d06ab6c1690a5667b829cc6d",
+      "verified": true
+    },
+    {
+      "path": "docs/FAILSAFE_DIAGNOSTICS.md",
+      "bytes": 794,
+      "git_blob_sha": "985d6ea11ff73a0a70ae6eb56e68eab224627ba8",
+      "sha256": "55842bf79a23f50f241b772c8f83692af65091b33cd883ab08a25ef060800e57",
+      "verified": true
+    },
+    {
+      "path": "docs/FIREBASE_ADAPTER_IMPLEMENTATION.md",
+      "bytes": 1155,
+      "git_blob_sha": "d5adaa5b9af8d08e55bfbebb35353bcbd064e8dd",
+      "sha256": "cc1ec472d88a53ed8813dd3737c65e08f36154bc9655e13c3b17895401cf96ff",
+      "verified": true
+    },
+    {
+      "path": "docs/FIREBASE_RULES_PATCH.md",
+      "bytes": 603,
+      "git_blob_sha": "d03854b1ad6f632ecb2487db81bdc59a3ed02ae5",
+      "sha256": "bb37e411062f386b11dcaf40a2edbb609d0961bd4c2187624cae490cee1a3101",
+      "verified": true
+    },
+    {
+      "path": "docs/FIREBASE_SETUP.md",
+      "bytes": 3741,
+      "git_blob_sha": "6b96ed588c1e67a61f14cb5877cc6c0ccb801660",
+      "sha256": "53d8cb86c70a7ce0adc215e8985f8817187bcb4bf1390b23cc00852acf6ac7c5",
+      "verified": true
+    },
+    {
+      "path": "docs/FOUNDATION_INTEGRATION.md",
+      "bytes": 1539,
+      "git_blob_sha": "908361cc20e50d1988dbf664fe72d813ccf4f7eb",
+      "sha256": "21c40146e8027ce796ef4b62275de291a04b32a76ff9ac4e7bcf8c9baee2ca2b",
+      "verified": true
+    },
+    {
+      "path": "docs/IMPLEMENTATION_STATUS.md",
+      "bytes": 7498,
+      "git_blob_sha": "1fbf180bd7d524200c4e1bdef90fbfb59589f608",
+      "sha256": "081d04303ac1e54ec34ece12ed44502f2043f53baae45ca92c802da5b40ad601",
+      "verified": true
+    },
+    {
+      "path": "docs/INTEGRATIONS.md",
+      "bytes": 2918,
+      "git_blob_sha": "5c47d0b7292b0e296f6110c385100af0f2bf65d9",
+      "sha256": "afffad82b554c4df390c2ae5e559b389754d2aa8e9e9f79e3c38e6e1219ec177",
+      "verified": true
+    },
+    {
+      "path": "docs/INVESTOR_REVIEW_FIRST_MINUTE.md",
+      "bytes": 684,
+      "git_blob_sha": "7e665ed2665756f18aea9c78fa5e023bf12a3744",
+      "sha256": "94860ace1d4c3875327bf51c3799b3f734feb07ad54dae144947a183c0ffa902",
+      "verified": true
+    }
+  ]
+}

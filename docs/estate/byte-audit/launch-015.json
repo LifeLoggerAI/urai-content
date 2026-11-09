@@ -1,0 +1,45 @@
+{
+  "schema": "one-urai-content-verified-byte-slice-v1",
+  "source_commit": "988ca4f7f38b1ce86e4d3f426361b5866fd23e0d",
+  "group": "launch-proof",
+  "offset": 15,
+  "group_file_count": 20,
+  "verification": "base64 original raw bytes; matched original tree byte length and Git object ID; independent SHA256; known ABC vector passed",
+  "rows": [
+    {
+      "path": "launch-proof/urai-content-production-lock/2026-06-30T011500-0500/publishing-proof.md",
+      "bytes": 1045,
+      "git_blob_sha": "03e35f3bdbb2f79fd5ce373a9bb87de744d72597",
+      "sha256": "14bd8d317d458a0f6aeae5d78d8270cb688fefb641c5fcd91704799ebd029a62",
+      "verified": true
+    },
+    {
+      "path": "launch-proof/urai-content-production-lock/2026-06-30T011500-0500/release-checklist.md",
+      "bytes": 1432,
+      "git_blob_sha": "4c262d3cac5077fc9efa636beb50f3564208107d",
+      "sha256": "73c39fca907388b3cf3de60d36d1244a5b0a728c45c4251d48adc6a1cba05520",
+      "verified": true
+    },
+    {
+      "path": "launch-proof/urai-content-production-lock/2026-06-30T011500-0500/repo-state.md",
+      "bytes": 1724,
+      "git_blob_sha": "a09479d73cef094b9f6253fa911b7f64027d766f",
+      "sha256": "d8de38c13ec1fca62e317c5ab5eaf5de020041e731606f73a03c2010b8a903c6",
+      "verified": true
+    },
+    {
+      "path": "launch-proof/urai-content-production-lock/2026-06-30T011500-0500/route-map.md",
+      "bytes": 3935,
+      "git_blob_sha": "1ba945d7f3f1fff88c0acca7909425502ccf75cc",
+      "sha256": "5855027d482e73b10b019a693b5ac7066e10e87f68f0793c5e19a6f6f22261a0",
+      "verified": true
+    },
+    {
+      "path": "launch-proof/urai-content-production-lock/2026-06-30T011500-0500/security-privacy-risk-audit.md",
+      "bytes": 1785,
+      "git_blob_sha": "2b03637a04ac105ed9063bf278f3d12e63648dae",
+      "sha256": "524bb245793d2b534cdf9d5f4ec5a51238c7cdd62562449978c4373da38de85a",
+      "verified": true
+    }
+  ]
+}

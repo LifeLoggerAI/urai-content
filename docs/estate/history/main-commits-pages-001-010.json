@@ -1,0 +1,5566 @@
+{
+  "schema": "one-urai-content-main-reachable-history-page-inventory-v1",
+  "repository": "LifeLoggerAI/urai-content",
+  "ref": "main",
+  "main_sha": "988ca4f7f38b1ce86e4d3f426361b5866fd23e0d",
+  "source": "GitHub REST /commits?per_page=100&page=N, main reachable newest-first; not all branches, old unreachable, diffs, or file contents",
+  "retrieval_pages": [
+    {
+      "page": 1,
+      "count": 100,
+      "first_sha": "988ca4f7f38b1ce86e4d3f426361b5866fd23e0d",
+      "last_sha": "23bcaedfee8510d8b8fd287ef9ae49e38104d0c8"
+    },
+    {
+      "page": 2,
+      "count": 100,
+      "first_sha": "64b625d01cadfd37a0b951b3adb4f3e12d268ade",
+      "last_sha": "02b8d8580fb24eea28bb6466688f0ab01d91c324"
+    },
+    {
+      "page": 3,
+      "count": 100,
+      "first_sha": "a4ae0505c40dbbcccb08f88766a4c3166a802e6c",
+      "last_sha": "d24662ba70c7d778ef83141a957600ebb70d36cb"
+    },
+    {
+      "page": 4,
+      "count": 100,
+      "first_sha": "2977944b93322dd67affcbbc64615fb241c365b6",
+      "last_sha": "706122234a419724451581832016968af5206a6c"
+    },
+    {
+      "page": 5,
+      "count": 100,
+      "first_sha": "f65a5f12c1687a6a387b6c16ee00a1ba3bddf511",
+      "last_sha": "59ab9d89f53f9c8443c07719c661aa0df62fe832"
+    },
+    {
+      "page": 6,
+      "count": 100,
+      "first_sha": "50917e84cf0e9836d8b4bb4cacc296763eaf755e",
+      "last_sha": "4dd8089e075f4f00326a5ca67002a6ace168d771"
+    },
+    {
+      "page": 7,
+      "count": 82,
+      "first_sha": "911ef186ad8ffa941fe05d41c5da48146b5f5ab1",
+      "last_sha": "640e2b9be308773ddd3b8ef74247ead7d2177a4a"
+    },
+    {
+      "page": 8,
+      "count": 0
+    },
+    {
+      "page": 9,
+      "count": 0
+    },
+    {
+      "page": 10,
+      "count": 0
+    }
+  ],
+  "entries": [
+    {
+      "sha": "988ca4f7f38b1ce86e4d3f426361b5866fd23e0d",
+      "date": "2026-10-05T22:55:54Z",
+      "message": "Raise compact public Content button to 48px (#95)",
+      "parents": [
+        "137da3f9f8afd1f6b519067b5811d577d8fc945f"
+      ]
+    },
+    {
+      "sha": "137da3f9f8afd1f6b519067b5811d577d8fc945f",
+      "date": "2026-10-05T22:24:49Z",
+      "message": "Merge pull request #94 from LifeLoggerAI/fix/public-canon-copy-20261005",
+      "parents": [
+        "af2f75364f31edb987de9966811687245c7a65a1",
+        "3865baad106cd86659be855b993233496423d76a"
+      ]
+    },
+    {
+      "sha": "3865baad106cd86659be855b993233496423d76a",
+      "date": "2026-10-05T22:20:41Z",
+      "message": "Guard current public URAI naming canon",
+      "parents": [
+        "0ac3fdabaccfb316879ce8a3e86b201a8907f2a4"
+      ]
+    },
+    {
+      "sha": "0ac3fdabaccfb316879ce8a3e86b201a8907f2a4",
+      "date": "2026-10-05T22:20:20Z",
+      "message": "Align public Content copy with current URAI canon",
+      "parents": [
+        "1a61b4980e8bdfb03bb34d2988dd8ef631a23843"
+      ]
+    },
+    {
+      "sha": "1a61b4980e8bdfb03bb34d2988dd8ef631a23843",
+      "date": "2026-10-05T22:20:18Z",
+      "message": "Align public Content copy with current URAI canon",
+      "parents": [
+        "921bf8fc6f82d1a571c57567db6047bf06238723"
+      ]
+    },
+    {
+      "sha": "921bf8fc6f82d1a571c57567db6047bf06238723",
+      "date": "2026-10-05T22:20:14Z",
+      "message": "Align public Content copy with current URAI canon",
+      "parents": [
+        "09b97d948eb199287f59ce0f5dcaef50accc72e2"
+      ]
+    },
+    {
+      "sha": "09b97d948eb199287f59ce0f5dcaef50accc72e2",
+      "date": "2026-10-05T22:20:11Z",
+      "message": "Align public Content copy with current URAI canon",
+      "parents": [
+        "af2f75364f31edb987de9966811687245c7a65a1"
+      ]
+    },
+    {
+      "sha": "af2f75364f31edb987de9966811687245c7a65a1",
+      "date": "2026-10-05T21:38:27Z",
+      "message": "Merge pull request #93 from LifeLoggerAI/fix/labs-tax-standing-public-truth-20261005",
+      "parents": [
+        "1c98c6e7a6fdf6ce837227d79178e429a745eb9f",
+        "1f2d09d52c31f6b9e23cdced56714294e76a456e"
+      ]
+    },
+    {
+      "sha": "1f2d09d52c31f6b9e23cdced56714294e76a456e",
+      "date": "2026-10-05T21:30:45Z",
+      "message": "Refresh public authority reconciliation dates",
+      "parents": [
+        "8881014036e14967965b434306d6488469335e43"
+      ]
+    },
+    {
+      "sha": "8881014036e14967965b434306d6488469335e43",
+      "date": "2026-10-05T21:24:00Z",
+      "message": "Correct Labs tax-standing public authority",
+      "parents": [
+        "1c98c6e7a6fdf6ce837227d79178e429a745eb9f"
+      ]
+    },
+    {
+      "sha": "1c98c6e7a6fdf6ce837227d79178e429a745eb9f",
+      "date": "2026-10-05T17:41:03Z",
+      "message": "Merge pull request #92 from LifeLoggerAI/fix/vercel-double-path-20261005",
+      "parents": [
+        "42a8dce5d9dfa0c48b0ac9ea7a60b8723fb3f463",
+        "51343e90adaaf175faedf4acbc600503200b0677"
+      ]
+    },
+    {
+      "sha": "51343e90adaaf175faedf4acbc600503200b0677",
+      "date": "2026-10-05T17:37:23Z",
+      "message": "fix(content): remove Vercel path-doubling trace root",
+      "parents": [
+        "42a8dce5d9dfa0c48b0ac9ea7a60b8723fb3f463"
+      ]
+    },
+    {
+      "sha": "42a8dce5d9dfa0c48b0ac9ea7a60b8723fb3f463",
+      "date": "2026-10-05T15:04:44Z",
+      "message": "Harden public Content trust, accessibility, and crawler boundaries (#91)",
+      "parents": [
+        "815a27b30a3ab1c4db56d883367a189eb8314866"
+      ]
+    },
+    {
+      "sha": "815a27b30a3ab1c4db56d883367a189eb8314866",
+      "date": "2026-10-05T13:04:05Z",
+      "message": "Merge pull request #90 from LifeLoggerAI/hardening/pin-vercel-cli-20261005",
+      "parents": [
+        "57b6eb86962fe22f31fe3c3408bf6bf7dd7495b4",
+        "18f9d694465217c382566347e058b9bdbbe000b3"
+      ]
+    },
+    {
+      "sha": "18f9d694465217c382566347e058b9bdbbe000b3",
+      "date": "2026-10-05T12:53:40Z",
+      "message": "Pin Vercel CLI in production deploy workflow",
+      "parents": [
+        "57b6eb86962fe22f31fe3c3408bf6bf7dd7495b4"
+      ]
+    },
+    {
+      "sha": "57b6eb86962fe22f31fe3c3408bf6bf7dd7495b4",
+      "date": "2026-10-05T09:30:19Z",
+      "message": "Merge PR #89: harden Content review supply chain",
+      "parents": [
+        "265c6b087ad52c2bc23e7547573ced35ad9a947c",
+        "2de252bd1924aa13491802f575983ef9b7a4f277"
+      ]
+    },
+    {
+      "sha": "2de252bd1924aa13491802f575983ef9b7a4f277",
+      "date": "2026-10-05T09:25:34Z",
+      "message": "Remove temporary PR89 lockfile generator",
+      "parents": [
+        "a03a34b4ecec8b919a5c5509dc1f4406d29509b7"
+      ]
+    },
+    {
+      "sha": "a03a34b4ecec8b919a5c5509dc1f4406d29509b7",
+      "date": "2026-10-05T09:22:19Z",
+      "message": "Run PR89 lockfile generator on trusted PR event",
+      "parents": [
+        "2d8919251ea599b16dd84a134a31c7a17ff01517"
+      ]
+    },
+    {
+      "sha": "2d8919251ea599b16dd84a134a31c7a17ff01517",
+      "date": "2026-10-05T09:21:39Z",
+      "message": "Regenerate PR89 web lockfile in trusted CI",
+      "parents": [
+        "ced97697aad4ba29f0bb5b7e5b34269fff62a696"
+      ]
+    },
+    {
+      "sha": "ced97697aad4ba29f0bb5b7e5b34269fff62a696",
+      "date": "2026-10-05T09:21:08Z",
+      "message": "Remove completed PR89 lockfile regenerator",
+      "parents": [
+        "55473f8a7868bf109ff471ce0ebb24294fd087f3"
+      ]
+    },
+    {
+      "sha": "55473f8a7868bf109ff471ce0ebb24294fd087f3",
+      "date": "2026-10-05T09:19:25Z",
+      "message": "Generate exact npm-11 web lockfile for PR #89",
+      "parents": [
+        "4e0a04ca1fdebd94d7a80db00a917ccddd038915"
+      ]
+    },
+    {
+      "sha": "4e0a04ca1fdebd94d7a80db00a917ccddd038915",
+      "date": "2026-10-05T09:17:30Z",
+      "message": "Remove temporary zero-audit lockfile writer",
+      "parents": [
+        "c3ff0c8cd8fcb02bdd7934f3226e68cdb1f281ff"
+      ]
+    },
+    {
+      "sha": "c3ff0c8cd8fcb02bdd7934f3226e68cdb1f281ff",
+      "date": "2026-10-05T09:16:13Z",
+      "message": "Synchronize zero-audit Content lockfiles",
+      "parents": [
+        "af05452a3f4fa129709303bdbaa15d800a8d7c2c"
+      ]
+    },
+    {
+      "sha": "af05452a3f4fa129709303bdbaa15d800a8d7c2c",
+      "date": "2026-10-05T09:15:50Z",
+      "message": "TEMP: repair bounded zero-audit lockfile writer",
+      "parents": [
+        "547ba5c219db99e30c7bbd73c172c8254ad008bb"
+      ]
+    },
+    {
+      "sha": "547ba5c219db99e30c7bbd73c172c8254ad008bb",
+      "date": "2026-10-05T09:14:25Z",
+      "message": "TEMP: allow bounded subset of Content lockfiles",
+      "parents": [
+        "52b4f3a814b39fec67a2f5681f0b78d4e49fc28d"
+      ]
+    },
+    {
+      "sha": "52b4f3a814b39fec67a2f5681f0b78d4e49fc28d",
+      "date": "2026-10-05T09:12:09Z",
+      "message": "TEMP: regenerate zero-audit Content lockfiles",
+      "parents": [
+        "46b4430f7b7c85f6606ece42ebfbe5032485ee35"
+      ]
+    },
+    {
+      "sha": "46b4430f7b7c85f6606ece42ebfbe5032485ee35",
+      "date": "2026-10-05T09:11:33Z",
+      "message": "Remove unpatched Next lint glob vulnerability path",
+      "parents": [
+        "27f5c55a410336f136aca5938cc2e837bf0b90c3"
+      ]
+    },
+    {
+      "sha": "27f5c55a410336f136aca5938cc2e837bf0b90c3",
+      "date": "2026-10-05T09:04:57Z",
+      "message": "Remove temporary Content lockfile materializer",
+      "parents": [
+        "45fe19328f08a4c8564697ff70c26e5b95cb5b43"
+      ]
+    },
+    {
+      "sha": "45fe19328f08a4c8564697ff70c26e5b95cb5b43",
+      "date": "2026-10-05T09:04:16Z",
+      "message": "Synchronize Content advisory-remediation lockfiles",
+      "parents": [
+        "4dc79d5f005f345c6eeead5f1b6ca8d8d3db8503"
+      ]
+    },
+    {
+      "sha": "4dc79d5f005f345c6eeead5f1b6ca8d8d3db8503",
+      "date": "2026-10-05T09:02:01Z",
+      "message": "Use Next-compatible patched ESLint 9 line for Content web",
+      "parents": [
+        "0ec0faa633b519d864b10bdd16524e87de5dde26"
+      ]
+    },
+    {
+      "sha": "0ec0faa633b519d864b10bdd16524e87de5dde26",
+      "date": "2026-10-05T08:59:19Z",
+      "message": "TEMP: materialize Content advisory-remediation lockfiles",
+      "parents": [
+        "d2c829042776254346875c10939c39b5500296f2"
+      ]
+    },
+    {
+      "sha": "d2c829042776254346875c10939c39b5500296f2",
+      "date": "2026-10-05T08:58:18Z",
+      "message": "Remediate current Content dependency advisory floor: apps/web/package.json",
+      "parents": [
+        "a6a9888cc61f643afbbf3f254c66799fe52667a2"
+      ]
+    },
+    {
+      "sha": "a6a9888cc61f643afbbf3f254c66799fe52667a2",
+      "date": "2026-10-05T08:58:12Z",
+      "message": "Remediate current Content dependency advisory floor: package.json",
+      "parents": [
+        "fad515bfb8ae2fa011b5d7e484b88b13b5d8b893"
+      ]
+    },
+    {
+      "sha": "fad515bfb8ae2fa011b5d7e484b88b13b5d8b893",
+      "date": "2026-10-05T08:41:00Z",
+      "message": "Retain Content audit evidence before fail-closed vulnerability gate",
+      "parents": [
+        "d459ab9b0d2908ce0fac3dc7eec49ea52cfcb955"
+      ]
+    },
+    {
+      "sha": "d459ab9b0d2908ce0fac3dc7eec49ea52cfcb955",
+      "date": "2026-10-05T08:30:46Z",
+      "message": "Harden review supply chain: .github/workflows/content-dependency-audit-evidence.yml",
+      "parents": [
+        "f903e2983a7ff00f4cca430892c3128d8886f7f0"
+      ]
+    },
+    {
+      "sha": "f903e2983a7ff00f4cca430892c3128d8886f7f0",
+      "date": "2026-10-05T08:30:41Z",
+      "message": "Harden review supply chain: .github/workflows/content-web-lockfile-bootstrap.yml",
+      "parents": [
+        "7c6de03aea53ded24aa9d92ac9d65f60e14d2b65"
+      ]
+    },
+    {
+      "sha": "7c6de03aea53ded24aa9d92ac9d65f60e14d2b65",
+      "date": "2026-10-05T08:30:37Z",
+      "message": "Harden review supply chain: .github/workflows/content-visual-proof.yml",
+      "parents": [
+        "59e61b10f1a529d8b43186fb41b37c16dafad1a7"
+      ]
+    },
+    {
+      "sha": "59e61b10f1a529d8b43186fb41b37c16dafad1a7",
+      "date": "2026-10-05T08:30:22Z",
+      "message": "Pin GitHub Actions for review-safe supply chain: .github/workflows/release-promotion.yml",
+      "parents": [
+        "220aca05b25918dd8f35363fb8aff5a422e62057"
+      ]
+    },
+    {
+      "sha": "220aca05b25918dd8f35363fb8aff5a422e62057",
+      "date": "2026-10-05T08:30:17Z",
+      "message": "Pin GitHub Actions for review-safe supply chain: .github/workflows/release-evidence.yml",
+      "parents": [
+        "1ba1315a378f16034a44ab297f49b2095c0fa9df"
+      ]
+    },
+    {
+      "sha": "1ba1315a378f16034a44ab297f49b2095c0fa9df",
+      "date": "2026-10-05T08:30:13Z",
+      "message": "Pin GitHub Actions for review-safe supply chain: .github/workflows/web-e2e.yml",
+      "parents": [
+        "37ccb918a768ec2c7d6b0a04c675a259165c7e6f"
+      ]
+    },
+    {
+      "sha": "37ccb918a768ec2c7d6b0a04c675a259165c7e6f",
+      "date": "2026-10-05T08:30:09Z",
+      "message": "Pin GitHub Actions for review-safe supply chain: .github/workflows/ci.yml",
+      "parents": [
+        "265c6b087ad52c2bc23e7547573ced35ad9a947c"
+      ]
+    },
+    {
+      "sha": "265c6b087ad52c2bc23e7547573ced35ad9a947c",
+      "date": "2026-10-04T22:52:28Z",
+      "message": "Merge pull request #88 from LifeLoggerAI/privacy/content-deletion-receipts-20261003",
+      "parents": [
+        "4b38589be76dff88e310fc11b9bba5ce8b793d19",
+        "0f60c19540f035ede32850857e2c152dfff41c1c"
+      ]
+    },
+    {
+      "sha": "0f60c19540f035ede32850857e2c152dfff41c1c",
+      "date": "2026-10-03T22:58:04Z",
+      "message": "Reconcile privacy docs with governed deletion lifecycle",
+      "parents": [
+        "cf73c4e23e1940c2e32cc9a8dd2c9ba835954c29"
+      ]
+    },
+    {
+      "sha": "cf73c4e23e1940c2e32cc9a8dd2c9ba835954c29",
+      "date": "2026-10-03T22:58:02Z",
+      "message": "Tighten deletion lifecycle test fixture",
+      "parents": [
+        "5d6e547d237d8a061823a92bd5b99cbb9d395694"
+      ]
+    },
+    {
+      "sha": "5d6e547d237d8a061823a92bd5b99cbb9d395694",
+      "date": "2026-10-03T22:57:59Z",
+      "message": "Export governed content deletion lifecycle",
+      "parents": [
+        "801700a40bbf383e3f2237b34f3657ead23aa931"
+      ]
+    },
+    {
+      "sha": "801700a40bbf383e3f2237b34f3657ead23aa931",
+      "date": "2026-10-03T22:57:47Z",
+      "message": "Test content deletion tombstones and purge receipts",
+      "parents": [
+        "d80c44aca76511e0b5b04a99451c3bf338f43e28"
+      ]
+    },
+    {
+      "sha": "d80c44aca76511e0b5b04a99451c3bf338f43e28",
+      "date": "2026-10-03T22:57:45Z",
+      "message": "Add governed content deletion receipt lifecycle",
+      "parents": [
+        "f1ac49c4cf64c1490232fd6bccbe63d305ebb481"
+      ]
+    },
+    {
+      "sha": "f1ac49c4cf64c1490232fd6bccbe63d305ebb481",
+      "date": "2026-10-03T13:10:59Z",
+      "message": "merge(content): converge runtime authority with admitted asset truth",
+      "parents": [
+        "8dd4eb8d19ccd2600d8d4c5f19fac35b65ece748",
+        "4e4b7d3153b068df87c4cc50b2fd172d3ed010a3"
+      ]
+    },
+    {
+      "sha": "4e4b7d3153b068df87c4cc50b2fd172d3ed010a3",
+      "date": "2026-10-03T08:49:11Z",
+      "message": "test(content): keep catalog tests runtime-agnostic",
+      "parents": [
+        "c1960911e3fd471ef9ce45ea801b02e99b35e038"
+      ]
+    },
+    {
+      "sha": "c1960911e3fd471ef9ce45ea801b02e99b35e038",
+      "date": "2026-10-03T02:37:53Z",
+      "message": "Normalize public content API links across canonical slug shapes",
+      "parents": [
+        "f2b0f293a8f30c043c3730c143846f444726ecf8"
+      ]
+    },
+    {
+      "sha": "f2b0f293a8f30c043c3730c143846f444726ecf8",
+      "date": "2026-10-03T02:18:48Z",
+      "message": "Disclose unavailable demo sprite assets and validate admitted files",
+      "parents": [
+        "4b38589be76dff88e310fc11b9bba5ce8b793d19"
+      ]
+    },
+    {
+      "sha": "8dd4eb8d19ccd2600d8d4c5f19fac35b65ece748",
+      "date": "2026-09-26T19:42:49Z",
+      "message": "Merge governed Content prompt-library release authority into terminal candidate",
+      "parents": [
+        "35ff7083103d9be9801eef45ac13eb219c576817",
+        "e2b2ae5481a22514e005cfc79d6b0dcbf7c049b2"
+      ]
+    },
+    {
+      "sha": "35ff7083103d9be9801eef45ac13eb219c576817",
+      "date": "2026-09-26T19:42:37Z",
+      "message": "Merge Content expansion history into terminal authority without regressing taxonomy safety",
+      "parents": [
+        "de47871712ae1496bd134a211889d649a6f9f1e4",
+        "5c9d946ddc0932a03beb448fcf699da9e8ca99e2"
+      ]
+    },
+    {
+      "sha": "de47871712ae1496bd134a211889d649a6f9f1e4",
+      "date": "2026-09-26T19:39:12Z",
+      "message": "Merge Content rules hardening history into terminal authority",
+      "parents": [
+        "31de843848a70ddcacba381dd32d6ca3536f1ae7",
+        "7818f6bd1c181efe60c9fc4da5626a44df3cedaf"
+      ]
+    },
+    {
+      "sha": "31de843848a70ddcacba381dd32d6ca3536f1ae7",
+      "date": "2026-09-26T17:57:07Z",
+      "message": "Merge pull request #85 from LifeLoggerAI/canon/upstream-authority-20260924",
+      "parents": [
+        "2d3a6eab64aae8a1a339fde94f65430718fd907b",
+        "70c15b08651d3e645d82011bc3eecda39d25a65b"
+      ]
+    },
+    {
+      "sha": "70c15b08651d3e645d82011bc3eecda39d25a65b",
+      "date": "2026-09-25T14:10:29Z",
+      "message": "fix: bind Content canon adoption to Labs #102",
+      "parents": [
+        "579fcef43c27ea0bf5b98f4159dd5c4b8a925002"
+      ]
+    },
+    {
+      "sha": "2d3a6eab64aae8a1a339fde94f65430718fd907b",
+      "date": "2026-09-25T13:49:26Z",
+      "message": "fix: preserve governed content record validation errors",
+      "parents": [
+        "f81f3a05e7e9b25dfdc0e189e7d7263c6327879c"
+      ]
+    },
+    {
+      "sha": "579fcef43c27ea0bf5b98f4159dd5c4b8a925002",
+      "date": "2026-09-25T13:45:55Z",
+      "message": "Restore current Labs #107 canon authority",
+      "parents": [
+        "6a21472e8098dffb442ddf023997dc0940b15a30"
+      ]
+    },
+    {
+      "sha": "6a21472e8098dffb442ddf023997dc0940b15a30",
+      "date": "2026-09-25T13:44:09Z",
+      "message": "canon: normalize upstream authority to Labs PR 102",
+      "parents": [
+        "9fe3c81575552c53d2e72cdfacb0053909e17062"
+      ]
+    },
+    {
+      "sha": "9fe3c81575552c53d2e72cdfacb0053909e17062",
+      "date": "2026-09-25T13:28:53Z",
+      "message": "Bind cross-system canon to current Labs successor",
+      "parents": [
+        "be25d540bad0cdf933a88ce0cce3ac3dd8279e76"
+      ]
+    },
+    {
+      "sha": "be25d540bad0cdf933a88ce0cce3ac3dd8279e76",
+      "date": "2026-09-25T12:52:38Z",
+      "message": "merge: reconcile Content canon with current terminal parent",
+      "parents": [
+        "1dc6923c54a1d4b4ee83c12e2f328fcf3d165135",
+        "f81f3a05e7e9b25dfdc0e189e7d7263c6327879c"
+      ]
+    },
+    {
+      "sha": "1dc6923c54a1d4b4ee83c12e2f328fcf3d165135",
+      "date": "2026-09-25T12:51:18Z",
+      "message": "merge: reconcile Content canon with current hardened convergence base",
+      "parents": [
+        "de3ea45e923684d58b2df39a300b19f5cedf666d",
+        "e5b9585b9516b23307c51816ac5c1c3c0d940884"
+      ]
+    },
+    {
+      "sha": "de3ea45e923684d58b2df39a300b19f5cedf666d",
+      "date": "2026-09-25T12:24:36Z",
+      "message": "test: restore visual proof spec required by base workflow",
+      "parents": [
+        "9e7a3f245817ed121c2d92024b8bd1383ec615e8"
+      ]
+    },
+    {
+      "sha": "f81f3a05e7e9b25dfdc0e189e7d7263c6327879c",
+      "date": "2026-09-25T11:49:13Z",
+      "message": "test: cover Content runtime schema migration",
+      "parents": [
+        "8f995560578adf69692884604e67f28c79c46b3b"
+      ]
+    },
+    {
+      "sha": "8f995560578adf69692884604e67f28c79c46b3b",
+      "date": "2026-09-25T11:49:00Z",
+      "message": "feat: enforce versioned Content Firestore records",
+      "parents": [
+        "d839404a52bc21148c001ff3e78cbdf79fe271ca"
+      ]
+    },
+    {
+      "sha": "d839404a52bc21148c001ff3e78cbdf79fe271ca",
+      "date": "2026-09-25T11:48:50Z",
+      "message": "feat: version Content runtime persistence records",
+      "parents": [
+        "e5b9585b9516b23307c51816ac5c1c3c0d940884"
+      ]
+    },
+    {
+      "sha": "9e7a3f245817ed121c2d92024b8bd1383ec615e8",
+      "date": "2026-09-25T08:41:03Z",
+      "message": "canon: point upstream authority to consolidated Labs PR 102",
+      "parents": [
+        "c539a8101bc06b897f4263957e7c990614c9fdf0"
+      ]
+    },
+    {
+      "sha": "e5b9585b9516b23307c51816ac5c1c3c0d940884",
+      "date": "2026-09-25T07:53:57Z",
+      "message": "fix(content): align Firestore transaction fake with repository contract",
+      "parents": [
+        "3abc40d47cf3576a4b6e6d4c7c6aaa5652230ea0"
+      ]
+    },
+    {
+      "sha": "c539a8101bc06b897f4263957e7c990614c9fdf0",
+      "date": "2026-09-25T06:46:50Z",
+      "message": "Align catalog test with truthful demo visibility",
+      "parents": [
+        "98c1007f607ed17637378a0c4afb4c288e164c29"
+      ]
+    },
+    {
+      "sha": "98c1007f607ed17637378a0c4afb4c288e164c29",
+      "date": "2026-09-25T06:09:23Z",
+      "message": "Fix generated content index after demo demotion",
+      "parents": [
+        "e947330cd30bd94f5130e16c61dc7cd23d394d41"
+      ]
+    },
+    {
+      "sha": "e947330cd30bd94f5130e16c61dc7cd23d394d41",
+      "date": "2026-09-25T06:07:40Z",
+      "message": "canon: prevent unverified content records from claiming live status",
+      "parents": [
+        "1c03a7b4317042ecd1e9483e76ee99e13d96b16f"
+      ]
+    },
+    {
+      "sha": "1c03a7b4317042ecd1e9483e76ee99e13d96b16f",
+      "date": "2026-09-25T06:07:38Z",
+      "message": "canon: prevent unverified content records from claiming live status",
+      "parents": [
+        "859da40051b83181588c1d7f154eddd2338119fe"
+      ]
+    },
+    {
+      "sha": "859da40051b83181588c1d7f154eddd2338119fe",
+      "date": "2026-09-25T05:23:33Z",
+      "message": "canon: bind repository to cross-system authority",
+      "parents": [
+        "4b38589be76dff88e310fc11b9bba5ce8b793d19"
+      ]
+    },
+    {
+      "sha": "3abc40d47cf3576a4b6e6d4c7c6aaa5652230ea0",
+      "date": "2026-09-25T02:27:29Z",
+      "message": "test: type fake Firestore transaction without any",
+      "parents": [
+        "0f2acfc4d45140cdf3a6c518f16552b8334483cd"
+      ]
+    },
+    {
+      "sha": "0f2acfc4d45140cdf3a6c518f16552b8334483cd",
+      "date": "2026-09-24T22:07:32Z",
+      "message": "Fix creator moderation queue status",
+      "parents": [
+        "ee9d8a281082c224905682dc5aa7e667849a2519"
+      ]
+    },
+    {
+      "sha": "ee9d8a281082c224905682dc5aa7e667849a2519",
+      "date": "2026-09-24T22:07:29Z",
+      "message": "Fix typed creator submission persistence",
+      "parents": [
+        "fb3a45c6b5bda1a71174b81f147c21d4b72fb094"
+      ]
+    },
+    {
+      "sha": "fb3a45c6b5bda1a71174b81f147c21d4b72fb094",
+      "date": "2026-09-24T20:30:39Z",
+      "message": "ci: use supported 90-day artifact retention",
+      "parents": [
+        "2070d8ea2328c3bee43d1f2a4bb195d9a9411652"
+      ]
+    },
+    {
+      "sha": "2070d8ea2328c3bee43d1f2a4bb195d9a9411652",
+      "date": "2026-09-24T20:30:36Z",
+      "message": "ci: use supported 90-day artifact retention",
+      "parents": [
+        "f1b0e95a385d94a96414c7dc5eceae73f4be89a4"
+      ]
+    },
+    {
+      "sha": "f1b0e95a385d94a96414c7dc5eceae73f4be89a4",
+      "date": "2026-09-24T20:30:08Z",
+      "message": "test(content): prove concurrent revision allocation is unique",
+      "parents": [
+        "51dd6ebf1e2ff3776cf4316b85bceb0921b6083a"
+      ]
+    },
+    {
+      "sha": "51dd6ebf1e2ff3776cf4316b85bceb0921b6083a",
+      "date": "2026-09-24T20:29:43Z",
+      "message": "fix(content): allocate revision numbers transactionally",
+      "parents": [
+        "61a5430a6f9a585334b7e21828825d775b0b03f5"
+      ]
+    },
+    {
+      "sha": "61a5430a6f9a585334b7e21828825d775b0b03f5",
+      "date": "2026-09-24T20:28:36Z",
+      "message": "refactor(content): derive runtime types from validated schemas",
+      "parents": [
+        "148d0c9a3f8f0e09b193d354b0648f3fceff96bc"
+      ]
+    },
+    {
+      "sha": "148d0c9a3f8f0e09b193d354b0648f3fceff96bc",
+      "date": "2026-09-24T17:37:17Z",
+      "message": "fix(ci): run Vitest against configured content test include",
+      "parents": [
+        "907306118b5551e086899c36ac6a0cc630cebc16"
+      ]
+    },
+    {
+      "sha": "907306118b5551e086899c36ac6a0cc630cebc16",
+      "date": "2026-09-24T11:05:35Z",
+      "message": "Fix Content schema envelope lint",
+      "parents": [
+        "02e35050926a3c9b200b4014695bcf6a1fd59084"
+      ]
+    },
+    {
+      "sha": "02e35050926a3c9b200b4014695bcf6a1fd59084",
+      "date": "2026-09-24T10:08:07Z",
+      "message": "Fix Content runtime parser to return validated Zod output types",
+      "parents": [
+        "dff44fe4f2001e28a08d176a2287552998f053b3"
+      ]
+    },
+    {
+      "sha": "dff44fe4f2001e28a08d176a2287552998f053b3",
+      "date": "2026-09-24T04:04:47Z",
+      "message": "docs(content): align roadmap with current estate authority and V2",
+      "parents": [
+        "1e14ec8b281d4135578d084fc13fbdf716e15716"
+      ]
+    },
+    {
+      "sha": "1e14ec8b281d4135578d084fc13fbdf716e15716",
+      "date": "2026-09-24T04:04:43Z",
+      "message": "docs(contracts): record current ecosystem V2 authority",
+      "parents": [
+        "c58470ab18426773bee92b561eb9408e224c08d1"
+      ]
+    },
+    {
+      "sha": "c58470ab18426773bee92b561eb9408e224c08d1",
+      "date": "2026-09-24T04:04:40Z",
+      "message": "docs(contracts): mark V1 as historical compatibility only",
+      "parents": [
+        "2712d8378a36db748c8719056b4b9bcb14d210ca"
+      ]
+    },
+    {
+      "sha": "2712d8378a36db748c8719056b4b9bcb14d210ca",
+      "date": "2026-09-24T04:04:37Z",
+      "message": "docs(contracts): supersede legacy V1 authority with governed V2",
+      "parents": [
+        "a52088dc77312d09b334d07f22b7dda572df5e6f"
+      ]
+    },
+    {
+      "sha": "a52088dc77312d09b334d07f22b7dda572df5e6f",
+      "date": "2026-09-24T04:04:09Z",
+      "message": "test(contracts): bind current compatibility proof to ecosystem v2",
+      "parents": [
+        "2894ab6b7ba3a353f4bee6d0fb75ac92cfb07636"
+      ]
+    },
+    {
+      "sha": "2894ab6b7ba3a353f4bee6d0fb75ac92cfb07636",
+      "date": "2026-09-24T04:04:05Z",
+      "message": "fix(contracts): certify current ecosystem v2 instead of legacy v1",
+      "parents": [
+        "9aa9595b82b36dec5d7f3f9b1ef9701fcf3b7a79"
+      ]
+    },
+    {
+      "sha": "9aa9595b82b36dec5d7f3f9b1ef9701fcf3b7a79",
+      "date": "2026-09-24T04:03:56Z",
+      "message": "feat(contracts): establish current governed ecosystem schema v2",
+      "parents": [
+        "cfee03f0d7a4015492dde419e1df8872f9431df6"
+      ]
+    },
+    {
+      "sha": "cfee03f0d7a4015492dde419e1df8872f9431df6",
+      "date": "2026-09-24T04:02:32Z",
+      "message": "feat(content): expose editorial registry and locale coverage",
+      "parents": [
+        "f5c79ec5cb918c61445b900012cfa740aff2de82"
+      ]
+    },
+    {
+      "sha": "f5c79ec5cb918c61445b900012cfa740aff2de82",
+      "date": "2026-09-24T04:02:29Z",
+      "message": "fix(web): minimize telemetry metadata at persistence boundary",
+      "parents": [
+        "95922792a87cf7c410d5b996c633d82dde9b46e0"
+      ]
+    },
+    {
+      "sha": "95922792a87cf7c410d5b996c633d82dde9b46e0",
+      "date": "2026-09-24T04:02:26Z",
+      "message": "fix(analytics): enforce minimization in ContentService",
+      "parents": [
+        "b3bfeca97a8919399d435f3032ffb76ba515d940"
+      ]
+    },
+    {
+      "sha": "b3bfeca97a8919399d435f3032ffb76ba515d940",
+      "date": "2026-09-24T04:02:06Z",
+      "message": "feat(content): add localization-coverage.test.ts operational foundation",
+      "parents": [
+        "12195ef64a78a54fb186c7392ae5972989dc66fb"
+      ]
+    },
+    {
+      "sha": "12195ef64a78a54fb186c7392ae5972989dc66fb",
+      "date": "2026-09-24T04:02:03Z",
+      "message": "feat(content): add localization operational foundation",
+      "parents": [
+        "7d5a55adf23f93bb13e487c9463abc3cc15d6c39"
+      ]
+    },
+    {
+      "sha": "7d5a55adf23f93bb13e487c9463abc3cc15d6c39",
+      "date": "2026-09-24T04:02:00Z",
+      "message": "feat(content): add integration-registry.test.ts operational foundation",
+      "parents": [
+        "52711a0fedcf7deb362c172d2457a82943d7384e"
+      ]
+    },
+    {
+      "sha": "52711a0fedcf7deb362c172d2457a82943d7384e",
+      "date": "2026-09-24T04:01:57Z",
+      "message": "feat(content): add integrations operational foundation",
+      "parents": [
+        "6cd42a088e7972a7fc1f53c05b604541892cd40a"
+      ]
+    },
+    {
+      "sha": "6cd42a088e7972a7fc1f53c05b604541892cd40a",
+      "date": "2026-09-24T04:01:54Z",
+      "message": "feat(content): add editorial-workflow.test.ts operational foundation",
+      "parents": [
+        "23bcaedfee8510d8b8fd287ef9ae49e38104d0c8"
+      ]
+    },
+    {
+      "sha": "23bcaedfee8510d8b8fd287ef9ae49e38104d0c8",
+      "date": "2026-09-24T04:01:52Z",
+      "message": "feat(content): add editorial operational foundation",
+      "parents": [
+        "64b625d01cadfd37a0b951b3adb4f3e12d268ade"
+      ]
+    },
+    {
+      "sha": "64b625d01cadfd37a0b951b3adb4f3e12d268ade",
+      "date": "2026-09-24T04:01:12Z",
+      "message": "test(integrations): prove mock results cannot masquerade as production",
+      "parents": [
+        "e628a36375882dd5a81b80920bc30759feb7442d"
+      ]
+    },
+    {
+      "sha": "e628a36375882dd5a81b80920bc30759feb7442d",
+      "date": "2026-09-24T04:01:09Z",
+      "message": "fix(integrations): make mock evidence unambiguously synthetic",
+      "parents": [
+        "f7cce5177fbff34bae937f4a0358b3b141850dda"
+      ]
+    },
+    {
+      "sha": "f7cce5177fbff34bae937f4a0358b3b141850dda",
+      "date": "2026-09-24T04:00:56Z",
+      "message": "feat(content): expose publication accessibility and syndication governance",
+      "parents": [
+        "ecbdd0d8a15296a8567d72fb789a89f6a3f807b0"
+      ]
+    },
+    {
+      "sha": "ecbdd0d8a15296a8567d72fb789a89f6a3f807b0",
+      "date": "2026-09-24T04:00:48Z",
+      "message": "feat(content): add syndication-contracts.test.ts governance foundation",
+      "parents": [
+        "b504e812733f9f50809b35c50e1fb3aaa5fa12da"
+      ]
+    },
+    {
+      "sha": "b504e812733f9f50809b35c50e1fb3aaa5fa12da",
+      "date": "2026-09-24T04:00:45Z",
+      "message": "feat(content): add syndication governance foundation",
+      "parents": [
+        "5e4a9958669e9d718722c9e48ad69a267a24c430"
+      ]
+    },
+    {
+      "sha": "5e4a9958669e9d718722c9e48ad69a267a24c430",
+      "date": "2026-09-24T04:00:42Z",
+      "message": "feat(content): add publication-release.test.ts governance foundation",
+      "parents": [
+        "b5364490d3ec73ca67ef64a8d29fbb83be4b4656"
+      ]
+    },
+    {
+      "sha": "b5364490d3ec73ca67ef64a8d29fbb83be4b4656",
+      "date": "2026-09-24T04:00:39Z",
+      "message": "feat(content): add publishing governance foundation",
+      "parents": [
+        "71a3b5fd2881ebd8561acc09d021b58653255b15"
+      ]
+    },
+    {
+      "sha": "71a3b5fd2881ebd8561acc09d021b58653255b15",
+      "date": "2026-09-24T04:00:36Z",
+      "message": "feat(content): add accessibility-review.test.ts governance foundation",
+      "parents": [
+        "e4e9fbdeea8b8c4ded5cf17b7d4ee47ec2df6a52"
+      ]
+    },
+    {
+      "sha": "e4e9fbdeea8b8c4ded5cf17b7d4ee47ec2df6a52",
+      "date": "2026-09-24T04:00:33Z",
+      "message": "feat(content): add accessibility governance foundation",
+      "parents": [
+        "df68fa38d92708eb18f7e351690f4593c5ab949e"
+      ]
+    },
+    {
+      "sha": "df68fa38d92708eb18f7e351690f4593c5ab949e",
+      "date": "2026-09-24T04:00:02Z",
+      "message": "feat(content): expose analytics and integration safety contracts",
+      "parents": [
+        "bc677f0f627981ef3fd9c679a9ba8d32a5ef2aad"
+      ]
+    },
+    {
+      "sha": "bc677f0f627981ef3fd9c679a9ba8d32a5ef2aad",
+      "date": "2026-09-24T03:59:59Z",
+      "message": "fix(analytics): enforce metadata minimization at telemetry boundary",
+      "parents": [
+        "234666634528cc0ed9fbececb4f38d4bf24b34a9"
+      ]
+    },
+    {
+      "sha": "234666634528cc0ed9fbececb4f38d4bf24b34a9",
+      "date": "2026-09-24T03:59:52Z",
+      "message": "feat(content): add integration-envelope.test.ts safety contract",
+      "parents": [
+        "23ba7effaee763db9240bc05ba223e1002bdfb52"
+      ]
+    },
+    {
+      "sha": "23ba7effaee763db9240bc05ba223e1002bdfb52",
+      "date": "2026-09-24T03:59:49Z",
+      "message": "feat(content): add integrations safety contract",
+      "parents": [
+        "9ab8da6612626dbeac89b7055ae5a1e68d12db19"
+      ]
+    },
+    {
+      "sha": "9ab8da6612626dbeac89b7055ae5a1e68d12db19",
+      "date": "2026-09-24T03:59:46Z",
+      "message": "feat(content): add telemetry-policy.test.ts safety contract",
+      "parents": [
+        "7afe83db75b6a15d56e22c861c726e1e993c91c1"
+      ]
+    },
+    {
+      "sha": "7afe83db75b6a15d56e22c861c726e1e993c91c1",
+      "date": "2026-09-24T03:59:44Z",
+      "message": "feat(content): add telemetry safety contract",
+      "parents": [
+        "bf45b311d2a82abb3e3a2c618b470008e4377fd4"
+      ]
+    },
+    {
+      "sha": "bf45b311d2a82abb3e3a2c618b470008e4377fd4",
+      "date": "2026-09-24T03:59:09Z",
+      "message": "docs(content): reconcile capability matrix with implemented foundations",
+      "parents": [
+        "6232cc1e250191a6d405c4047f87fc21b62d4bde"
+      ]
+    },
+    {
+      "sha": "6232cc1e250191a6d405c4047f87fc21b62d4bde",
+      "date": "2026-09-24T03:59:05Z",
+      "message": "docs(content): replace stale roadmap with current convergence states",
+      "parents": [
+        "10abe657f68f6cbbdf27bf071f10557802f3d6a2"
+      ]
+    },
+    {
+      "sha": "10abe657f68f6cbbdf27bf071f10557802f3d6a2",
+      "date": "2026-09-24T03:58:32Z",
+      "message": "docs(contracts): record canonical ecosystem authority",
+      "parents": [
+        "91abd9a2874e2867d1ae4c1e05efcaf2eabefc4a"
+      ]
+    },
+    {
+      "sha": "91abd9a2874e2867d1ae4c1e05efcaf2eabefc4a",
+      "date": "2026-09-24T03:58:29Z",
+      "message": "docs(contracts): lock ecosystem base versus Content extension authority",
+      "parents": [
+        "79009cccaf32b37481e7c23d0c6972ebf6a5ffd6"
+      ]
+    },
+    {
+      "sha": "79009cccaf32b37481e7c23d0c6972ebf6a5ffd6",
+      "date": "2026-09-24T03:56:57Z",
+      "message": "test(contracts): prove base and Content extension authority split",
+      "parents": [
+        "2034b5e42c3e8e19862948b464182d207ba8783a"
+      ]
+    },
+    {
+      "sha": "2034b5e42c3e8e19862948b464182d207ba8783a",
+      "date": "2026-09-24T03:56:54Z",
+      "message": "fix(contracts): validate ecosystem base and Content extension separately",
+      "parents": [
+        "76b98d177c21b38b140dab76379b56017aef51c2"
+      ]
+    },
+    {
+      "sha": "76b98d177c21b38b140dab76379b56017aef51c2",
+      "date": "2026-09-24T03:56:34Z",
+      "message": "feat(contracts): split Content governance from ecosystem base",
+      "parents": [
+        "c714ba4fd738066ff7d5b90964315897f032fbce"
+      ]
+    },
+    {
+      "sha": "c714ba4fd738066ff7d5b90964315897f032fbce",
+      "date": "2026-09-24T03:56:31Z",
+      "message": "fix(contracts): restore launch-facing ecosystem base authority",
+      "parents": [
+        "1ab981fc7f88827cf8ff62baa829ba925545fabb"
+      ]
+    },
+    {
+      "sha": "1ab981fc7f88827cf8ff62baa829ba925545fabb",
+      "date": "2026-09-24T03:53:27Z",
+      "message": "feat(content): expose governance jobs search and locale contracts",
+      "parents": [
+        "919b009272a336e1032df6cec43ec126578ea1b1"
+      ]
+    },
+    {
+      "sha": "919b009272a336e1032df6cec43ec126578ea1b1",
+      "date": "2026-09-24T03:53:21Z",
+      "message": "test(taxonomy): cover cycles and replacement integrity",
+      "parents": [
+        "a0dcac9d25bfdf4f7ba64a3e5d09b3def7ddc11e"
+      ]
+    },
+    {
+      "sha": "a0dcac9d25bfdf4f7ba64a3e5d09b3def7ddc11e",
+      "date": "2026-09-24T03:53:18Z",
+      "message": "feat(taxonomy): prevent hierarchy cycles and govern replacements",
+      "parents": [
+        "651544e73616b9bf892be970887fc8f27d4a4a39"
+      ]
+    },
+    {
+      "sha": "651544e73616b9bf892be970887fc8f27d4a4a39",
+      "date": "2026-09-24T03:53:05Z",
+      "message": "feat(localization): add urai-locales.test.ts",
+      "parents": [
+        "eaa4e16d1bef4aafd4a640ebd04ca3f38038d87b"
+      ]
+    },
+    {
+      "sha": "eaa4e16d1bef4aafd4a640ebd04ca3f38038d87b",
+      "date": "2026-09-24T03:53:02Z",
+      "message": "feat(localization): add bundle.ts",
+      "parents": [
+        "bd76bcf76c8e09019b9928e2de41ba2d6a553ee3"
+      ]
+    },
+    {
+      "sha": "bd76bcf76c8e09019b9928e2de41ba2d6a553ee3",
+      "date": "2026-09-24T03:53:00Z",
+      "message": "feat(localization): add uraiLocales.ts",
+      "parents": [
+        "4dcc3ea11c28388844c2f91d280483b0702e8133"
+      ]
+    },
+    {
+      "sha": "4dcc3ea11c28388844c2f91d280483b0702e8133",
+      "date": "2026-09-24T03:51:14Z",
+      "message": "feat(content): add governed search-document.test.ts contract",
+      "parents": [
+        "0f28d61d02a7c8bd4b0b09bf22db6d75229f6c59"
+      ]
+    },
+    {
+      "sha": "0f28d61d02a7c8bd4b0b09bf22db6d75229f6c59",
+      "date": "2026-09-24T03:51:11Z",
+      "message": "feat(content): add governed search contract",
+      "parents": [
+        "381ec74d6be721d5386d89c0505eee11187febe2"
+      ]
+    },
+    {
+      "sha": "381ec74d6be721d5386d89c0505eee11187febe2",
+      "date": "2026-09-24T03:51:08Z",
+      "message": "feat(content): add governed content-jobs.test.ts contract",
+      "parents": [
+        "b7739ed3b6d889899a0327c0ff4df8f63f96a65c"
+      ]
+    },
+    {
+      "sha": "b7739ed3b6d889899a0327c0ff4df8f63f96a65c",
+      "date": "2026-09-24T03:51:06Z",
+      "message": "feat(content): add governed jobs contract",
+      "parents": [
+        "1f8c3b9e57327e17f0495b030993594a86982c46"
+      ]
+    },
+    {
+      "sha": "1f8c3b9e57327e17f0495b030993594a86982c46",
+      "date": "2026-09-24T03:51:03Z",
+      "message": "feat(content): add governed rights-governance.test.ts contract",
+      "parents": [
+        "99c20f9eb7afe5a89ddfea887c6379b301807ab0"
+      ]
+    },
+    {
+      "sha": "99c20f9eb7afe5a89ddfea887c6379b301807ab0",
+      "date": "2026-09-24T03:51:00Z",
+      "message": "feat(content): add governed governance contract",
+      "parents": [
+        "78b85aebf4976dc67a13a0d18a8b681ae25b3cf7"
+      ]
+    },
+    {
+      "sha": "78b85aebf4976dc67a13a0d18a8b681ae25b3cf7",
+      "date": "2026-09-24T03:50:10Z",
+      "message": "test(web): reject malformed Firestore content records",
+      "parents": [
+        "a9d4cf0d73424cee18dfc96b1d5a7cb2e7988887"
+      ]
+    },
+    {
+      "sha": "a9d4cf0d73424cee18dfc96b1d5a7cb2e7988887",
+      "date": "2026-09-24T03:49:57Z",
+      "message": "fix(web): validate Firestore content boundaries fail closed",
+      "parents": [
+        "db5b266d24c1629c7979e155e728f51e021d27d7"
+      ]
+    },
+    {
+      "sha": "db5b266d24c1629c7979e155e728f51e021d27d7",
+      "date": "2026-09-24T03:49:42Z",
+      "message": "feat(web): add fail-closed runtime content schemas",
+      "parents": [
+        "b9ebaa1a2e2e499bdab356bca494c1e9ef7cf4e8"
+      ]
+    },
+    {
+      "sha": "b9ebaa1a2e2e499bdab356bca494c1e9ef7cf4e8",
+      "date": "2026-09-24T03:49:29Z",
+      "message": "feat(content): expose versioning pagination lifecycle contracts",
+      "parents": [
+        "d041f0c9024b32828d8ca22d8d459138224c743b"
+      ]
+    },
+    {
+      "sha": "d041f0c9024b32828d8ca22d8d459138224c743b",
+      "date": "2026-09-24T03:49:19Z",
+      "message": "feat(content): add schema foundation",
+      "parents": [
+        "cf5b537fb298747c223c10d8109970cab83041ca"
+      ]
+    },
+    {
+      "sha": "cf5b537fb298747c223c10d8109970cab83041ca",
+      "date": "2026-09-24T03:49:17Z",
+      "message": "feat(content): add lifecycle foundation",
+      "parents": [
+        "843b8f85765f7c0badd3cc3aad3675acfa65cf36"
+      ]
+    },
+    {
+      "sha": "843b8f85765f7c0badd3cc3aad3675acfa65cf36",
+      "date": "2026-09-24T03:49:14Z",
+      "message": "feat(content): add schema foundation",
+      "parents": [
+        "a1deecd3aa19b876097e1d10b783293bda2cd97b"
+      ]
+    },
+    {
+      "sha": "a1deecd3aa19b876097e1d10b783293bda2cd97b",
+      "date": "2026-09-24T03:49:11Z",
+      "message": "feat(content): add query foundation",
+      "parents": [
+        "1e630314297efe3ee271a138580bfbaa75bd84e5"
+      ]
+    },
+    {
+      "sha": "1e630314297efe3ee271a138580bfbaa75bd84e5",
+      "date": "2026-09-24T03:49:08Z",
+      "message": "feat(content): add schema foundation",
+      "parents": [
+        "8cff39385176e86e9ec6b69652ca64e157509013"
+      ]
+    },
+    {
+      "sha": "8cff39385176e86e9ec6b69652ca64e157509013",
+      "date": "2026-09-24T03:49:05Z",
+      "message": "feat(content): add schemas foundation",
+      "parents": [
+        "7d5747ea5a9047337f8cc3fc50b4ba53b524c472"
+      ]
+    },
+    {
+      "sha": "7d5747ea5a9047337f8cc3fc50b4ba53b524c472",
+      "date": "2026-09-24T03:48:11Z",
+      "message": "converge(governance): repair standalone runtime truth",
+      "parents": [
+        "dcfac49f12060e3f76fdb546450525a568461964"
+      ]
+    },
+    {
+      "sha": "dcfac49f12060e3f76fdb546450525a568461964",
+      "date": "2026-09-24T03:48:08Z",
+      "message": "converge(content): expose governed expansion contracts",
+      "parents": [
+        "de5189815c36dc827582cd3b61d4fc034b617390"
+      ]
+    },
+    {
+      "sha": "de5189815c36dc827582cd3b61d4fc034b617390",
+      "date": "2026-09-24T03:47:55Z",
+      "message": "converge(expansion): carry tests/taxonomy-contracts.test.ts",
+      "parents": [
+        "9b05d4ab4f05e1f30a5e5ce9d700b7025c57a8bc"
+      ]
+    },
+    {
+      "sha": "9b05d4ab4f05e1f30a5e5ce9d700b7025c57a8bc",
+      "date": "2026-09-24T03:47:52Z",
+      "message": "converge(expansion): carry tests/search-contracts.test.ts",
+      "parents": [
+        "6139eb40e5cf302ae8426f26c8e49a8d322e105a"
+      ]
+    },
+    {
+      "sha": "6139eb40e5cf302ae8426f26c8e49a8d322e105a",
+      "date": "2026-09-24T03:47:33Z",
+      "message": "converge(expansion): carry tests/public-expansion-contract.test.ts",
+      "parents": [
+        "28756deba43ae3a65db7c4f64399b0e097753206"
+      ]
+    },
+    {
+      "sha": "28756deba43ae3a65db7c4f64399b0e097753206",
+      "date": "2026-09-24T03:47:30Z",
+      "message": "converge(expansion): carry tests/portability-package.test.ts",
+      "parents": [
+        "a433fa34e9c636efc37bb7971c8735619e47d62c"
+      ]
+    },
+    {
+      "sha": "a433fa34e9c636efc37bb7971c8735619e47d62c",
+      "date": "2026-09-24T03:47:26Z",
+      "message": "converge(expansion): carry tests/narrator-session.test.ts",
+      "parents": [
+        "2b0e1d526650fa826cdd7016897e61adea0030af"
+      ]
+    },
+    {
+      "sha": "2b0e1d526650fa826cdd7016897e61adea0030af",
+      "date": "2026-09-24T03:47:23Z",
+      "message": "converge(expansion): carry tests/marketplace-contracts.test.ts",
+      "parents": [
+        "1d26775b6a6d2ddba2592448df35afeb9224be59"
+      ]
+    },
+    {
+      "sha": "1d26775b6a6d2ddba2592448df35afeb9224be59",
+      "date": "2026-09-24T03:47:20Z",
+      "message": "converge(expansion): carry tests/localization-contracts.test.ts",
+      "parents": [
+        "b9c988aa916d203599ec1dec5c2ac6a97d47d101"
+      ]
+    },
+    {
+      "sha": "b9c988aa916d203599ec1dec5c2ac6a97d47d101",
+      "date": "2026-09-24T03:47:17Z",
+      "message": "converge(expansion): carry tests/generation-contracts.test.ts",
+      "parents": [
+        "f30cc89d73f5de256aefa237a6be4137de8b6409"
+      ]
+    },
+    {
+      "sha": "f30cc89d73f5de256aefa237a6be4137de8b6409",
+      "date": "2026-09-24T03:47:14Z",
+      "message": "converge(expansion): carry tests/export-manifest.test.ts",
+      "parents": [
+        "aeda932bec8c3d70019189d35d96ceef67dfec12"
+      ]
+    },
+    {
+      "sha": "aeda932bec8c3d70019189d35d96ceef67dfec12",
+      "date": "2026-09-24T03:47:10Z",
+      "message": "converge(expansion): carry tests/accessibility-manifest.test.ts",
+      "parents": [
+        "8c396a6f98591c4a99a1c658eb7ca9f0d70c4f56"
+      ]
+    },
+    {
+      "sha": "8c396a6f98591c4a99a1c658eb7ca9f0d70c4f56",
+      "date": "2026-09-24T03:47:04Z",
+      "message": "converge(expansion): carry src/taxonomy/contracts.ts",
+      "parents": [
+        "8ac5703c26c10a654e6050f1a3c2c92814975e71"
+      ]
+    },
+    {
+      "sha": "8ac5703c26c10a654e6050f1a3c2c92814975e71",
+      "date": "2026-09-24T03:47:02Z",
+      "message": "converge(expansion): carry src/search/contracts.ts",
+      "parents": [
+        "ef4a927450b456cf75c081acc2ef8b1de61f48b6"
+      ]
+    },
+    {
+      "sha": "ef4a927450b456cf75c081acc2ef8b1de61f48b6",
+      "date": "2026-09-24T03:46:59Z",
+      "message": "converge(expansion): carry src/portability/package.ts",
+      "parents": [
+        "5489c07e3656baf12c465f8169f19daff9b43d1e"
+      ]
+    },
+    {
+      "sha": "5489c07e3656baf12c465f8169f19daff9b43d1e",
+      "date": "2026-09-24T03:46:55Z",
+      "message": "converge(expansion): carry src/narrator/session.ts",
+      "parents": [
+        "87c0f52253542204d4ffa0c2011361b9fc3e1c05"
+      ]
+    },
+    {
+      "sha": "87c0f52253542204d4ffa0c2011361b9fc3e1c05",
+      "date": "2026-09-24T03:46:52Z",
+      "message": "converge(expansion): carry src/marketplace/contracts.ts",
+      "parents": [
+        "0075248935cb7e70261acba3707fbe3362f8112f"
+      ]
+    },
+    {
+      "sha": "0075248935cb7e70261acba3707fbe3362f8112f",
+      "date": "2026-09-24T03:46:50Z",
+      "message": "converge(expansion): carry src/localization/contracts.ts",
+      "parents": [
+        "d5ce1f2b8300b6ccf4800d4d27ff0baffc022a62"
+      ]
+    },
+    {
+      "sha": "d5ce1f2b8300b6ccf4800d4d27ff0baffc022a62",
+      "date": "2026-09-24T03:46:47Z",
+      "message": "converge(expansion): carry src/generation/contracts.ts",
+      "parents": [
+        "97b3a5388e37c64a5227285ebba958f529289b0c"
+      ]
+    },
+    {
+      "sha": "97b3a5388e37c64a5227285ebba958f529289b0c",
+      "date": "2026-09-24T03:46:44Z",
+      "message": "converge(expansion): carry src/exports/manifest.ts",
+      "parents": [
+        "fd813284cf744afff66694f750443bf5014796dd"
+      ]
+    },
+    {
+      "sha": "fd813284cf744afff66694f750443bf5014796dd",
+      "date": "2026-09-24T03:46:39Z",
+      "message": "converge(expansion): carry src/accessibility/manifest.ts",
+      "parents": [
+        "38f354dc6be719f92ba9e9ba9326edbbbbc3642b"
+      ]
+    },
+    {
+      "sha": "38f354dc6be719f92ba9e9ba9326edbbbbc3642b",
+      "date": "2026-09-24T03:46:36Z",
+      "message": "converge(expansion): carry docs/audits/2026-09-23-urai-content-full-reconciliation.md",
+      "parents": [
+        "8d83424eda79ae0c5e20284d8371201e6d299342"
+      ]
+    },
+    {
+      "sha": "8d83424eda79ae0c5e20284d8371201e6d299342",
+      "date": "2026-09-24T03:46:29Z",
+      "message": "converge(security): add validated vitest.config.ts",
+      "parents": [
+        "198d7fd18a2b5928f043e8dcfbe15a3446c72061"
+      ]
+    },
+    {
+      "sha": "198d7fd18a2b5928f043e8dcfbe15a3446c72061",
+      "date": "2026-09-24T03:46:26Z",
+      "message": "converge(security): add validated tests/security-rules-contract.test.ts",
+      "parents": [
+        "db1e7f2252a439fd83a2c3582d24789c0d9b355c"
+      ]
+    },
+    {
+      "sha": "db1e7f2252a439fd83a2c3582d24789c0d9b355c",
+      "date": "2026-09-24T03:46:23Z",
+      "message": "converge(security): add validated tests/rules-emulator/package.json",
+      "parents": [
+        "a73cd07167139a44c58e73021732bf48ba13d802"
+      ]
+    },
+    {
+      "sha": "a73cd07167139a44c58e73021732bf48ba13d802",
+      "date": "2026-09-24T03:46:20Z",
+      "message": "converge(security): add validated tests/rules-emulator/content-rules.test.mjs",
+      "parents": [
+        "708b76f90f88e78faeeb446eadbe89b91e02c831"
+      ]
+    },
+    {
+      "sha": "708b76f90f88e78faeeb446eadbe89b91e02c831",
+      "date": "2026-09-24T03:46:17Z",
+      "message": "converge(security): add validated .github/workflows/rules-emulator.yml",
+      "parents": [
+        "5f09857f881d815d26f896a0f93c16d2cc23dc2b"
+      ]
+    },
+    {
+      "sha": "5f09857f881d815d26f896a0f93c16d2cc23dc2b",
+      "date": "2026-09-24T03:46:06Z",
+      "message": "converge(security): carry validated storage.rules",
+      "parents": [
+        "3b115a963b0fb5e678a5b8c6aca0d6d5c98a495c"
+      ]
+    },
+    {
+      "sha": "3b115a963b0fb5e678a5b8c6aca0d6d5c98a495c",
+      "date": "2026-09-24T03:46:02Z",
+      "message": "converge(security): carry validated firestore.rules",
+      "parents": [
+        "dbb6df12dd43369be70542ba74d69c3c1fdd1ba7"
+      ]
+    },
+    {
+      "sha": "5c9d946ddc0932a03beb448fcf699da9e8ca99e2",
+      "date": "2026-09-24T03:38:02Z",
+      "message": "docs(content): record full authority and expansion reconciliation",
+      "parents": [
+        "91761a3d95f90e4f9bcfdde96f4553105358422e"
+      ]
+    },
+    {
+      "sha": "91761a3d95f90e4f9bcfdde96f4553105358422e",
+      "date": "2026-09-24T03:32:27Z",
+      "message": "feat(content): expose future-safe platform foundations",
+      "parents": [
+        "d7c7535cdbb62f4f75b02deab5666dc05f1e2bc4"
+      ]
+    },
+    {
+      "sha": "d7c7535cdbb62f4f75b02deab5666dc05f1e2bc4",
+      "date": "2026-09-24T03:32:24Z",
+      "message": "feat(content): prebuild portability-package.test.ts foundation",
+      "parents": [
+        "ffaffc1984e0c6a903b339facb192e963460dc79"
+      ]
+    },
+    {
+      "sha": "ffaffc1984e0c6a903b339facb192e963460dc79",
+      "date": "2026-09-24T03:32:07Z",
+      "message": "feat(content): prebuild portability foundation",
+      "parents": [
+        "c862bbaf712e385314045c32e7ee3a0169d95ab9"
+      ]
+    },
+    {
+      "sha": "c862bbaf712e385314045c32e7ee3a0169d95ab9",
+      "date": "2026-09-24T03:32:04Z",
+      "message": "feat(content): prebuild search-contracts.test.ts foundation",
+      "parents": [
+        "8d7fae528ab7538c96eecd693988d616f3c0a6a7"
+      ]
+    },
+    {
+      "sha": "8d7fae528ab7538c96eecd693988d616f3c0a6a7",
+      "date": "2026-09-24T03:32:02Z",
+      "message": "feat(content): prebuild search foundation",
+      "parents": [
+        "9e9cb601f9cf3a17db9e3094c44edf2b896020b8"
+      ]
+    },
+    {
+      "sha": "9e9cb601f9cf3a17db9e3094c44edf2b896020b8",
+      "date": "2026-09-24T03:31:59Z",
+      "message": "feat(content): prebuild generation-contracts.test.ts foundation",
+      "parents": [
+        "fac7d49019defbcd8064ec5add21ce31ee3c9330"
+      ]
+    },
+    {
+      "sha": "fac7d49019defbcd8064ec5add21ce31ee3c9330",
+      "date": "2026-09-24T03:31:56Z",
+      "message": "feat(content): prebuild generation foundation",
+      "parents": [
+        "591feebca76ca75147a02a6057066102ab1df4c2"
+      ]
+    },
+    {
+      "sha": "591feebca76ca75147a02a6057066102ab1df4c2",
+      "date": "2026-09-24T03:29:58Z",
+      "message": "fix(governance): remove stale standalone runtime blocker",
+      "parents": [
+        "d1a5c587b01b8f0e684c50bab4ea294796e1ce94"
+      ]
+    },
+    {
+      "sha": "d1a5c587b01b8f0e684c50bab4ea294796e1ce94",
+      "date": "2026-09-24T03:29:47Z",
+      "message": "feat(content): expose governed expansion contracts",
+      "parents": [
+        "8c9680af9f9c8ad068b744bfd9790e11cce2468f"
+      ]
+    },
+    {
+      "sha": "8c9680af9f9c8ad068b744bfd9790e11cce2468f",
+      "date": "2026-09-24T03:29:44Z",
+      "message": "feat(content): prebuild governed accessibility-manifest.test.ts contract",
+      "parents": [
+        "59dc599a0bb473e633dc2bf734fdcaa4da23263c"
+      ]
+    },
+    {
+      "sha": "59dc599a0bb473e633dc2bf734fdcaa4da23263c",
+      "date": "2026-09-24T03:29:42Z",
+      "message": "feat(content): prebuild governed accessibility contract",
+      "parents": [
+        "51b107a638dfa2fb39b9068bccb7b4bbef7bc554"
+      ]
+    },
+    {
+      "sha": "51b107a638dfa2fb39b9068bccb7b4bbef7bc554",
+      "date": "2026-09-24T03:29:39Z",
+      "message": "feat(content): prebuild governed localization-contracts.test.ts contract",
+      "parents": [
+        "ad77aa178322e785a227afc760a78b631b137bed"
+      ]
+    },
+    {
+      "sha": "ad77aa178322e785a227afc760a78b631b137bed",
+      "date": "2026-09-24T03:29:37Z",
+      "message": "feat(content): prebuild governed localization contract",
+      "parents": [
+        "78ba4c5650841827e6682a9cec16fde96fd7ca03"
+      ]
+    },
+    {
+      "sha": "78ba4c5650841827e6682a9cec16fde96fd7ca03",
+      "date": "2026-09-24T03:29:34Z",
+      "message": "feat(content): prebuild governed taxonomy-contracts.test.ts contract",
+      "parents": [
+        "e11cade188f9d64caca40e9f4acd23203f35b31e"
+      ]
+    },
+    {
+      "sha": "e11cade188f9d64caca40e9f4acd23203f35b31e",
+      "date": "2026-09-24T03:29:32Z",
+      "message": "feat(content): prebuild governed taxonomy contract",
+      "parents": [
+        "2e30edb4fa67c00015ba4623588b7b177fffb94a"
+      ]
+    },
+    {
+      "sha": "2e30edb4fa67c00015ba4623588b7b177fffb94a",
+      "date": "2026-09-24T03:26:30Z",
+      "message": "test(expansion): prove stable package exports",
+      "parents": [
+        "37949129f6752a098510d007864cd32db7001d20"
+      ]
+    },
+    {
+      "sha": "37949129f6752a098510d007864cd32db7001d20",
+      "date": "2026-09-24T03:26:27Z",
+      "message": "fix(expansion): expose prelaunch content contracts",
+      "parents": [
+        "f706852493544294d826615920aae51f41e41f93"
+      ]
+    },
+    {
+      "sha": "f706852493544294d826615920aae51f41e41f93",
+      "date": "2026-09-24T02:09:04Z",
+      "message": "test(marketplace): prove moderation revocation and no-payment boundary",
+      "parents": [
+        "424ac6251ffbb0badf0fdb27afc20afe55d2d803"
+      ]
+    },
+    {
+      "sha": "424ac6251ffbb0badf0fdb27afc20afe55d2d803",
+      "date": "2026-09-24T02:09:02Z",
+      "message": "feat(marketplace): add hard-off rights and entitlement lifecycle",
+      "parents": [
+        "3cc66ba71856c29a5fea786a41c40469ed8254f4"
+      ]
+    },
+    {
+      "sha": "3cc66ba71856c29a5fea786a41c40469ed8254f4",
+      "date": "2026-09-24T02:02:54Z",
+      "message": "test(narrator): prove consent quiet-hours captions and provider-off boundary",
+      "parents": [
+        "5844f988f296b43b5b4553f69c6b295128b401aa"
+      ]
+    },
+    {
+      "sha": "5844f988f296b43b5b4553f69c6b295128b401aa",
+      "date": "2026-09-24T02:02:50Z",
+      "message": "feat(narrator): add provider-neutral synthetic session contract",
+      "parents": [
+        "c3d80fc8e3cd4bec9b7115a3ed603b17ea4e7d54"
+      ]
+    },
+    {
+      "sha": "c3d80fc8e3cd4bec9b7115a3ed603b17ea4e7d54",
+      "date": "2026-09-24T01:58:16Z",
+      "message": "test(exports): prove deterministic export receipts and traversal rejection",
+      "parents": [
+        "752d24d5cd7afadbe7acae9d8f4e6ff1e8f9dbc6"
+      ]
+    },
+    {
+      "sha": "752d24d5cd7afadbe7acae9d8f4e6ff1e8f9dbc6",
+      "date": "2026-09-24T01:58:15Z",
+      "message": "feat(exports): add deterministic artifact manifest and idempotency contract",
+      "parents": [
+        "4b38589be76dff88e310fc11b9bba5ce8b793d19"
+      ]
+    },
+    {
+      "sha": "dbb6df12dd43369be70542ba74d69c3c1fdd1ba7",
+      "date": "2026-09-22T05:59:11Z",
+      "message": "ci(content): run visual proof from app config authority",
+      "parents": [
+        "02b8d8580fb24eea28bb6466688f0ab01d91c324"
+      ]
+    },
+    {
+      "sha": "02b8d8580fb24eea28bb6466688f0ab01d91c324",
+      "date": "2026-09-22T05:50:38Z",
+      "message": "ci(content): align visual proof with pinned npm lockfile verifier",
+      "parents": [
+        "a4ae0505c40dbbcccb08f88766a4c3166a802e6c"
+      ]
+    },
+    {
+      "sha": "a4ae0505c40dbbcccb08f88766a4c3166a802e6c",
+      "date": "2026-09-22T05:21:10Z",
+      "message": "ci(content): retain exact-head visual evidence",
+      "parents": [
+        "64d5e5ad40cb148efe1547437e7a1b8c3bbfae96"
+      ]
+    },
+    {
+      "sha": "64d5e5ad40cb148efe1547437e7a1b8c3bbfae96",
+      "date": "2026-09-22T05:20:59Z",
+      "message": "test(content): retain responsive visual proof",
+      "parents": [
+        "ea2aa70c1f4e5175c440150b53b1ca08c328ab94"
+      ]
+    },
+    {
+      "sha": "ea2aa70c1f4e5175c440150b53b1ca08c328ab94",
+      "date": "2026-09-22T03:29:14Z",
+      "message": "design: align Content navigation with archive and publishing role",
+      "parents": [
+        "cd4af3f39b78d54de1c0e6a3a80f96f47a2d16c4"
+      ]
+    },
+    {
+      "sha": "cd4af3f39b78d54de1c0e6a3a80f96f47a2d16c4",
+      "date": "2026-09-22T03:29:11Z",
+      "message": "design: make Content public shell an editorial archive",
+      "parents": [
+        "75e2343c9cdf34f4a67b3806e67307400b580e1c"
+      ]
+    },
+    {
+      "sha": "75e2343c9cdf34f4a67b3806e67307400b580e1c",
+      "date": "2026-09-14T15:54:00Z",
+      "message": "converge: combine public authority with audit-clean content graph",
+      "parents": [
+        "fe69669b5d16d903b6d3a3ffdd7e53b94cb0b465",
+        "0d433d21931e504bfda016369f259f037f4eaa27"
+      ]
+    },
+    {
+      "sha": "fe69669b5d16d903b6d3a3ffdd7e53b94cb0b465",
+      "date": "2026-09-13T15:23:44Z",
+      "message": "fix: audit frozen web graph with npm 11",
+      "parents": [
+        "4858bf2349d784b111668401e0c481c75a835570"
+      ]
+    },
+    {
+      "sha": "4858bf2349d784b111668401e0c481c75a835570",
+      "date": "2026-09-13T15:23:32Z",
+      "message": "fix: verify web lockfile with npm 11",
+      "parents": [
+        "82d19c54c1b983c4194ea47b684f81cb10c8e572"
+      ]
+    },
+    {
+      "sha": "82d19c54c1b983c4194ea47b684f81cb10c8e572",
+      "date": "2026-09-13T15:23:22Z",
+      "message": "fix: pin npm 11 for frozen web installs",
+      "parents": [
+        "b71f3050607acd0ef8c21d4293dfdb34033ce5ab"
+      ]
+    },
+    {
+      "sha": "b71f3050607acd0ef8c21d4293dfdb34033ce5ab",
+      "date": "2026-09-13T15:20:08Z",
+      "message": "security: remediate Content dependency audit findings",
+      "parents": [
+        "4b38589be76dff88e310fc11b9bba5ce8b793d19"
+      ]
+    },
+    {
+      "sha": "0d433d21931e504bfda016369f259f037f4eaa27",
+      "date": "2026-09-13T14:41:43Z",
+      "message": "docs: add launch press and technical briefing authority",
+      "parents": [
+        "8b26ecdc68c04dec8c8cf9b43680508879d3d6f9"
+      ]
+    },
+    {
+      "sha": "8b26ecdc68c04dec8c8cf9b43680508879d3d6f9",
+      "date": "2026-09-13T14:29:07Z",
+      "message": "revert: restore verified Content tree after blocked dependency experiment",
+      "parents": [
+        "f64bf52fa317193cd83e8a6699c9995883d0b6fb"
+      ]
+    },
+    {
+      "sha": "f64bf52fa317193cd83e8a6699c9995883d0b6fb",
+      "date": "2026-09-13T14:28:27Z",
+      "message": "revert: restore web dependency authority after blocked lockfile generation",
+      "parents": [
+        "77c964a0666a0810c0f846a02fdb4839d66b2b9e"
+      ]
+    },
+    {
+      "sha": "77c964a0666a0810c0f846a02fdb4839d66b2b9e",
+      "date": "2026-09-13T14:28:19Z",
+      "message": "revert: restore root dependency authority after blocked lockfile generation",
+      "parents": [
+        "e8caadaa749bf2df7b086b32015f462dd9077e94"
+      ]
+    },
+    {
+      "sha": "e8caadaa749bf2df7b086b32015f462dd9077e94",
+      "date": "2026-09-13T14:26:28Z",
+      "message": "ci: generate dependency remediation lockfiles",
+      "parents": [
+        "3ac64a24fb6eefb70f588d25123d5f21c123a03c"
+      ]
+    },
+    {
+      "sha": "3ac64a24fb6eefb70f588d25123d5f21c123a03c",
+      "date": "2026-09-13T14:26:15Z",
+      "message": "security: upgrade Next and Vitest patched lines",
+      "parents": [
+        "bfba13235ed64c0f71b074943a788ce6eedfb6eb"
+      ]
+    },
+    {
+      "sha": "bfba13235ed64c0f71b074943a788ce6eedfb6eb",
+      "date": "2026-09-13T14:25:27Z",
+      "message": "security: bump root vitest for dependency remediation",
+      "parents": [
+        "6b6071c026f04ed732fd7f9132674d1869ce5ba8"
+      ]
+    },
+    {
+      "sha": "6b6071c026f04ed732fd7f9132674d1869ce5ba8",
+      "date": "2026-09-12T05:35:55Z",
+      "message": "ci: align lockfile receipt retention with GitHub limit",
+      "parents": [
+        "e7ba7ce8f69d605434e51c02d110604e85e58016"
+      ]
+    },
+    {
+      "sha": "e7ba7ce8f69d605434e51c02d110604e85e58016",
+      "date": "2026-09-12T05:35:38Z",
+      "message": "ci: align dependency audit artifact retention with GitHub limit",
+      "parents": [
+        "0ef9a5698964c681a7a5f1ab16c06ab3ee536beb"
+      ]
+    },
+    {
+      "sha": "0ef9a5698964c681a7a5f1ab16c06ab3ee536beb",
+      "date": "2026-09-12T02:16:13Z",
+      "message": "docs: align public authority regression to Wyoming records",
+      "parents": [
+        "c3516b13d3a5dab046680778eddcba74b6754baa"
+      ]
+    },
+    {
+      "sha": "c3516b13d3a5dab046680778eddcba74b6754baa",
+      "date": "2026-09-12T02:15:55Z",
+      "message": "docs: reconcile Wyoming entity evidence",
+      "parents": [
+        "02977b0b6d15f67bd147bfc664728d173f97e556"
+      ]
+    },
+    {
+      "sha": "02977b0b6d15f67bd147bfc664728d173f97e556",
+      "date": "2026-09-12T02:15:25Z",
+      "message": "docs: reconcile direct Wyoming entity status",
+      "parents": [
+        "a6954a56df6b7662d285b28f496631bf7dcd9e3c"
+      ]
+    },
+    {
+      "sha": "7818f6bd1c181efe60c9fc4da5626a44df3cedaf",
+      "date": "2026-09-11T09:12:10Z",
+      "message": "ci: fail closed when verification steps never ran",
+      "parents": [
+        "63458ef722a7560bc24f387e48bdd61e014d9bda"
+      ]
+    },
+    {
+      "sha": "a6954a56df6b7662d285b28f496631bf7dcd9e3c",
+      "date": "2026-09-11T07:53:45Z",
+      "message": "docs: align public authority regression with current evidence",
+      "parents": [
+        "df2b0f6398e348c44b237a0148c9f3ab23790e90"
+      ]
+    },
+    {
+      "sha": "df2b0f6398e348c44b237a0148c9f3ab23790e90",
+      "date": "2026-09-11T07:53:22Z",
+      "message": "docs: reconcile UrAi search entity evidence",
+      "parents": [
+        "f5d65e7027a0d4f9cde0ffc4f1f2be72cd40fb48"
+      ]
+    },
+    {
+      "sha": "f5d65e7027a0d4f9cde0ffc4f1f2be72cd40fb48",
+      "date": "2026-09-11T07:51:39Z",
+      "message": "docs: reconcile UrAi identity and entity evidence",
+      "parents": [
+        "fe5ea26ff41d3edf3d07335da5dc8c80215efb72"
+      ]
+    },
+    {
+      "sha": "fe5ea26ff41d3edf3d07335da5dc8c80215efb72",
+      "date": "2026-09-05T17:55:15Z",
+      "message": "docs: add public authority search regression contract",
+      "parents": [
+        "5003a8ab76fa989b7f58b14096c6e8f88358a3c1"
+      ]
+    },
+    {
+      "sha": "5003a8ab76fa989b7f58b14096c6e8f88358a3c1",
+      "date": "2026-09-05T17:50:31Z",
+      "message": "docs: surface canonical identity and AI search authority guidance",
+      "parents": [
+        "a9701524fa2c7896f7e7ea4534ec255c5289e763"
+      ]
+    },
+    {
+      "sha": "a9701524fa2c7896f7e7ea4534ec255c5289e763",
+      "date": "2026-09-05T17:50:18Z",
+      "message": "docs: add AI search entity regression contract",
+      "parents": [
+        "8b048b6acc71d8f0f87c6b2663dbb19f53f27a38"
+      ]
+    },
+    {
+      "sha": "8b048b6acc71d8f0f87c6b2663dbb19f53f27a38",
+      "date": "2026-09-05T17:49:01Z",
+      "message": "docs: consolidate canonical URAI public authority and disambiguation",
+      "parents": [
+        "4b38589be76dff88e310fc11b9bba5ce8b793d19"
+      ]
+    },
+    {
+      "sha": "e2b2ae5481a22514e005cfc79d6b0dcbf7c049b2",
+      "date": "2026-09-05T16:23:26Z",
+      "message": "fix: align public prompt evidence retention",
+      "parents": [
+        "47cd27b97ba1cb9b62e042457dbcc88453d9b4bc"
+      ]
+    },
+    {
+      "sha": "63458ef722a7560bc24f387e48bdd61e014d9bda",
+      "date": "2026-09-05T10:38:53Z",
+      "message": "ci: keep verification receipts within retention cap",
+      "parents": [
+        "b8a6f939207323d9ebc2d0500e789db979cb236d"
+      ]
+    },
+    {
+      "sha": "b8a6f939207323d9ebc2d0500e789db979cb236d",
+      "date": "2026-09-05T10:38:45Z",
+      "message": "ci: use supported public artifact retention",
+      "parents": [
+        "56adb5b639f24f46635b45c55c380242e1227692"
+      ]
+    },
+    {
+      "sha": "4b38589be76dff88e310fc11b9bba5ce8b793d19",
+      "date": "2026-09-05T10:14:08Z",
+      "message": "Merge PR #75: enforce ADC-only Content authority",
+      "parents": [
+        "ae1ccca83efc657e1d264fbc7c6c92566a55f760",
+        "3ac2f7ffabd51fb3995236133f23fcfbeb041768"
+      ]
+    },
+    {
+      "sha": "47cd27b97ba1cb9b62e042457dbcc88453d9b4bc",
+      "date": "2026-09-05T02:35:59Z",
+      "message": "Reconcile governed prompt library onto approved Content parent",
+      "parents": [
+        "3ac2f7ffabd51fb3995236133f23fcfbeb041768"
+      ]
+    },
+    {
+      "sha": "56adb5b639f24f46635b45c55c380242e1227692",
+      "date": "2026-09-05T02:29:42Z",
+      "message": "Reconcile rules emulator hardening onto approved Content parent",
+      "parents": [
+        "3ac2f7ffabd51fb3995236133f23fcfbeb041768"
+      ]
+    },
+    {
+      "sha": "3ac2f7ffabd51fb3995236133f23fcfbeb041768",
+      "date": "2026-09-04T03:27:16Z",
+      "message": "test: avoid secret-scanner false positive in ADC fixture",
+      "parents": [
+        "e36f62c266f9c7fea637a9f156411e410910d1c4"
+      ]
+    },
+    {
+      "sha": "e36f62c266f9c7fea637a9f156411e410910d1c4",
+      "date": "2026-09-04T03:11:48Z",
+      "message": "test: lock ADC source mechanism and token readability",
+      "parents": [
+        "8b7bd1fdba0ca40e3bc23fe9594a38904f855e82"
+      ]
+    },
+    {
+      "sha": "8b7bd1fdba0ca40e3bc23fe9594a38904f855e82",
+      "date": "2026-09-04T03:11:34Z",
+      "message": "security: fully validate file-based ADC source readiness",
+      "parents": [
+        "7712ec504745ec46436d50bbc891d71ed3da0820"
+      ]
+    },
+    {
+      "sha": "7712ec504745ec46436d50bbc891d71ed3da0820",
+      "date": "2026-09-03T20:09:57Z",
+      "message": "test: cover ADC scalar and subject-token validation",
+      "parents": [
+        "5a1d0a2a13f179f8c76aca55ab9cbc5d0678a6f2"
+      ]
+    },
+    {
+      "sha": "5a1d0a2a13f179f8c76aca55ab9cbc5d0678a6f2",
+      "date": "2026-09-03T20:09:38Z",
+      "message": "fix: validate complete external-account credential source",
+      "parents": [
+        "0ceb7786bc5dc9a7ecfd8c78a97541c25e9763f2"
+      ]
+    },
+    {
+      "sha": "0ceb7786bc5dc9a7ecfd8c78a97541c25e9763f2",
+      "date": "2026-09-03T12:56:36Z",
+      "message": "Test nonregular ADC and empty source rejection",
+      "parents": [
+        "452ed3f05cf75f2fa3cef64d445054b08a7f8e57"
+      ]
+    },
+    {
+      "sha": "452ed3f05cf75f2fa3cef64d445054b08a7f8e57",
+      "date": "2026-09-03T12:56:26Z",
+      "message": "Harden ADC path and credential source validation",
+      "parents": [
+        "bd1da85688a2fdbfd33b83a2416f40f3621129e4"
+      ]
+    },
+    {
+      "sha": "bd1da85688a2fdbfd33b83a2416f40f3621129e4",
+      "date": "2026-09-03T11:26:47Z",
+      "message": "security: require HTTPS for Content staging evidence",
+      "parents": [
+        "7d3c31de1e1701153e705a52a7d4a54e238488fe"
+      ]
+    },
+    {
+      "sha": "7d3c31de1e1701153e705a52a7d4a54e238488fe",
+      "date": "2026-09-03T11:26:29Z",
+      "message": "test: fail Content health on invalid ADC",
+      "parents": [
+        "7ebeb38f2d00989f5994b7ab1c086ce3a1ede2e1"
+      ]
+    },
+    {
+      "sha": "7ebeb38f2d00989f5994b7ab1c086ce3a1ede2e1",
+      "date": "2026-09-03T11:26:13Z",
+      "message": "security: validate Content ADC before readiness",
+      "parents": [
+        "d99080d175664431b21bbb4b7a1445186dc9c9e9"
+      ]
+    },
+    {
+      "sha": "d99080d175664431b21bbb4b7a1445186dc9c9e9",
+      "date": "2026-09-02T22:31:32Z",
+      "message": "security: reconstruct Content ADC-only runtime on current main",
+      "parents": [
+        "ae1ccca83efc657e1d264fbc7c6c92566a55f760"
+      ]
+    },
+    {
+      "sha": "ae1ccca83efc657e1d264fbc7c6c92566a55f760",
+      "date": "2026-08-13T03:19:23Z",
+      "message": "fix(copy): finish public content language cleanup (#77)",
+      "parents": [
+        "eb5dfce65faba97354b65db6a6824a5a239d879a"
+      ]
+    },
+    {
+      "sha": "eb5dfce65faba97354b65db6a6824a5a239d879a",
+      "date": "2026-08-13T00:27:03Z",
+      "message": "Production polish: shared public shell and SEO language (#76)",
+      "parents": [
+        "248a2938cca559d7b1e6832beb997264d74adb5b"
+      ]
+    },
+    {
+      "sha": "248a2938cca559d7b1e6832beb997264d74adb5b",
+      "date": "2026-08-01T21:38:35Z",
+      "message": "Upgrade synchronized Vitest toolchain (#74)",
+      "parents": [
+        "763ef16f690afd5b2cdc5c8750f0ac3c812236f8"
+      ]
+    },
+    {
+      "sha": "763ef16f690afd5b2cdc5c8750f0ac3c812236f8",
+      "date": "2026-08-01T20:59:07Z",
+      "message": "Add exact Content dependency audit evidence (#73)",
+      "parents": [
+        "d263fd1d43d5aec6c5f35f75a67b6994bd1751f4"
+      ]
+    },
+    {
+      "sha": "d263fd1d43d5aec6c5f35f75a67b6994bd1751f4",
+      "date": "2026-08-01T20:51:19Z",
+      "message": "Adopt deterministic Content web lockfile (#71)",
+      "parents": [
+        "a7361b31e3e74c882eae4abc6f52bb3d35421b35"
+      ]
+    },
+    {
+      "sha": "a7361b31e3e74c882eae4abc6f52bb3d35421b35",
+      "date": "2026-07-18T10:50:30Z",
+      "message": "Add 90-day 45+45 global launch media plan",
+      "parents": [
+        "66532d4b2b1ca7bf595ed8386adda0cb063bb7a1"
+      ]
+    },
+    {
+      "sha": "66532d4b2b1ca7bf595ed8386adda0cb063bb7a1",
+      "date": "2026-07-11T11:26:49Z",
+      "message": "docs: complete prompt library navigation",
+      "parents": [
+        "4e517879c3521dc22cd6bda65662c59316c010b0"
+      ]
+    },
+    {
+      "sha": "4e517879c3521dc22cd6bda65662c59316c010b0",
+      "date": "2026-07-11T11:26:26Z",
+      "message": "docs: add research prompt changelog",
+      "parents": [
+        "b66a17d6a50e09b04fd9f91637cd56f79cb2833e"
+      ]
+    },
+    {
+      "sha": "b66a17d6a50e09b04fd9f91637cd56f79cb2833e",
+      "date": "2026-07-11T11:26:17Z",
+      "message": "docs: add research prompt usage guide",
+      "parents": [
+        "4b265db315c261c5b61812cd8aee3c1e441dc030"
+      ]
+    },
+    {
+      "sha": "4b265db315c261c5b61812cd8aee3c1e441dc030",
+      "date": "2026-07-11T11:25:32Z",
+      "message": "docs: publish autonomous research master prompt v1.0",
+      "parents": [
+        "fe0f64832c708ba92cd3add58d832e70fd1d0f65"
+      ]
+    },
+    {
+      "sha": "fe0f64832c708ba92cd3add58d832e70fd1d0f65",
+      "date": "2026-07-11T11:22:23Z",
+      "message": "docs: link prompt library from root README",
+      "parents": [
+        "65e9704a4422f953f312fbef50bad2c302999246"
+      ]
+    },
+    {
+      "sha": "65e9704a4422f953f312fbef50bad2c302999246",
+      "date": "2026-07-11T11:22:08Z",
+      "message": "docs: add prompt library index",
+      "parents": [
+        "3f4878a472765e2a6853ab17158af8db6e407ed6"
+      ]
+    },
+    {
+      "sha": "3f4878a472765e2a6853ab17158af8db6e407ed6",
+      "date": "2026-07-11T11:20:51Z",
+      "message": "Add autonomous research agent master prompt",
+      "parents": [
+        "7daa727bdb5d97ea8d82770d88f3db3c4bd405db"
+      ]
+    },
+    {
+      "sha": "7daa727bdb5d97ea8d82770d88f3db3c4bd405db",
+      "date": "2026-07-07T03:28:59Z",
+      "message": "Add public press kit framework",
+      "parents": [
+        "07b7e573eb4ddf38ff0485c987ac635a7a4bd9f3"
+      ]
+    },
+    {
+      "sha": "07b7e573eb4ddf38ff0485c987ac635a7a4bd9f3",
+      "date": "2026-07-07T03:28:05Z",
+      "message": "Add visual asset manifest",
+      "parents": [
+        "7740e719ecb4804e764f0224a98aae08bcab2cd5"
+      ]
+    },
+    {
+      "sha": "7740e719ecb4804e764f0224a98aae08bcab2cd5",
+      "date": "2026-07-07T03:19:33Z",
+      "message": "Add investor first minute narrative",
+      "parents": [
+        "ac5cec294933bfdd8f5517821b11c089c8aa0012"
+      ]
+    },
+    {
+      "sha": "ac5cec294933bfdd8f5517821b11c089c8aa0012",
+      "date": "2026-07-07T03:19:25Z",
+      "message": "Add launch video script outline",
+      "parents": [
+        "dc60368d0426c5feeeab75f9f9a9f95232faf5cf"
+      ]
+    },
+    {
+      "sha": "dc60368d0426c5feeeab75f9f9a9f95232faf5cf",
+      "date": "2026-07-07T03:16:22Z",
+      "message": "Add launch asset checklist",
+      "parents": [
+        "bb5e27d94994390d14038808e06d4ca58d9035c5"
+      ]
+    },
+    {
+      "sha": "bb5e27d94994390d14038808e06d4ca58d9035c5",
+      "date": "2026-07-07T02:44:33Z",
+      "message": "Add public receipts copy blocks",
+      "parents": [
+        "e83bdf5e13db64300a694dda9657392da13d8484"
+      ]
+    },
+    {
+      "sha": "e83bdf5e13db64300a694dda9657392da13d8484",
+      "date": "2026-07-07T02:25:37Z",
+      "message": "Add URAI public search snippets",
+      "parents": [
+        "e9f1ff71493e0eb9d0299ee0c756ad8da46e2965"
+      ]
+    },
+    {
+      "sha": "e9f1ff71493e0eb9d0299ee0c756ad8da46e2965",
+      "date": "2026-07-07T02:21:15Z",
+      "message": "Add Adam Clamp public footprint content guide",
+      "parents": [
+        "d8887a2bf26182b9b0c9fcf16b0610faa9040b93"
+      ]
+    },
+    {
+      "sha": "d8887a2bf26182b9b0c9fcf16b0610faa9040b93",
+      "date": "2026-07-06T06:25:55Z",
+      "message": "docs: add canonical URAI Content platform audit and roadmap",
+      "parents": [
+        "0630ad96b49db5d70555c5019431af1ce3d273c0"
+      ]
+    },
+    {
+      "sha": "0630ad96b49db5d70555c5019431af1ce3d273c0",
+      "date": "2026-06-30T13:11:39Z",
+      "message": "ci: add guarded Vercel production deploy workflow",
+      "parents": [
+        "a10b7fa72369bcd78438a51b7e46b3e44a0548ec"
+      ]
+    },
+    {
+      "sha": "a10b7fa72369bcd78438a51b7e46b3e44a0548ec",
+      "date": "2026-06-30T13:07:08Z",
+      "message": "docs: refresh production readiness dashboard handoff",
+      "parents": [
+        "b0dff79afc2f206347f41b1f0b89767346f605e4"
+      ]
+    },
+    {
+      "sha": "b0dff79afc2f206347f41b1f0b89767346f605e4",
+      "date": "2026-06-30T10:06:35Z",
+      "message": "docs: link external deployment handoff",
+      "parents": [
+        "bdf904abf9e3e8ef0a4d6dd89d88e66f95ea2fb5"
+      ]
+    },
+    {
+      "sha": "bdf904abf9e3e8ef0a4d6dd89d88e66f95ea2fb5",
+      "date": "2026-06-30T10:06:15Z",
+      "message": "docs: add external env deployment handoff",
+      "parents": [
+        "d91b0f0d1e77fe665012ee372ca890a5576f2bfb"
+      ]
+    },
+    {
+      "sha": "d91b0f0d1e77fe665012ee372ca890a5576f2bfb",
+      "date": "2026-06-30T10:04:18Z",
+      "message": "docs: link production blocker tracker",
+      "parents": [
+        "de51fc7998c076683a491d4f1def5f0bfd378024"
+      ]
+    },
+    {
+      "sha": "de51fc7998c076683a491d4f1def5f0bfd378024",
+      "date": "2026-06-30T09:46:17Z",
+      "message": "Merge pull request #60 from LifeLoggerAI/production-lock-content-2026-06-30",
+      "parents": [
+        "7fb9d924b32bc0bfa06871176d003d9373d15f23",
+        "457a2a3d4b9bb621eef13b488c1a3b5826f6c71f"
+      ]
+    },
+    {
+      "sha": "7fb9d924b32bc0bfa06871176d003d9373d15f23",
+      "date": "2026-06-30T09:45:58Z",
+      "message": "Merge pull request #58 from LifeLoggerAI/ci-release-gate",
+      "parents": [
+        "0f996c923e14eb05567c17d930d4f51f4aeee140",
+        "7ad8d2cc26ca7b82d4a9ce8d553d56819741c3b5"
+      ]
+    },
+    {
+      "sha": "0f996c923e14eb05567c17d930d4f51f4aeee140",
+      "date": "2026-06-30T09:45:46Z",
+      "message": "Merge pull request #57 from LifeLoggerAI/docs/deploy-status",
+      "parents": [
+        "431cdf1189ec01ed5c519ce19c2f03801df92dbf",
+        "63a29e8ebb4a5fe5e72cbbd35b6136e9847f26e0"
+      ]
+    },
+    {
+      "sha": "431cdf1189ec01ed5c519ce19c2f03801df92dbf",
+      "date": "2026-06-30T08:46:53Z",
+      "message": "Production lock content source readiness",
+      "parents": [
+        "4366390d7691d0cf5b3e728f2452c729a75b893f"
+      ]
+    },
+    {
+      "sha": "457a2a3d4b9bb621eef13b488c1a3b5826f6c71f",
+      "date": "2026-06-30T08:29:06Z",
+      "message": "docs: update proof with CI results",
+      "parents": [
+        "31dd18e079f45d87cca1e9a652f8ac5544feff04"
+      ]
+    },
+    {
+      "sha": "31dd18e079f45d87cca1e9a652f8ac5544feff04",
+      "date": "2026-06-30T08:28:30Z",
+      "message": "fix: preserve governance route coverage phrase",
+      "parents": [
+        "9debd5f54c85bb4beadfac60f3806c9da86decfc"
+      ]
+    },
+    {
+      "sha": "9debd5f54c85bb4beadfac60f3806c9da86decfc",
+      "date": "2026-06-30T07:37:55Z",
+      "message": "docs: add content release checklist",
+      "parents": [
+        "7cbc2dd69f5bedb5e17a4747a4e3b3539812f486"
+      ]
+    },
+    {
+      "sha": "7cbc2dd69f5bedb5e17a4747a4e3b3539812f486",
+      "date": "2026-06-30T07:37:44Z",
+      "message": "docs: add content completion plan",
+      "parents": [
+        "b426cc7681a3b1d1cacab21acfd8d7289cd0018a"
+      ]
+    },
+    {
+      "sha": "b426cc7681a3b1d1cacab21acfd8d7289cd0018a",
+      "date": "2026-06-30T07:37:28Z",
+      "message": "docs: add content blockers proof",
+      "parents": [
+        "72f0957dc99ff05a4571803021176a102eec8b0f"
+      ]
+    },
+    {
+      "sha": "72f0957dc99ff05a4571803021176a102eec8b0f",
+      "date": "2026-06-30T07:37:09Z",
+      "message": "docs: add security privacy risk audit",
+      "parents": [
+        "0a01e6a5429e622811ce20253134b10e93a4bdc4"
+      ]
+    },
+    {
+      "sha": "0a01e6a5429e622811ce20253134b10e93a4bdc4",
+      "date": "2026-06-30T07:23:05Z",
+      "message": "docs: add observability rollback proof",
+      "parents": [
+        "a2b19e425274589b94c9cf4886a60ee929bbb81e"
+      ]
+    },
+    {
+      "sha": "a2b19e425274589b94c9cf4886a60ee929bbb81e",
+      "date": "2026-06-30T07:22:48Z",
+      "message": "docs: add deployment proof",
+      "parents": [
+        "bfdae90721779ba8aaf9f8dcfeef10c4f201489e"
+      ]
+    },
+    {
+      "sha": "bfdae90721779ba8aaf9f8dcfeef10c4f201489e",
+      "date": "2026-06-30T07:22:35Z",
+      "message": "docs: add build test log proof",
+      "parents": [
+        "04a7f5269950ad0f005df4f3dd11729245c59593"
+      ]
+    },
+    {
+      "sha": "04a7f5269950ad0f005df4f3dd11729245c59593",
+      "date": "2026-06-30T07:22:19Z",
+      "message": "docs: add api proof",
+      "parents": [
+        "47836ff2aa340f54593fca566f0d4ac839889573"
+      ]
+    },
+    {
+      "sha": "47836ff2aa340f54593fca566f0d4ac839889573",
+      "date": "2026-06-30T07:21:53Z",
+      "message": "docs: add payment entitlement proof",
+      "parents": [
+        "8ccfb1f387075bca6bc6d96a827c1414202ac874"
+      ]
+    },
+    {
+      "sha": "8ccfb1f387075bca6bc6d96a827c1414202ac874",
+      "date": "2026-06-30T07:21:29Z",
+      "message": "docs: add export media proof",
+      "parents": [
+        "7bcaf06c2c8885ccae40c298f00f346375cea646"
+      ]
+    },
+    {
+      "sha": "7bcaf06c2c8885ccae40c298f00f346375cea646",
+      "date": "2026-06-30T07:21:13Z",
+      "message": "docs: add publishing proof",
+      "parents": [
+        "81b3ac7b6830c5b3a680763c5f81c2f81a39d02d"
+      ]
+    },
+    {
+      "sha": "81b3ac7b6830c5b3a680763c5f81c2f81a39d02d",
+      "date": "2026-06-30T07:20:48Z",
+      "message": "docs: add creator operator proof",
+      "parents": [
+        "3d2afbfe9f9774831697f4225aa7d1a6809a9e2c"
+      ]
+    },
+    {
+      "sha": "3d2afbfe9f9774831697f4225aa7d1a6809a9e2c",
+      "date": "2026-06-30T07:20:18Z",
+      "message": "docs: add content rules proof",
+      "parents": [
+        "ae7003bc714381373ef239a4b6ed2d16cb8fdce2"
+      ]
+    },
+    {
+      "sha": "ae7003bc714381373ef239a4b6ed2d16cb8fdce2",
+      "date": "2026-06-30T07:20:00Z",
+      "message": "docs: add content auth rbac proof",
+      "parents": [
+        "d7a3a9f633e3bc914aa87ad81ccb3acef94ea5ee"
+      ]
+    },
+    {
+      "sha": "d7a3a9f633e3bc914aa87ad81ccb3acef94ea5ee",
+      "date": "2026-06-30T07:19:36Z",
+      "message": "docs: add content data schema audit proof",
+      "parents": [
+        "3f51a164e2a3e9bc2bb497a49c71799e6b2267c2"
+      ]
+    },
+    {
+      "sha": "3f51a164e2a3e9bc2bb497a49c71799e6b2267c2",
+      "date": "2026-06-30T07:19:17Z",
+      "message": "docs: add content feature matrix proof",
+      "parents": [
+        "7ba1e7ce836d46595dbe1f1e1c1e7be8fa8cc424"
+      ]
+    },
+    {
+      "sha": "7ba1e7ce836d46595dbe1f1e1c1e7be8fa8cc424",
+      "date": "2026-06-30T07:19:03Z",
+      "message": "docs: add content route map proof",
+      "parents": [
+        "afe1a4eec276732ed2767e83edd59cc42fa93843"
+      ]
+    },
+    {
+      "sha": "afe1a4eec276732ed2767e83edd59cc42fa93843",
+      "date": "2026-06-30T07:18:25Z",
+      "message": "docs: add content repo state proof",
+      "parents": [
+        "2512cfe5ec2d0fae19356a3c399ba8ba94e22164"
+      ]
+    },
+    {
+      "sha": "2512cfe5ec2d0fae19356a3c399ba8ba94e22164",
+      "date": "2026-06-30T07:18:08Z",
+      "message": "docs: add content done-done production lock proof",
+      "parents": [
+        "dd63bf7a3c96fe5dec679f732e00dc56cb53a396"
+      ]
+    },
+    {
+      "sha": "dd63bf7a3c96fe5dec679f732e00dc56cb53a396",
+      "date": "2026-06-30T07:10:12Z",
+      "message": "docs: update readiness dashboard after source fixes",
+      "parents": [
+        "d24662ba70c7d778ef83141a957600ebb70d36cb"
+      ]
+    },
+    {
+      "sha": "d24662ba70c7d778ef83141a957600ebb70d36cb",
+      "date": "2026-06-30T07:09:43Z",
+      "message": "test: cover creator submission schema alignment",
+      "parents": [
+        "2977944b93322dd67affcbbc64615fb241c365b6"
+      ]
+    },
+    {
+      "sha": "2977944b93322dd67affcbbc64615fb241c365b6",
+      "date": "2026-06-30T07:07:42Z",
+      "message": "docs: harden environment template warnings",
+      "parents": [
+        "166c6808808749bd6f1feef4f704380d1fa5eb5a"
+      ]
+    },
+    {
+      "sha": "166c6808808749bd6f1feef4f704380d1fa5eb5a",
+      "date": "2026-06-30T07:07:23Z",
+      "message": "docs: update route coverage for production lock",
+      "parents": [
+        "41433e4ad8d9254b08b844bc2d0e3000278b9a0d"
+      ]
+    },
+    {
+      "sha": "41433e4ad8d9254b08b844bc2d0e3000278b9a0d",
+      "date": "2026-06-30T07:06:46Z",
+      "message": "fix: align entitlement collection rules",
+      "parents": [
+        "5218e1865232566617c481395cc7c00915160cb7"
+      ]
+    },
+    {
+      "sha": "5218e1865232566617c481395cc7c00915160cb7",
+      "date": "2026-06-30T07:02:34Z",
+      "message": "fix: align creator submission schema with runtime",
+      "parents": [
+        "4366390d7691d0cf5b3e728f2452c729a75b893f"
+      ]
+    },
+    {
+      "sha": "4366390d7691d0cf5b3e728f2452c729a75b893f",
+      "date": "2026-06-30T05:38:26Z",
+      "message": "docs: add urai content production lock audit",
+      "parents": [
+        "9e86ad20b4e71d7403716c22476f0cccdc62917f"
+      ]
+    },
+    {
+      "sha": "7ad8d2cc26ca7b82d4a9ce8d553d56819741c3b5",
+      "date": "2026-06-29T02:07:38Z",
+      "message": "ci: install browser runtime in release evidence gate",
+      "parents": [
+        "dfc3f60906bffbfe1e96a75f061f03ae3b847572"
+      ]
+    },
+    {
+      "sha": "dfc3f60906bffbfe1e96a75f061f03ae3b847572",
+      "date": "2026-06-29T02:01:45Z",
+      "message": "ci: align release evidence gate env vars",
+      "parents": [
+        "6a39df71201ffa05dbff16f34109d4e4fea0eec2"
+      ]
+    },
+    {
+      "sha": "6a39df71201ffa05dbff16f34109d4e4fea0eec2",
+      "date": "2026-06-29T01:58:18Z",
+      "message": "ci: add release evidence gate",
+      "parents": [
+        "9e86ad20b4e71d7403716c22476f0cccdc62917f"
+      ]
+    },
+    {
+      "sha": "9e86ad20b4e71d7403716c22476f0cccdc62917f",
+      "date": "2026-06-29T01:52:24Z",
+      "message": "docs: refresh deployment blocker status (#56)",
+      "parents": [
+        "eb8a9abc93374fea31b13307c89f6f0b79197256"
+      ]
+    },
+    {
+      "sha": "63a29e8ebb4a5fe5e72cbbd35b6136e9847f26e0",
+      "date": "2026-06-29T01:42:03Z",
+      "message": "docs: refresh deployment blocker status",
+      "parents": [
+        "eb8a9abc93374fea31b13307c89f6f0b79197256"
+      ]
+    },
+    {
+      "sha": "eb8a9abc93374fea31b13307c89f6f0b79197256",
+      "date": "2026-06-29T01:39:45Z",
+      "message": "docs: record browser smoke CI evidence (#55)",
+      "parents": [
+        "66f28d5e756552569a10c7399fbd755e751da8c8"
+      ]
+    },
+    {
+      "sha": "66f28d5e756552569a10c7399fbd755e751da8c8",
+      "date": "2026-06-29T01:22:43Z",
+      "message": "ci: isolate browser smoke job (#54)",
+      "parents": [
+        "a6200e3bf9a41f1abd16b0a1fc4939c4cf060ce3"
+      ]
+    },
+    {
+      "sha": "a6200e3bf9a41f1abd16b0a1fc4939c4cf060ce3",
+      "date": "2026-06-29T00:54:50Z",
+      "message": "Merge pull request #53 from LifeLoggerAI/browser-smoke-ci",
+      "parents": [
+        "377d916c63b40f01540bcc8f932860ebfbb014c7",
+        "50fd797050ea50b553922b770d67ef428303d9c9"
+      ]
+    },
+    {
+      "sha": "50fd797050ea50b553922b770d67ef428303d9c9",
+      "date": "2026-06-29T00:53:20Z",
+      "message": "ci: run browser smoke after route smoke",
+      "parents": [
+        "26dfbcdec612fef8d930f225d9ab4cb547c30355"
+      ]
+    },
+    {
+      "sha": "26dfbcdec612fef8d930f225d9ab4cb547c30355",
+      "date": "2026-06-29T00:32:59Z",
+      "message": "ci: run web browser smoke tests",
+      "parents": [
+        "377d916c63b40f01540bcc8f932860ebfbb014c7"
+      ]
+    },
+    {
+      "sha": "377d916c63b40f01540bcc8f932860ebfbb014c7",
+      "date": "2026-06-29T00:26:21Z",
+      "message": "docs: refresh implementation status with CI-backed evidence (#52)",
+      "parents": [
+        "077f1c55038ff608e1012b8ba758b01b8f674923"
+      ]
+    },
+    {
+      "sha": "077f1c55038ff608e1012b8ba758b01b8f674923",
+      "date": "2026-06-29T00:15:10Z",
+      "message": "docs: refresh readiness dashboard CI status (#51)",
+      "parents": [
+        "76a1c003eae69df6b86ab96c8fcc407e5e724e61"
+      ]
+    },
+    {
+      "sha": "76a1c003eae69df6b86ab96c8fcc407e5e724e61",
+      "date": "2026-06-28T23:51:51Z",
+      "message": "Merge pull request #49 from LifeLoggerAI/ci-repair/urai-content-export-test",
+      "parents": [
+        "bd8291404dfa5902a9cc43bf49621a6802351d10",
+        "37ebc5ba2cf65d74af02aa3fdaa5080eca052c35"
+      ]
+    },
+    {
+      "sha": "37ebc5ba2cf65d74af02aa3fdaa5080eca052c35",
+      "date": "2026-06-28T23:51:44Z",
+      "message": "Merge branch 'main' into ci-repair/urai-content-export-test",
+      "parents": [
+        "883257dbfde7096ca23be8d8ded517ba472aad5b",
+        "bd8291404dfa5902a9cc43bf49621a6802351d10"
+      ]
+    },
+    {
+      "sha": "bd8291404dfa5902a9cc43bf49621a6802351d10",
+      "date": "2026-06-28T23:47:58Z",
+      "message": "docs: clarify production readiness status wording (#50)",
+      "parents": [
+        "7f8540a7213c7b0e318b6898178c99ff99aaec45"
+      ]
+    },
+    {
+      "sha": "7f8540a7213c7b0e318b6898178c99ff99aaec45",
+      "date": "2026-06-28T23:38:20Z",
+      "message": "Merge pull request #48 from LifeLoggerAI/docs/deployment-evidence-wording",
+      "parents": [
+        "fa5387fcbda900a8f1f5624147b1aefa366c5f59",
+        "22f656b80b799d773356120d13ed3805635a5799"
+      ]
+    },
+    {
+      "sha": "22f656b80b799d773356120d13ed3805635a5799",
+      "date": "2026-06-28T23:36:58Z",
+      "message": "docs: clarify deployment evidence wording",
+      "parents": [
+        "fa5387fcbda900a8f1f5624147b1aefa366c5f59"
+      ]
+    },
+    {
+      "sha": "fa5387fcbda900a8f1f5624147b1aefa366c5f59",
+      "date": "2026-06-28T23:32:45Z",
+      "message": "Merge pull request #46 from LifeLoggerAI/production-lock/urai-content-done-done",
+      "parents": [
+        "72b9fc3425a98961b809a134e5c402a8a44f5da2",
+        "84cadcbe6bce25e3c58f80f9bc52bba358e2df6d"
+      ]
+    },
+    {
+      "sha": "72b9fc3425a98961b809a134e5c402a8a44f5da2",
+      "date": "2026-06-28T23:32:30Z",
+      "message": "Merge pull request #47 from LifeLoggerAI/docs/ci-evidence-pr45",
+      "parents": [
+        "839c04e799a3a3a6eaec6275b244491c82c4a154",
+        "6a76701b2109ff54f10e864d3466daa9cb53d5b3"
+      ]
+    },
+    {
+      "sha": "6a76701b2109ff54f10e864d3466daa9cb53d5b3",
+      "date": "2026-06-28T23:29:53Z",
+      "message": "fix: avoid secret scanner dummy redaction false positive",
+      "parents": [
+        "13ed6c4c00fffa105850c6d78b5f16346bb813e0"
+      ]
+    },
+    {
+      "sha": "13ed6c4c00fffa105850c6d78b5f16346bb813e0",
+      "date": "2026-06-28T23:28:18Z",
+      "message": "docs: record green CI for export repair",
+      "parents": [
+        "839c04e799a3a3a6eaec6275b244491c82c4a154"
+      ]
+    },
+    {
+      "sha": "883257dbfde7096ca23be8d8ded517ba472aad5b",
+      "date": "2026-06-28T23:25:00Z",
+      "message": "docs: record green CI for export test repair",
+      "parents": [
+        "5148bae3c286517b3d365e2a44a54de69ae0ebf8"
+      ]
+    },
+    {
+      "sha": "839c04e799a3a3a6eaec6275b244491c82c4a154",
+      "date": "2026-06-28T23:21:17Z",
+      "message": "Merge pull request #43 from LifeLoggerAI/audit/secret-scan-tightening-2026-06-28",
+      "parents": [
+        "b226b85ce3c3931a481d74a9b72f2afb7c02b2b3",
+        "db3ae222cbabf5b708674d968776006954d58323"
+      ]
+    },
+    {
+      "sha": "db3ae222cbabf5b708674d968776006954d58323",
+      "date": "2026-06-28T23:21:09Z",
+      "message": "Merge branch 'main' into audit/secret-scan-tightening-2026-06-28",
+      "parents": [
+        "a507aab343d6e83d5886f590cbe13d1412a87271",
+        "b4d1c7dbe321a48ba23cadab1c3b53b03312ea03"
+      ]
+    },
+    {
+      "sha": "b226b85ce3c3931a481d74a9b72f2afb7c02b2b3",
+      "date": "2026-06-28T23:20:48Z",
+      "message": "Merge pull request #45 from LifeLoggerAI/ci-repair/urai-content-export-test",
+      "parents": [
+        "b4d1c7dbe321a48ba23cadab1c3b53b03312ea03",
+        "5148bae3c286517b3d365e2a44a54de69ae0ebf8"
+      ]
+    },
+    {
+      "sha": "5148bae3c286517b3d365e2a44a54de69ae0ebf8",
+      "date": "2026-06-28T23:17:47Z",
+      "message": "test: stop relying on fake completed export seed",
+      "parents": [
+        "b4d1c7dbe321a48ba23cadab1c3b53b03312ea03"
+      ]
+    },
+    {
+      "sha": "84cadcbe6bce25e3c58f80f9bc52bba358e2df6d",
+      "date": "2026-06-28T23:17:18Z",
+      "message": "test: stop relying on fake completed export seed",
+      "parents": [
+        "e5d5477fbba56d4a6daf8d1eef39086cdc636067"
+      ]
+    },
+    {
+      "sha": "b4d1c7dbe321a48ba23cadab1c3b53b03312ea03",
+      "date": "2026-06-28T23:13:15Z",
+      "message": "Merge pull request #44 from LifeLoggerAI/production-lock/urai-content-done-done",
+      "parents": [
+        "c5be02363475d18eb5e6fb0c63f7c7c346160d12",
+        "e5d5477fbba56d4a6daf8d1eef39086cdc636067"
+      ]
+    },
+    {
+      "sha": "e5d5477fbba56d4a6daf8d1eef39086cdc636067",
+      "date": "2026-06-28T23:11:15Z",
+      "message": "docs: update evidence log for production lock pass",
+      "parents": [
+        "3a76d1f95d5f41df8fd4cfa1c810b631101703fc"
+      ]
+    },
+    {
+      "sha": "3a76d1f95d5f41df8fd4cfa1c810b631101703fc",
+      "date": "2026-06-28T23:09:47Z",
+      "message": "docs: add blocker lock",
+      "parents": [
+        "f822fca74347ba45078c77a48a321faba035775c"
+      ]
+    },
+    {
+      "sha": "f822fca74347ba45078c77a48a321faba035775c",
+      "date": "2026-06-28T23:09:37Z",
+      "message": "docs: add route audit lock",
+      "parents": [
+        "ee6a5d9461d1821be53f8abff0b4e7aade2bcb21"
+      ]
+    },
+    {
+      "sha": "ee6a5d9461d1821be53f8abff0b4e7aade2bcb21",
+      "date": "2026-06-28T23:09:19Z",
+      "message": "docs: add production readiness lock",
+      "parents": [
+        "03c98a5ebaaff33ffb17b765cdc33a4b4c4c5b46"
+      ]
+    },
+    {
+      "sha": "03c98a5ebaaff33ffb17b765cdc33a4b4c4c5b46",
+      "date": "2026-06-28T23:09:03Z",
+      "message": "test: prevent unverified production asset claims",
+      "parents": [
+        "70ecd268ea670b50339ce4b2acf8cc65fa6668a0"
+      ]
+    },
+    {
+      "sha": "70ecd268ea670b50339ce4b2acf8cc65fa6668a0",
+      "date": "2026-06-28T21:24:14Z",
+      "message": "fix: fail closed for moderation without persistence",
+      "parents": [
+        "1a38537511047bebb7b69884e7c0635d6791b88e"
+      ]
+    },
+    {
+      "sha": "1a38537511047bebb7b69884e7c0635d6791b88e",
+      "date": "2026-06-28T21:20:21Z",
+      "message": "fix: fail closed for admin queue without persistence",
+      "parents": [
+        "8dc6b83ec52ec7da56f332e811a97c6ba3bae4c2"
+      ]
+    },
+    {
+      "sha": "8dc6b83ec52ec7da56f332e811a97c6ba3bae4c2",
+      "date": "2026-06-28T21:16:54Z",
+      "message": "fix: normalize root firestore role claims",
+      "parents": [
+        "c29ebccc248441ecbf1198e6cf4a1bac1da6951d"
+      ]
+    },
+    {
+      "sha": "c29ebccc248441ecbf1198e6cf4a1bac1da6951d",
+      "date": "2026-06-28T21:11:15Z",
+      "message": "fix: downgrade unverified asset and export seeds",
+      "parents": [
+        "498c18ad1961f5744930d17a322ad269423876ba"
+      ]
+    },
+    {
+      "sha": "498c18ad1961f5744930d17a322ad269423876ba",
+      "date": "2026-06-28T21:04:37Z",
+      "message": "fix: normalize web storage admin claims",
+      "parents": [
+        "c58019b43c6ff3ef147a9fc2fe015bb3fd6ed259"
+      ]
+    },
+    {
+      "sha": "c58019b43c6ff3ef147a9fc2fe015bb3fd6ed259",
+      "date": "2026-06-28T21:02:28Z",
+      "message": "fix: normalize web firestore admin claims",
+      "parents": [
+        "c13502c510fcd548cb9a13bf07c49e9b4e1d45ea"
+      ]
+    },
+    {
+      "sha": "c13502c510fcd548cb9a13bf07c49e9b4e1d45ea",
+      "date": "2026-06-28T21:01:08Z",
+      "message": "fix: fail closed for creator submission detail without persistence",
+      "parents": [
+        "88627b9bad3e21ae482e823133c3b0fee30dff46"
+      ]
+    },
+    {
+      "sha": "88627b9bad3e21ae482e823133c3b0fee30dff46",
+      "date": "2026-06-28T20:52:47Z",
+      "message": "test: cover production persistence fail closed state",
+      "parents": [
+        "ed3c95296f05397d121c95c07635559c7e84a904"
+      ]
+    },
+    {
+      "sha": "ed3c95296f05397d121c95c07635559c7e84a904",
+      "date": "2026-06-28T20:51:09Z",
+      "message": "fix: fail closed for creator submissions without persistence",
+      "parents": [
+        "d08b3ed1d161ea73704b55f16e278e18ef4ec6af"
+      ]
+    },
+    {
+      "sha": "d08b3ed1d161ea73704b55f16e278e18ef4ec6af",
+      "date": "2026-06-28T20:44:34Z",
+      "message": "fix: report persistence status in firebase health",
+      "parents": [
+        "bca76652fae3c4d087481704f17b8eaaabde805b"
+      ]
+    },
+    {
+      "sha": "bca76652fae3c4d087481704f17b8eaaabde805b",
+      "date": "2026-06-28T20:41:24Z",
+      "message": "fix: avoid broad secret fixture redaction work",
+      "parents": [
+        "f193f2b09994f9c28c65c7cc7204cb89ce479b67"
+      ]
+    },
+    {
+      "sha": "f193f2b09994f9c28c65c7cc7204cb89ce479b67",
+      "date": "2026-06-28T20:37:52Z",
+      "message": "fix: expose runtime persistence health",
+      "parents": [
+        "e8211a52ad837222cc44888697272c7fe628bf69"
+      ]
+    },
+    {
+      "sha": "e8211a52ad837222cc44888697272c7fe628bf69",
+      "date": "2026-06-28T20:36:41Z",
+      "message": "fix: fail closed for production runtime persistence",
+      "parents": [
+        "fe4aeb8871f554021021f4e7c8f9a97d471c9ca6"
+      ]
+    },
+    {
+      "sha": "fe4aeb8871f554021021f4e7c8f9a97d471c9ca6",
+      "date": "2026-06-28T20:34:16Z",
+      "message": "fix: tighten secret scan fixture allowlist",
+      "parents": [
+        "c5be02363475d18eb5e6fb0c63f7c7c346160d12"
+      ]
+    },
+    {
+      "sha": "a507aab343d6e83d5886f590cbe13d1412a87271",
+      "date": "2026-06-28T20:25:32Z",
+      "message": "fix: tighten secret scan test fixture allowlist",
+      "parents": [
+        "c5be02363475d18eb5e6fb0c63f7c7c346160d12"
+      ]
+    },
+    {
+      "sha": "c5be02363475d18eb5e6fb0c63f7c7c346160d12",
+      "date": "2026-06-17T09:39:52Z",
+      "message": "ci: ignore content api route test secret fixture",
+      "parents": [
+        "0b6896d1d4449cde00dd7580190132b2c843c265"
+      ]
+    },
+    {
+      "sha": "0b6896d1d4449cde00dd7580190132b2c843c265",
+      "date": "2026-06-15T23:55:55Z",
+      "message": "Merge pull request #42 from LifeLoggerAI/codex/content-stabilization-phase-0-1",
+      "parents": [
+        "33775ccdb5567f86d582446a5b2c1022b0e1520a",
+        "cb4b6863146831bb5bd9fdf132bd7e22a953e0e4"
+      ]
+    },
+    {
+      "sha": "cb4b6863146831bb5bd9fdf132bd7e22a953e0e4",
+      "date": "2026-06-15T23:55:39Z",
+      "message": "Merge branch 'main' into codex/content-stabilization-phase-0-1",
+      "parents": [
+        "b94392fac0f79754623f3bf0223fda21f323b407",
+        "33775ccdb5567f86d582446a5b2c1022b0e1520a"
+      ]
+    },
+    {
+      "sha": "33775ccdb5567f86d582446a5b2c1022b0e1520a",
+      "date": "2026-06-15T23:49:36Z",
+      "message": "Merge pull request #40 from LifeLoggerAI/codex/ecosystem-integration-hardening",
+      "parents": [
+        "1d2269919f613ddd1ba251e08456588e7a3735a7",
+        "373f9f72fed0d0b62d8dbe1118233aa65615e3e5"
+      ]
+    },
+    {
+      "sha": "1d2269919f613ddd1ba251e08456588e7a3735a7",
+      "date": "2026-06-15T23:48:42Z",
+      "message": "Merge pull request #39 from LifeLoggerAI/codex/auth-route-guards",
+      "parents": [
+        "797aee018b901053263d0f4b37f25a82dcfbb289",
+        "1148b50eb7828d3b7ba4f4b14bbd4b42e01108f3"
+      ]
+    },
+    {
+      "sha": "797aee018b901053263d0f4b37f25a82dcfbb289",
+      "date": "2026-06-02T20:56:47Z",
+      "message": "Add URAI Spatial XR schema dependency evidence gate",
+      "parents": [
+        "4798842b2007f0de093b1ca4e1d979d69ced35d1"
+      ]
+    },
+    {
+      "sha": "4798842b2007f0de093b1ca4e1d979d69ced35d1",
+      "date": "2026-06-02T05:12:49Z",
+      "message": "Add URAI production verify script",
+      "parents": [
+        "51ea3735425abee8e3b6bfc8dea7ae19a69f4b0f"
+      ]
+    },
+    {
+      "sha": "51ea3735425abee8e3b6bfc8dea7ae19a69f4b0f",
+      "date": "2026-05-31T00:42:14Z",
+      "message": "Add URAI production verification workflow",
+      "parents": [
+        "4553ebf4758f56b0d6dbb80297bb829462d13ba4"
+      ]
+    },
+    {
+      "sha": "4553ebf4758f56b0d6dbb80297bb829462d13ba4",
+      "date": "2026-05-30T21:32:17Z",
+      "message": "Add production hardening checklist",
+      "parents": [
+        "6dc06f890a79a816893a0d9a3bf4166377de7362"
+      ]
+    },
+    {
+      "sha": "6dc06f890a79a816893a0d9a3bf4166377de7362",
+      "date": "2026-05-30T20:41:30Z",
+      "message": "Add Wave 2 content launch lock evidence",
+      "parents": [
+        "abe488b63880d298948a0b39ee7d5467989c8378"
+      ]
+    },
+    {
+      "sha": "b94392fac0f79754623f3bf0223fda21f323b407",
+      "date": "2026-05-29T18:22:36Z",
+      "message": "Add Phase 0 and Phase 1 summary",
+      "parents": [
+        "2e2e0e5cac75d6f5d964aa059112bd036b00ca7a"
+      ]
+    },
+    {
+      "sha": "2e2e0e5cac75d6f5d964aa059112bd036b00ca7a",
+      "date": "2026-05-29T18:22:24Z",
+      "message": "Refresh completion audit with validation results",
+      "parents": [
+        "1b4af33b281d7edc3caa172e9713fb1f2e152fda"
+      ]
+    },
+    {
+      "sha": "1b4af33b281d7edc3caa172e9713fb1f2e152fda",
+      "date": "2026-05-29T18:21:58Z",
+      "message": "Record Phase 1 validation evidence",
+      "parents": [
+        "b1370487c0344a767023127a97499f6b5f1ee93d"
+      ]
+    },
+    {
+      "sha": "b1370487c0344a767023127a97499f6b5f1ee93d",
+      "date": "2026-05-29T18:21:28Z",
+      "message": "Make web route smoke portable on Windows",
+      "parents": [
+        "14d37c519388b3000360a39ca9baee54165ccb67"
+      ]
+    },
+    {
+      "sha": "14d37c519388b3000360a39ca9baee54165ccb67",
+      "date": "2026-05-29T18:12:53Z",
+      "message": "Keep NODE_ENV test mutation typed",
+      "parents": [
+        "59d5f1541885be9c6d99ed1d2d3b96145cbdd53a"
+      ]
+    },
+    {
+      "sha": "59d5f1541885be9c6d99ed1d2d3b96145cbdd53a",
+      "date": "2026-05-29T18:12:05Z",
+      "message": "Preserve route access compatibility in RBAC",
+      "parents": [
+        "5e7a692c942b4db1a5e47db9ff9cc52e44ab8a5e"
+      ]
+    },
+    {
+      "sha": "5e7a692c942b4db1a5e47db9ff9cc52e44ab8a5e",
+      "date": "2026-05-29T18:11:37Z",
+      "message": "Align RBAC tests with canonical roles",
+      "parents": [
+        "31f3c2c512430bd2878c521d1174633e6039fa57"
+      ]
+    },
+    {
+      "sha": "31f3c2c512430bd2878c521d1174633e6039fa57",
+      "date": "2026-05-29T18:11:22Z",
+      "message": "Fix authorization test environment mutation",
+      "parents": [
+        "c530abb41a678b0a493215d74e18fb60327b196e"
+      ]
+    },
+    {
+      "sha": "c530abb41a678b0a493215d74e18fb60327b196e",
+      "date": "2026-05-29T17:51:09Z",
+      "message": "Restore README governance references",
+      "parents": [
+        "a317fe81d42e74674879884519389293d69ce715"
+      ]
+    },
+    {
+      "sha": "a317fe81d42e74674879884519389293d69ce715",
+      "date": "2026-05-29T17:50:43Z",
+      "message": "Fix ecosystem contract test import for NodeNext",
+      "parents": [
+        "bd4b24ea93af43240d1f1ecf17a2a74fb2c8c849"
+      ]
+    },
+    {
+      "sha": "bd4b24ea93af43240d1f1ecf17a2a74fb2c8c849",
+      "date": "2026-05-29T17:46:33Z",
+      "message": "Refresh implementation status after Phase 1 stabilization",
+      "parents": [
+        "6e6b6adf80153ded3e3148285e52ff0a13f8725d"
+      ]
+    },
+    {
+      "sha": "6e6b6adf80153ded3e3148285e52ff0a13f8725d",
+      "date": "2026-05-29T17:46:07Z",
+      "message": "Add Phase 0 and Phase 1 evidence log",
+      "parents": [
+        "7e40c3b873f1c47ac72976a1e3aa5063e328154f"
+      ]
+    },
+    {
+      "sha": "7e40c3b873f1c47ac72976a1e3aa5063e328154f",
+      "date": "2026-05-29T17:45:52Z",
+      "message": "Update completion audit for Phase 0 and Phase 1 stabilization",
+      "parents": [
+        "c29b7995f87a7b696b426295b9710ff99b461aec"
+      ]
+    },
+    {
+      "sha": "c29b7995f87a7b696b426295b9710ff99b461aec",
+      "date": "2026-05-29T17:45:26Z",
+      "message": "Document auth guard environment flags",
+      "parents": [
+        "ad63c0f01b0c2c87657ba5b8427f1cda86726095"
+      ]
+    },
+    {
+      "sha": "ad63c0f01b0c2c87657ba5b8427f1cda86726095",
+      "date": "2026-05-29T17:45:14Z",
+      "message": "Wire ecosystem contract check into package scripts",
+      "parents": [
+        "3f80819085c048eeadd29aeb4ab5eb4c32bc62cb"
+      ]
+    },
+    {
+      "sha": "3f80819085c048eeadd29aeb4ab5eb4c32bc62cb",
+      "date": "2026-05-29T17:44:58Z",
+      "message": "Test ecosystem contract compatibility",
+      "parents": [
+        "0c08682586cabdab0ae78c50e2512522dceaa412"
+      ]
+    },
+    {
+      "sha": "0c08682586cabdab0ae78c50e2512522dceaa412",
+      "date": "2026-05-29T17:44:46Z",
+      "message": "Add ecosystem contract check script",
+      "parents": [
+        "2c5f31ba7a1322637977534333fa0c560abedcb6"
+      ]
+    },
+    {
+      "sha": "2c5f31ba7a1322637977534333fa0c560abedcb6",
+      "date": "2026-05-29T17:44:23Z",
+      "message": "Add ecosystem contract schema",
+      "parents": [
+        "b73556f3ef0a3f53c603d77a8457ac46a36706c0"
+      ]
+    },
+    {
+      "sha": "b73556f3ef0a3f53c603d77a8457ac46a36706c0",
+      "date": "2026-05-29T17:43:36Z",
+      "message": "Keep RBAC compatibility helpers while using canonical roles",
+      "parents": [
+        "57dfcea916dc72e12df04c1a07398438749cfc91"
+      ]
+    },
+    {
+      "sha": "57dfcea916dc72e12df04c1a07398438749cfc91",
+      "date": "2026-05-29T17:42:06Z",
+      "message": "Add ecosystem integration contract doc",
+      "parents": [
+        "f75b8562a81df28a2f019c533d3cb2587aab3a99"
+      ]
+    },
+    {
+      "sha": "f75b8562a81df28a2f019c533d3cb2587aab3a99",
+      "date": "2026-05-29T17:42:05Z",
+      "message": "Add XR content pack contract doc",
+      "parents": [
+        "327d6a34d237f7c09e1d77ffaaff1143d7116658"
+      ]
+    },
+    {
+      "sha": "327d6a34d237f7c09e1d77ffaaff1143d7116658",
+      "date": "2026-05-29T17:42:03Z",
+      "message": "Add failsafe diagnostics doc",
+      "parents": [
+        "25a85995bb8496d2c60a0c7d62092a65de70c9dc"
+      ]
+    },
+    {
+      "sha": "25a85995bb8496d2c60a0c7d62092a65de70c9dc",
+      "date": "2026-05-29T17:41:37Z",
+      "message": "Expand runtime content service tests",
+      "parents": [
+        "c7d840c26ed8872f331c1bc6047638c933a1fb4e"
+      ]
+    },
+    {
+      "sha": "c7d840c26ed8872f331c1bc6047638c933a1fb4e",
+      "date": "2026-05-29T17:41:15Z",
+      "message": "Add authorization foundation tests",
+      "parents": [
+        "d0913f4bd624be1d3a066642d8995d12643461b3"
+      ]
+    },
+    {
+      "sha": "d0913f4bd624be1d3a066642d8995d12643461b3",
+      "date": "2026-05-29T17:40:06Z",
+      "message": "Guard canonical seed route with admin session or seed token",
+      "parents": [
+        "048237e7ff7e6c940f7c48dc07c5f1c64dd07761"
+      ]
+    },
+    {
+      "sha": "048237e7ff7e6c940f7c48dc07c5f1c64dd07761",
+      "date": "2026-05-29T17:39:49Z",
+      "message": "Add compatibility request session exports",
+      "parents": [
+        "6762e48c1d2b3ec567fd867ecaf087f44cc74aeb"
+      ]
+    },
+    {
+      "sha": "6762e48c1d2b3ec567fd867ecaf087f44cc74aeb",
+      "date": "2026-05-29T17:39:47Z",
+      "message": "Add compatibility authorization exports",
+      "parents": [
+        "62d6c66de9e48e9f41242d773340f1d73637483c"
+      ]
+    },
+    {
+      "sha": "62d6c66de9e48e9f41242d773340f1d73637483c",
+      "date": "2026-05-29T17:39:46Z",
+      "message": "Add server auth guard helpers",
+      "parents": [
+        "4e2e5a9c4e935b4529e267b5704928ea291e5ca0"
+      ]
+    },
+    {
+      "sha": "4e2e5a9c4e935b4529e267b5704928ea291e5ca0",
+      "date": "2026-05-29T17:39:44Z",
+      "message": "Add request session parser with Firebase token support",
+      "parents": [
+        "42398ebc0f606a829ff2c249bb3ecd2b57edc3e1"
+      ]
+    },
+    {
+      "sha": "42398ebc0f606a829ff2c249bb3ecd2b57edc3e1",
+      "date": "2026-05-29T17:39:43Z",
+      "message": "Add auth failure response helpers",
+      "parents": [
+        "db930c513a3d2f48d78a30644d8d0688422062cc"
+      ]
+    },
+    {
+      "sha": "db930c513a3d2f48d78a30644d8d0688422062cc",
+      "date": "2026-05-29T17:39:07Z",
+      "message": "Align RBAC with canonical URAI Content roles",
+      "parents": [
+        "00ba5c8866b27d5c9027f4487e3f1b2733bde0cc"
+      ]
+    },
+    {
+      "sha": "00ba5c8866b27d5c9027f4487e3f1b2733bde0cc",
+      "date": "2026-05-29T17:38:38Z",
+      "message": "Add canonical auth roles and permissions",
+      "parents": [
+        "8b390aa31d86fe8449c007084b4e41f1a8ba2bcf"
+      ]
+    },
+    {
+      "sha": "8b390aa31d86fe8449c007084b4e41f1a8ba2bcf",
+      "date": "2026-05-29T17:38:07Z",
+      "message": "Expose server-only Firebase Auth verifier",
+      "parents": [
+        "168a6708b27169b4f69d51fc9d66041661e5ba31"
+      ]
+    },
+    {
+      "sha": "168a6708b27169b4f69d51fc9d66041661e5ba31",
+      "date": "2026-05-29T17:37:34Z",
+      "message": "Fix runtime content service export mismatch",
+      "parents": [
+        "43491aa9b1c12b3b6978479fbc0933bf9a1eae96"
+      ]
+    },
+    {
+      "sha": "373f9f72fed0d0b62d8dbe1118233aa65615e3e5",
+      "date": "2026-05-24T02:13:28Z",
+      "message": "Add fail-safe diagnostics guide for missing secrets",
+      "parents": [
+        "e9ff0647e9bcde984f31b40a3767b65b91605337"
+      ]
+    },
+    {
+      "sha": "e9ff0647e9bcde984f31b40a3767b65b91605337",
+      "date": "2026-05-24T02:12:18Z",
+      "message": "Add XR content-pack contract",
+      "parents": [
+        "706122234a419724451581832016968af5206a6c"
+      ]
+    },
+    {
+      "sha": "706122234a419724451581832016968af5206a6c",
+      "date": "2026-05-24T02:10:03Z",
+      "message": "Add URAI ecosystem integration contract v1",
+      "parents": [
+        "f65a5f12c1687a6a387b6c16ee00a1ba3bddf511"
+      ]
+    },
+    {
+      "sha": "f65a5f12c1687a6a387b6c16ee00a1ba3bddf511",
+      "date": "2026-05-24T02:09:00Z",
+      "message": "Add URAI ecosystem shared schema v1 contract",
+      "parents": [
+        "c861bc8f72aa43a568d7e94e43090b0b7bcbc632"
+      ]
+    },
+    {
+      "sha": "1148b50eb7828d3b7ba4f4b14bbd4b42e01108f3",
+      "date": "2026-05-21T20:22:31Z",
+      "message": "test: cover admin creator submission queue route",
+      "parents": [
+        "b8c86833ba11ec83019f8aee3f24e2496557d205"
+      ]
+    },
+    {
+      "sha": "b8c86833ba11ec83019f8aee3f24e2496557d205",
+      "date": "2026-05-21T20:20:52Z",
+      "message": "feat: add admin creator submission queue route",
+      "parents": [
+        "e9fd845eebc8929f28091518f2cf7a8df82d2ca9"
+      ]
+    },
+    {
+      "sha": "e9fd845eebc8929f28091518f2cf7a8df82d2ca9",
+      "date": "2026-05-21T20:18:15Z",
+      "message": "feat: add Firestore creator submission queue",
+      "parents": [
+        "0b42436ab1bea6cb43ad8ae1d5958eb6ffb9078c"
+      ]
+    },
+    {
+      "sha": "0b42436ab1bea6cb43ad8ae1d5958eb6ffb9078c",
+      "date": "2026-05-21T20:17:32Z",
+      "message": "feat: add memory creator submission queue",
+      "parents": [
+        "8bc34e55d4816091de83e4cb2f6d2a68ba0a944d"
+      ]
+    },
+    {
+      "sha": "8bc34e55d4816091de83e4cb2f6d2a68ba0a944d",
+      "date": "2026-05-21T20:17:00Z",
+      "message": "feat: add creator submission queue repository contract",
+      "parents": [
+        "c1150075bad8af6e4e8c3808ac818944782cb104"
+      ]
+    },
+    {
+      "sha": "abe488b63880d298948a0b39ee7d5467989c8378",
+      "date": "2026-05-21T20:09:22Z",
+      "message": "Add evidence status",
+      "parents": [
+        "43491aa9b1c12b3b6978479fbc0933bf9a1eae96"
+      ]
+    },
+    {
+      "sha": "c1150075bad8af6e4e8c3808ac818944782cb104",
+      "date": "2026-05-21T19:46:04Z",
+      "message": "test: use web content repository for canonical seed tests",
+      "parents": [
+        "e89e92432607500a5e8539ea9763351dfdb6b52f"
+      ]
+    },
+    {
+      "sha": "e89e92432607500a5e8539ea9763351dfdb6b52f",
+      "date": "2026-05-21T19:38:16Z",
+      "message": "test: avoid readonly NODE_ENV assignment in API route tests",
+      "parents": [
+        "72bf3d8128d49b5b0fba92ca1f8e760220d4612a"
+      ]
+    },
+    {
+      "sha": "72bf3d8128d49b5b0fba92ca1f8e760220d4612a",
+      "date": "2026-05-21T19:37:08Z",
+      "message": "test: avoid readonly NODE_ENV assignment in creator detail tests",
+      "parents": [
+        "5d4b8ba1d080d4f5a006e97f0c9da1f8ba4e7675"
+      ]
+    },
+    {
+      "sha": "5d4b8ba1d080d4f5a006e97f0c9da1f8ba4e7675",
+      "date": "2026-05-21T19:35:14Z",
+      "message": "test: avoid readonly NODE_ENV assignment in authorization tests",
+      "parents": [
+        "a5df2e31e966b532479afcf654e55ad65c3608ff"
+      ]
+    },
+    {
+      "sha": "a5df2e31e966b532479afcf654e55ad65c3608ff",
+      "date": "2026-05-21T19:30:09Z",
+      "message": "test: avoid readonly NODE_ENV assignment in admin detail tests",
+      "parents": [
+        "c33f8e55af6f3e27d757d630f92550820d953298"
+      ]
+    },
+    {
+      "sha": "c33f8e55af6f3e27d757d630f92550820d953298",
+      "date": "2026-05-21T19:29:21Z",
+      "message": "test: add NODE_ENV mutation helper",
+      "parents": [
+        "11837ccb9fe48e1cd8bc84abec45a3a3778c4f54"
+      ]
+    },
+    {
+      "sha": "11837ccb9fe48e1cd8bc84abec45a3a3778c4f54",
+      "date": "2026-05-21T19:06:07Z",
+      "message": "docs: remove obsolete header auth env",
+      "parents": [
+        "98fd0ad4ce161d52ef07df2545c38fe3e971a924"
+      ]
+    },
+    {
+      "sha": "98fd0ad4ce161d52ef07df2545c38fe3e971a924",
+      "date": "2026-05-21T19:04:45Z",
+      "message": "test: keep header auth local only",
+      "parents": [
+        "6cbff0f91f0c3cdeadb004962de39a8e0196cbbb"
+      ]
+    },
+    {
+      "sha": "6cbff0f91f0c3cdeadb004962de39a8e0196cbbb",
+      "date": "2026-05-21T19:03:13Z",
+      "message": "fix: keep header sessions out of production",
+      "parents": [
+        "88b98bbd8157eaf372fdd2c78c2d0fbfed4e9bcc"
+      ]
+    },
+    {
+      "sha": "88b98bbd8157eaf372fdd2c78c2d0fbfed4e9bcc",
+      "date": "2026-05-21T19:02:11Z",
+      "message": "test: await request session resolution",
+      "parents": [
+        "8a8f66777d4cd3f2ed8bb7bc5fbd8e1405ca666d"
+      ]
+    },
+    {
+      "sha": "8a8f66777d4cd3f2ed8bb7bc5fbd8e1405ca666d",
+      "date": "2026-05-21T19:01:33Z",
+      "message": "fix: await moderation request session",
+      "parents": [
+        "ac03d0c445fdb7048fe9d0e8ce03e9c90d6f31db"
+      ]
+    },
+    {
+      "sha": "ac03d0c445fdb7048fe9d0e8ce03e9c90d6f31db",
+      "date": "2026-05-21T18:38:00Z",
+      "message": "fix: await admin detail session",
+      "parents": [
+        "7b0a2cfc6f4bc393a5c60d67e6355e37a4450fab"
+      ]
+    },
+    {
+      "sha": "7b0a2cfc6f4bc393a5c60d67e6355e37a4450fab",
+      "date": "2026-05-21T18:36:19Z",
+      "message": "fix: await creator detail session",
+      "parents": [
+        "707aaf87aae552f02682052270b51c6517a1ce1d"
+      ]
+    },
+    {
+      "sha": "707aaf87aae552f02682052270b51c6517a1ce1d",
+      "date": "2026-05-21T18:31:59Z",
+      "message": "fix: await creator request sessions",
+      "parents": [
+        "30a7cca7caf819808bda6ef58ced800d3ef4e33f"
+      ]
+    },
+    {
+      "sha": "30a7cca7caf819808bda6ef58ced800d3ef4e33f",
+      "date": "2026-05-21T18:27:04Z",
+      "message": "fix: await admin seed request session",
+      "parents": [
+        "49849de4a1b785071c0cd9af0a36f29902d74335"
+      ]
+    },
+    {
+      "sha": "49849de4a1b785071c0cd9af0a36f29902d74335",
+      "date": "2026-05-21T18:21:42Z",
+      "message": "feat: verify Firebase ID tokens for request sessions",
+      "parents": [
+        "d9be3b7f3df0311c763d28df07adadadd588a2d1"
+      ]
+    },
+    {
+      "sha": "d9be3b7f3df0311c763d28df07adadadd588a2d1",
+      "date": "2026-05-21T18:18:48Z",
+      "message": "feat: expose Firebase Admin auth",
+      "parents": [
+        "dfb1e84e19d4ccc1732a3c39fbd8f51f14f60769"
+      ]
+    },
+    {
+      "sha": "dfb1e84e19d4ccc1732a3c39fbd8f51f14f60769",
+      "date": "2026-05-21T18:10:17Z",
+      "message": "docs: document auth and seed environment variables",
+      "parents": [
+        "c5c6c1888bd1c1ac53a64bbee76e7654df00a1f5"
+      ]
+    },
+    {
+      "sha": "c5c6c1888bd1c1ac53a64bbee76e7654df00a1f5",
+      "date": "2026-05-21T16:18:26Z",
+      "message": "test: wire global Vitest setup",
+      "parents": [
+        "1e3b475dc27372aa4762621a5c894945a46e7e69"
+      ]
+    },
+    {
+      "sha": "1e3b475dc27372aa4762621a5c894945a46e7e69",
+      "date": "2026-05-21T16:18:06Z",
+      "message": "test: reset runtime memory repository globally",
+      "parents": [
+        "deb703ae324e87f1275628483fdc3bc6048bd3b8"
+      ]
+    },
+    {
+      "sha": "deb703ae324e87f1275628483fdc3bc6048bd3b8",
+      "date": "2026-05-21T16:16:08Z",
+      "message": "test: cover creator submission detail route",
+      "parents": [
+        "541093d0de15b807972c8788e038b07a0aa1014c"
+      ]
+    },
+    {
+      "sha": "541093d0de15b807972c8788e038b07a0aa1014c",
+      "date": "2026-05-21T16:15:00Z",
+      "message": "feat: add creator submission detail route",
+      "parents": [
+        "16f0eb0ba175416672df71a76a5fdf833891b2b1"
+      ]
+    },
+    {
+      "sha": "16f0eb0ba175416672df71a76a5fdf833891b2b1",
+      "date": "2026-05-21T16:13:13Z",
+      "message": "test: cover admin creator submission detail route",
+      "parents": [
+        "fe5f6917ac657b415682654c5f1e394043a04bdd"
+      ]
+    },
+    {
+      "sha": "fe5f6917ac657b415682654c5f1e394043a04bdd",
+      "date": "2026-05-21T16:12:36Z",
+      "message": "feat: add admin creator submission detail route",
+      "parents": [
+        "fc27201ab3581c66900b06eeb28ea78a69169853"
+      ]
+    },
+    {
+      "sha": "fc27201ab3581c66900b06eeb28ea78a69169853",
+      "date": "2026-05-21T16:10:11Z",
+      "message": "test: cover runtime memory repository reuse",
+      "parents": [
+        "ed1f61aebd042fd04badf0ab6f3eaac6043f6941"
+      ]
+    },
+    {
+      "sha": "ed1f61aebd042fd04badf0ab6f3eaac6043f6941",
+      "date": "2026-05-21T16:01:11Z",
+      "message": "fix: reuse runtime memory repository",
+      "parents": [
+        "5c94285845bf3a27c66baef62337fbfb685a46ff"
+      ]
+    },
+    {
+      "sha": "5c94285845bf3a27c66baef62337fbfb685a46ff",
+      "date": "2026-05-21T15:59:22Z",
+      "message": "fix: keep content repository contract implemented",
+      "parents": [
+        "eafc9d52c7e2b43b5c1bc2bd89f1b5d469e87220"
+      ]
+    },
+    {
+      "sha": "eafc9d52c7e2b43b5c1bc2bd89f1b5d469e87220",
+      "date": "2026-05-21T15:57:33Z",
+      "message": "feat: add creator submission queue contract",
+      "parents": [
+        "caad117a5f3cbeeb22f3368201ab68c5e2ca8357"
+      ]
+    },
+    {
+      "sha": "caad117a5f3cbeeb22f3368201ab68c5e2ca8357",
+      "date": "2026-05-21T15:51:47Z",
+      "message": "test: cover admin creator submission moderation route",
+      "parents": [
+        "e39f189ad27d85f3a9b36d0f6a386ae12765e9c2"
+      ]
+    },
+    {
+      "sha": "e39f189ad27d85f3a9b36d0f6a386ae12765e9c2",
+      "date": "2026-05-21T15:50:29Z",
+      "message": "feat: add admin creator submission moderation route",
+      "parents": [
+        "eed3d8c07c4c2b0491c7e5827be863d5162ead99"
+      ]
+    },
+    {
+      "sha": "eed3d8c07c4c2b0491c7e5827be863d5162ead99",
+      "date": "2026-05-21T15:50:06Z",
+      "message": "feat: get creator submissions from Firestore repository",
+      "parents": [
+        "3e6bc6ef3c8ee629ef54173900ba1a4f2dac4502"
+      ]
+    },
+    {
+      "sha": "3e6bc6ef3c8ee629ef54173900ba1a4f2dac4502",
+      "date": "2026-05-21T15:48:46Z",
+      "message": "feat: get creator submissions from memory repository",
+      "parents": [
+        "bcb935f15f77a3858b5a7bca60150ed818b5462c"
+      ]
+    },
+    {
+      "sha": "bcb935f15f77a3858b5a7bca60150ed818b5462c",
+      "date": "2026-05-21T15:48:12Z",
+      "message": "feat: add creator submission lookup contract",
+      "parents": [
+        "c46d85238c052852595e123e3a994395ef8b987f"
+      ]
+    },
+    {
+      "sha": "c46d85238c052852595e123e3a994395ef8b987f",
+      "date": "2026-05-21T15:44:55Z",
+      "message": "test: cover creator submission listing route",
+      "parents": [
+        "a1585ca4a5a2cafdc4d5a792a1c3e744169a6818"
+      ]
+    },
+    {
+      "sha": "a1585ca4a5a2cafdc4d5a792a1c3e744169a6818",
+      "date": "2026-05-21T15:44:01Z",
+      "message": "feat: add creator submission listing route",
+      "parents": [
+        "f48b34d9cc29c6a5e1cf15eb56d1e229c1896fb7"
+      ]
+    },
+    {
+      "sha": "f48b34d9cc29c6a5e1cf15eb56d1e229c1896fb7",
+      "date": "2026-05-21T15:43:02Z",
+      "message": "feat: add creator submission list query",
+      "parents": [
+        "69519c1e7cc24374476edea21970c851fb89567b"
+      ]
+    },
+    {
+      "sha": "69519c1e7cc24374476edea21970c851fb89567b",
+      "date": "2026-05-21T15:41:58Z",
+      "message": "feat: list creator submissions in memory repository",
+      "parents": [
+        "1ab2fcdd6c8d71303d631d39154f86a673d4b665"
+      ]
+    },
+    {
+      "sha": "1ab2fcdd6c8d71303d631d39154f86a673d4b665",
+      "date": "2026-05-21T15:40:31Z",
+      "message": "feat: add creator submission listing contract",
+      "parents": [
+        "ef332dd28bae4839b54d635644e073c413107902"
+      ]
+    },
+    {
+      "sha": "ef332dd28bae4839b54d635644e073c413107902",
+      "date": "2026-05-21T15:39:00Z",
+      "message": "test: cover creator submission API authorization",
+      "parents": [
+        "78bdc329b73d364ecb6dfa8f3d0f6c837d4835c6"
+      ]
+    },
+    {
+      "sha": "78bdc329b73d364ecb6dfa8f3d0f6c837d4835c6",
+      "date": "2026-05-21T15:38:00Z",
+      "message": "feat: add creator submission API route",
+      "parents": [
+        "9e16af9211036c41c31f5a31936d3d04a481b363"
+      ]
+    },
+    {
+      "sha": "9e16af9211036c41c31f5a31936d3d04a481b363",
+      "date": "2026-05-21T15:35:42Z",
+      "message": "test: cover admin seed route authorization",
+      "parents": [
+        "666757401cbe6e97b5c3994f1c898a6b75162d3c"
+      ]
+    },
+    {
+      "sha": "666757401cbe6e97b5c3994f1c898a6b75162d3c",
+      "date": "2026-05-21T15:35:13Z",
+      "message": "feat: allow admin session for canonical seed route",
+      "parents": [
+        "4b67ee53b714791ee11051508c0cc1936cedbd1a"
+      ]
+    },
+    {
+      "sha": "4b67ee53b714791ee11051508c0cc1936cedbd1a",
+      "date": "2026-05-21T15:32:18Z",
+      "message": "test: cover runtime content service published search",
+      "parents": [
+        "55f32dc44714fd5e1a28dd3f0b2300d75b32a076"
+      ]
+    },
+    {
+      "sha": "55f32dc44714fd5e1a28dd3f0b2300d75b32a076",
+      "date": "2026-05-21T15:30:25Z",
+      "message": "fix: expose runtime content service",
+      "parents": [
+        "a4c3d2638c8d465dc245be0f3be9c6f479aaf8f1"
+      ]
+    },
+    {
+      "sha": "a4c3d2638c8d465dc245be0f3be9c6f479aaf8f1",
+      "date": "2026-05-21T15:27:02Z",
+      "message": "test: cover production header auth guard",
+      "parents": [
+        "fa8f9cac903231863bb6ea289a52cf820ad49c01"
+      ]
+    },
+    {
+      "sha": "fa8f9cac903231863bb6ea289a52cf820ad49c01",
+      "date": "2026-05-21T15:25:39Z",
+      "message": "fix: fail closed for header auth in production",
+      "parents": [
+        "26607b5e50fadd8bdbb823e6bef35bb4062acc59"
+      ]
+    },
+    {
+      "sha": "26607b5e50fadd8bdbb823e6bef35bb4062acc59",
+      "date": "2026-05-21T15:21:31Z",
+      "message": "test: cover authorization helpers and request sessions",
+      "parents": [
+        "086552b6cd9496f26242c2fbd78228a57582515a"
+      ]
+    },
+    {
+      "sha": "086552b6cd9496f26242c2fbd78228a57582515a",
+      "date": "2026-05-21T15:20:43Z",
+      "message": "feat: add request session parser",
+      "parents": [
+        "af580dfccaafeae3d2874bd24427022781fd9430"
+      ]
+    },
+    {
+      "sha": "af580dfccaafeae3d2874bd24427022781fd9430",
+      "date": "2026-05-21T15:20:24Z",
+      "message": "feat: add server authorization helpers",
+      "parents": [
+        "c861bc8f72aa43a568d7e94e43090b0b7bcbc632"
+      ]
+    },
+    {
+      "sha": "43491aa9b1c12b3b6978479fbc0933bf9a1eae96",
+      "date": "2026-05-21T15:07:35Z",
+      "message": "Merge pull request #36 from LifeLoggerAI/feat/rbac-policy-contracts",
+      "parents": [
+        "83c8686a1d852f39ec53ab729c351db84e9f0302",
+        "8a10fbf68229ffcc3a316419ba3e12b214bb0851"
+      ]
+    },
+    {
+      "sha": "83c8686a1d852f39ec53ab729c351db84e9f0302",
+      "date": "2026-05-21T15:06:58Z",
+      "message": "Merge pull request #38 from LifeLoggerAI/codex/production-completion-plan",
+      "parents": [
+        "ffd9689c3a9ae0f3ee118f95fa429c3263023139",
+        "c861bc8f72aa43a568d7e94e43090b0b7bcbc632"
+      ]
+    },
+    {
+      "sha": "c861bc8f72aa43a568d7e94e43090b0b7bcbc632",
+      "date": "2026-05-21T15:06:49Z",
+      "message": "Merge branch 'main' into codex/production-completion-plan",
+      "parents": [
+        "95eed33de2443bcfbfe13db06ac73d2ff540c23e",
+        "ffd9689c3a9ae0f3ee118f95fa429c3263023139"
+      ]
+    },
+    {
+      "sha": "95eed33de2443bcfbfe13db06ac73d2ff540c23e",
+      "date": "2026-05-21T15:03:15Z",
+      "message": "test: assert Firestore adapter merge writes",
+      "parents": [
+        "a55fb31e1393267f43816b2d2d1e5aa54ec10e7f"
+      ]
+    },
+    {
+      "sha": "a55fb31e1393267f43816b2d2d1e5aa54ec10e7f",
+      "date": "2026-05-21T14:47:48Z",
+      "message": "test: cover firestore runtime catalog published guard",
+      "parents": [
+        "0b1155003b21f0c745f477c1faafbc6f49cecb1d"
+      ]
+    },
+    {
+      "sha": "0b1155003b21f0c745f477c1faafbc6f49cecb1d",
+      "date": "2026-05-21T14:35:16Z",
+      "message": "refactor: use published content service for runtime catalog",
+      "parents": [
+        "d6ecda60b1c5700fcd6de823f9faf15585e15875"
+      ]
+    },
+    {
+      "sha": "d6ecda60b1c5700fcd6de823f9faf15585e15875",
+      "date": "2026-05-21T14:30:01Z",
+      "message": "test: cover published-only content search",
+      "parents": [
+        "9ce0e6a1f66de36e071ccc020f01d9f32919e9fc"
+      ]
+    },
+    {
+      "sha": "9ce0e6a1f66de36e071ccc020f01d9f32919e9fc",
+      "date": "2026-05-21T14:29:05Z",
+      "message": "feat: add published content search guard",
+      "parents": [
+        "cd34b18b29df3139170fb181d1c692728cb85087"
+      ]
+    },
+    {
+      "sha": "cd34b18b29df3139170fb181d1c692728cb85087",
+      "date": "2026-05-21T14:26:10Z",
+      "message": "docs: link production completion plan",
+      "parents": [
+        "42a929075b2ce59da4c51083e01eba16b2126cdf"
+      ]
+    },
+    {
+      "sha": "42a929075b2ce59da4c51083e01eba16b2126cdf",
+      "date": "2026-05-21T14:25:31Z",
+      "message": "docs: add production completion plan",
+      "parents": [
+        "aa0ee59712b04224b7b5d7f714deab42155d54be"
+      ]
+    },
+    {
+      "sha": "ffd9689c3a9ae0f3ee118f95fa429c3263023139",
+      "date": "2026-05-19T22:58:40Z",
+      "message": "Complete URAI public route shells and launch site wiring",
+      "parents": [
+        "c299662951b10e14e96c53b4eff7d7a04ebdf8e4"
+      ]
+    },
+    {
+      "sha": "c299662951b10e14e96c53b4eff7d7a04ebdf8e4",
+      "date": "2026-05-18T03:03:24Z",
+      "message": "Add Foundation integration handoff",
+      "parents": [
+        "5541d7e24e1f309a5322d300feac3129b9b7b73b"
+      ]
+    },
+    {
+      "sha": "5541d7e24e1f309a5322d300feac3129b9b7b73b",
+      "date": "2026-05-17T01:51:30Z",
+      "message": "Add authenticated session E2E scaffold",
+      "parents": [
+        "a87f55152e44b9be8d4efbfe7fedf5a21ce1f150"
+      ]
+    },
+    {
+      "sha": "a87f55152e44b9be8d4efbfe7fedf5a21ce1f150",
+      "date": "2026-05-17T01:48:04Z",
+      "message": "Add release promotion verification workflow",
+      "parents": [
+        "21575b93513ad35a6b913265d73fb4dbe783f01d"
+      ]
+    },
+    {
+      "sha": "21575b93513ad35a6b913265d73fb4dbe783f01d",
+      "date": "2026-05-16T23:17:56Z",
+      "message": "Add cross-repo runtime integration contract",
+      "parents": [
+        "03169e2d0a8abe3f817dd1b011b36ebe536b421b"
+      ]
+    },
+    {
+      "sha": "03169e2d0a8abe3f817dd1b011b36ebe536b421b",
+      "date": "2026-05-16T23:12:19Z",
+      "message": "Enforce provider alert and release env gates in governance validator",
+      "parents": [
+        "2c82da5b46d7c8dc2f2f0ad208e5b36c96da790f"
+      ]
+    },
+    {
+      "sha": "2c82da5b46d7c8dc2f2f0ad208e5b36c96da790f",
+      "date": "2026-05-16T23:10:39Z",
+      "message": "Wire provider and alert checks into package scripts",
+      "parents": [
+        "7d1519055cb2e3ac65a27dc961c7d140d5359c29"
+      ]
+    },
+    {
+      "sha": "7d1519055cb2e3ac65a27dc961c7d140d5359c29",
+      "date": "2026-05-16T23:08:59Z",
+      "message": "Add alert webhook verifier",
+      "parents": [
+        "bd03a4d5d1047ce566bbff30e76ad8c7b2a18359"
+      ]
+    },
+    {
+      "sha": "bd03a4d5d1047ce566bbff30e76ad8c7b2a18359",
+      "date": "2026-05-16T23:06:51Z",
+      "message": "Add provider evidence gate checker",
+      "parents": [
+        "cd217c866750086ae180ebcec3a2c2c12c77b997"
+      ]
+    },
+    {
+      "sha": "cd217c866750086ae180ebcec3a2c2c12c77b997",
+      "date": "2026-05-16T23:05:00Z",
+      "message": "Integrate E2E and release orchestration into README",
+      "parents": [
+        "76ebe3a7dedb625d35984922c1a1142bb0034d1a"
+      ]
+    },
+    {
+      "sha": "76ebe3a7dedb625d35984922c1a1142bb0034d1a",
+      "date": "2026-05-16T22:59:22Z",
+      "message": "Add web Playwright E2E workflow",
+      "parents": [
+        "e5a709e340a5d92040ccaa2827b5b47e4ceead0d"
+      ]
+    },
+    {
+      "sha": "e5a709e340a5d92040ccaa2827b5b47e4ceead0d",
+      "date": "2026-05-16T22:55:10Z",
+      "message": "Add auth and RBAC browser smoke coverage",
+      "parents": [
+        "817244359f06d23072b9823fb992fa3be6ee4ab3"
+      ]
+    },
+    {
+      "sha": "817244359f06d23072b9823fb992fa3be6ee4ab3",
+      "date": "2026-05-16T22:54:42Z",
+      "message": "Wire Playwright E2E into web scripts",
+      "parents": [
+        "4a982cfe8ab129c1d5129b0559857396e79f62bb"
+      ]
+    },
+    {
+      "sha": "4a982cfe8ab129c1d5129b0559857396e79f62bb",
+      "date": "2026-05-16T22:48:58Z",
+      "message": "Add public route browser smoke tests",
+      "parents": [
+        "20d81a820fe5f4c6a1d3ad0df94d43fbceaf9350"
+      ]
+    },
+    {
+      "sha": "20d81a820fe5f4c6a1d3ad0df94d43fbceaf9350",
+      "date": "2026-05-16T22:47:30Z",
+      "message": "Add Playwright browser E2E scaffold",
+      "parents": [
+        "bd3f2854bd79019b4d40c6e05bde8e0dbe847a5e"
+      ]
+    },
+    {
+      "sha": "bd3f2854bd79019b4d40c6e05bde8e0dbe847a5e",
+      "date": "2026-05-16T22:40:45Z",
+      "message": "Add E2E verification runbook",
+      "parents": [
+        "0d7f3819a87fd1943b3134553b9c3765c4a71bde"
+      ]
+    },
+    {
+      "sha": "0d7f3819a87fd1943b3134553b9c3765c4a71bde",
+      "date": "2026-05-16T22:37:06Z",
+      "message": "Enforce runtime proof gates in governance validator",
+      "parents": [
+        "0e1e3c92c03097fc0bc10d599794ffaf3ba92157"
+      ]
+    },
+    {
+      "sha": "0e1e3c92c03097fc0bc10d599794ffaf3ba92157",
+      "date": "2026-05-16T22:34:04Z",
+      "message": "Require runtime smoke and observability evidence in PRs",
+      "parents": [
+        "602c0e19d0e0377cd2a29fc91c78267e6747d4ce"
+      ]
+    },
+    {
+      "sha": "602c0e19d0e0377cd2a29fc91c78267e6747d4ce",
+      "date": "2026-05-16T22:32:15Z",
+      "message": "Add production smoke rollback and observability evidence fields",
+      "parents": [
+        "2e1d64c784351a41bce85bbbfa0f3b8ba31cb64a"
+      ]
+    },
+    {
+      "sha": "2e1d64c784351a41bce85bbbfa0f3b8ba31cb64a",
+      "date": "2026-05-16T22:20:25Z",
+      "message": "Add observability verification command",
+      "parents": [
+        "fc9fdf75e5d4c3b14022dd4d3b4b2173eb171cca"
+      ]
+    },
+    {
+      "sha": "fc9fdf75e5d4c3b14022dd4d3b4b2173eb171cca",
+      "date": "2026-05-16T22:18:53Z",
+      "message": "Add observability environment verifier",
+      "parents": [
+        "ca8d36e3bdf304bff5ed2ffa786565cfb3f98127"
+      ]
+    },
+    {
+      "sha": "ca8d36e3bdf304bff5ed2ffa786565cfb3f98127",
+      "date": "2026-05-16T22:15:41Z",
+      "message": "Add rollback smoke verification command",
+      "parents": [
+        "71e44bdbe8c6b78cb5c4390c123ffa5b5eecd4ca"
+      ]
+    },
+    {
+      "sha": "71e44bdbe8c6b78cb5c4390c123ffa5b5eecd4ca",
+      "date": "2026-05-16T22:12:23Z",
+      "message": "Add rollback smoke verifier",
+      "parents": [
+        "aa0fc76aeb9a538064187570644ab49a33dd9eb4"
+      ]
+    },
+    {
+      "sha": "aa0fc76aeb9a538064187570644ab49a33dd9eb4",
+      "date": "2026-05-16T22:07:04Z",
+      "message": "Add production smoke verification script",
+      "parents": [
+        "6a7c4607f6a769b25565fbc7d7dda0421397a693"
+      ]
+    },
+    {
+      "sha": "6a7c4607f6a769b25565fbc7d7dda0421397a693",
+      "date": "2026-05-16T22:04:59Z",
+      "message": "Add production smoke verifier",
+      "parents": [
+        "118ca9831b84e32a170a4a6608c3699581c13db3"
+      ]
+    },
+    {
+      "sha": "118ca9831b84e32a170a4a6608c3699581c13db3",
+      "date": "2026-05-16T22:00:46Z",
+      "message": "Enforce secret scanning in governance workflow",
+      "parents": [
+        "09a78aa903a2d4896e61976d16e8aa9192982648"
+      ]
+    },
+    {
+      "sha": "09a78aa903a2d4896e61976d16e8aa9192982648",
+      "date": "2026-05-16T22:00:32Z",
+      "message": "Wire secret scan into verification scripts",
+      "parents": [
+        "e94d89167193f85fcf1849eb92acbe29802e12ee"
+      ]
+    },
+    {
+      "sha": "e94d89167193f85fcf1849eb92acbe29802e12ee",
+      "date": "2026-05-16T21:55:50Z",
+      "message": "Add production evidence requirements",
+      "parents": [
+        "d42c24b8f3ac06297942752e2f4ded00c9d5a0b0"
+      ]
+    },
+    {
+      "sha": "d42c24b8f3ac06297942752e2f4ded00c9d5a0b0",
+      "date": "2026-05-16T21:55:00Z",
+      "message": "Add secret leakage safety check",
+      "parents": [
+        "78ffea21ce0f2a4a1baa253333071de975f8266f"
+      ]
+    },
+    {
+      "sha": "78ffea21ce0f2a4a1baa253333071de975f8266f",
+      "date": "2026-05-16T21:51:35Z",
+      "message": "Add governance validation workflow",
+      "parents": [
+        "5b864e79a4998cb3912d8d230506eaf7009f0568"
+      ]
+    },
+    {
+      "sha": "5b864e79a4998cb3912d8d230506eaf7009f0568",
+      "date": "2026-05-16T21:48:35Z",
+      "message": "Tighten governance validator for PR release gates",
+      "parents": [
+        "c155e458152a4fb4e5faacc8b7c294ffdadbba77"
+      ]
+    },
+    {
+      "sha": "c155e458152a4fb4e5faacc8b7c294ffdadbba77",
+      "date": "2026-05-16T21:46:12Z",
+      "message": "Require governance check in PR template",
+      "parents": [
+        "c6e0abf6b0006e1f31dd5ead4071dcaa6e5c94e2"
+      ]
+    },
+    {
+      "sha": "c6e0abf6b0006e1f31dd5ead4071dcaa6e5c94e2",
+      "date": "2026-05-16T21:43:19Z",
+      "message": "Integrate governance validation into maintainer checklist",
+      "parents": [
+        "59ab9d89f53f9c8443c07719c661aa0df62fe832"
+      ]
+    },
+    {
+      "sha": "59ab9d89f53f9c8443c07719c661aa0df62fe832",
+      "date": "2026-05-16T21:41:45Z",
+      "message": "Document governance verification command",
+      "parents": [
+        "50917e84cf0e9836d8b4bb4cacc296763eaf755e"
+      ]
+    },
+    {
+      "sha": "50917e84cf0e9836d8b4bb4cacc296763eaf755e",
+      "date": "2026-05-16T21:39:16Z",
+      "message": "Add governance docs verification script",
+      "parents": [
+        "e5d4ade31eb189c7758d489a134f901ac59da425"
+      ]
+    },
+    {
+      "sha": "e5d4ade31eb189c7758d489a134f901ac59da425",
+      "date": "2026-05-16T21:36:48Z",
+      "message": "Add governance docs integrity checker",
+      "parents": [
+        "43ca5c020490ab0a3012e6e88d0fbf5a439371c8"
+      ]
+    },
+    {
+      "sha": "43ca5c020490ab0a3012e6e88d0fbf5a439371c8",
+      "date": "2026-05-16T21:33:13Z",
+      "message": "Integrate README with governance and runtime docs",
+      "parents": [
+        "10cfa1b552adbdb623e1879f49c81899d7d4e6a9"
+      ]
+    },
+    {
+      "sha": "10cfa1b552adbdb623e1879f49c81899d7d4e6a9",
+      "date": "2026-05-16T21:30:56Z",
+      "message": "Add production readiness dashboard",
+      "parents": [
+        "024ef46903dbb031c640f8f595ac9c32a0022936"
+      ]
+    },
+    {
+      "sha": "024ef46903dbb031c640f8f595ac9c32a0022936",
+      "date": "2026-05-16T21:28:29Z",
+      "message": "Add branch and governance status note",
+      "parents": [
+        "a688690db735c3e0805325edf3e6c4af9b360104"
+      ]
+    },
+    {
+      "sha": "a688690db735c3e0805325edf3e6c4af9b360104",
+      "date": "2026-05-16T21:25:47Z",
+      "message": "Add CODEOWNERS for launch-sensitive surfaces",
+      "parents": [
+        "0857c979f4c1f13004124d8a8899f651d2e83eae"
+      ]
+    },
+    {
+      "sha": "0857c979f4c1f13004124d8a8899f651d2e83eae",
+      "date": "2026-05-16T21:20:04Z",
+      "message": "Add runtime bug issue template",
+      "parents": [
+        "db6052067e839c94bd728e0433a6ad7d4b67593b"
+      ]
+    },
+    {
+      "sha": "db6052067e839c94bd728e0433a6ad7d4b67593b",
+      "date": "2026-05-16T21:17:37Z",
+      "message": "Add launch task issue template",
+      "parents": [
+        "a5ea48425a95cebce76681564150a4cf0c52c151"
+      ]
+    },
+    {
+      "sha": "a5ea48425a95cebce76681564150a4cf0c52c151",
+      "date": "2026-05-16T21:15:56Z",
+      "message": "Strengthen PR evidence and release gating template",
+      "parents": [
+        "2440075022315f2204a7fbd69f5d857f52ac0963"
+      ]
+    },
+    {
+      "sha": "2440075022315f2204a7fbd69f5d857f52ac0963",
+      "date": "2026-05-16T21:12:16Z",
+      "message": "Add maintainer release checklist",
+      "parents": [
+        "a3e31b12b1a80b7b477dbc58880228f117a60d62"
+      ]
+    },
+    {
+      "sha": "a3e31b12b1a80b7b477dbc58880228f117a60d62",
+      "date": "2026-05-16T20:40:23Z",
+      "message": "Add evidence log template",
+      "parents": [
+        "cf03a3ab440e8e426cba2db134d260e298b9c6f3"
+      ]
+    },
+    {
+      "sha": "cf03a3ab440e8e426cba2db134d260e298b9c6f3",
+      "date": "2026-05-16T20:38:13Z",
+      "message": "Add issue launch control matrix",
+      "parents": [
+        "d9253b692994e228fcd7abeb01db26a30beb4853"
+      ]
+    },
+    {
+      "sha": "d9253b692994e228fcd7abeb01db26a30beb4853",
+      "date": "2026-05-16T20:35:45Z",
+      "message": "Add production launch runbook",
+      "parents": [
+        "f2fde8d6a4532b67a432cd9cd0c35b45069f2ff0"
+      ]
+    },
+    {
+      "sha": "f2fde8d6a4532b67a432cd9cd0c35b45069f2ff0",
+      "date": "2026-05-16T20:33:07Z",
+      "message": "Align route coverage with current web runtime scaffold",
+      "parents": [
+        "2a375764eaf82885e7fe535a4fc1ecf98126da4e"
+      ]
+    },
+    {
+      "sha": "2a375764eaf82885e7fe535a4fc1ecf98126da4e",
+      "date": "2026-05-16T20:30:42Z",
+      "message": "Refresh final audit with current package plus web runtime status",
+      "parents": [
+        "f7d8ac605dba2def1818908e84b81bcaedf56cd8"
+      ]
+    },
+    {
+      "sha": "f7d8ac605dba2def1818908e84b81bcaedf56cd8",
+      "date": "2026-05-16T20:28:56Z",
+      "message": "Add final completion audit and operations package",
+      "parents": [
+        "b8278d6bbcb912144b8559318255fe19226d2683"
+      ]
+    },
+    {
+      "sha": "8a10fbf68229ffcc3a316419ba3e12b214bb0851",
+      "date": "2026-05-11T18:17:23Z",
+      "message": "Add RBAC policy contract tests",
+      "parents": [
+        "7a4221aea65c71cce828dfca0f8daab58bff5ba7"
+      ]
+    },
+    {
+      "sha": "7a4221aea65c71cce828dfca0f8daab58bff5ba7",
+      "date": "2026-05-11T18:15:19Z",
+      "message": "Add URAI Content RBAC policy contracts",
+      "parents": [
+        "b8278d6bbcb912144b8559318255fe19226d2683"
+      ]
+    },
+    {
+      "sha": "b8278d6bbcb912144b8559318255fe19226d2683",
+      "date": "2026-05-11T18:10:20Z",
+      "message": "test: add public SEO metadata contracts",
+      "parents": [
+        "aa0ee59712b04224b7b5d7f714deab42155d54be"
+      ]
+    },
+    {
+      "sha": "aa0ee59712b04224b7b5d7f714deab42155d54be",
+      "date": "2026-05-11T09:43:48Z",
+      "message": "test: add runtime API route handler contracts",
+      "parents": [
+        "71bfd90e10f3f3e49a4826f1353497e18451503e"
+      ]
+    },
+    {
+      "sha": "71bfd90e10f3f3e49a4826f1353497e18451503e",
+      "date": "2026-05-11T09:05:20Z",
+      "message": "docs: refresh deployment blockers and standalone plan",
+      "parents": [
+        "39232a35c9ba7dbc70658f2f66b72e92ac22d4e7"
+      ]
+    },
+    {
+      "sha": "39232a35c9ba7dbc70658f2f66b72e92ac22d4e7",
+      "date": "2026-05-11T08:40:45Z",
+      "message": "test: run web route smoke tests in CI",
+      "parents": [
+        "d4ebef060f88d7b852adcfc248a032a6e4295dc3"
+      ]
+    },
+    {
+      "sha": "d4ebef060f88d7b852adcfc248a032a6e4295dc3",
+      "date": "2026-05-11T08:24:41Z",
+      "message": "chore: align status docs and CI with web runtime",
+      "parents": [
+        "4d16db74a2fcf47712e6ba341e3c44100961d1ac"
+      ]
+    },
+    {
+      "sha": "4d16db74a2fcf47712e6ba341e3c44100961d1ac",
+      "date": "2026-05-11T07:40:54Z",
+      "message": "chore: carry forward web generated artifact hygiene",
+      "parents": [
+        "ef202c74872f3837e151e0431b88bd6e70fd5a03"
+      ]
+    },
+    {
+      "sha": "ef202c74872f3837e151e0431b88bd6e70fd5a03",
+      "date": "2026-05-11T06:57:19Z",
+      "message": "Merge pull request #28 from LifeLoggerAI/feat/complete-public-route-shells",
+      "parents": [
+        "1302442fe7dab1e56150a7840cf2c8e932dc69de",
+        "bedaa333cf66f68687eb558d9189df11cba97cd7"
+      ]
+    },
+    {
+      "sha": "bedaa333cf66f68687eb558d9189df11cba97cd7",
+      "date": "2026-05-11T06:56:42Z",
+      "message": "Merge branch 'main' into feat/complete-public-route-shells",
+      "parents": [
+        "81dc79074f58b57b66cb0b325bfcc65fd72cfc75",
+        "1302442fe7dab1e56150a7840cf2c8e932dc69de"
+      ]
+    },
+    {
+      "sha": "1302442fe7dab1e56150a7840cf2c8e932dc69de",
+      "date": "2026-05-11T06:55:39Z",
+      "message": "Merge pull request #29 from LifeLoggerAI/test/public-route-smoke",
+      "parents": [
+        "3f301f6824dd08eae8f89b9bad0f910ead28b96f",
+        "a928ee0112e4fe350a6fd2f6eb6818831cc01afc"
+      ]
+    },
+    {
+      "sha": "81dc79074f58b57b66cb0b325bfcc65fd72cfc75",
+      "date": "2026-05-11T06:54:05Z",
+      "message": "Track web Next generated type references",
+      "parents": [
+        "dff947c8185bd6f4c498bdf1e771d90f3cd47133"
+      ]
+    },
+    {
+      "sha": "dff947c8185bd6f4c498bdf1e771d90f3cd47133",
+      "date": "2026-05-11T06:35:00Z",
+      "message": "Ignore generated Next artifacts in web ESLint",
+      "parents": [
+        "fc693b3f31c558304a843f463fa56bc6ad5bea97"
+      ]
+    },
+    {
+      "sha": "fc693b3f31c558304a843f463fa56bc6ad5bea97",
+      "date": "2026-05-11T06:27:07Z",
+      "message": "Update audit report with verified package and web runtime status",
+      "parents": [
+        "eac8ce1ff0e2b7ec27e91610d9405566a59da27d"
+      ]
+    },
+    {
+      "sha": "eac8ce1ff0e2b7ec27e91610d9405566a59da27d",
+      "date": "2026-05-11T06:11:59Z",
+      "message": "Run Next-aware ESLint in web checks",
+      "parents": [
+        "3fe15391596cd20d676933110cfa44a305a8ee29"
+      ]
+    },
+    {
+      "sha": "3fe15391596cd20d676933110cfa44a305a8ee29",
+      "date": "2026-05-11T06:09:34Z",
+      "message": "Add Next-aware ESLint config for web app",
+      "parents": [
+        "4f778674d24a5c5358455e3b740a4112a88ba4a8"
+      ]
+    },
+    {
+      "sha": "4f778674d24a5c5358455e3b740a4112a88ba4a8",
+      "date": "2026-05-11T04:33:02Z",
+      "message": "Keep root TypeScript check scoped to content package",
+      "parents": [
+        "1ecf64b96f8b3dc28de1aadd231f1e373d41c74e"
+      ]
+    },
+    {
+      "sha": "1ecf64b96f8b3dc28de1aadd231f1e373d41c74e",
+      "date": "2026-05-11T04:23:08Z",
+      "message": "Ignore nested local Vitest configs in package lint",
+      "parents": [
+        "b5ba160aca160db6a454306351b7760b23963646"
+      ]
+    },
+    {
+      "sha": "b5ba160aca160db6a454306351b7760b23963646",
+      "date": "2026-05-11T04:20:41Z",
+      "message": "Ignore local root Vitest config in package lint",
+      "parents": [
+        "1ebbd26bd58e9c4a719d65ce592bc7a7c0506444"
+      ]
+    },
+    {
+      "sha": "1ebbd26bd58e9c4a719d65ce592bc7a7c0506444",
+      "date": "2026-05-11T04:20:31Z",
+      "message": "Constrain root Vitest to root test directory",
+      "parents": [
+        "e5c8b468c299816c45f9afa6fac430db25479dc5"
+      ]
+    },
+    {
+      "sha": "e5c8b468c299816c45f9afa6fac430db25479dc5",
+      "date": "2026-05-11T04:17:07Z",
+      "message": "Scope root Vitest run to package tests",
+      "parents": [
+        "ab0869995ae21809146bd9aba6ba30268f40b47e"
+      ]
+    },
+    {
+      "sha": "ab0869995ae21809146bd9aba6ba30268f40b47e",
+      "date": "2026-05-11T04:16:31Z",
+      "message": "Regenerate content index for public route shells",
+      "parents": [
+        "9efff2b586ad1cd8f02fd37e98f6007aaf65eb8a"
+      ]
+    },
+    {
+      "sha": "9efff2b586ad1cd8f02fd37e98f6007aaf65eb8a",
+      "date": "2026-05-11T04:16:20Z",
+      "message": "Fix root TypeScript project coverage for web tests",
+      "parents": [
+        "c635715ad509e3becc2546e8d09d5d32607d6f3c"
+      ]
+    },
+    {
+      "sha": "a928ee0112e4fe350a6fd2f6eb6818831cc01afc",
+      "date": "2026-05-09T09:28:48Z",
+      "message": "Add root web route smoke script",
+      "parents": [
+        "e7f033881c7f332c9ee96bf22c00c0c64ed8976d"
+      ]
+    },
+    {
+      "sha": "e7f033881c7f332c9ee96bf22c00c0c64ed8976d",
+      "date": "2026-05-09T09:26:14Z",
+      "message": "Add public route smoke checker",
+      "parents": [
+        "8be74f4f423ce747bbac3e5902be94021896f87c"
+      ]
+    },
+    {
+      "sha": "8be74f4f423ce747bbac3e5902be94021896f87c",
+      "date": "2026-05-09T09:24:35Z",
+      "message": "Add web route smoke script",
+      "parents": [
+        "c635715ad509e3becc2546e8d09d5d32607d6f3c"
+      ]
+    },
+    {
+      "sha": "c635715ad509e3becc2546e8d09d5d32607d6f3c",
+      "date": "2026-05-09T08:52:25Z",
+      "message": "Assert complete public route shell manifest",
+      "parents": [
+        "2ccb313dc17dce97aa47a46ecbe61604346bbe43"
+      ]
+    },
+    {
+      "sha": "2ccb313dc17dce97aa47a46ecbe61604346bbe43",
+      "date": "2026-05-09T08:38:28Z",
+      "message": "Track complete public route shell coverage",
+      "parents": [
+        "0b6953184b6cedad82340bb0df8cdd742c369189"
+      ]
+    },
+    {
+      "sha": "0b6953184b6cedad82340bb0df8cdd742c369189",
+      "date": "2026-05-09T08:36:34Z",
+      "message": "Add terms public route",
+      "parents": [
+        "237425693fb0f45d815612e2a493a36bcab175ca"
+      ]
+    },
+    {
+      "sha": "237425693fb0f45d815612e2a493a36bcab175ca",
+      "date": "2026-05-09T08:35:13Z",
+      "message": "Add versions public route",
+      "parents": [
+        "fd3085858d5c279eb720edccaa94dcf8363f6976"
+      ]
+    },
+    {
+      "sha": "fd3085858d5c279eb720edccaa94dcf8363f6976",
+      "date": "2026-05-09T08:30:46Z",
+      "message": "Add demo public route",
+      "parents": [
+        "ec95d301b4163aebbb9f967a16dcd3acc3d655c2"
+      ]
+    },
+    {
+      "sha": "ec95d301b4163aebbb9f967a16dcd3acc3d655c2",
+      "date": "2026-05-09T08:30:20Z",
+      "message": "Add exports public route",
+      "parents": [
+        "a87290356463443fc96d29045b7e198ea306cef6"
+      ]
+    },
+    {
+      "sha": "a87290356463443fc96d29045b7e198ea306cef6",
+      "date": "2026-05-09T08:29:11Z",
+      "message": "Add licensing public route",
+      "parents": [
+        "a7a90838396549e30ba869ae7afd4f935635650d"
+      ]
+    },
+    {
+      "sha": "a7a90838396549e30ba869ae7afd4f935635650d",
+      "date": "2026-05-09T08:28:22Z",
+      "message": "Add creator public route",
+      "parents": [
+        "d500853327b603bee61e2cc09c58b46e467577bc"
+      ]
+    },
+    {
+      "sha": "d500853327b603bee61e2cc09c58b46e467577bc",
+      "date": "2026-05-09T08:27:52Z",
+      "message": "Add marketplace public route",
+      "parents": [
+        "3b2688ac362da32f5ad9b003076c190b36f0a27a"
+      ]
+    },
+    {
+      "sha": "3b2688ac362da32f5ad9b003076c190b36f0a27a",
+      "date": "2026-05-09T08:25:17Z",
+      "message": "Add voice packs public route",
+      "parents": [
+        "793cec004b2f38cac83445ad1f62df78b4e0a0f9"
+      ]
+    },
+    {
+      "sha": "793cec004b2f38cac83445ad1f62df78b4e0a0f9",
+      "date": "2026-05-09T08:24:08Z",
+      "message": "Add narrator public route",
+      "parents": [
+        "8b0d97121a64dc7a47c1a674b6114b953a722002"
+      ]
+    },
+    {
+      "sha": "8b0d97121a64dc7a47c1a674b6114b953a722002",
+      "date": "2026-05-09T08:22:31Z",
+      "message": "Add rituals public route",
+      "parents": [
+        "8f54e92e7a42f100594541c302fbdf790b9eb405"
+      ]
+    },
+    {
+      "sha": "8f54e92e7a42f100594541c302fbdf790b9eb405",
+      "date": "2026-05-09T08:20:56Z",
+      "message": "Add stories public route",
+      "parents": [
+        "e3f3d67d96890af6f142918b8d87206b439c92f5"
+      ]
+    },
+    {
+      "sha": "e3f3d67d96890af6f142918b8d87206b439c92f5",
+      "date": "2026-05-09T08:16:16Z",
+      "message": "Add public route shell renderer",
+      "parents": [
+        "c77ceed28872c8d4ed507308b1d42b959c091490"
+      ]
+    },
+    {
+      "sha": "c77ceed28872c8d4ed507308b1d42b959c091490",
+      "date": "2026-05-09T08:13:49Z",
+      "message": "Add public route shell content registry",
+      "parents": [
+        "e6f7fac00dc3c153dd60688814f44019a22f9a6a"
+      ]
+    },
+    {
+      "sha": "e6f7fac00dc3c153dd60688814f44019a22f9a6a",
+      "date": "2026-05-09T08:02:40Z",
+      "message": "Support root package TypeScript source imports in Next build",
+      "parents": [
+        "da0c2c76b62633ca9668736d53e0bac200c0c4d1"
+      ]
+    },
+    {
+      "sha": "da0c2c76b62633ca9668736d53e0bac200c0c4d1",
+      "date": "2026-05-09T04:23:28Z",
+      "message": "Alias server-only for Vitest",
+      "parents": [
+        "aa7c94ecc0b2d901db86b6b84ef8b106fecaf29e"
+      ]
+    },
+    {
+      "sha": "aa7c94ecc0b2d901db86b6b84ef8b106fecaf29e",
+      "date": "2026-05-09T04:23:13Z",
+      "message": "Stub server-only during web tests",
+      "parents": [
+        "e058a76ce9be35c3ee6435fb45ca4a5976a8b2c1"
+      ]
+    },
+    {
+      "sha": "e058a76ce9be35c3ee6435fb45ca4a5976a8b2c1",
+      "date": "2026-05-09T04:19:33Z",
+      "message": "Accept Firestore write result return types",
+      "parents": [
+        "6a507c9a0cda99bd2bd9a7c1bfa05c40bfa915e7"
+      ]
+    },
+    {
+      "sha": "6a507c9a0cda99bd2bd9a7c1bfa05c40bfa915e7",
+      "date": "2026-05-09T04:10:36Z",
+      "message": "Align fake Firestore tests with relaxed adapter type",
+      "parents": [
+        "68c5b5abbfa3239b47b15e4b8274be39b205cde6"
+      ]
+    },
+    {
+      "sha": "68c5b5abbfa3239b47b15e4b8274be39b205cde6",
+      "date": "2026-05-09T04:08:02Z",
+      "message": "Allow partial env objects in Firebase Admin helpers",
+      "parents": [
+        "a74040d325751531afb5e977803f7a09202fd323"
+      ]
+    },
+    {
+      "sha": "a74040d325751531afb5e977803f7a09202fd323",
+      "date": "2026-05-09T04:03:40Z",
+      "message": "Relax Firestore adapter structural typing",
+      "parents": [
+        "4241d0e71983a9adf7e9606afb8d92f9dcc978eb"
+      ]
+    },
+    {
+      "sha": "4241d0e71983a9adf7e9606afb8d92f9dcc978eb",
+      "date": "2026-05-09T03:55:25Z",
+      "message": "Exclude app workspaces from root package lint",
+      "parents": [
+        "51e78371cf236f2cd06129ffdf92d86434a1c743"
+      ]
+    },
+    {
+      "sha": "51e78371cf236f2cd06129ffdf92d86434a1c743",
+      "date": "2026-05-09T03:07:19Z",
+      "message": "Add web validation instructions",
+      "parents": [
+        "2732b7a5f2aadcac10675f071b6e5bbec2d5b12a"
+      ]
+    },
+    {
+      "sha": "2732b7a5f2aadcac10675f071b6e5bbec2d5b12a",
+      "date": "2026-05-09T03:06:14Z",
+      "message": "Add root web validation scripts",
+      "parents": [
+        "45c326ef2677ac4d381770699fe1209bc78164a7"
+      ]
+    },
+    {
+      "sha": "3f301f6824dd08eae8f89b9bad0f910ead28b96f",
+      "date": "2026-05-09T02:55:34Z",
+      "message": "Merge pull request #26 from LifeLoggerAI/feat/public-route-foundation",
+      "parents": [
+        "615efcec5728d3af17dfbb7f2ccc7bfdd132bf3a",
+        "9dcaae6896812eea604b6b5afd9b028fda37fc5d"
+      ]
+    },
+    {
+      "sha": "9dcaae6896812eea604b6b5afd9b028fda37fc5d",
+      "date": "2026-05-09T02:55:14Z",
+      "message": "Merge branch 'main' into feat/public-route-foundation",
+      "parents": [
+        "45c326ef2677ac4d381770699fe1209bc78164a7",
+        "615efcec5728d3af17dfbb7f2ccc7bfdd132bf3a"
+      ]
+    },
+    {
+      "sha": "45c326ef2677ac4d381770699fe1209bc78164a7",
+      "date": "2026-05-09T02:48:37Z",
+      "message": "Add public route manifest tests",
+      "parents": [
+        "2cb21a93460518cf2808fadc5e8f5d9cf6acd585"
+      ]
+    },
+    {
+      "sha": "2cb21a93460518cf2808fadc5e8f5d9cf6acd585",
+      "date": "2026-05-09T02:35:11Z",
+      "message": "Use public route manifest in sitemap",
+      "parents": [
+        "c5c49e7b1789ce69e12258f35c9dd0d0a06dc83c"
+      ]
+    },
+    {
+      "sha": "c5c49e7b1789ce69e12258f35c9dd0d0a06dc83c",
+      "date": "2026-05-09T02:34:04Z",
+      "message": "Add public route manifest",
+      "parents": [
+        "23410560f16778f08ad895b5db8b78747e3a45b8"
+      ]
+    },
+    {
+      "sha": "23410560f16778f08ad895b5db8b78747e3a45b8",
+      "date": "2026-05-09T02:33:00Z",
+      "message": "Add sitemap metadata route",
+      "parents": [
+        "c67cdc9010dbe64e052db19130b8894fec23e58e"
+      ]
+    },
+    {
+      "sha": "c67cdc9010dbe64e052db19130b8894fec23e58e",
+      "date": "2026-05-09T02:31:26Z",
+      "message": "Add robots metadata route",
+      "parents": [
+        "3cc47794e89245cfd294013e3163c9bee4ae0bac"
+      ]
+    },
+    {
+      "sha": "3cc47794e89245cfd294013e3163c9bee4ae0bac",
+      "date": "2026-05-09T02:30:21Z",
+      "message": "Add contact route",
+      "parents": [
+        "44a5c4c8e05052588a1120edfb0ee17b3117f31c"
+      ]
+    },
+    {
+      "sha": "44a5c4c8e05052588a1120edfb0ee17b3117f31c",
+      "date": "2026-05-09T02:18:13Z",
+      "message": "Add pricing route",
+      "parents": [
+        "e3940d6b972cf662938f1183b4dff334661b2d6b"
+      ]
+    },
+    {
+      "sha": "e3940d6b972cf662938f1183b4dff334661b2d6b",
+      "date": "2026-05-09T02:16:31Z",
+      "message": "Add privacy route",
+      "parents": [
+        "dd232b3143cea0392e05d7c6de9b830512bf2638"
+      ]
+    },
+    {
+      "sha": "dd232b3143cea0392e05d7c6de9b830512bf2638",
+      "date": "2026-05-09T02:15:02Z",
+      "message": "Add about route",
+      "parents": [
+        "611a561e81546207632d177734efed1c99bed418"
+      ]
+    },
+    {
+      "sha": "611a561e81546207632d177734efed1c99bed418",
+      "date": "2026-05-09T02:09:26Z",
+      "message": "Add reusable public page components",
+      "parents": [
+        "cb2aa42e5f08dbc3fe44cf7d5023afc10eca50dc"
+      ]
+    },
+    {
+      "sha": "cb2aa42e5f08dbc3fe44cf7d5023afc10eca50dc",
+      "date": "2026-05-09T01:57:40Z",
+      "message": "Add runtime catalog reader tests",
+      "parents": [
+        "2df49fb0644f5604ef147cb45ee5d2cb408f6698"
+      ]
+    },
+    {
+      "sha": "2df49fb0644f5604ef147cb45ee5d2cb408f6698",
+      "date": "2026-05-09T01:52:58Z",
+      "message": "Expose runtime content repository factory",
+      "parents": [
+        "f65e8198ca4892c72b53027416b53a973e84b680"
+      ]
+    },
+    {
+      "sha": "f65e8198ca4892c72b53027416b53a973e84b680",
+      "date": "2026-05-09T01:51:40Z",
+      "message": "Use repository list for Firestore catalog reads",
+      "parents": [
+        "e58281a7a0f660af7567d0dc937c0f5814afa1a4"
+      ]
+    },
+    {
+      "sha": "e58281a7a0f660af7567d0dc937c0f5814afa1a4",
+      "date": "2026-05-09T01:49:56Z",
+      "message": "Use runtime catalog reader in content API",
+      "parents": [
+        "51f7794f6a64bf13e50ddadd444fead6e33d63ed"
+      ]
+    },
+    {
+      "sha": "51f7794f6a64bf13e50ddadd444fead6e33d63ed",
+      "date": "2026-05-09T01:43:38Z",
+      "message": "Use runtime catalog reader in catalog API",
+      "parents": [
+        "0b5a794c9eef5fae47d507015b4e83f4f8da4644"
+      ]
+    },
+    {
+      "sha": "0b5a794c9eef5fae47d507015b4e83f4f8da4644",
+      "date": "2026-05-09T01:39:49Z",
+      "message": "Add runtime catalog reader with Firestore fallback",
+      "parents": [
+        "00f58e112edfb214a9504214c540f9de8cc0ab50"
+      ]
+    },
+    {
+      "sha": "00f58e112edfb214a9504214c540f9de8cc0ab50",
+      "date": "2026-05-09T01:36:39Z",
+      "message": "Add seed token verification tests",
+      "parents": [
+        "eb90bcfbdfd700331cd0ba5dbe3070a81b46546b"
+      ]
+    },
+    {
+      "sha": "eb90bcfbdfd700331cd0ba5dbe3070a81b46546b",
+      "date": "2026-05-09T01:31:20Z",
+      "message": "Add guarded canonical content seed endpoint",
+      "parents": [
+        "be682dc6eddfee2fac3076bf3aa210f3e8a25ae7"
+      ]
+    },
+    {
+      "sha": "be682dc6eddfee2fac3076bf3aa210f3e8a25ae7",
+      "date": "2026-05-09T01:29:37Z",
+      "message": "Add canonical seed token env support",
+      "parents": [
+        "9ec1d33abd5fd65653268404a02dd0f013f3d423"
+      ]
+    },
+    {
+      "sha": "9ec1d33abd5fd65653268404a02dd0f013f3d423",
+      "date": "2026-05-09T01:28:30Z",
+      "message": "Add canonical content seed tests",
+      "parents": [
+        "3ae2e06bd00189c5907b9e395af71a4d519fa9e6"
+      ]
+    },
+    {
+      "sha": "3ae2e06bd00189c5907b9e395af71a4d519fa9e6",
+      "date": "2026-05-09T01:13:57Z",
+      "message": "Add canonical catalog to content item seed mapper",
+      "parents": [
+        "92612228b6f445f7dd461f7383659d19be1c1660"
+      ]
+    },
+    {
+      "sha": "92612228b6f445f7dd461f7383659d19be1c1660",
+      "date": "2026-05-09T00:57:45Z",
+      "message": "Add catalog source mode tests",
+      "parents": [
+        "0f58422c31a277e69e070b33072bc4ca10c43d98"
+      ]
+    },
+    {
+      "sha": "0f58422c31a277e69e070b33072bc4ca10c43d98",
+      "date": "2026-05-09T00:56:51Z",
+      "message": "Expose content detail source metadata",
+      "parents": [
+        "bb65d029b65515fd7dddd0ca426792259be317bb"
+      ]
+    },
+    {
+      "sha": "bb65d029b65515fd7dddd0ca426792259be317bb",
+      "date": "2026-05-09T00:54:09Z",
+      "message": "Expose catalog source metadata",
+      "parents": [
+        "81fe1d011cb606dcaf563083905d013c4fda702e"
+      ]
+    },
+    {
+      "sha": "81fe1d011cb606dcaf563083905d013c4fda702e",
+      "date": "2026-05-09T00:53:28Z",
+      "message": "Add catalog source mode helper",
+      "parents": [
+        "ba62a55d30b844fe3e217513f79964c3641400b6"
+      ]
+    },
+    {
+      "sha": "ba62a55d30b844fe3e217513f79964c3641400b6",
+      "date": "2026-05-09T00:48:36Z",
+      "message": "Add runtime content service mode tests",
+      "parents": [
+        "b2391470db3db406414b3fa58237a63c871ff14a"
+      ]
+    },
+    {
+      "sha": "b2391470db3db406414b3fa58237a63c871ff14a",
+      "date": "2026-05-09T00:46:45Z",
+      "message": "Expose runtime content mode in Firebase status",
+      "parents": [
+        "cd7d7d9c92b1618c59bb31e0bad5245105cb3313"
+      ]
+    },
+    {
+      "sha": "cd7d7d9c92b1618c59bb31e0bad5245105cb3313",
+      "date": "2026-05-09T00:45:58Z",
+      "message": "Add runtime content service factory",
+      "parents": [
+        "a56e27a26e961e0b4f430398c78fd8ae83520130"
+      ]
+    },
+    {
+      "sha": "a56e27a26e961e0b4f430398c78fd8ae83520130",
+      "date": "2026-05-09T00:45:11Z",
+      "message": "Add Firestore indexes scaffold",
+      "parents": [
+        "63842c13dde119e81c803c4457a4040970ae24b0"
+      ]
+    },
+    {
+      "sha": "63842c13dde119e81c803c4457a4040970ae24b0",
+      "date": "2026-05-09T00:44:28Z",
+      "message": "Add locked-down Storage rules scaffold",
+      "parents": [
+        "4dd8089e075f4f00326a5ca67002a6ace168d771"
+      ]
+    },
+    {
+      "sha": "4dd8089e075f4f00326a5ca67002a6ace168d771",
+      "date": "2026-05-09T00:41:12Z",
+      "message": "Add locked-down Firestore rules scaffold",
+      "parents": [
+        "911ef186ad8ffa941fe05d41c5da48146b5f5ab1"
+      ]
+    },
+    {
+      "sha": "911ef186ad8ffa941fe05d41c5da48146b5f5ab1",
+      "date": "2026-05-09T00:38:38Z",
+      "message": "Add Firebase emulator and hosting config",
+      "parents": [
+        "222e670c60467e4200370d151b7bf6f987fdc3d6"
+      ]
+    },
+    {
+      "sha": "222e670c60467e4200370d151b7bf6f987fdc3d6",
+      "date": "2026-05-09T00:34:12Z",
+      "message": "Add Firebase Admin env tests",
+      "parents": [
+        "d06959dadbbc508fe91ca98ba019dc971fda19bd"
+      ]
+    },
+    {
+      "sha": "d06959dadbbc508fe91ca98ba019dc971fda19bd",
+      "date": "2026-05-09T00:33:19Z",
+      "message": "Add Firebase runtime status endpoint",
+      "parents": [
+        "a4840e4c3850958651f81b5458364fb9c3f7f631"
+      ]
+    },
+    {
+      "sha": "a4840e4c3850958651f81b5458364fb9c3f7f631",
+      "date": "2026-05-09T00:32:08Z",
+      "message": "Add Firebase Admin server initialization boundary",
+      "parents": [
+        "fa77258dce28761d153c082bd18134a1473a2ffc"
+      ]
+    },
+    {
+      "sha": "fa77258dce28761d153c082bd18134a1473a2ffc",
+      "date": "2026-05-09T00:30:45Z",
+      "message": "Add Firebase Admin environment parser",
+      "parents": [
+        "41855d3f28171ff6ded9ba889951136604a4374f"
+      ]
+    },
+    {
+      "sha": "41855d3f28171ff6ded9ba889951136604a4374f",
+      "date": "2026-05-09T00:29:47Z",
+      "message": "Add Firebase Admin server dependencies",
+      "parents": [
+        "78f38d942753ea0b1c7b929fb6b447b701444356"
+      ]
+    },
+    {
+      "sha": "78f38d942753ea0b1c7b929fb6b447b701444356",
+      "date": "2026-05-09T00:23:45Z",
+      "message": "Fix fake Firestore test typing",
+      "parents": [
+        "1242cc8cabca4070f289f89b6645879b733c3ff9"
+      ]
+    },
+    {
+      "sha": "1242cc8cabca4070f289f89b6645879b733c3ff9",
+      "date": "2026-05-09T00:22:49Z",
+      "message": "Add Firestore repository adapter tests",
+      "parents": [
+        "9846056bb47a79160cb1858913709a8acfbd11ce"
+      ]
+    },
+    {
+      "sha": "9846056bb47a79160cb1858913709a8acfbd11ce",
+      "date": "2026-05-09T00:20:53Z",
+      "message": "Add server-side Firestore content repository adapter",
+      "parents": [
+        "90e21d65903cc5d7a8f0a816753d57435478e2f2"
+      ]
+    },
+    {
+      "sha": "90e21d65903cc5d7a8f0a816753d57435478e2f2",
+      "date": "2026-05-09T00:15:30Z",
+      "message": "Add catalog loader tests",
+      "parents": [
+        "ce585be129b25d864302a57d3d2fcf720f54456b"
+      ]
+    },
+    {
+      "sha": "ce585be129b25d864302a57d3d2fcf720f54456b",
+      "date": "2026-05-09T00:13:58Z",
+      "message": "Add web runtime test script",
+      "parents": [
+        "5c200d25db4ccb319375c4386b493469e02da8bc"
+      ]
+    },
+    {
+      "sha": "5c200d25db4ccb319375c4386b493469e02da8bc",
+      "date": "2026-05-09T00:05:49Z",
+      "message": "Remove non-root content detail API route",
+      "parents": [
+        "dc856df5a8a3482f408713171edd577d922791c1"
+      ]
+    },
+    {
+      "sha": "dc856df5a8a3482f408713171edd577d922791c1",
+      "date": "2026-05-09T00:04:04Z",
+      "message": "Make content detail API root-aware",
+      "parents": [
+        "de546e4ed5ef49b3dff482ed4b55c7679638c4dc"
+      ]
+    },
+    {
+      "sha": "de546e4ed5ef49b3dff482ed4b55c7679638c4dc",
+      "date": "2026-05-09T00:03:44Z",
+      "message": "Render canonical catalog items on content route",
+      "parents": [
+        "457fd8bd50bdc8b2e5dd6f5e45e9e9851986f282"
+      ]
+    },
+    {
+      "sha": "457fd8bd50bdc8b2e5dd6f5e45e9e9851986f282",
+      "date": "2026-05-08T23:57:56Z",
+      "message": "Add public content detail API",
+      "parents": [
+        "013064665d8953d9c530856b2eaa348afadf9ca8"
+      ]
+    },
+    {
+      "sha": "013064665d8953d9c530856b2eaa348afadf9ca8",
+      "date": "2026-05-08T23:56:19Z",
+      "message": "Add public catalog API",
+      "parents": [
+        "730019ba8b1f2d35f7135447a1240aadd0f72326"
+      ]
+    },
+    {
+      "sha": "730019ba8b1f2d35f7135447a1240aadd0f72326",
+      "date": "2026-05-08T23:55:22Z",
+      "message": "Add canonical content catalog loader for web runtime",
+      "parents": [
+        "13ca86b69f1b7e14efdc19a255d677d3632cce19"
+      ]
+    },
+    {
+      "sha": "13ca86b69f1b7e14efdc19a255d677d3632cce19",
+      "date": "2026-05-08T23:49:07Z",
+      "message": "Add initial roadmap route",
+      "parents": [
+        "3d26e3ca3a583bf78f6908be068e465a5f8b30ff"
+      ]
+    },
+    {
+      "sha": "3d26e3ca3a583bf78f6908be068e465a5f8b30ff",
+      "date": "2026-05-08T23:45:45Z",
+      "message": "Add initial content route",
+      "parents": [
+        "fc959f6448a32136d23a42bce29e1a6f3b8f824a"
+      ]
+    },
+    {
+      "sha": "fc959f6448a32136d23a42bce29e1a6f3b8f824a",
+      "date": "2026-05-08T23:44:06Z",
+      "message": "Add web runtime version endpoint",
+      "parents": [
+        "6ff6817d808ead45373ab42fae1f4e0e6f286e1f"
+      ]
+    },
+    {
+      "sha": "6ff6817d808ead45373ab42fae1f4e0e6f286e1f",
+      "date": "2026-05-08T23:41:55Z",
+      "message": "Add web runtime health endpoint",
+      "parents": [
+        "0a0bd13ab79d0a2a9229cd70d48475a95b92e944"
+      ]
+    },
+    {
+      "sha": "0a0bd13ab79d0a2a9229cd70d48475a95b92e944",
+      "date": "2026-05-08T23:41:10Z",
+      "message": "Use typecheck as initial web lint gate",
+      "parents": [
+        "ce5df3f696f7f0e6ca8a5faae93ce74b8dd10ba5"
+      ]
+    },
+    {
+      "sha": "ce5df3f696f7f0e6ca8a5faae93ce74b8dd10ba5",
+      "date": "2026-05-08T23:39:53Z",
+      "message": "Add web runtime landing page",
+      "parents": [
+        "48d89ff4f73cc93582545390359e4d348da84037"
+      ]
+    },
+    {
+      "sha": "48d89ff4f73cc93582545390359e4d348da84037",
+      "date": "2026-05-08T23:39:17Z",
+      "message": "Add web runtime root layout",
+      "parents": [
+        "8479a6489ff148a46658dbaeb99d77397f94d17b"
+      ]
+    },
+    {
+      "sha": "8479a6489ff148a46658dbaeb99d77397f94d17b",
+      "date": "2026-05-08T23:38:42Z",
+      "message": "Add web runtime global styles",
+      "parents": [
+        "5f0b28542515ca61fab98c9ae6ff5b47ea057406"
+      ]
+    },
+    {
+      "sha": "5f0b28542515ca61fab98c9ae6ff5b47ea057406",
+      "date": "2026-05-08T23:38:04Z",
+      "message": "Add web runtime environment validation",
+      "parents": [
+        "45015910f8817c1b0bb2686b4e7bc79119571e05"
+      ]
+    },
+    {
+      "sha": "45015910f8817c1b0bb2686b4e7bc79119571e05",
+      "date": "2026-05-08T23:37:31Z",
+      "message": "Add web runtime Next config",
+      "parents": [
+        "1bdbfa421610d2108c78f03b7a86ad7ab7ac203d"
+      ]
+    },
+    {
+      "sha": "1bdbfa421610d2108c78f03b7a86ad7ab7ac203d",
+      "date": "2026-05-08T23:36:55Z",
+      "message": "Add web runtime TypeScript config",
+      "parents": [
+        "0c79a42c2719dd9002c86b4669a741bcb57709d1"
+      ]
+    },
+    {
+      "sha": "0c79a42c2719dd9002c86b4669a741bcb57709d1",
+      "date": "2026-05-08T23:36:01Z",
+      "message": "Scaffold web runtime package",
+      "parents": [
+        "9338dfc5d09fb65d7dc1acbbc4fefd5673ab91aa"
+      ]
+    },
+    {
+      "sha": "9338dfc5d09fb65d7dc1acbbc4fefd5673ab91aa",
+      "date": "2026-05-08T23:31:41Z",
+      "message": "Add monorepo runtime architecture decision",
+      "parents": [
+        "9bd544c9ec0d38b6cd08f6f7ab5c294f7eeba4c8"
+      ]
+    },
+    {
+      "sha": "9bd544c9ec0d38b6cd08f6f7ab5c294f7eeba4c8",
+      "date": "2026-05-08T23:18:00Z",
+      "message": "Tighten publishing release guardrail test",
+      "parents": [
+        "229d6cb85839681eddd339e0959ca6136fe3e5a8"
+      ]
+    },
+    {
+      "sha": "229d6cb85839681eddd339e0959ca6136fe3e5a8",
+      "date": "2026-05-08T23:16:47Z",
+      "message": "Add content service guardrail tests",
+      "parents": [
+        "87aa8bae74958059a2c5e8f814a2f5ac5e68ab59"
+      ]
+    },
+    {
+      "sha": "87aa8bae74958059a2c5e8f814a2f5ac5e68ab59",
+      "date": "2026-05-08T23:15:08Z",
+      "message": "Align Firebase adapter guide with repository contract",
+      "parents": [
+        "5e7cf7a7e92c9378b0b894f9271af236930cb30e"
+      ]
+    },
+    {
+      "sha": "5e7cf7a7e92c9378b0b894f9271af236930cb30e",
+      "date": "2026-05-08T23:13:02Z",
+      "message": "Add standalone route coverage matrix",
+      "parents": [
+        "650634b84ed1d95707ad2636ed4234011a71d7e5"
+      ]
+    },
+    {
+      "sha": "650634b84ed1d95707ad2636ed4234011a71d7e5",
+      "date": "2026-05-08T23:12:08Z",
+      "message": "Add implementation status audit guardrail",
+      "parents": [
+        "ff6e48529060cc324a91fdeed7d996eb7cac84a4"
+      ]
+    },
+    {
+      "sha": "615efcec5728d3af17dfbb7f2ccc7bfdd132bf3a",
+      "date": "2026-05-08T04:44:21Z",
+      "message": "Add Firebase adapter implementation guide",
+      "parents": [
+        "b614db156966a53c7852e96de5a5884f1e182a76"
+      ]
+    },
+    {
+      "sha": "b614db156966a53c7852e96de5a5884f1e182a76",
+      "date": "2026-05-08T04:43:50Z",
+      "message": "Wire system seed validation into package scripts",
+      "parents": [
+        "3f2e2786e1487246afd32c1aa315e51b9a3474da"
+      ]
+    },
+    {
+      "sha": "3f2e2786e1487246afd32c1aa315e51b9a3474da",
+      "date": "2026-05-08T04:34:03Z",
+      "message": "Add system and production seed validation script",
+      "parents": [
+        "d4fce0881e76c7a18b22603102e53cf368682179"
+      ]
+    },
+    {
+      "sha": "d4fce0881e76c7a18b22603102e53cf368682179",
+      "date": "2026-05-08T04:06:37Z",
+      "message": "Add rollback plan",
+      "parents": [
+        "806a393e086375adb839e99d69d70bae3d32f962"
+      ]
+    },
+    {
+      "sha": "806a393e086375adb839e99d69d70bae3d32f962",
+      "date": "2026-05-08T03:29:21Z",
+      "message": "Add release checklist",
+      "parents": [
+        "ff6e48529060cc324a91fdeed7d996eb7cac84a4"
+      ]
+    },
+    {
+      "sha": "ff6e48529060cc324a91fdeed7d996eb7cac84a4",
+      "date": "2026-05-08T03:27:38Z",
+      "message": "Add content feature issue template",
+      "parents": [
+        "0a51b590b1923f15d2918c01ba7429cb4aa596d7"
+      ]
+    },
+    {
+      "sha": "0a51b590b1923f15d2918c01ba7429cb4aa596d7",
+      "date": "2026-05-08T03:19:20Z",
+      "message": "Add bug report issue template",
+      "parents": [
+        "b2d5f5cce375adae47ad8d0ce48d4499e9cde326"
+      ]
+    },
+    {
+      "sha": "b2d5f5cce375adae47ad8d0ce48d4499e9cde326",
+      "date": "2026-05-08T03:19:07Z",
+      "message": "Add pull request template",
+      "parents": [
+        "8f5410e0e440a437135974b9fe7bf80a762e7de1"
+      ]
+    },
+    {
+      "sha": "8f5410e0e440a437135974b9fe7bf80a762e7de1",
+      "date": "2026-05-08T03:12:59Z",
+      "message": "Expand CI to run production readiness checks",
+      "parents": [
+        "3230110fdb35f41bdcb106fe2afc98630d5f257b"
+      ]
+    },
+    {
+      "sha": "3230110fdb35f41bdcb106fe2afc98630d5f257b",
+      "date": "2026-05-08T01:38:02Z",
+      "message": "Expand environment template for standalone deployment",
+      "parents": [
+        "8bd413652209628986b7314532d6bfdaae664b83"
+      ]
+    },
+    {
+      "sha": "8bd413652209628986b7314532d6bfdaae664b83",
+      "date": "2026-05-08T01:35:00Z",
+      "message": "Add Firebase Storage rules template",
+      "parents": [
+        "330a104bd9bae66ea0cc69f57251ab95537dcf0e"
+      ]
+    },
+    {
+      "sha": "330a104bd9bae66ea0cc69f57251ab95537dcf0e",
+      "date": "2026-05-08T01:34:23Z",
+      "message": "Add Firestore indexes template",
+      "parents": [
+        "20997eddb394ad8b0cd67f6e4d3117aeaceeea05"
+      ]
+    },
+    {
+      "sha": "20997eddb394ad8b0cd67f6e4d3117aeaceeea05",
+      "date": "2026-05-08T01:31:01Z",
+      "message": "Add Firestore security rules template",
+      "parents": [
+        "bba14a600ad60d1f142dca6cb08395bc706a8793"
+      ]
+    },
+    {
+      "sha": "bba14a600ad60d1f142dca6cb08395bc706a8793",
+      "date": "2026-05-08T01:30:08Z",
+      "message": "Add Firebase template configuration",
+      "parents": [
+        "88b30181bc0cd58b83d55c7a6fab732a2019638c"
+      ]
+    },
+    {
+      "sha": "88b30181bc0cd58b83d55c7a6fab732a2019638c",
+      "date": "2026-05-08T01:28:44Z",
+      "message": "Add tests for export utilities",
+      "parents": [
+        "bff3bd0f1aee636cc63e06e62d0f3587d848d317"
+      ]
+    },
+    {
+      "sha": "bff3bd0f1aee636cc63e06e62d0f3587d848d317",
+      "date": "2026-05-08T01:28:07Z",
+      "message": "Export content export utilities",
+      "parents": [
+        "e20cdf20d88abefc89f6d854e8bbd3505fda7b8c"
+      ]
+    },
+    {
+      "sha": "e20cdf20d88abefc89f6d854e8bbd3505fda7b8c",
+      "date": "2026-05-08T01:18:49Z",
+      "message": "Add export job transition utilities",
+      "parents": [
+        "5390b6e11775f4cc4e592099fc7a416adb3bb019"
+      ]
+    },
+    {
+      "sha": "5390b6e11775f4cc4e592099fc7a416adb3bb019",
+      "date": "2026-05-08T01:17:25Z",
+      "message": "Add SRT export utility",
+      "parents": [
+        "ac73a05a879e663b6ea6e7cff3f58013b64fcc22"
+      ]
+    },
+    {
+      "sha": "ac73a05a879e663b6ea6e7cff3f58013b64fcc22",
+      "date": "2026-05-08T01:15:11Z",
+      "message": "Add strict TypeScript configuration",
+      "parents": [
+        "125742a9c15a2065efa9c6f70a87acec20d2f3ca"
+      ]
+    },
+    {
+      "sha": "125742a9c15a2065efa9c6f70a87acec20d2f3ca",
+      "date": "2026-05-08T01:13:07Z",
+      "message": "Add tests for production domain schemas and seed data",
+      "parents": [
+        "1857f91ba9d8e420b71367afc40b81b4f2d57f2a"
+      ]
+    },
+    {
+      "sha": "1857f91ba9d8e420b71367afc40b81b4f2d57f2a",
+      "date": "2026-05-08T01:10:09Z",
+      "message": "Export production domain schemas and seed data",
+      "parents": [
+        "b4d2a269a0f804e5a863aaf99b071914c92dedcf"
+      ]
+    },
+    {
+      "sha": "b4d2a269a0f804e5a863aaf99b071914c92dedcf",
+      "date": "2026-05-08T01:09:45Z",
+      "message": "Add production domain seed data for content OS",
+      "parents": [
+        "dae2a597303a5e36e2c0cf65e7047485b9860e3f"
+      ]
+    },
+    {
+      "sha": "dae2a597303a5e36e2c0cf65e7047485b9860e3f",
+      "date": "2026-05-08T01:08:37Z",
+      "message": "Add production domain schemas for content OS",
+      "parents": [
+        "b513ed35b2346e80631ecbbc9db343dd1331e00d"
+      ]
+    },
+    {
+      "sha": "b513ed35b2346e80631ecbbc9db343dd1331e00d",
+      "date": "2026-05-08T00:36:11Z",
+      "message": "Add tests for URAI ecosystem adapter contracts",
+      "parents": [
+        "db088d5f164f3a58e88be94cc7c9fe63046ec922"
+      ]
+    },
+    {
+      "sha": "db088d5f164f3a58e88be94cc7c9fe63046ec922",
+      "date": "2026-05-08T00:35:43Z",
+      "message": "Export URAI ecosystem adapter contracts",
+      "parents": [
+        "28cbe9202547fdcaa01f92e12af21c22ceb2289b"
+      ]
+    },
+    {
+      "sha": "28cbe9202547fdcaa01f92e12af21c22ceb2289b",
+      "date": "2026-05-08T00:35:31Z",
+      "message": "Add ecosystem adapter contracts for URAI Content",
+      "parents": [
+        "bc706f870863d70ac50362bb7c3f00e6e876512c"
+      ]
+    },
+    {
+      "sha": "bc706f870863d70ac50362bb7c3f00e6e876512c",
+      "date": "2026-05-08T00:34:55Z",
+      "message": "Add tests for URAI Content OS system data",
+      "parents": [
+        "0f2a5e3299796f909cce3689902987e05bcdc80b"
+      ]
+    },
+    {
+      "sha": "0f2a5e3299796f909cce3689902987e05bcdc80b",
+      "date": "2026-05-08T00:33:50Z",
+      "message": "Export URAI Content OS system schemas and seed data",
+      "parents": [
+        "af0a40e2a458a640d24f5d60387ef095030c993b"
+      ]
+    },
+    {
+      "sha": "af0a40e2a458a640d24f5d60387ef095030c993b",
+      "date": "2026-05-08T00:31:18Z",
+      "message": "Add URAI Content OS roadmap tier and integration seed data",
+      "parents": [
+        "822e413a315c885e2278790bb71ca3fae225adb8"
+      ]
+    },
+    {
+      "sha": "822e413a315c885e2278790bb71ca3fae225adb8",
+      "date": "2026-05-08T00:21:44Z",
+      "message": "Add URAI Content OS system schemas",
+      "parents": [
+        "dfd247d25478e6a06115d266cf0e15720e8a064c"
+      ]
+    },
+    {
+      "sha": "dfd247d25478e6a06115d266cf0e15720e8a064c",
+      "date": "2026-05-08T00:17:24Z",
+      "message": "Add standalone system completion plan",
+      "parents": [
+        "dc0db538f4a75119978f79a91b9b22be08fd8a57"
+      ]
+    },
+    {
+      "sha": "dc0db538f4a75119978f79a91b9b22be08fd8a57",
+      "date": "2026-05-08T00:16:54Z",
+      "message": "Document deployment blockers for standalone URAI Content",
+      "parents": [
+        "1f4567bcd9027074bef95fc4abd29a35f47bf8e9"
+      ]
+    },
+    {
+      "sha": "1f4567bcd9027074bef95fc4abd29a35f47bf8e9",
+      "date": "2026-05-08T00:16:36Z",
+      "message": "Add root audit report for urai-content completion",
+      "parents": [
+        "c6ffd31251a75ad66f386d98ab475636ef2cab4e"
+      ]
+    },
+    {
+      "sha": "c6ffd31251a75ad66f386d98ab475636ef2cab4e",
+      "date": "2026-05-08T00:15:41Z",
+      "message": "Add production readiness scripts for content OS completion",
+      "parents": [
+        "14e4353e0fc0c157e0bdcdecd64b46b4a1df2767"
+      ]
+    },
+    {
+      "sha": "14e4353e0fc0c157e0bdcdecd64b46b4a1df2767",
+      "date": "2026-05-04T00:24:15Z",
+      "message": "Merge pull request #4 from LifeLoggerAI/codex/complete-and-connect-urai-content-system-dybe6e",
+      "parents": [
+        "f2afd7d48bbabf7763c480e2610f023959780fe9",
+        "996123ab58f771651f5396034b83b87c4dcb7892"
+      ]
+    },
+    {
+      "sha": "996123ab58f771651f5396034b83b87c4dcb7892",
+      "date": "2026-05-04T00:23:39Z",
+      "message": "Merge branch 'main' into codex/complete-and-connect-urai-content-system-dybe6e",
+      "parents": [
+        "abd98377c84d255764ba09d53ab0ad67292c0e2d",
+        "f2afd7d48bbabf7763c480e2610f023959780fe9"
+      ]
+    },
+    {
+      "sha": "abd98377c84d255764ba09d53ab0ad67292c0e2d",
+      "date": "2026-05-04T00:16:29Z",
+      "message": "Fix full quality gate issues and finalize installable package",
+      "parents": [
+        "3b0de7879c92fa685e2ad3f2c1c04585b2fe94f2"
+      ]
+    },
+    {
+      "sha": "f2afd7d48bbabf7763c480e2610f023959780fe9",
+      "date": "2026-05-03T22:43:06Z",
+      "message": "Merge pull request #3 from LifeLoggerAI/codex/complete-and-connect-urai-content-system-9qg2oq",
+      "parents": [
+        "febcfd0c64f25f2ef244a218656ff476c5d2d05d",
+        "a80e1d14ed0e6af71013b153c989b8e930e8268f"
+      ]
+    },
+    {
+      "sha": "a80e1d14ed0e6af71013b153c989b8e930e8268f",
+      "date": "2026-05-03T22:42:58Z",
+      "message": "Merge branch 'main' into codex/complete-and-connect-urai-content-system-9qg2oq",
+      "parents": [
+        "038e9c64e6677ff79de2eea4b0bad062e919f53e",
+        "febcfd0c64f25f2ef244a218656ff476c5d2d05d"
+      ]
+    },
+    {
+      "sha": "038e9c64e6677ff79de2eea4b0bad062e919f53e",
+      "date": "2026-05-03T22:39:32Z",
+      "message": "Normalize docs with verbatim command order and adapter status",
+      "parents": [
+        "3b0de7879c92fa685e2ad3f2c1c04585b2fe94f2"
+      ]
+    },
+    {
+      "sha": "febcfd0c64f25f2ef244a218656ff476c5d2d05d",
+      "date": "2026-05-03T21:53:52Z",
+      "message": "Merge pull request #2 from LifeLoggerAI/codex/complete-and-connect-urai-content-system",
+      "parents": [
+        "20d9865a25964e7fbd586ab89e494409303b215f",
+        "8a437ae7e2f4f330a8183b20637a2623352f3603"
+      ]
+    },
+    {
+      "sha": "8a437ae7e2f4f330a8183b20637a2623352f3603",
+      "date": "2026-05-03T21:53:39Z",
+      "message": "Merge branch 'main' into codex/complete-and-connect-urai-content-system",
+      "parents": [
+        "3345d9c1ecb34fe1e688fbfd4a39eaf6ed97e768",
+        "20d9865a25964e7fbd586ab89e494409303b215f"
+      ]
+    },
+    {
+      "sha": "3345d9c1ecb34fe1e688fbfd4a39eaf6ed97e768",
+      "date": "2026-05-03T21:51:16Z",
+      "message": "Clarify verification blockers and completion status",
+      "parents": [
+        "3b0de7879c92fa685e2ad3f2c1c04585b2fe94f2"
+      ]
+    },
+    {
+      "sha": "20d9865a25964e7fbd586ab89e494409303b215f",
+      "date": "2026-05-03T19:27:31Z",
+      "message": "Merge pull request #1 from LifeLoggerAI/codex/complete-and-connect-urai-content-system",
+      "parents": [
+        "3b0de7879c92fa685e2ad3f2c1c04585b2fe94f2",
+        "aa64a8f96d6ddfec5cdfb863a5d4b5dcea916006"
+      ]
+    },
+    {
+      "sha": "aa64a8f96d6ddfec5cdfb863a5d4b5dcea916006",
+      "date": "2026-05-03T19:26:22Z",
+      "message": "Add CI workflow and explicit completion report",
+      "parents": [
+        "3b0de7879c92fa685e2ad3f2c1c04585b2fe94f2"
+      ]
+    },
+    {
+      "sha": "3b0de7879c92fa685e2ad3f2c1c04585b2fe94f2",
+      "date": "2026-02-05T20:09:13Z",
+      "message": "Enhance README with content strategy details",
+      "parents": [
+        "640e2b9be308773ddd3b8ef74247ead7d2177a4a"
+      ]
+    },
+    {
+      "sha": "640e2b9be308773ddd3b8ef74247ead7d2177a4a",
+      "date": "2026-02-05T20:08:54Z",
+      "message": "Initial commit",
+      "parents": []
+    }
+  ]
+}
