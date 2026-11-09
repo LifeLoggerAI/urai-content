@@ -621,3 +621,58 @@ it('migrates legacy editorial snapshots to version 2 without losing fields and r
   expect(await repo.getContent(item.id)).toEqual({ ...item, title: 'Validated migration' });
   for (const schemaVersion of [undefined, 1, 999]) expect(() => canonicalSchemas.parseStoredRuntimeContentRecord({ ...item, schemaVersion, deletion: { tombstoneId: 'delete', state: 'restored' } })).toThrow();
 });
+
+describe('atomic creator moderation receipt', () => {
+  const submission = {
+    id: 'moderation-source-1', creatorId: 'creator-1', title: 'Synthetic story', body: 'Not user data',
+    contentType: 'story' as const, tags: ['fixture'], locale: 'en-US', status: 'submitted' as const,
+    submittedAt: '2026-11-08T11:00:00.000Z', updatedAt: '2026-11-08T11:00:00.000Z'
+  };
+  function change() {
+    const now = '2026-11-08T11:01:00.000Z';
+    return {
+      next: { ...submission, status: 'approved' as const, updatedAt: now, moderatedAt: now, moderatedBy: 'admin-1', moderationNotes: 'fixture' },
+      audit: { id: 'audit-moderation-1', entityType: 'creatorSubmission' as const, entityId: submission.id,
+        status: 'approved' as const, decision: 'approved' as const, moderatedAt: now, moderatedBy: 'admin-1', notes: 'fixture' }
+    };
+  }
+  it('persists the status and audit as one Firestore transaction', async () => {
+    const db = new FakeFirestore();
+    const repo = createFirestoreContentRepository(db);
+    await repo.upsertCreatorSubmission(submission);
+    const { next, audit } = change();
+    await repo.moderateCreatorSubmission(next, audit, submission.updatedAt);
+    expect(await repo.getCreatorSubmission(submission.id)).toMatchObject({ status: 'approved', moderatedBy: 'admin-1' });
+    const proof = await db.collection('moderationQueue').doc(audit.id).get();
+    expect(proof.exists).toBe(true);
+    expect(proof.data()).toMatchObject({ entityId: submission.id, decision: 'approved', moderatedBy: 'admin-1' });
+  });
+  it('rejects stale updates before mutation or receipt creation', async () => {
+    const db = new FakeFirestore();
+    const repo = createFirestoreContentRepository(db);
+    await repo.upsertCreatorSubmission({ ...submission, updatedAt: '2026-11-08T11:00:30.000Z' });
+    const { next, audit } = change();
+    await expect(repo.moderateCreatorSubmission(next, audit, submission.updatedAt)).rejects.toThrow('stale submission');
+    expect(await repo.getCreatorSubmission(submission.id)).toMatchObject({ status: 'submitted' });
+    expect((await db.collection('moderationQueue').doc(audit.id).get()).exists).toBe(false);
+  });
+  it('refuses preexisting audit IDs without changing the submission', async () => {
+    const db = new FakeFirestore();
+    const repo = createFirestoreContentRepository(db);
+    await repo.upsertCreatorSubmission(submission);
+    const { next, audit } = change();
+    await db.collection('moderationQueue').doc(audit.id).set(audit);
+    await expect(repo.moderateCreatorSubmission(next, audit, submission.updatedAt)).rejects.toThrow('audit already exists');
+    expect(await repo.getCreatorSubmission(submission.id)).toMatchObject({ status: 'submitted' });
+  });
+  it('denies invalid actor/reviewer correspondence before any writes', async () => {
+    const db = new FakeFirestore();
+    const repo = createFirestoreContentRepository(db);
+    await repo.upsertCreatorSubmission(submission);
+    const { next, audit } = change();
+    await expect(repo.moderateCreatorSubmission(next, { ...audit, moderatedBy: 'other-admin' }, submission.updatedAt))
+      .rejects.toThrow('actor/time mismatch');
+    expect(await repo.getCreatorSubmission(submission.id)).toMatchObject({ status: 'submitted' });
+    expect((await db.collection('moderationQueue').doc(audit.id).get()).exists).toBe(false);
+  });
+});
