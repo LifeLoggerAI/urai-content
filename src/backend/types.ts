@@ -39,6 +39,8 @@ export interface ContentRepository {
   upsertStoryTemplate(template: StoryTemplate): Promise<void>;
   upsertRitualTemplate(template: RitualTemplate): Promise<void>;
   upsertMarketplaceItem(item: MarketplaceItem): Promise<void>;
+  /** Create-only: never overwrite a creator submission, even under a caller-chosen ID. */
+  createCreatorSubmission(item: CreatorSubmission): Promise<void>;
   upsertCreatorSubmission(item: CreatorSubmission): Promise<void>;
   /** Atomically update an existing creator submission and record its matching moderation audit. */
   moderateCreatorSubmission(item: CreatorSubmission, audit: ModerationQueueItem, expectedUpdatedAt: string): Promise<void>;
