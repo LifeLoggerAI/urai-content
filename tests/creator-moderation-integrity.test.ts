@@ -24,4 +24,8 @@ describe('creator moderation and audit integrity',()=>{
     expect(()=>assertCreatorModerationIntegrity(old,{...next,updatedAt:'2026-11-08T11:03:00.000Z'},audit,old.updatedAt)).toThrow('actor/time');
     expect(()=>assertCreatorModerationIntegrity(old,{...next,status:'submitted'},audit,old.updatedAt)).toThrow('decision');
   });
+  it('rejects unchanged revision timestamps to prevent same-millisecond races',()=>{
+    const same = { ...next, updatedAt: old.updatedAt, moderatedAt: old.updatedAt };
+    expect(()=>assertCreatorModerationIntegrity(old, same, { ...audit, moderatedAt: old.updatedAt }, old.updatedAt)).toThrow('nonmonotonic');
+  });
 });
