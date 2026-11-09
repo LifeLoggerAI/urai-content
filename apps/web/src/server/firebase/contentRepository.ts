@@ -318,6 +318,7 @@ export function createFirestoreContentRepository(db: FirestoreLike, options: Con
     async upsertMarketplaceItem(item: MarketplaceItem): Promise<void> { const parsed = parseRuntimeRecord(marketplaceItemSchema, FIRESTORE_COLLECTIONS.marketplaceItems, item); await collection(db, FIRESTORE_COLLECTIONS.marketplaceItems).doc(parsed.id).set(asRecord(parsed), { merge: true }); },
     async createCreatorSubmission(item: CreatorSubmission): Promise<void> {
       const parsed = parseRuntimeRecord(creatorSubmissionSchema, FIRESTORE_COLLECTIONS.creatorSubmissions, item);
+      assertDocumentId(parsed.id);
       const ref = collection(db, FIRESTORE_COLLECTIONS.creatorSubmissions).doc(parsed.id);
       // Admin SDK bypasses client Rules; this transaction must read the
       // document before scheduling a create, including on concurrent retries.
