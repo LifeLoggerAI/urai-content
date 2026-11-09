@@ -520,6 +520,13 @@ describe.each(repositoryCases)('$name persistence lifecycle', ({ create }) => {
     ] as const) {
       await repo.upsertContent(makeContentItem({ id, slug: id, status, visibility }));
     }
+    // A generic upsert of published/public data is not a publisher grant.
+    expect((await repo.listPublishedPublicContentPage()).items).toEqual([]);
+    // Synthetic trusted publisher fixture only: direct fake-DB write, NOT a
+    // production release mechanism or evidence of signed legal rights.
+    for (const id of ['b-public', 'e-public', 'g-public']) {
+      await firestore.collection('contentItems').doc(id).set({ publicCatalogEligible: true }, { merge: true });
+    }
     const page1 = await repo.listPublishedPublicContentPage({ limit: 1 });
     expect(page1.items.map((item) => item.id).toEqual(['b-public']);
     expect(JSON.stringify(page1)).not.toMatch(/a-hidden|c-secret|d-unlisted|f-archived/);
@@ -539,6 +546,10 @@ describe.each(repositoryCases)('$name persistence lifecycle', ({ create }) => {
     await firestore.collection('contentItems').doc(legacy.id).set(legacy as FirestoreData);
     expect((await repo.listPublishedPublicContentPage()).items).toEqual([]);
     await repo.upsertContent(legacy);
+    expect((await repo.listPublishedPublicContentPage()).items).toEqual([]);
+    // A separately approved publisher would have to set an eligibility grant;
+    // this fixture does not represent the real, still-unimplemented approval.
+    await firestore.collection('contentItems').doc(legacy.id).set({ publicCatalogEligible: true }, { merge: true });
     expect((await repo.listPublishedPublicContentPage()).items.map((row) => row.id)).toEqual(['old-approved']);
   });
 
@@ -568,11 +579,45 @@ describe.each(repositoryCases)('$name persistence lifecycle', ({ create }) => {
     const repo = createFirestoreContentRepository(firestore, { deletionOperationsEnabled: true, now: () => '2026-10-05T00:00:00.000Z' });
     const item = makeContentItem({ id: 'approved-delete', status: 'published', visibility: 'public' });
     await repo.saveContentRevision(item);
+    expect((await repo.listPublishedPublicContentPage()).items).toEqual([]);
+    // Synthetic fixture for an approval that must be issued elsewhere.
+    await firestore.collection('contentItems').doc(item.id).set({ publicCatalogEligible: true }, { merge: true });
     expect((await repo.listPublishedPublicContentPage()).items).toHaveLength(1);
     await repo.softDeleteContent(deletionRequest(item));
     expect((await repo.listPublishedPublicContentPage()).items).toEqual([]);
     await repo.restoreDeletedContent(item.id, item.createdBy, '2026-10-05T00:00:00.000Z');
-    expect((await repo.listPublishedPublicContentPage()).items.map((row) => row.id)).toEqual(['approved-delete']);
+    // An owner restore does NOT prove a new publication right.
+    expect((await repo.listPublishedPublicContentPage()).items).toEqual([]);
+    expect(await repo.getContentBySlug(item.slug)).toBeNull();
+  });
+
+  it('never auto-publishes status-only generic writes or revision updates', async () => {
+    const firestore = new FakeFirestore();
+    const repo = createFirestoreContentRepository(firestore);
+    const item = makeContentItem({ id: 'needs-reviewed-release', slug: 'needs-reviewed-release', status: 'published', visibility: 'public' });
+    await repo.upsertContent(item);
+    expect((await repo.listPublishedPublicContentPage()).items).toEqual([]);
+    expect(await repo.getContentBySlug(item.slug)).toBeNull();
+    await firestore.collection('contentItems').doc(item.id).set({ publicCatalogEligible: true }, { merge: true });
+    expect((await repo.listPublishedPublicContentPage()).items).toHaveLength(1);
+    expect((await repo.getContentBySlug(item.slug))?.id).toBe(item.id);
+    // Generic save of another revision must REVOKE this prior index marker.
+    await repo.saveContentRevision({ ...item, title: 'New unreviewed revision' });
+    expect((await repo.listPublishedPublicContentPage()).items).toEqual([]);
+    expect(await repo.getContentBySlug(item.slug)).toBeNull();
+  });
+
+  it('denies anonymous direct lookup of published unlisted and missing-marker legacy items', async () => {
+    const firestore = new FakeFirestore();
+    const repo = createFirestoreContentRepository(firestore);
+    const unlisted = makeContentItem({ id: 'unlisted-synthetic', slug: 'unlisted-synthetic', status: 'published', visibility: 'unlisted' });
+    const legacy = makeContentItem({ id: 'legacy-synthetic', slug: 'legacy-synthetic', status: 'published', visibility: 'public' });
+    await repo.upsertContent(unlisted);
+    await firestore.collection('contentItems').doc(legacy.id).set(legacy as FirestoreData);
+    expect(await repo.getContentBySlug(unlisted.slug)).toBeNull();
+    expect(await repo.getContentBySlug(legacy.slug)).toBeNull();
+    await firestore.collection('contentItems').doc(unlisted.id).set({ publicCatalogEligible: true }, { merge: true });
+    expect(await repo.getContentBySlug(unlisted.slug)).toBeNull();
   });
 
   it('rejects malformed public cursors before returning data', async () => {
