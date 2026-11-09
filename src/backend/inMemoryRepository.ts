@@ -12,6 +12,7 @@ import type {
   UserContentEntitlement
 } from '../schemas/content.js';
 import type { ContentRepository, CreatorSubmissionQueueOptions } from './types.js';
+import { assertCreatorModerationIntegrity } from './creatorModerationIntegrity.js';
 import {
   contentItemSchema, parseRuntimeContentRecord, creatorSubmissionSchema, exportTemplateSchema,
   marketplaceItemSchema, moderationQueueSchema, narratorPromptSchema, publishingReleaseSchema,
@@ -154,6 +155,18 @@ export class InMemoryContentRepository implements ContentRepository {
   async upsertRitualTemplate(template: RitualTemplate): Promise<void> { this.ritual.set(template.id, ritualTemplateSchema.parse(template)); }
   async upsertMarketplaceItem(item: MarketplaceItem): Promise<void> { this.marketplace.set(item.id, marketplaceItemSchema.parse(item)); }
   async upsertCreatorSubmission(item: CreatorSubmission): Promise<void> { this.creatorSubs.set(item.id, creatorSubmissionSchema.parse(item)); }
+  async moderateCreatorSubmission(item: CreatorSubmission, audit: ModerationQueueItem, expectedUpdatedAt: string): Promise<void> {
+    // This fallback is used only for nonproduction synthetic/local workflows.
+    // Parse, validate and compare all values before mutating either structure.
+    const next = creatorSubmissionSchema.parse(item);
+    const receipt = moderationQueueSchema.parse(audit);
+    const previous = this.creatorSubs.get(next.id) ?? null;
+    assertCreatorModerationIntegrity(previous, next, receipt, expectedUpdatedAt);
+    if (this.moderation.some((entry) => entry.id === receipt.id)) throw new Error('Creator moderation audit already exists');
+    this.creatorSubs.set(next.id, structuredClone(next));
+    this.moderation.push(structuredClone(receipt));
+  }
+
   async upsertExportTemplate(item: ExportTemplate): Promise<void> { this.exportTemplates.set(item.id, exportTemplateSchema.parse(item)); }
 
   async getCreatorSubmission(id: string): Promise<CreatorSubmission | null> { return structuredClone(this.creatorSubs.get(id) ?? null); }
