@@ -71,7 +71,7 @@ Deployed checks:
 npm run check:release-env
 npm run web:smoke:routes -- --base-url=<deployed-url>
 npm run smoke:production -- --base-url=<deployed-url>
-npm run smoke:rollback -- --base-url=<deployed-url> --rollback-url=<rollback-url>
+npm run smoke:rollback -- --base-url=<deployed-url> --expected-sha=<previous-live-commit-sha>
 cd apps/web && PLAYWRIGHT_SKIP_WEB_SERVER=1 URAI_CONTENT_BASE_URL=<deployed-url> npm run e2e
 ```
 
@@ -82,3 +82,6 @@ Provider, emulator, backup and restore tests must also pass and reference the sa
 A release may be called production-ready only when all source, schema/rules, security/privacy, provider-backed staging, deployment, observability, backup/restore and rollback evidence is attached for one exact SHA. Until then the truthful status is:
 
 > implemented and tested as a repository scaffold; production deployment and operations blocked.
+
+
+**Rollback verification scope:** `smoke:rollback` requires the exact 40-character commit SHA and validates only the selected HTTPS endpoint. It does not select or perform a previous-live provider rollback or prove current Firebase IAM, Rules/index compatibility, backups or revocation. Obtain the independently approved previous **LIVE** deployment ID and signed provider rollback receipt, then verify the restored release and private authorization boundaries before certifying rollback.
