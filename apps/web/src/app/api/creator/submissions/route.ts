@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
 import { canCreateCreatorSubmission, isCreatorSession } from '@/server/auth/authorization';
 import { getAuthFailureBody, getAuthFailureStatus, getRequestSession } from '@/server/auth/requestSession';
@@ -10,7 +11,7 @@ import { CreatorSubmissionConflictError } from '../../../../../../../src/backend
 export const dynamic = 'force-dynamic';
 
 const creatorSubmissionRequestSchema = z.object({
-  id: z.string().min(1).max(128).optional(),
+  id: z.string().min(1).max(128).regex(/^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/).optional(),
   creatorId: z.string().min(1).max(128),
   title: z.string().min(1).max(160),
   body: z.string().min(1).max(20000),
@@ -26,7 +27,7 @@ function slugify(value: string): string {
 }
 
 function createSubmissionId(input: CreatorSubmissionRequest): string {
-  return input.id ?? `${input.creatorId}-${slugify(input.title)}-${Date.now()}`;
+  return input.id ?? `submission-${randomUUID()}`;
 }
 
 async function parseBody(request: Request): Promise<CreatorSubmissionRequest | null> {
