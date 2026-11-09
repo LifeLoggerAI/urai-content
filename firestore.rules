@@ -23,6 +23,7 @@ service cloud.firestore {
     function isPublicContentItem() {
       return resource.data.get('status', '') == 'published'
         && resource.data.get('visibility', '') == 'public'
+        && resource.data.get('publicCatalogEligible', false) == true
         && (!resource.data.keys().hasAny(['schemaVersion']) || resource.data.schemaVersion in [1, 2])
         && (!resource.data.keys().hasAny(['deletion'])
           || (resource.data.get('schemaVersion', 0) == 2 && resource.data.deletion is map && resource.data.deletion.get('state', '') == 'restored'));
