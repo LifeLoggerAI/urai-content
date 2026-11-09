@@ -210,9 +210,22 @@ describe('creator submissions API route authorization', () => {
 
   it('labels a memory-preview write as non-durable without accepting a caller storage claim', async () => {
     setNodeEnvForTests('test');
-    const response = await postCreatorSubmission(makeCreatorPostRequest({ ...validSubmissionBody, stored: true }, { 'x-urai-user-id': 'creator-1', 'x-urai-role': 'creator' }));
+    const response = await postCreatorSubmission(makeCreatorPostRequest({ ...validSubmissionBody, id: 'submission-preview-storage-1', stored: true }, { 'x-urai-user-id': 'creator-1', 'x-urai-role': 'creator' }));
     expect(response.status).toBe(201);
     expect(await readJson(response)).toMatchObject({ ok: true, stored: false, submission: { creatorId: 'creator-1' } });
+  });
+
+  it('rejects caller-selected duplicate submission IDs without revealing original owner', async () => {
+    setNodeEnvForTests('test');
+    const id = 'source-collision-test-20261108';
+    const headers = { 'x-urai-user-id': 'creator-1', 'x-urai-role': 'creator' };
+    const first = await postCreatorSubmission(makeCreatorPostRequest({ ...validSubmissionBody, id }, headers));
+    expect(first.status).toBe(201);
+    const duplicate = await postCreatorSubmission(makeCreatorPostRequest({ ...validSubmissionBody, id, body: 'overwrite attempted' }, headers));
+    expect(duplicate.status).toBe(409);
+    expect(await readJson(duplicate)).toEqual({ error: 'submission_id_unavailable' });
+    const items = await getCreatorSubmissions(makeCreatorGetRequest(headers));
+    expect(JSON.stringify(await readJson(items))).not.toContain('overwrite attempted');
   });
 
   it('labels memory-preview history as non-durable', async () => {
