@@ -6,6 +6,7 @@ import { getAuthFailureBody, getAuthFailureStatus, getRequestSession } from '@/s
 import { recheckRequestSession } from '@/server/auth/currentRequest';
 import { createRuntimeContentRepository, getRuntimePersistenceStatus } from '@/server/content/service';
 import type { CreatorSubmission } from '@/server/content/types';
+import { isPrivateContentMutationHeld, PRIVATE_MUTATION_HOLD_ERROR } from '@/server/privacy/privateMutationHold';
 import { CreatorSubmissionConflictError } from '../../../../../../../src/backend/creatorSubmissionConflict.js';
 
 export const dynamic = 'force-dynamic';
@@ -107,6 +108,9 @@ export async function POST(request: Request) {
   const preWriteAuthorization = canCreateCreatorSubmission(await recheckRequestSession(request, session!), body.creatorId);
   if (!preWriteAuthorization.ok) {
     return NextResponse.json(getAuthFailureBody(preWriteAuthorization.reason), { status: getAuthFailureStatus(preWriteAuthorization.reason) });
+  }
+  if (isPrivateContentMutationHeld()) {
+    return NextResponse.json({ error: PRIVATE_MUTATION_HOLD_ERROR }, { status: 503 });
   }
   try {
     await createRuntimeContentRepository().createCreatorSubmission(submission);
