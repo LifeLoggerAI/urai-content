@@ -1,5 +1,8 @@
 # ONE URAI GENESIS — CONTENT MASTER CONTINUITY / NEXT CHALK HANDOFF
 
+> **R127 CONTINUATION:** New [Content draft PR #119](https://github.com/LifeLoggerAI/urai-content/pull/119) stacked on #118 adds a production hard-off for the reviewed private creator POST and moderation POST until canonical Privacy C1/role revocation can be fenced *at commit time*. Exact creator route + hold module Git-blob-matched, **17/17 isolated native source tests PASS**; **6/6 additional architectural model-only checks** demonstrate why an asynchronous revocation outbox is inadequate. Moderation route only source-readback verified; full Firebase/Next tests still unrun and CI has zero-step runner failures. Read [22_CONTENT_R127_PRIVATE_MUTATION_HARD_OFF_20261108.md](22_CONTENT_R127_PRIVATE_MUTATION_HARD_OFF_20261108.md). **Production HOLD.**
+
+
 > **R125 CONTINUATION:** New [draft Content PR #118](https://github.com/LifeLoggerAI/urai-content/pull/118) excludes published **unlisted** items from anonymous catalog enumeration while keeping published direct-unlisted URLs accessible. Exact Git-blob-matched service **8/8 isolated Node tests PASS**, but full Vitest/emulator not executed. Cross-read of Privacy canonical consent exposes the unresolved **cross-service commit-time C1/Auth revocation fence**. See [21_CONTENT_R125_PUBLIC_CATALOG_AND_CONSENT_FENCE_20261108.md](21_CONTENT_R125_PUBLIC_CATALOG_AND_CONSENT_FENCE_20261108.md). **Production HOLD.**
 
 
