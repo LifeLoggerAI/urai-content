@@ -5,6 +5,7 @@ import { createFirestoreContentRepository } from '../firebase/contentRepository'
 import { getFirebaseAdminDb, isFirebaseAdminConfigured } from '../firebase/admin';
 import { normalizeSlug } from '@/lib/catalog';
 import type { PageRequest, PageResult } from '../../../../../src/query/pagination.js';
+import { isPublicCatalogEligible } from '../../../../../src/query/publicCatalogEligibility.js';
 
 export type RuntimeContentMode = 'firestore' | 'memory';
 
@@ -27,8 +28,10 @@ export class RuntimeContentService {
   constructor(private readonly repo: ContentRepository) {}
 
   async listPublishedCatalogPage(request: PageRequest = {}): Promise<PageResult<ContentItem>> {
-    const page = await this.repo.listContentPage({ ...request, limit: request.limit ?? 100 });
-    return { ...page, items: page.items.filter((item) => item.status === 'published' && item.visibility === 'public') };
+    const page = await this.repo.listPublishedPublicContentPage({ ...request, limit: request.limit ?? 100 });
+    // Never silently filter after cursor construction: that leaked withheld IDs.
+    if (page.items.some((item) => !isPublicCatalogEligible(item))) throw new Error('Public catalog repository returned an ineligible record');
+    return page;
   }
 
   async getPublishedContentBySlug(slug: string): Promise<ContentItem | null> {
