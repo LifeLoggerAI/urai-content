@@ -324,7 +324,7 @@ describe('createFirestoreContentRepository', () => {
     await repo.upsertContent(item);
 
     expect(firestore.collection('contentItems').setCalls).toEqual([
-      { id: item.id, data: { ...item, schemaVersion: 2 } as unknown as FirestoreData, options: { merge: true } }
+      { id: item.id, data: { ...item, schemaVersion: 2, publicCatalogEligible: false } as unknown as FirestoreData, options: { merge: true } }
     ]);
   });
 
@@ -690,7 +690,7 @@ it('migrates legacy editorial snapshots to version 2 without losing fields and r
   for (const schemaVersion of [undefined, 1, 2]) {
     const stored = schemaVersion === undefined ? item : { ...item, schemaVersion };
     expect(canonicalSchemas.parseRuntimeContentRecord(stored)).toEqual(item);
-    expect(canonicalSchemas.serializeRuntimeContentRecord(stored)).toEqual({ ...item, schemaVersion: 2 });
+    expect(canonicalSchemas.serializeRuntimeContentRecord(stored)).toEqual({ ...item, schemaVersion: 2, publicCatalogEligible: false });
   }
   await firestore.collection('contentItems').doc(item.id).set({ ...item, schemaVersion: 1 });
   await repo.saveContentRevision({ ...item, title: 'Validated migration' });
