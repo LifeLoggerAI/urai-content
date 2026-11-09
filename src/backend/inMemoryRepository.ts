@@ -22,7 +22,7 @@ import {
 import { decodePageCursor, encodePageCursor, normalizePageLimit, type PageRequest, type PageResult } from '../query/pagination.js';
 import { finalizeContentDeletionPurge, recordProviderDeletionReceipt, restoreContentDeletion } from '../privacy/deletionLifecycle.js';
 import {
-  assertContentDeletionBinding, assertDeletionOperationsEnabled, checksumContentRecords,
+  assertContentDeletionBinding, assertDeletionOperationsEnabled, assertDocumentId, checksumContentRecords,
   deletionOperationTime,
   prepareContentSoftDeletion, type ContentDeletionRepositoryOptions, type ContentProviderDeletionReceipt,
   type SoftDeleteContentRequest, type StoredContentDeletion,
@@ -157,6 +157,7 @@ export class InMemoryContentRepository implements ContentRepository {
   async upsertMarketplaceItem(item: MarketplaceItem): Promise<void> { this.marketplace.set(item.id, marketplaceItemSchema.parse(item)); }
   async createCreatorSubmission(item: CreatorSubmission): Promise<void> {
     const parsed = creatorSubmissionSchema.parse(item);
+    assertDocumentId(parsed.id);
     if (this.creatorSubs.has(parsed.id)) throw new CreatorSubmissionConflictError();
     this.creatorSubs.set(parsed.id, structuredClone(parsed));
   }
