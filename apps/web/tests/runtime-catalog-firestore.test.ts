@@ -47,10 +47,11 @@ describe('runtime catalog Firestore mode', () => {
       makeContentItem({ id: 'published-public', slug: '/published-public', title: 'Published Public' }),
       makeContentItem({ id: 'published-unlisted', slug: '/published-unlisted', title: 'Published Unlisted', visibility: 'unlisted' }),
     ];
-    // Anonymous catalog listing is public-only. Direct slug reads may still
-    // resolve published unlisted demo records when a caller knows the link.
+    // Anonymous Firestore direct details now require an explicitly indexed
+    // and approved public record. Published-unlisted is held until a separate
+    // reviewed link-share grant exists.
     serviceMocks.listPublishedCatalogPage.mockResolvedValue({ items: rows.filter(item => item.visibility === 'public'), nextCursor: null });
-    serviceMocks.getPublishedContentBySlug.mockImplementation(async (slug: string) => rows.find((item) => item.slug === '/' + slug.replace(/^\//, '')) ?? null);
+    serviceMocks.getPublishedContentBySlug.mockImplementation(async (slug: string) => rows.find((item) => item.visibility === 'public' && item.slug === '/' + slug.replace(/^\//, '')) ?? null);
   });
 
   it('lists only content returned by the published-content service guard', async () => {
@@ -63,12 +64,16 @@ describe('runtime catalog Firestore mode', () => {
     expect(JSON.stringify(catalog)).not.toContain('published-unlisted');
   });
 
-  it('finds Firestore-backed content detail through the published-content service guard', async () => {
+  it('holds unlisted Firestore-backed direct details without independent publication authorization', async () => {
     const catalog = await getRuntimeCatalogItemBySlug('published-unlisted');
-
     expect(catalog.source).toBe('firestore-ready');
-    expect(catalog.item?.id).toBe('published-unlisted');
-    expect(catalog.item?.visibility).toBe('demo');
+    expect(catalog.item).toBeNull();
     expect(serviceMocks.getPublishedContentBySlug).toHaveBeenCalledWith('published-unlisted');
+  });
+
+  it('still maps a separately approved public item through the public content service', async () => {
+    const catalog = await getRuntimeCatalogItemBySlug('published-public');
+    expect(catalog.item?.id).toBe('published-public');
+    expect(catalog.item?.visibility).toBe('public');
   });
 });

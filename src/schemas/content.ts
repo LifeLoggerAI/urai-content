@@ -185,7 +185,11 @@ export function parseRuntimeContentRecord(value: unknown) {
 
 export function serializeRuntimeContentRecord(value: unknown) {
   const item = contentItemSchema.parse(value);
-  return { ...item, schemaVersion: CURRENT_RUNTIME_CONTENT_SCHEMA_VERSION, publicCatalogEligible: isPublicCatalogEligible(item) };
+  // Generic administrative/creator revisions are NOT publication. Until an
+  // independently authenticated publisher explicitly releases a reviewed
+  // revision, all ordinary writes remain absent from the public index.
+  // Do not infer permission from status='published' and visibility='public'.
+  return { ...item, schemaVersion: CURRENT_RUNTIME_CONTENT_SCHEMA_VERSION, publicCatalogEligible: false };
 }
 
 export function parseStoredRuntimeContentRecord(value: unknown) {

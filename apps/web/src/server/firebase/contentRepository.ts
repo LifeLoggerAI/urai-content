@@ -37,7 +37,7 @@ import {
 } from '../content/schemas';
 
 import { decodePageCursor, encodePageCursor, normalizePageLimit, type PageRequest, type PageResult } from '../../../../../src/query/pagination.js';
-import { isPublicCatalogEligible, PUBLIC_CATALOG_ELIGIBILITY_FIELD } from '../../../../../src/query/publicCatalogEligibility.js';
+import { isExplicitlyIndexedPublicRecord, PUBLIC_CATALOG_ELIGIBILITY_FIELD } from '../../../../../src/query/publicCatalogEligibility.js';
 import { assertCreatorModerationIntegrity } from '../../../../../src/backend/creatorModerationIntegrity.js';
 import { CreatorSubmissionConflictError } from '../../../../../src/backend/creatorSubmissionConflict.js';
 import { finalizeContentDeletionPurge, recordProviderDeletionReceipt, restoreContentDeletion } from '../../../../../src/privacy/deletionLifecycle.js';
@@ -129,7 +129,7 @@ export function createFirestoreContentRepository(db: FirestoreLike, options: Con
     transaction.set(refs.stoneRef, asRecord(stored));
     transaction.set(refs.barrierRef, { contentId: stored.tombstone.entityId, tombstoneId: stored.tombstone.tombstoneId, state: stored.tombstone.state });
     if (stored.tombstone.state !== 'purged') {
-      transaction.set(refs.itemRef, { schemaVersion: CURRENT_RUNTIME_CONTENT_SCHEMA_VERSION, publicCatalogEligible: stored.tombstone.state === 'restored' && isPublicCatalogEligible(refs.item), deletion: { tombstoneId: stored.tombstone.tombstoneId, state: stored.tombstone.state } }, { merge: true });
+      transaction.set(refs.itemRef, { schemaVersion: CURRENT_RUNTIME_CONTENT_SCHEMA_VERSION, publicCatalogEligible: false, deletion: { tombstoneId: stored.tombstone.tombstoneId, state: stored.tombstone.state } }, { merge: true });
     }
     return stored;
   }
@@ -226,8 +226,9 @@ export function createFirestoreContentRepository(db: FirestoreLike, options: Con
         const stored = storedContent(doc.data(), doc.id);
         // A stale or tampered eligibility index fails the entire public query:
         // never return an item OR encode its identifier in a cursor.
-        if (!isPublicCatalogEligible(stored) || stored.publicCatalogEligible !== true ||
-            isRuntimeContentDeleted(stored)) throw new Error('Public catalog eligibility index mismatch');
+        if (!isExplicitlyIndexedPublicRecord(stored) || isRuntimeContentDeleted(stored)) {
+          throw new Error('Public catalog eligibility index mismatch');
+        }
         return parseRuntimeContentRecord(stored);
       });
       const items = visible.slice(0, limit);
@@ -250,7 +251,13 @@ export function createFirestoreContentRepository(db: FirestoreLike, options: Con
       const doc = snap.docs[0];
       if (!doc) return null;
       const item = storedContent(doc.data(), doc.id);
-      return isRuntimeContentDeleted(item) ? null : parseRuntimeContentRecord(item);
+      // This lookup is used by the anonymous Content detail endpoint.
+      // Do not expose published/unlisted or legacy published/public bodies
+      // without a reviewed indexed-public record. Unlisted link sharing needs
+      // its own explicit grant; generic status is not a bearer capability.
+      return isExplicitlyIndexedPublicRecord(item) && !isRuntimeContentDeleted(item)
+        ? parseRuntimeContentRecord(item)
+        : null;
     },
     async deleteContent(): Promise<void> { throw new Error('Hard content deletion is disabled; use receipt-bound soft deletion'); },
     async softDeleteContent(request) {
