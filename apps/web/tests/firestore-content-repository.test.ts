@@ -695,6 +695,11 @@ describe('create-only creator submission under Admin Firestore', () => {
     await expect(repo.createCreatorSubmission({...item,creatorId:'attacker',body:'replacement'})).rejects.toThrow('ID is not available');
     expect(await repo.getCreatorSubmission(item.id)).toMatchObject({creatorId:'owner-1',body:'not user content'});
   });
+  it('rejects nested document paths even when invoked without the public API', async () => {
+    const db = new FakeFirestore(); const repo = createFirestoreContentRepository(db);
+    await expect(repo.createCreatorSubmission({...item,id:'nested/submission'})).rejects.toThrow('Invalid content document identity');
+    expect((await db.collection('creatorSubmissions').doc('nested/submission').get()).exists).toBe(false);
+  });
   it('serializes concurrent same-ID creates; exactly one succeeds', async () => {
     const db = new FakeFirestore(); const repo = createFirestoreContentRepository(db);
     const outcomes = await Promise.allSettled([
