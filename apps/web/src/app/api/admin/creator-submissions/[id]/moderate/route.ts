@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
 import { requireAdmin } from '@/server/auth/authorization';
 import { getAuthFailureBody, getAuthFailureStatus, getRequestSession } from '@/server/auth/requestSession';
@@ -76,9 +77,8 @@ export async function POST(request: Request, context: RouteContext) {
     updatedAt: now
   };
 
-  await repository.upsertCreatorSubmission(moderatedSubmission);
-  await repository.logModeration({
-    id: `${id}-${body.decision}-${Date.now()}`,
+  await repository.moderateCreatorSubmission(moderatedSubmission, {
+    id: `${id}-${body.decision}-${randomUUID()}`,
     entityType: 'creatorSubmission',
     entityId: id,
     status: body.decision,
@@ -86,7 +86,7 @@ export async function POST(request: Request, context: RouteContext) {
     notes: body.notes ?? null,
     moderatedAt: now,
     moderatedBy: currentSession!.uid
-  });
+  }, submission.updatedAt);
 
   const responseAuthorization = requireAdmin(await recheckRequestSession(request, session!));
   if (!responseAuthorization.ok) {
