@@ -5,6 +5,7 @@ import { requireAdmin } from '@/server/auth/authorization';
 import { getAuthFailureBody, getAuthFailureStatus, getRequestSession } from '@/server/auth/requestSession';
 import { recheckRequestSession } from '@/server/auth/currentRequest';
 import { createRuntimeContentRepository, getRuntimePersistenceStatus } from '@/server/content/service';
+import { isPrivateContentMutationHeld, PRIVATE_MUTATION_HOLD_ERROR } from '@/server/privacy/privateMutationHold';
 
 export const dynamic = 'force-dynamic';
 
@@ -79,6 +80,9 @@ export async function POST(request: Request, context: RouteContext) {
     updatedAt: now
   };
 
+  if (isPrivateContentMutationHeld()) {
+    return NextResponse.json({ error: PRIVATE_MUTATION_HOLD_ERROR }, { status: 503 });
+  }
   await repository.moderateCreatorSubmission(moderatedSubmission, {
     id: `${id}-${body.decision}-${randomUUID()}`,
     entityType: 'creatorSubmission',
