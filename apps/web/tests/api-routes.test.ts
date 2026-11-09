@@ -228,6 +228,28 @@ describe('creator submissions API route authorization', () => {
     expect(JSON.stringify(await readJson(items))).not.toContain('overwrite attempted');
   });
 
+  it('rejects Firestore path-unsafe user-supplied submission IDs before persistence', async () => {
+    setNodeEnvForTests('test');
+    const headers = { 'x-urai-user-id': 'creator-1', 'x-urai-role': 'creator' };
+    for (const id of ['outside/other', '.', '..', '/absolute']) {
+      const response = await postCreatorSubmission(makeCreatorPostRequest({ ...validSubmissionBody, id }, headers));
+      expect(response.status).toBe(400);
+    }
+  });
+
+  it('generates distinct server UUID IDs when the creator omits one', async () => {
+    setNodeEnvForTests('test');
+    const headers = { 'x-urai-user-id': 'creator-1', 'x-urai-role': 'creator' };
+    const first = await postCreatorSubmission(makeCreatorPostRequest({ ...validSubmissionBody, id: undefined }, headers));
+    const second = await postCreatorSubmission(makeCreatorPostRequest({ ...validSubmissionBody, id: undefined }, headers));
+    expect(first.status).toBe(201);
+    expect(second.status).toBe(201);
+    const a = (await readJson(first)) as {submission:{id:string}};
+    const b = (await readJson(second)) as {submission:{id:string}};
+    expect(a.submission.id).toMatch(/^submission-[0-9a-f-]{36}$/);
+    expect(b.submission.id).not.toBe(a.submission.id);
+  });
+
   it('labels memory-preview history as non-durable', async () => {
     setNodeEnvForTests('test');
     const response = await getCreatorSubmissions(makeCreatorGetRequest({ 'x-urai-user-id': 'creator-1', 'x-urai-role': 'creator' }));
