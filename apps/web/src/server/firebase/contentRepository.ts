@@ -37,6 +37,7 @@ import {
 } from '../content/schemas';
 
 import { decodePageCursor, encodePageCursor, normalizePageLimit, type PageRequest, type PageResult } from '../../../../../src/query/pagination.js';
+import { isPublicCatalogEligible, PUBLIC_CATALOG_ELIGIBILITY_FIELD } from '../../../../../src/query/publicCatalogEligibility.js';
 import { assertCreatorModerationIntegrity } from '../../../../../src/backend/creatorModerationIntegrity.js';
 import { CreatorSubmissionConflictError } from '../../../../../src/backend/creatorSubmissionConflict.js';
 import { finalizeContentDeletionPurge, recordProviderDeletionReceipt, restoreContentDeletion } from '../../../../../src/privacy/deletionLifecycle.js';
@@ -128,7 +129,7 @@ export function createFirestoreContentRepository(db: FirestoreLike, options: Con
     transaction.set(refs.stoneRef, asRecord(stored));
     transaction.set(refs.barrierRef, { contentId: stored.tombstone.entityId, tombstoneId: stored.tombstone.tombstoneId, state: stored.tombstone.state });
     if (stored.tombstone.state !== 'purged') {
-      transaction.set(refs.itemRef, { schemaVersion: CURRENT_RUNTIME_CONTENT_SCHEMA_VERSION, deletion: { tombstoneId: stored.tombstone.tombstoneId, state: stored.tombstone.state } }, { merge: true });
+      transaction.set(refs.itemRef, { schemaVersion: CURRENT_RUNTIME_CONTENT_SCHEMA_VERSION, publicCatalogEligible: stored.tombstone.state === 'restored' && isPublicCatalogEligible(refs.item), deletion: { tombstoneId: stored.tombstone.tombstoneId, state: stored.tombstone.state } }, { merge: true });
     }
     return stored;
   }
@@ -206,6 +207,38 @@ export function createFirestoreContentRepository(db: FirestoreLike, options: Con
       return { items: scanned.filter((item) => !isRuntimeContentDeleted(item)).map(parseRuntimeContentRecord),
         nextCursor: snap.docs.length > limit && last ? encodePageCursor({ sortValue: last.id, id: last.id }) : null };
     },
+    async listPublishedPublicContentPage(request: PageRequest = {}): Promise<PageResult<ContentItem>> {
+      const limit = normalizePageLimit(request.limit);
+      const cursor = request.cursor ? decodePageCursor(request.cursor) : null;
+      if (cursor && cursor.sortValue !== cursor.id) throw new Error('Invalid public catalog pagination cursor');
+
+      // Query public authorization candidates BEFORE the cursor is generated.
+      // Old documents without the explicit eligibility bit remain absent until
+      // a reviewed, rights-checked migration/publisher reindexes them.
+      let query = collection(db, FIRESTORE_COLLECTIONS.contentItems)
+        .where(PUBLIC_CATALOG_ELIGIBILITY_FIELD, '==', true)
+        .where('status', '==', 'published')
+        .where('visibility', '==', 'public')
+        .orderBy('id');
+      if (cursor) query = query.startAfter(cursor.id);
+      const snap = await query.limit(limit + 1).get();
+      const visible = snap.docs.map((doc) => {
+        const stored = storedContent(doc.data(), doc.id);
+        // A stale or tampered eligibility index fails the entire public query:
+        // never return an item OR encode its identifier in a cursor.
+        if (!isPublicCatalogEligible(stored) || stored.publicCatalogEligible !== true ||
+            isRuntimeContentDeleted(stored)) throw new Error('Public catalog eligibility index mismatch');
+        return parseRuntimeContentRecord(stored);
+      });
+      const items = visible.slice(0, limit);
+      const last = items.at(-1);
+      return {
+        items,
+        nextCursor: visible.length > limit && last
+          ? encodePageCursor({ sortValue: last.id, id: last.id })
+          : null
+      };
+    },
     async listContent(): Promise<ContentItem[]> {
       const page = await repo.listContentPage({ limit: 100 });
       if (page.nextCursor) throw new Error('Content collection exceeds bounded read; use listContentPage');
@@ -237,7 +270,7 @@ export function createFirestoreContentRepository(db: FirestoreLike, options: Con
         const stored = prepareContentSoftDeletion(parseRuntimeContentRecord(record), request);
         transaction.set(stoneRef, asRecord(stored));
         transaction.set(barrierRef, { contentId: request.entityId, tombstoneId: request.tombstoneId, state: stored.tombstone.state });
-        transaction.set(ref, { schemaVersion: CURRENT_RUNTIME_CONTENT_SCHEMA_VERSION, deletion: { tombstoneId: request.tombstoneId, state: stored.tombstone.state } }, { merge: true });
+        transaction.set(ref, { schemaVersion: CURRENT_RUNTIME_CONTENT_SCHEMA_VERSION, publicCatalogEligible: false, deletion: { tombstoneId: request.tombstoneId, state: stored.tombstone.state } }, { merge: true });
         return stored;
       });
     },

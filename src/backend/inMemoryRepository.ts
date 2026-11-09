@@ -19,7 +19,8 @@ import {
   marketplaceItemSchema, moderationQueueSchema, narratorPromptSchema, publishingReleaseSchema,
   ritualTemplateSchema, storyTemplateSchema, telemetryEventSchema, userContentEntitlementSchema,
 } from '../schemas/content.js';
-import { decodePageCursor, encodePageCursor, normalizePageLimit, type PageRequest, type PageResult } from '../query/pagination.js';
+import { decodePageCursor, encodePageCursor, normalizePageLimit, paginateSorted, type PageRequest, type PageResult } from '../query/pagination.js';
+import { isPublicCatalogEligible } from '../query/publicCatalogEligibility.js';
 import { finalizeContentDeletionPurge, recordProviderDeletionReceipt, restoreContentDeletion } from '../privacy/deletionLifecycle.js';
 import {
   assertContentDeletionBinding, assertDeletionOperationsEnabled, assertDocumentId, checksumContentRecords,
@@ -66,6 +67,13 @@ export class InMemoryContentRepository implements ContentRepository {
     const last = scanned.at(-1);
     return { items: structuredClone(scanned.filter((item) => !this.activeDeletion(item.id))),
       nextCursor: rows.length > limit && last ? encodePageCursor({ sortValue: last.id, id: last.id }) : null };
+  }
+  async listPublishedPublicContentPage(request: PageRequest = {}): Promise<PageResult<ContentItem>> {
+    const eligible = [...this.content.values()]
+      .filter((item) => isPublicCatalogEligible(item) && !this.activeDeletion(item.id))
+      .sort((a, b) => Buffer.compare(Buffer.from(a.id), Buffer.from(b.id)));
+    const page = paginateSorted(eligible, { ...request, limit: request.limit ?? 100 }, (item) => ({ sortValue: item.id, id: item.id }));
+    return { items: structuredClone(page.items), nextCursor: page.nextCursor };
   }
   async listContent(): Promise<ContentItem[]> {
     const page = await this.listContentPage({ limit: 100 });

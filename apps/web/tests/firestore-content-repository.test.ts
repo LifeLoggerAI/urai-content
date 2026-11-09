@@ -324,7 +324,7 @@ describe('createFirestoreContentRepository', () => {
     await repo.upsertContent(item);
 
     expect(firestore.collection('contentItems').setCalls).toEqual([
-      { id: item.id, data: { ...item, schemaVersion: 2 } as unknown as FirestoreData, options: { merge: true } }
+      { id: item.id, data: { ...item, schemaVersion: 2, publicCatalogEligible: false } as unknown as FirestoreData, options: { merge: true } }
     ]);
   });
 
@@ -506,6 +506,83 @@ describe.each(repositoryCases)('$name persistence lifecycle', ({ create }) => {
     await expect(repo.restoreDeletedContent(item.id, item.createdBy, now)).rejects.toThrow('Active content deletion not found');
   });
 
+  it('builds public catalog cursors exclusively from eligible published/public records', async () => {
+    const firestore = new FakeFirestore();
+    const repo = createFirestoreContentRepository(firestore);
+    for (const [id, status, visibility] of [
+      ['a-hidden', 'draft', 'public'],
+      ['b-public', 'published', 'public'],
+      ['c-secret', 'published', 'private'],
+      ['d-unlisted', 'published', 'unlisted'],
+      ['e-public', 'published', 'public'],
+      ['f-archived', 'archived', 'public'],
+      ['g-public', 'published', 'public'],
+    ] as const) {
+      await repo.upsertContent(makeContentItem({ id, slug: id, status, visibility }));
+    }
+    const page1 = await repo.listPublishedPublicContentPage({ limit: 1 });
+    expect(page1.items.map((item) => item.id).toEqual(['b-public']);
+    expect(JSON.stringify(page1)).not.toMatch(/a-hidden|c-secret|d-unlisted|f-archived/);
+    expect(page1.nextCursor).not.toBeNull();
+    expect(Buffer.from(page1.nextCursor!, 'base64url').toString('utf8')).not.toMatch(/hidden|secret|unlisted|archived/);
+    const page2 = await repo.listPublishedPublicContentPage({ limit: 1, cursor: page1.nextCursor });
+    const page3 = await repo.listPublishedPublicContentPage({ limit: 1, cursor: page2.nextCursor });
+    expect([...page1.items, ...page2.items, ...page3.items].map((item) => item.id))
+      .toEqual(['b-public', 'e-public', 'g-public']);
+    expect(page3.nextCursor).toBeNull();
+  });
+
+  it('excludes legacy public docs without a reviewed eligibility backfill', async () => {
+    const firestore = new FakeFirestore();
+    const repo = createFirestoreContentRepository(firestore);
+    const legacy = makeContentItem({ id: 'old-approved', status: 'published', visibility: 'public' });
+    await firestore.collection('contentItems').doc(legacy.id).set(legacy as FirestoreData);
+    expect((await repo.listPublishedPublicContentPage()).items).toEqual([]);
+    await repo.upsertContent(legacy);
+    expect((await repo.listPublishedPublicContentPage()).items.map((row) => row.id)).toEqual(['old-approved']);
+  });
+
+  it('never emits a cursor for a private record even with a forged eligibility bit', async () => {
+    const firestore = new FakeFirestore();
+    const repo = createFirestoreContentRepository(firestore);
+    const privateItem = makeContentItem({ id: 'hidden-owner-record', status: 'published', visibility: 'private' });
+    await repo.upsertContent(privateItem);
+    await firestore.collection('contentItems').doc(privateItem.id).set({ publicCatalogEligible: true }, { merge: true });
+    const page = await repo.listPublishedPublicContentPage({ limit: 1 });
+    expect(page.items).toEqual([]);
+    expect(page.nextCursor).toBeNull();
+  });
+
+  it('fails closed for an index value inconsistent with stored publication status', async () => {
+    const firestore = new FakeFirestore();
+    const repo = createFirestoreContentRepository(firestore);
+    const item = makeContentItem({ id: 'forged-index', status: 'draft', visibility: 'public' });
+    await repo.upsertContent(item);
+    await firestore.collection('contentItems').doc(item.id).set({ publicCatalogEligible: true }, { merge: true });
+    // Query also checks status == published: the forged bit alone cannot index a draft.
+    expect((await repo.listPublishedPublicContentPage()).items).toEqual([]);
+  });
+
+  it('removes a public item from the index before retained deletion and restores only the eligible item', async () => {
+    const firestore = new FakeFirestore();
+    const repo = createFirestoreContentRepository(firestore, { deletionOperationsEnabled: true, now: () => '2026-10-05T00:00:00.000Z' });
+    const item = makeContentItem({ id: 'approved-delete', status: 'published', visibility: 'public' });
+    await repo.saveContentRevision(item);
+    expect((await repo.listPublishedPublicContentPage()).items).toHaveLength(1);
+    await repo.softDeleteContent(deletionRequest(item));
+    expect((await repo.listPublishedPublicContentPage()).items).toEqual([]);
+    await repo.restoreDeletedContent(item.id, item.createdBy, '2026-10-05T00:00:00.000Z');
+    expect((await repo.listPublishedPublicContentPage()).items.map((row) => row.id)).toEqual(['approved-delete']);
+  });
+
+  it('rejects malformed public cursors before returning data', async () => {
+    const repo = createFirestoreContentRepository(new FakeFirestore());
+    await expect(repo.listPublishedPublicContentPage({ cursor: 'invalid' })).rejects.toThrow('Malformed pagination cursor');
+    await expect(repo.listPublishedPublicContentPage({
+      cursor: encodePageCursor({ id: 'public', sortValue: 'mismatch' })
+    })).rejects.toThrow('Invalid public catalog pagination cursor');
+  });
+
   it('traverses a large collection in bounded deterministic pages without duplicates or truncation', async () => {
     const repo = create();
     for (let index = 0; index < 205; index++) await repo.upsertContent(makeContentItem({ id: 'row-' + String(index).padStart(3, '0') }));
@@ -613,7 +690,7 @@ it('migrates legacy editorial snapshots to version 2 without losing fields and r
   for (const schemaVersion of [undefined, 1, 2]) {
     const stored = schemaVersion === undefined ? item : { ...item, schemaVersion };
     expect(canonicalSchemas.parseRuntimeContentRecord(stored)).toEqual(item);
-    expect(canonicalSchemas.serializeRuntimeContentRecord(stored)).toEqual({ ...item, schemaVersion: 2 });
+    expect(canonicalSchemas.serializeRuntimeContentRecord(stored)).toEqual({ ...item, schemaVersion: 2, publicCatalogEligible: false });
   }
   await firestore.collection('contentItems').doc(item.id).set({ ...item, schemaVersion: 1 });
   await repo.saveContentRevision({ ...item, title: 'Validated migration' });
