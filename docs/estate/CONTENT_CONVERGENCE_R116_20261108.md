@@ -109,3 +109,17 @@ Seven original content modules were independently verified with `git hash-object
 **Evidence classification:** actual local Node/native isolated multi-module source verification, with synthetic mocked account/release authority and pure in-memory signed Ed25519 examples. The local resolver redirects `.js` module references to their `.ts` originals under the publishing directory solely for the isolated test runtime; original file bytes were not modified. The `NextResponse` route is executed with an isolated mocked interface; no actual Next framework request or Firebase provider is present.
 
 **The 73/73 result is not full PR acceptance.** Complete 26-file branch checkout, TypeScript/lint/full Vitest/Playwright, Java21 Rules emulators, external Google-signed OIDC checks, real C1/C7 current consent and withdrawal, transactional creator/moderation persistence, real signed service dispatch, provider deployment, protected device Replay, deletion/acknowledgment and reviewer release GO remain outstanding. Any source evolution requires retesting.
+
+## R118 — current PR #115 hosted CI admission verification (2026-11-09 00:37–00:38 UTC)
+
+The new PR's **exact prior source head** `cf587a2e27b1b1d1f2eb93ceefcb3467e7c115b1` has three completed workflow runs:
+
+| Workflow | Run | Recorded jobs | Recorded executed steps |
+|---|---|---|---:|
+| Content Visual Proof | [42541156850](https://github.com/LifeLoggerAI/urai-content/actions/runs/42541156850) | visual-proof FAILED | **0** |
+| ci | [42541156843](https://github.com/LifeLoggerAI/urai-content/actions/runs/42541156843) | web FAILED; validate FAILED; browser-smoke FAILED | **0 each** |
+| URAI Production Verify | [42541157069](https://github.com/LifeLoggerAI/urai-content/actions/runs/42541157069) | Build, test, and QA FAILED | **0** |
+
+The GitHub Actions REST run/job readback reports **five total failed jobs with zero recorded job steps**. An attempt to fetch the `validate` job's native log (`128916146608`) returned provider `404 BlobNotFound`, so no executable application assertion/log was available to inspect. **Classification: pre-step runner/admission failure, not a demonstrated Content typecheck, test, browser, privacy or deployment failure.** These runs do not certify the code, nor establish that an actual test failed. Preserve this run/job ID list for existing GitHub Actions support investigation.
+
+This documentation append advances the PR #115 HEAD beyond `cf587a2...`, so the next worker must query fresh commit-associated runs for the new HEAD. No CI bypass or production deployment permitted.
