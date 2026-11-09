@@ -22,10 +22,6 @@ const creatorSubmissionRequestSchema = z.object({
 
 type CreatorSubmissionRequest = z.infer<typeof creatorSubmissionRequestSchema>;
 
-function slugify(value: string): string {
-  return value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 96) || 'submission';
-}
-
 function createSubmissionId(input: CreatorSubmissionRequest): string {
   return input.id ?? `submission-${randomUUID()}`;
 }
