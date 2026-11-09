@@ -31,3 +31,11 @@ At PR #117 head `01594612...`: [Visual #42547030324](https://github.com/LifeLogg
 4. Validate current Firebase projects/Rules/IAM, Content→Privacy→Studio/Jobs/Asset Factory/Storytime→Spatial Replay→revoke/delete and downstream acknowledgments, Vercel READY source identity/rollback and independent review.
 
 **Production HOLD.** No merge, live user data, IAM, provider activation, paid compute, deployment or original PR modification.
+
+## R123 postscript — path isolation, automatic UUIDs and scoped native rerun
+
+The same draft #117 now rejects path-unsafe IDs at the public Zod request boundary, generates `submission-${randomUUID()}` when ID omitted, and invokes the existing canonical `assertDocumentId` inside both create-only repository implementations. Two new API cases and one Firestore direct adapter negative fixture were added, **not executed under full Vitest/emulator**.
+
+Exact updated route Git blob `c524757ad5e8fa045a17b096119f5977989a628a`; independently hash-matched, **9/9** isolated Node route-flow tests PASS (replacing earlier 7/7 on older route blob), TAP SHA-256 `719b8d4bc215bf3378c2de4d5d7f97064a29fa3d87e828d9bcd79e75745035f0`. Standalone conflict helper remained 2/2 PASS. ZIP evidence SHA256 `60fef40485682aebdd50d081a93c07eb0c30deb0cd33ffe22e16add9838a6978`.
+
+**Do not combine with previous source heads as a single full integration certification.** Real emulator, current C1/C7 account consent and commit-time race fence, and full native CI remain missing. **HOLD.**
