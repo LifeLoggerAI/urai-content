@@ -28,7 +28,7 @@ export class RuntimeContentService {
 
   async listPublishedCatalogPage(request: PageRequest = {}): Promise<PageResult<ContentItem>> {
     const page = await this.repo.listContentPage({ ...request, limit: request.limit ?? 100 });
-    return { ...page, items: page.items.filter((item) => item.status === 'published' && ['public', 'unlisted'].includes(item.visibility)) };
+    return { ...page, items: page.items.filter((item) => item.status === 'published' && item.visibility === 'public') };
   }
 
   async getPublishedContentBySlug(slug: string): Promise<ContentItem | null> {
