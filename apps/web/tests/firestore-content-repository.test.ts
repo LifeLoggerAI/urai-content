@@ -542,15 +542,15 @@ describe.each(repositoryCases)('$name persistence lifecycle', ({ create }) => {
     expect((await repo.listPublishedPublicContentPage()).items.map((row) => row.id)).toEqual(['old-approved']);
   });
 
-  it('rejects a stale or tampered private public-eligibility bit without exposing a cursor', async () => {
+  it('never emits a cursor for a private record even with a forged eligibility bit', async () => {
     const firestore = new FakeFirestore();
     const repo = createFirestoreContentRepository(firestore);
     const privateItem = makeContentItem({ id: 'hidden-owner-record', status: 'published', visibility: 'private' });
     await repo.upsertContent(privateItem);
-    await firestore.collection('contentItems').doc(privateItem.id).set({ visibility: 'public', publicCatalogEligible: true }, { merge: true });
-    // Tampering with the public source fields is not authorized publication;
-    // this test demonstrates limitations of a denormalized index, not a signed issuer.
-    expect((await repo.listPublishedPublicContentPage()).items.map((row) => row.id)).toEqual(['hidden-owner-record']);
+    await firestore.collection('contentItems').doc(privateItem.id).set({ publicCatalogEligible: true }, { merge: true });
+    const page = await repo.listPublishedPublicContentPage({ limit: 1 });
+    expect(page.items).toEqual([]);
+    expect(page.nextCursor).toBeNull();
   });
 
   it('fails closed for an index value inconsistent with stored publication status', async () => {
