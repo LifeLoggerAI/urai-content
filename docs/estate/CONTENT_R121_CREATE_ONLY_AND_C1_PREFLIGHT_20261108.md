@@ -35,3 +35,21 @@ A production-grade solution requires an authoritative commit-time account/consen
 Other unclosed gates: live Firebase effective IAM/Rules, durable duplicate-ID behavior under real concurrent Firestore transactions, owner/nonowner and admin authority acceptance, PR #116 moderator audit atomicity, signed publishing issuer, native devices, localized public/private catalog semantics, Content→Studio/Jobs/Storytime/Spatial Replay→deletion acknowledgments, Vercel preview READY, and independent approval.
 
 **NO merge, no provider activation, no public posting, no production GO.**
+
+## R122 — Exact PR #117 hosted CI readback
+
+The first draft PR #117 head `01594612b7caa4e6853993a731091738a2920199` had three completed failed workflow runs:
+
+| Workflow | Run | Jobs / executed steps |
+|---|---|---|
+| Content Visual Proof | [42547030324](https://github.com/LifeLoggerAI/urai-content/actions/runs/42547030324) | visual-proof FAILED / **0 steps** |
+| URAI Production Verify | [42547030386](https://github.com/LifeLoggerAI/urai-content/actions/runs/42547030386) | Build, test, and QA FAILED / **0 steps** |
+| ci | [42547030398](https://github.com/LifeLoggerAI/urai-content/actions/runs/42547030398) | validate, web, browser-smoke each FAILED / **0 steps** |
+
+All five jobs report zero recorded steps. **Runner/admission BLOCKED**, not executed application tests; no inference that source compilation, Vitest, emulators or production verification assertions were run. No passing GitHub CI on PR #117.
+
+Additional source-link verification: the creator route's relative `../../../../../../../src/backend/creatorSubmissionConflict.js` maps to the intended root `src/backend/creatorSubmissionConflict.ts` under the local synthetic checkout; TypeScript compile/build acceptance remains unverified.
+
+Execution-grade local artifacts: `/mnt/data/content-r121-native-evidence.zip`, containing original exact-Git-blob-matched creator POST and collision helper, redirection stubs, test harnesses and full TAP logs. The local ZIP is not a hosted CI artifact and does not independently authorize deploy.
+
+**Critical**: the earlier `73/73` and `8/8` source tests belong to separate ancestor scopes. This R121 work adds `7/7` actual route isolated tests plus `2/2` helper tests, not a new merged full-repository `82/82` certification.
