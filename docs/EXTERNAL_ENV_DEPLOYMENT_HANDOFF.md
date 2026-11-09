@@ -132,7 +132,7 @@ Protected/admin/operator routes must be verified as blocked without auth and all
 After at least one successful deployment, record the previous deploy URL or rollback target and run:
 
 ```bash
-npm run smoke:rollback -- --base-url="$URAI_CONTENT_BASE_URL" --rollback-url=<rollback-url>
+npm run smoke:rollback -- --base-url="$URAI_CONTENT_BASE_URL" --expected-sha=<previous-live-commit-sha>
 ```
 
 Attach:
@@ -175,3 +175,6 @@ It may only move to:
 `production-live READY`
 
 when issue #61 is closed with the evidence package above.
+
+
+**Rollback verification scope:** `smoke:rollback` requires the exact 40-character commit SHA and validates only the selected HTTPS endpoint. It does not select or perform a previous-live provider rollback or prove current Firebase IAM, Rules/index compatibility, backups or revocation. Obtain the independently approved previous **LIVE** deployment ID and signed provider rollback receipt, then verify the restored release and private authorization boundaries before certifying rollback.
