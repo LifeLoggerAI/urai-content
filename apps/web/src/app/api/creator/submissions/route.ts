@@ -1,15 +1,17 @@
 import { NextResponse } from 'next/server';
+import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
 import { canCreateCreatorSubmission, isCreatorSession } from '@/server/auth/authorization';
 import { getAuthFailureBody, getAuthFailureStatus, getRequestSession } from '@/server/auth/requestSession';
 import { recheckRequestSession } from '@/server/auth/currentRequest';
 import { createRuntimeContentRepository, getRuntimePersistenceStatus } from '@/server/content/service';
 import type { CreatorSubmission } from '@/server/content/types';
+import { CreatorSubmissionConflictError } from '../../../../../../../src/backend/creatorSubmissionConflict.js';
 
 export const dynamic = 'force-dynamic';
 
 const creatorSubmissionRequestSchema = z.object({
-  id: z.string().min(1).max(128).optional(),
+  id: z.string().min(1).max(128).regex(/^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/).optional(),
   creatorId: z.string().min(1).max(128),
   title: z.string().min(1).max(160),
   body: z.string().min(1).max(20000),
@@ -20,12 +22,8 @@ const creatorSubmissionRequestSchema = z.object({
 
 type CreatorSubmissionRequest = z.infer<typeof creatorSubmissionRequestSchema>;
 
-function slugify(value: string): string {
-  return value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 96) || 'submission';
-}
-
 function createSubmissionId(input: CreatorSubmissionRequest): string {
-  return input.id ?? `${input.creatorId}-${slugify(input.title)}-${Date.now()}`;
+  return input.id ?? `submission-${randomUUID()}`;
 }
 
 async function parseBody(request: Request): Promise<CreatorSubmissionRequest | null> {
@@ -103,7 +101,22 @@ export async function POST(request: Request) {
     updatedAt: now
   };
 
-  await createRuntimeContentRepository().upsertCreatorSubmission(submission);
+  // Revalidate current Auth and canonical C1 after parsing and preparing the
+  // body, before any persistence work. This narrows but does not remove the
+  // withdrawal race between the check and the transaction commit.
+  const preWriteAuthorization = canCreateCreatorSubmission(await recheckRequestSession(request, session!), body.creatorId);
+  if (!preWriteAuthorization.ok) {
+    return NextResponse.json(getAuthFailureBody(preWriteAuthorization.reason), { status: getAuthFailureStatus(preWriteAuthorization.reason) });
+  }
+  try {
+    await createRuntimeContentRepository().createCreatorSubmission(submission);
+  } catch (error) {
+    if (error instanceof CreatorSubmissionConflictError) {
+      // Do not reveal whether the conflicting ID belongs to another creator.
+      return NextResponse.json({ error: 'submission_id_unavailable' }, { status: 409 });
+    }
+    throw error;
+  }
   const currentAuthorization = canCreateCreatorSubmission(await recheckRequestSession(request, session!), body.creatorId);
   if (!currentAuthorization.ok) {
     return NextResponse.json(getAuthFailureBody(currentAuthorization.reason), { status: getAuthFailureStatus(currentAuthorization.reason) });

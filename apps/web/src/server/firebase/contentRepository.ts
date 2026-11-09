@@ -38,6 +38,7 @@ import {
 
 import { decodePageCursor, encodePageCursor, normalizePageLimit, type PageRequest, type PageResult } from '../../../../../src/query/pagination.js';
 import { assertCreatorModerationIntegrity } from '../../../../../src/backend/creatorModerationIntegrity.js';
+import { CreatorSubmissionConflictError } from '../../../../../src/backend/creatorSubmissionConflict.js';
 import { finalizeContentDeletionPurge, recordProviderDeletionReceipt, restoreContentDeletion } from '../../../../../src/privacy/deletionLifecycle.js';
 import {
   assertContentDeletionBinding, assertDeletionOperationsEnabled, assertDocumentId, checksumContentRecords,
@@ -315,6 +316,18 @@ export function createFirestoreContentRepository(db: FirestoreLike, options: Con
     async upsertStoryTemplate(template: StoryTemplate): Promise<void> { const parsed = parseRuntimeRecord(storyTemplateSchema, FIRESTORE_COLLECTIONS.storyTemplates, template); await collection(db, FIRESTORE_COLLECTIONS.storyTemplates).doc(parsed.id).set(asRecord(parsed), { merge: true }); },
     async upsertRitualTemplate(template: RitualTemplate): Promise<void> { const parsed = parseRuntimeRecord(ritualTemplateSchema, FIRESTORE_COLLECTIONS.ritualTemplates, template); await collection(db, FIRESTORE_COLLECTIONS.ritualTemplates).doc(parsed.id).set(asRecord(parsed), { merge: true }); },
     async upsertMarketplaceItem(item: MarketplaceItem): Promise<void> { const parsed = parseRuntimeRecord(marketplaceItemSchema, FIRESTORE_COLLECTIONS.marketplaceItems, item); await collection(db, FIRESTORE_COLLECTIONS.marketplaceItems).doc(parsed.id).set(asRecord(parsed), { merge: true }); },
+    async createCreatorSubmission(item: CreatorSubmission): Promise<void> {
+      const parsed = parseRuntimeRecord(creatorSubmissionSchema, FIRESTORE_COLLECTIONS.creatorSubmissions, item);
+      assertDocumentId(parsed.id);
+      const ref = collection(db, FIRESTORE_COLLECTIONS.creatorSubmissions).doc(parsed.id);
+      // Admin SDK bypasses client Rules; this transaction must read the
+      // document before scheduling a create, including on concurrent retries.
+      await db.runTransaction(async (transaction) => {
+        const existing = await transaction.get(ref);
+        if (existing.exists) throw new CreatorSubmissionConflictError();
+        transaction.set(ref, asRecord(parsed));
+      });
+    },
     async upsertCreatorSubmission(item: CreatorSubmission): Promise<void> { const parsed = parseRuntimeRecord(creatorSubmissionSchema, FIRESTORE_COLLECTIONS.creatorSubmissions, item); await collection(db, FIRESTORE_COLLECTIONS.creatorSubmissions).doc(parsed.id).set(asRecord(parsed), { merge: true }); },
     async moderateCreatorSubmission(item: CreatorSubmission, audit: ModerationQueueItem, expectedUpdatedAt: string): Promise<void> {
       // A committed decision and its audit must share one transaction. A stale

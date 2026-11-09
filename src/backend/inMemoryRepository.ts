@@ -13,6 +13,7 @@ import type {
 } from '../schemas/content.js';
 import type { ContentRepository, CreatorSubmissionQueueOptions } from './types.js';
 import { assertCreatorModerationIntegrity } from './creatorModerationIntegrity.js';
+import { CreatorSubmissionConflictError } from './creatorSubmissionConflict.js';
 import {
   contentItemSchema, parseRuntimeContentRecord, creatorSubmissionSchema, exportTemplateSchema,
   marketplaceItemSchema, moderationQueueSchema, narratorPromptSchema, publishingReleaseSchema,
@@ -21,7 +22,7 @@ import {
 import { decodePageCursor, encodePageCursor, normalizePageLimit, type PageRequest, type PageResult } from '../query/pagination.js';
 import { finalizeContentDeletionPurge, recordProviderDeletionReceipt, restoreContentDeletion } from '../privacy/deletionLifecycle.js';
 import {
-  assertContentDeletionBinding, assertDeletionOperationsEnabled, checksumContentRecords,
+  assertContentDeletionBinding, assertDeletionOperationsEnabled, assertDocumentId, checksumContentRecords,
   deletionOperationTime,
   prepareContentSoftDeletion, type ContentDeletionRepositoryOptions, type ContentProviderDeletionReceipt,
   type SoftDeleteContentRequest, type StoredContentDeletion,
@@ -154,6 +155,12 @@ export class InMemoryContentRepository implements ContentRepository {
   async upsertStoryTemplate(template: StoryTemplate): Promise<void> { this.story.set(template.id, storyTemplateSchema.parse(template)); }
   async upsertRitualTemplate(template: RitualTemplate): Promise<void> { this.ritual.set(template.id, ritualTemplateSchema.parse(template)); }
   async upsertMarketplaceItem(item: MarketplaceItem): Promise<void> { this.marketplace.set(item.id, marketplaceItemSchema.parse(item)); }
+  async createCreatorSubmission(item: CreatorSubmission): Promise<void> {
+    const parsed = creatorSubmissionSchema.parse(item);
+    assertDocumentId(parsed.id);
+    if (this.creatorSubs.has(parsed.id)) throw new CreatorSubmissionConflictError();
+    this.creatorSubs.set(parsed.id, structuredClone(parsed));
+  }
   async upsertCreatorSubmission(item: CreatorSubmission): Promise<void> { this.creatorSubs.set(item.id, creatorSubmissionSchema.parse(item)); }
   async moderateCreatorSubmission(item: CreatorSubmission, audit: ModerationQueueItem, expectedUpdatedAt: string): Promise<void> {
     // This fallback is used only for nonproduction synthetic/local workflows.

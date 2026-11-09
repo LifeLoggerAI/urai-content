@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 const state = vi.hoisted(() => ({
   role: 'admin', withdrawn: false, disabled: false, revoked: false,
   withdrawalPoint: '' as 'read' | 'write' | 'log' | '',
+  withdrawAtAuthRead: 0,
   reads: vi.fn(), writes: vi.fn(), logs: vi.fn(), authReads: vi.fn()
 }));
 const privateSubmission = { id: 'owned-1', creatorId: 'actor-1', title: 'Private fixture', body: 'PRIVATE_SOURCE_FIXTURE', status: 'submitted' };
@@ -22,7 +23,7 @@ vi.mock('../src/server/firebase/admin', () => ({
       if (state.revoked) throw Object.assign(new Error('private-auth-error'), { code: 'auth/id-token-revoked' });
       return { uid: 'actor-1', role: state.role };
     },
-    getUser: async () => { state.authReads(); return { uid: 'actor-1', disabled: state.disabled, customClaims: state.withdrawn ? {} : { role: state.role } }; }
+    getUser: async () => { state.authReads(); if (state.withdrawAtAuthRead && state.authReads.mock.calls.length >= state.withdrawAtAuthRead) state.withdrawn = true; return { uid: 'actor-1', disabled: state.disabled, customClaims: state.withdrawn ? {} : { role: state.role } }; }
   })
 }));
 vi.mock('../src/server/content/service', () => {
@@ -34,6 +35,7 @@ vi.mock('../src/server/content/service', () => {
       listCreatorSubmissions: async () => { state.reads(); end('read'); return [privateSubmission]; },
       getCreatorSubmission: async () => { state.reads(); end('read'); return privateSubmission; },
       upsertCreatorSubmission: async () => { state.writes(); end('write'); },
+      createCreatorSubmission: async () => { state.writes(); end('write'); },
       // One mocked durable operation now commits both the status and audit.
       // Real transactional interruption acceptance remains an emulator gate.
       moderateCreatorSubmission: async () => { state.writes(); state.logs(); end('write'); },
@@ -57,7 +59,7 @@ function request(body?: unknown): Request {
 const context = () => ({ params: Promise.resolve({ id: 'owned-1' }) });
 beforeEach(() => {
   vi.stubEnv('NODE_ENV', 'production');
-  Object.assign(state, { role: 'admin', withdrawn: false, disabled: false, revoked: false, withdrawalPoint: '' });
+  Object.assign(state, { role: 'admin', withdrawn: false, disabled: false, revoked: false, withdrawalPoint: '', withdrawAtAuthRead: 0 });
   state.reads.mockReset(); state.writes.mockReset(); state.logs.mockReset(); state.authReads.mockReset();
 });
 afterEach(() => vi.unstubAllEnvs());
@@ -110,6 +112,16 @@ describe('private output and moderation after awaited work', () => {
     const response = await moderate(request({ decision: 'approved' }), context());
     expect(response.status).toBe(401);
     expect(state.writes).toHaveBeenCalledTimes(1); expect(state.logs).toHaveBeenCalledTimes(1);
+    expect(JSON.stringify(await response.json())).not.toContain('PRIVATE_SOURCE_FIXTURE');
+  });
+  it('denies role withdrawal at the added pre-write Auth/C1 boundary without persisting', async () => {
+    state.role = 'creator';
+    // Production admission reads current account twice; its next read
+    // belongs to the newly inserted recheck just before create-only write.
+    state.withdrawAtAuthRead = 3;
+    const response = await creatorCreate(request({ creatorId: 'actor-1', title: 'Private fixture', body: 'PRIVATE_SOURCE_FIXTURE' }));
+    expect(response.status).toBe(401);
+    expect(state.writes).not.toHaveBeenCalled();
     expect(JSON.stringify(await response.json())).not.toContain('PRIVATE_SOURCE_FIXTURE');
   });
   it('does not return a creator body if authority is withdrawn while its write is pending', async () => {
