@@ -7,7 +7,7 @@ import { resolve } from 'node:path';
 
 const configFile = resolve(new URL('../apps/web/next.config.mjs', import.meta.url).pathname);
 const routeFile = resolve(new URL('../apps/web/src/app/api/version/route.ts', import.meta.url).pathname);
-const vars = ['URAI_CONTENT_RELEASE_SHA','GITHUB_SHA','VERCEL_GIT_COMMIT_SHA'];
+const vars = ['URAI_CONTENT_BUILD_SHA','URAI_CONTENT_RELEASE_SHA','GITHUB_SHA','VERCEL_GIT_COMMIT_SHA'];
 const a = 'a'.repeat(40), b = 'b'.repeat(40);
 let counter = 0;
 async function configFor(values) {
@@ -39,9 +39,16 @@ function routeFor(env) {
 test('GitHub prebuild embeds exact commit and version never caches it',async()=>{
   const cfg = await configFor({GITHUB_SHA:a,URAI_CONTENT_RELEASE_SHA:a});
   assert.equal(cfg.env.URAI_CONTENT_COMPILED_SHA,a);
+  assert.equal(cfg.env.URAI_CONTENT_BUILD_SHA,a);
   const out=routeFor({URAI_CONTENT_COMPILED_SHA:a});
   assert.equal(out.body.commitSha,a);
   assert.match(out.options.headers['Cache-Control'],/no-store/);
+});
+test('controller legacy build SHA is accepted, conflicts with publisher release SHA are denied',async()=>{
+  const cfg = await configFor({URAI_CONTENT_BUILD_SHA:a});
+  assert.equal(cfg.env.URAI_CONTENT_COMPILED_SHA,a);
+  assert.equal(cfg.env.URAI_CONTENT_BUILD_SHA,a);
+  await assert.rejects(configFor({URAI_CONTENT_BUILD_SHA:a,URAI_CONTENT_RELEASE_SHA:b}), /URAI_CONTENT_BUILD_COMMIT_CONFLICT/);
 });
 test('Vercel direct Git source embeds same build-time commit',async()=>{
   assert.equal((await configFor({VERCEL_GIT_COMMIT_SHA:b})).env.URAI_CONTENT_COMPILED_SHA,b);
