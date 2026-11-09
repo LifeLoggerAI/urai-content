@@ -65,6 +65,22 @@ describe('RuntimeContentService', () => {
     expect(privateResults.map((item) => item.id)).toEqual(['published-private']);
   });
 
+  it('keeps published unlisted content out of anonymous catalog pages but permits direct lookup', async () => {
+    const repo = new InMemoryContentRepository();
+    const service = new RuntimeContentService(repo);
+    await repo.upsertContent(makeContentItem({ id: 'public-page', slug: '/public-page', visibility: 'public' }));
+    await repo.upsertContent(makeContentItem({ id: 'secret-unlisted', slug: '/secret-unlisted', visibility: 'unlisted', body: 'UNLISTED_SYNTHETIC_BODY' }));
+    await repo.upsertContent(makeContentItem({ id: 'private-page', slug: '/private-page', visibility: 'private', body: 'PRIVATE_SYNTHETIC_BODY' }));
+    await repo.upsertContent(makeContentItem({ id: 'draft-page', slug: '/draft-page', status: 'draft', visibility: 'public' }));
+    const page = await service.listPublishedCatalogPage();
+    expect(page.items.map(item => item.id)).toEqual(['public-page']);
+    expect(JSON.stringify(page)).not.toContain('UNLISTED_SYNTHETIC_BODY');
+    expect(JSON.stringify(page)).not.toContain('PRIVATE_SYNTHETIC_BODY');
+    expect((await service.getPublishedContentBySlug('secret-unlisted'))?.body).toBe('UNLISTED_SYNTHETIC_BODY');
+    expect(await service.getPublishedContentBySlug('private-page')).toBeNull();
+    expect(await service.getPublishedContentBySlug('draft-page')).toBeNull();
+  });
+
   it('matches query text across title, body, slug, and tags', async () => {
     const repo = new InMemoryContentRepository();
     const service = new RuntimeContentService(repo);
