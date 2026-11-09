@@ -63,6 +63,31 @@ describe('canonical content seeding', () => {
     expect(items.every((item) => item.safetyNotes.includes('canonical-json-seed'))).toBe(true);
   });
 
+  it('rejects existing user-owned content IDs before rewriting seed revision', async () => {
+    const repo = new InMemoryContentRepository();
+    const canonical = listCanonicalSeedContentItems()[0]!;
+    await repo.upsertContent({ ...canonical, createdBy: 'private-user', body: 'SYNTHETIC_PRIVATE_OWNER_RECORD' });
+    await expect(seedCanonicalContent(repo)).rejects.toThrow('Canonical seed identity collision');
+    expect((await repo.getContent(canonical.id))?.body).toBe('SYNTHETIC_PRIVATE_OWNER_RECORD');
+    expect(await repo.listVersions(canonical.id)).toHaveLength(0);
+  });
+
+  it('rejects mismatching canonical source and slug', async () => {
+    const repo = new InMemoryContentRepository();
+    const canonical = listCanonicalSeedContentItems()[0]!;
+    await repo.upsertContent({ ...canonical, sourceLabel: 'unrelated-system' });
+    await expect(seedCanonicalContent(repo)).rejects.toThrow('Canonical seed identity collision');
+    expect(await repo.listVersions(canonical.id)).toHaveLength(0);
+  });
+
+  it('can re-seed an existing matching canonical JSON record in memory', async () => {
+    const repo = new InMemoryContentRepository();
+    const first = await seedCanonicalContent(repo);
+    const second = await seedCanonicalContent(repo);
+    expect(second.ids).toEqual(first.ids);
+    expect(await repo.listVersions(first.ids[0]!)).toHaveLength(2);
+  });
+
   it('upserts canonical content and versions into a repository', async () => {
     const repo = new InMemoryContentRepository();
     const result = await seedCanonicalContent(repo);

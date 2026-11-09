@@ -5,6 +5,7 @@ import { seedCanonicalContent } from '@/server/content/canonicalSeed';
 import { createFirestoreContentRepository } from '@/server/firebase/contentRepository';
 import { getFirebaseAdminDb, isFirebaseAdminConfigured } from '@/server/firebase/admin';
 import { verifySeedToken } from '@/server/firebase/adminEnv';
+import { isPrivateContentMutationHeld, PRIVATE_MUTATION_HOLD_ERROR } from '@/server/privacy/privateMutationHold';
 
 export const dynamic = 'force-dynamic';
 
@@ -67,6 +68,12 @@ export async function POST(request: Request) {
       message:
         'Seed token/admin authorization and Firebase configuration checks passed. No writes were performed.',
     });
+  }
+
+  // This is a direct Admin SDK writer, outside the creator/mode repository
+  // hold. It must not bypass the private-write release fence.
+  if (isPrivateContentMutationHeld(process.env.NODE_ENV, 'firestore')) {
+    return NextResponse.json({ error: PRIVATE_MUTATION_HOLD_ERROR }, { status: 503 });
   }
 
   const repository = createFirestoreContentRepository(
