@@ -1,6 +1,7 @@
 import 'server-only';
 import type { ContentItem, ContentRepository } from './types';
 import { listCatalogItems, normalizeSlug, type CatalogItem } from '@/lib/catalog';
+import { assertCanonicalSeedIdentity } from '../../../../../src/backend/canonicalSeedIntegrity.js';
 
 function canonicalStatusToWorkflowStatus(status: CatalogItem['status']): ContentItem['status'] {
   if (status === 'archived') return 'archived';
@@ -59,6 +60,11 @@ export async function seedCanonicalContent(repository: ContentRepository): Promi
   const items = listCanonicalSeedContentItems();
 
   for (const item of items) {
+    // Defense-in-depth for local/review fixtures. A concurrent durable write
+    // can race this read: production Firestore seeding remains hard-off until
+    // this identity check moves inside an approved atomic repository operation.
+    const existing = await repository.getContent(item.id);
+    assertCanonicalSeedIdentity(existing, item);
     await repository.saveContentRevision(item);
   }
 
