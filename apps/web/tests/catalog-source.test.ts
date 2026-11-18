@@ -1,3 +1,6 @@
+import { mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { getCatalogSourceDescription, getCatalogSourceMode } from '../src/server/content/catalogSource';
 
@@ -20,4 +23,25 @@ describe('catalog source mode', () => {
       if (originalPrivateKey !== undefined) process.env.FIREBASE_PRIVATE_KEY = originalPrivateKey;
     }
   });
+  it('reports embedded-snapshot when canonical files are absent', () => {
+    const originalCwd = process.cwd();
+    const workdir = mkdtempSync(join(tmpdir(), 'urai-content-source-mode-'));
+    const keys = ['FIREBASE_PROJECT_ID', 'FIREBASE_CLIENT_EMAIL', 'FIREBASE_PRIVATE_KEY'] as const;
+    const saved = keys.map((key) => [key, process.env[key]] as const);
+    try {
+      for (const key of keys) delete process.env[key];
+      process.chdir(workdir);
+      expect(getCatalogSourceMode()).toBe('embedded-snapshot');
+      expect(getCatalogSourceDescription()).toContain('embedded snapshot');
+      expect(getCatalogSourceDescription()).toContain('not publication approval');
+    } finally {
+      process.chdir(originalCwd);
+      for (const [key, value] of saved) {
+        if (value === undefined) delete process.env[key];
+        else process.env[key] = value;
+      }
+      rmSync(workdir, { recursive: true, force: true });
+    }
+  });
+
 });

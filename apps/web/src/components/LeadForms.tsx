@@ -50,7 +50,7 @@ export function LeadForm({ kind, title, description, defaultLeadType = 'user' }:
       });
       const data = (await response.json()) as { ok?: boolean; message?: string; stored?: boolean };
 
-      if (!response.ok || !data.ok) {
+      if (!response.ok || !data.ok || data.stored !== true) {
         throw new Error(data.message ?? 'Unable to submit right now.');
       }
 
