@@ -33,7 +33,8 @@ The 1080×1920 39.250-sec MP4, 16:9 thumbnail and complete source ZIP have been 
 - [x] Brand based on canonical `urai-spatial` SVG, unchanged
 - [x] Private Drive archive and readback
 - [ ] Protected preview deployment and smoke test
-- [ ] Human review of claims, music level, mobile legibility and captions
+- [x] Ten contiguous English timed-text cues match the 39.250-second video; media player has a captions track
+- [ ] Human review of claims, music level, mobile legibility and caption accuracy
 - [ ] Public YouTube upload (not authorized/executed in this branch)
 - [ ] Any production promotion (BLOCKED for Genesis, out of scope)
 
