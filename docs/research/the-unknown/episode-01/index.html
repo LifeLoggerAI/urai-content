@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="theme-color" content="#0B0F1A">
+<title>THE UNKNOWN — Episode 01 | URAI Labs × Chalk &amp; Cheese</title>
+<meta name="description" content="Draft research media preview: reproducible finite checks of Goldbach, Collatz and twin primes.">
+<style>
+:root{color-scheme:dark;--bg:#0b0f1a;--panel:#141a2e;--stroke:#354066;--text:#f4f7ff;--muted:#aeb9d0;--mint:#72f0d3;--violet:#9d89ff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 0,#18294b 0,#0b0f1a 48%);font:16px/1.5 system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:var(--text)}
+a{color:#a5c2ff}a:hover,a:focus-visible{color:white}a:focus-visible,button:focus-visible{outline:3px solid var(--mint);outline-offset:3px}
+.wrap{max-width:1060px;margin:auto;padding:28px 22px 64px}.mast{display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap;border-bottom:1px solid var(--stroke);padding-bottom:20px}
+.brand{display:flex;align-items:center;gap:12px}.brand img{height:70px;width:56px;object-fit:contain}.brand strong{display:block;letter-spacing:.12em;font-size:.95rem}.brand small{display:block;letter-spacing:.15em;color:var(--mint);font-size:.73rem}
+.tag{border:1px solid var(--stroke);color:var(--muted);padding:7px 11px;border-radius:99px;font-size:.73rem;letter-spacing:.07em;font-weight:700}.hero{margin:40px 0 24px}
+h1{font-size:clamp(2.5rem,8vw,5.7rem);line-height:.98;margin:8px 0 20px;letter-spacing:-.05em}h1 span{display:block;color:var(--mint)}
+.kicker{color:var(--violet);font-size:.82rem;letter-spacing:.18em;font-weight:800}p{max-width:710px;color:var(--muted)}.lede{font-size:1.2rem;max-width:760px}
+.media{display:grid;grid-template-columns:minmax(290px,360px) minmax(0,1fr);gap:32px;align-items:start;margin:26px 0 50px}
+.player{background:#000;aspect-ratio:9/16;max-height:640px;border:1px solid var(--stroke);border-radius:16px;overflow:hidden;box-shadow:0 12px 40px #0009}.player video{display:block;width:100%;height:100%}
+.side{background:linear-gradient(135deg,#1b2541,#111a2a);border:1px solid var(--stroke);border-radius:16px;padding:22px}h2{line-height:1.2;margin-top:4px}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.stat{border:1px solid #3b4767;background:#0d1629;border-radius:12px;padding:17px 13px}.stat b{display:block;color:var(--mint);font-size:clamp(1.65rem,4vw,2.3rem);font-variant-numeric:tabular-nums}.stat small{color:var(--muted);font-size:.78rem}
+.notice{border-left:3px solid var(--mint);background:#123039;padding:14px 17px;margin:20px 0;color:#d4fff5}
+.links a{display:inline-block;margin:4px 12px 4px 0}.fine{font-size:.87rem}.footer{border-top:1px solid var(--stroke);margin-top:40px;padding-top:22px;color:var(--muted);font-size:.86rem}
+@media(max-width:760px){.media{grid-template-columns:1fr}.player{max-width:360px;margin:auto}.stats{grid-template-columns:1fr 1fr}.mast{gap:8px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<header class="mast">
+<div class="brand"><img src="brand/uraiLabs.dark.svg" alt="Official URAI Labs symbol"><div><strong>URAI LABS × CHALK &amp; CHEESE</strong><small>THE UNKNOWN</small></div></div>
+<div class="tag" role="status">RESEARCH MEDIA PREVIEW · NOT PUBLISHED</div>
+</header>
+<section class="hero" aria-labelledby="title">
+<div class="kicker">EPISODE 01 · MATHEMATICAL MYSTERIES</div>
+<h1 id="title">ONE MILLION NUMBERS.<span>ZERO COUNTEREXAMPLES.</span></h1>
+<p class="lede">What happens when computers test a million values against mathematical conjectures? We ran bounded calculations, repeated them, and kept the receipts.</p>
+</section>
+<section class="media" aria-label="Episode and numerical research">
+<div class="player"><video controls playsinline preload="metadata" poster="thumbnail.png" aria-label="The Unknown Episode 01: finite mathematical experiments"><source src="episode-01.mp4" type="video/mp4"><track kind="captions" src="episode-01.en.vtt" srclang="en" label="On-screen text (English)" default>Your browser cannot play this file. <a href="episode-01.mp4">Open the MP4</a>.</video></div>
+<div class="side"><div class="kicker">REPRODUCIBLE RESEARCH</div><h2>What the workers checked</h2>
+<div class="stats">
+<div class="stat"><b>1,000,000</b><small>Collatz starting values</small></div>
+<div class="stat"><b>499,999</b><small>Even numbers tested for Goldbach</small></div>
+<div class="stat"><b>8,169</b><small>Twin-prime pairs through 1,000,000</small></div>
+<div class="stat"><b>524</b><small>Longest Collatz path steps in tested range</small></div>
+</div>
+<div class="notice"><strong>Finite tests are not proofs.</strong> These results do not solve Goldbach, Collatz or twin-prime infinitude. They are reproducible computations for bounded ranges.</div>
+<p class="fine">Episode audio is an original synthesized ambient soundtrack, not narration. No footage or discovery is attributed to a third party incorrectly.</p>
+<div class="links"><a href="https://github.com/LifeLoggerAI/urai-labs-llc/issues/488" rel="noopener noreferrer" target="_blank">Research receipts</a><a href="https://leanprover-community.github.io/blog/posts/riemann-hypothesis/" rel="noopener noreferrer" target="_blank">Riemann formal proof verification</a><a href="https://www.claymath.org/millennium/Riemann-Hypothesis/" rel="noopener noreferrer" target="_blank">Clay problem status</a></div>
+</div>
+</section>
+<section class="side" aria-labelledby="reproduce" style="margin:26px 0">
+<h2 id="reproduce">Check the calculations yourself</h2>
+<p>R7 verification uses Python standard-library code and a separate C implementation, with a deliberate negative-control test. The same source files passed on both existing Runpod research workers. These results are finite computations, not conjecture proofs.</p>
+<p class="links"><a href="https://github.com/LifeLoggerAI/urai-content/tree/research/the-unknown-math-ep01-review-20261123/docs/research/the-unknown/episode-01/reproduction" rel="noopener noreferrer">Open the runnable test scripts</a> <a href="https://github.com/LifeLoggerAI/urai-content/blob/research/the-unknown-math-ep01-review-20261123/docs/research/the-unknown/episode-01/on_screen_text_transcript.md" rel="noopener noreferrer">Read the accessible scene transcript</a></p>
+<details><summary style="cursor:pointer;font-weight:700">What does the video show?</summary>
+<p>The video has instrumental music, no spoken narration. It shows ten sequential static cards: a research introduction; the Collatz rules; trajectory of 27; one million checked starts; 524 steps at 837,799; 499,999 Goldbach checks; 8,169 twin-prime pairs; limits of finite testing; an attributed Riemann Hypothesis preview; and the closing brand card. Please use the full transcript above for details.</p>
+</details>
+</section>
+<section aria-labelledby="next"><h2 id="next">Explore. Question. Verify. Discover.</h2><p>Upcoming: an attributed explanation of Levent Alpöge's 2026 Riemann Hypothesis formal proof, with ongoing human mathematical exposition clearly distinguished from the Lean verification. No claim that URAI Labs created that proof.</p></section>
+<footer class="footer">URAI Labs × Chalk &amp; Cheese · THE UNKNOWN · Draft research preview. Production launch and private-memory writes remain on hold.</footer>
+</main></body></html>
