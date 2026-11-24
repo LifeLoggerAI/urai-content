@@ -1,0 +1,41 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:04.000
+URAI Labs and Chalk & Cheese present: The Unknown.
+One million numbers. Zero counterexamples in our finite tests.
+
+00:00:04.000 --> 00:00:08.000
+The Collatz mystery: for a positive whole number,
+if even, divide by two; if odd, multiply by three and add one.
+
+00:00:08.000 --> 00:00:12.000
+Example: starting at 27, the repeated steps eventually reach 1.
+
+00:00:12.000 --> 00:00:16.000
+Collatz test: one million starting values; zero counterexamples.
+A finite test does not prove the conjecture.
+
+00:00:16.000 --> 00:00:20.000
+Within the tested range, 837,799 takes 524 steps to reach 1.
+
+00:00:20.000 --> 00:00:24.000
+Goldbach: 499,999 even numbers from 4 through one million checked.
+No counterexamples were found in that range.
+
+00:00:24.000 --> 00:00:28.000
+Twin primes: 8,169 pairs found through one million.
+Whether there are infinitely many is still unknown.
+
+00:00:28.000 --> 00:00:32.000
+Our software ran finite computational checks.
+An infinite claim requires mathematical proof.
+
+00:00:32.000 --> 00:00:36.000
+Next up: the Riemann Hypothesis.
+Levent Alpöge, working with Claude, developed a Lean-checked proof.
+The Lean and Mathlib communities certified its formal verification.
+
+00:00:36.000 --> 00:00:39.250
+URAI Labs × Chalk & Cheese — THE UNKNOWN.
+Explore. Question. Verify. Discover.
+Finite checks are not general proofs.
