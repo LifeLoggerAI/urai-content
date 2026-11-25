@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "description": "Bounded canonical public/demo catalog snapshot, NOT a live publication approval",
+  "sourceRepository": "LifeLoggerAI/urai-content",
+  "sourceBaseCommit": "988ca4f7f38b1ce86e4d3f426361b5866fd23e0d",
+  "items": 6,
+  "sha256": "b5e52dcd4d6785a71757772afa778aa2a1f1183809fb15d163b13a8b7da2d6d1",
+  "inputDigests": {
+    "content/pages/home.json": "8cd1b847a1dbceb13476b727d33ac0d3b86983112ce68f09759a54e85cf47ce7",
+    "content/pages/privacy.json": "432a1d1a9e077333540f074db698811e8a04f158c64936f7ca2f90b16ce0e41b",
+    "content/demo/weekly-scrolls.json": "aede878baabba829fee88cd14e060ba536861d317cb5c03f423cab88eddb9c6b",
+    "content/demo/life-map-events.json": "33bc57cc0dd5d413cc496a624a968794c265d0067305314dbf3bee7eb76ddcd4",
+    "content/demo/council-reflections.json": "40f45b21a815b1e112f66b691a040ea80584f02b8e877f6777b9be1cee553fb9",
+    "content/sprites/sprite-packs.json": "4b5bb093d6408b142f8d6fe1d6a488a546b524d6eecea231d017a4487dfc8375"
+  },
+  "sourceFiles": [
+    "content/pages/home.json",
+    "content/pages/privacy.json",
+    "content/demo/weekly-scrolls.json",
+    "content/demo/life-map-events.json",
+    "content/demo/council-reflections.json",
+    "content/sprites/sprite-packs.json"
+  ]
+}

@@ -1,0 +1,137 @@
+[
+  {
+    "id": "page-home",
+    "title": "URAI",
+    "slug": "/",
+    "summary": "Private reflective intelligence for your weeks and seasons.",
+    "status": "demo",
+    "visibility": "demo",
+    "updatedAt": "2026-09-25T05:30:00.000Z",
+    "tags": [
+      "home",
+      "launch"
+    ],
+    "relatedSystem": "URAI Foundation",
+    "cta": {
+      "label": "Join the waitlist",
+      "href": "/waitlist-copy"
+    },
+    "sections": [
+      {
+        "heading": "What it is",
+        "body": "URAI is a private life intelligence layer that quietly turns your week into a readable map."
+      },
+      {
+        "heading": "How it works",
+        "body": "Signals become moments, moments become patterns, and patterns become gentle insights you can review and export."
+      },
+      {
+        "heading": "Privacy first",
+        "body": "Council autonomy is off by default. You choose what is captured, reviewed, exported, or deleted."
+      }
+    ]
+  },
+  {
+    "id": "page-privacy",
+    "title": "Privacy & Trust",
+    "slug": "/privacy",
+    "summary": "Plain language commitments for consent, control, and export.",
+    "status": "live",
+    "visibility": "public",
+    "updatedAt": "2026-05-03T00:00:00.000Z",
+    "tags": [
+      "privacy"
+    ],
+    "relatedSystem": "URAI Privacy",
+    "sections": [
+      {
+        "heading": "Private by design",
+        "body": "URAI does not sell your private data."
+      },
+      {
+        "heading": "Consent tiers",
+        "body": "Collection and reflection features are opt-in and reversible."
+      }
+    ]
+  },
+  {
+    "id": "ws-2026-w18",
+    "title": "Week 18 — The Returning Signal",
+    "slug": "week-18-returning-signal",
+    "summary": "A grounded week of recovery and focus.",
+    "status": "demo",
+    "visibility": "demo",
+    "updatedAt": "2026-05-03T00:00:00.000Z",
+    "tags": [
+      "weekly-scroll"
+    ],
+    "relatedSystem": "URAI Motion",
+    "sections": [
+      {
+        "heading": "Sky",
+        "body": "Mood shifted from scattered to steady by Thursday."
+      },
+      {
+        "heading": "Insight",
+        "body": "Your strongest days begin with thirty silent minutes before first message."
+      }
+    ]
+  },
+  {
+    "id": "lm-1",
+    "title": "Morning Walk Restart",
+    "slug": "morning-walk-restart",
+    "summary": "Routine reactivated after a busy month.",
+    "status": "demo",
+    "visibility": "demo",
+    "updatedAt": "2026-05-03T00:00:00.000Z",
+    "tags": [
+      "life-map"
+    ],
+    "relatedSystem": "URAI Visuals",
+    "sections": [
+      {
+        "heading": "Accessibility",
+        "body": "Low-motion timeline card with descriptive alt text available."
+      }
+    ]
+  },
+  {
+    "id": "council-1",
+    "title": "Narrator Reflection",
+    "slug": "narrator-reflection-1",
+    "summary": "Calm recap with no diagnosis claims.",
+    "status": "demo",
+    "visibility": "demo",
+    "updatedAt": "2026-05-03T00:00:00.000Z",
+    "tags": [
+      "council",
+      "narrator"
+    ],
+    "relatedSystem": "URAI Foundation",
+    "sections": [
+      {
+        "heading": "Narrator",
+        "body": "You carried more than usual and still made room for one honest pause."
+      },
+      {
+        "heading": "Guardian",
+        "body": "Autonomy remains off by default; new automations require explicit consent."
+      }
+    ]
+  },
+  {
+    "id": "pack-celestial",
+    "title": "Celestial UI Pack",
+    "slug": "celestial-ui-pack",
+    "summary": "Demo sprite pack manifest. Sprite artwork is unavailable; no downloadable image is included.",
+    "status": "demo",
+    "visibility": "public",
+    "updatedAt": "2026-05-03T00:00:00.000Z",
+    "tags": [
+      "sprites"
+    ],
+    "relatedSystem": "URAI Visuals",
+    "assetAvailability": "unavailable"
+  }
+]

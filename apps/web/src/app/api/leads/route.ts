@@ -42,10 +42,11 @@ export async function POST(request: Request) {
 
   if (!isFirebaseAdminConfigured()) {
     return NextResponse.json({
-      ok: true,
+      ok: false,
       stored: false,
-      message: 'Received. Firebase intake is not configured in this environment, so this was accepted in preview mode.'
-    });
+      error: 'intake_unavailable',
+      message: 'This form is temporarily unavailable. Your information was not saved. Please try again later.'
+    }, { status: 503 });
   }
 
   const db = getFirebaseAdminDb();
