@@ -14,6 +14,8 @@
   "scripts": {
     "dev": "tsx src/index.ts",
     "build": "tsc -p tsconfig.json",
+    "prepack": "npm run build",
+    "runtime:verify": "npm run build && node --test scripts/check-compiled-runtime-entrypoint.test.mjs",
     "start": "node dist/src/index.js",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
@@ -35,7 +37,7 @@
     "branch:sync:check": "tsx scripts/checkBranchSync.ts",
     "check:governance": "tsx scripts/checkGovernanceDocs.ts",
     "check:secrets": "tsx scripts/checkNoSecrets.ts",
-    "check": "npm run lint && npm run typecheck && npm run validate:content && npm run validate:sprites && npm run content:index && git diff --exit-code && npm test && npm run build && npm run seed:check && npm run seed:system:check && npm run check:governance && npm run check:secrets && npm run check:ecosystem && npm run check:prompts && npm run test:prompt-evals && npm run test:prompt-release-authority",
+    "check": "npm run lint && npm run typecheck && npm run validate:content && npm run validate:sprites && npm run content:index && git diff --exit-code && npm test && npm run runtime:verify && npm run seed:check && npm run seed:system:check && npm run check:governance && npm run check:secrets && npm run check:ecosystem && npm run check:prompts && npm run test:prompt-evals && npm run test:prompt-release-authority",
     "check:release-env": "npm run check:provider-evidence && npm run check:observability && npm run check:alerts",
     "verify": "npm run check",
     "done": "npm run audit && npm run smoke && npm run check",
